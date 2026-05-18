@@ -131,45 +131,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 746548900845504443}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a77805aecc6486e4b90782848cba4f22, type: 3}
+  m_Script: {fileID: 11500000, guid: ee579661839b2c04f92dd07e58d3b413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Transform: {fileID: 2607385523528647007}
-  EntityType: 24
-  _components:
-  - _underlyingValue: {fileID: 4183854875859647949}
-  - _underlyingValue: {fileID: 5218828205235913201}
-  - _underlyingValue: {fileID: -719806687552658816}
-  - _underlyingValue: {fileID: 1779324374957113288}
-  - _underlyingValue: {fileID: 7554589736735529353}
-  - _underlyingValue: {fileID: 0}
+  _transform: {fileID: 0}
+  _entityType: 10
+  damage: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: {x: 1, y: 1}
+  shapeType: 1
+  colliderOffsets: {x: 0, y: 0, z: 0}
+  colliderSize: {x: 1, y: 1, z: 1}
+  _components: []
   ActiveFlags: 0
   LeftOffset: 0
   RightOffset: 0
-  MapIndex: 0
-  _dieEffectOffsetY: 0.5
-  _dieAnimForDeath: 0.2
-  IsInLastRow: 0
+  deathScaleEffect: {fileID: 0}
+  _tutElement: {fileID: 0}
+  autoAddHitTextFlyEffectAtRuntime: 1
   Data:
-    Type: 3
+    Type: 0
     Value: 0
     Armor: 0
-    Level: 1
-    WeaponLevel: 0
-  _cardSlot: {fileID: 6702785330363405501}
-  _cardSlots: {fileID: 5207351034422933685}
-  progressSprite: {fileID: 7729286454881128753}
-  armorParent: {fileID: 4553530380864658870}
-  armorProgressSprite: {fileID: 901263249968529236}
-  hpBar: {fileID: 5087465454678038153}
-  _groundYOffset: -0.1
-  throwForce: 3
-  throwHeight: 2
-  throwDuration: 0.5
-  bounceHeight: 0.5
-  bounceDuration: 0.3
-  hitByWheelSound: 7
-  levelUpSfx: 0
+    TierRequestList: []
+  progressSprite: {fileID: 8584524927276142223}
+  progressMinFill: 0.532
+  progressMaxFill: 0.792
+  collectText: {fileID: 7492492690774223129}
+  hitComponent: {fileID: 5218828205235913201}
+  effectComponent: {fileID: 7554589736735529353}
+  healthComponent: {fileID: -719806687552658816}
+  scaleUp: 1.08
+  scaleUpDuration: 0.08
+  scaleDownDuration: 0.15
 --- !u!114 &4183854875859647949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,9 +179,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CacheTransform: {fileID: 2607385523528647007}
-  poolEntity: {fileID: -7140627082571565580}
-  _animator: {fileID: 0}
-  _transitionTime: 0.15
+  poolEntity: {fileID: 0}
+  animator: {fileID: 0}
+  mappings: []
+  defaultCrossFadeTime: 0.08
 --- !u!114 &5218828205235913201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,10 +199,9 @@ MonoBehaviour:
   poolEntity: {fileID: -7140627082571565580}
   shapeType: 2
   colliderSize: {x: 4, y: 4.5, z: 0}
-  isActive: 0
+  isActive: 1
   isCustomCaster: 0
   hitTransform: {fileID: 0}
-  debugAttackerRadius: 0
 --- !u!114 &-719806687552658816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,16 +214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a392e452bed495b8987bcb6ab3686d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CacheTransform: {fileID: 2607385523528647007}
-  poolEntity: {fileID: -7140627082571565580}
-  maxHp: 100
-  IsImmortal: 1
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDie:
-    m_PersistentCalls:
-      m_Calls: []
+  maxHealth: 10
+  currentHealth: 10
+  isImmortal: 0
 --- !u!114 &1779324374957113288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CacheTransform: {fileID: 2607385523528647007}
-  poolEntity: {fileID: -7140627082571565580}
+  poolEntity: {fileID: 0}
   leftOffset: 2
   rightOffset: 5
 --- !u!114 &7554589736735529353
@@ -257,53 +246,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CacheTransform: {fileID: 2607385523528647007}
-  poolEntity: {fileID: -7140627082571565580}
+  poolEntity: {fileID: 0}
   effects:
-    _serializedList:
-    - Key: 14
-      Value:
-        Sfx: 0
-        Vfx: {fileID: 0}
-        effects:
-        - rid: 7186586330834403496
-    - Key: 12
-      Value:
-        Sfx: 0
-        Vfx: {fileID: 0}
-        effects:
-        - rid: 7186586394188054529
-    - Key: 16
-      Value:
-        Sfx: 0
-        Vfx: {fileID: 0}
-        effects:
-        - rid: 7186586330834403821
-  references:
-    version: 2
-    RefIds:
-    - rid: 7186586330834403496
-      type: {class: HitScaleEffect, ns: GamePlay.Effects, asm: Assembly-CSharp}
-      data:
-        _targetTransform: {fileID: 1408051208652014420}
-        punchStrength: 0.05
-        duration: 0.15
-        vibrato: 1
-        elasticity: 1
-        _hitDelay: 0.1
-    - rid: 7186586330834403821
-      type: {class: MeshDissolveEffect, ns: GamePlay.Effects.Dissolves, asm: Assembly-CSharp}
-      data:
-        targetRenderers:
-        - {fileID: 0}
-        - {fileID: 0}
-        duration: 0.5
-    - rid: 7186586394188054529
-      type: {class: DeathScaleEffect, ns: GamePlay.Effects.Dissolves, asm: Assembly-CSharp}
-      data:
-        _targetTransform: {fileID: 0}
-        _targetScaleMultiplier: 1.05
-        _expandDuration: 0.1
-        _shrinkDuration: 0.2
+  - Type: 0
+    VfxPrefab: {fileID: 0}
+    ParentToTarget: 1
+    SfxClip: {fileID: 0}
+    WaitForAction: 0.5
+  audioSource: {fileID: 0}
+  useGlobalSoundManagerFallback: 1
+  warnIfNoAudioRouteInEditor: 0
 --- !u!114 &4148855194391096545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,15 +269,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthComponent: {fileID: -719806687552658816}
-  popupPrefab: {fileID: 3928252636572854181, guid: 5787dd6330532474c8305897f18925be, type: 3}
-  critIcon: {fileID: 21300000, guid: cd93cad75baad9746967774b64ff8a5b, type: 3}
-  critColor: {r: 1, g: 0.5, b: 0, a: 1}
+  healthTextPrefab: {fileID: 0}
+  autoResolveHealthComponent: 1
+  defaultTextPrefabResourcePath: SpawnableObject/HitDamage
   flyUpDistance: 3
   flyUpDuration: 0.25
   fallDownDistance: 2.5
   fallDuration: 0.5
-  horizontalRange: 2
-  spawnOffset: {x: 0, y: 2, z: -4}
+  horizontalRandomRange: 0
+  heightOffset: 2
+  zOffset: 0
+  prewarmPoolCount: 12
 --- !u!1 &1188966019918710847
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,7 +1217,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5207351034422933685}
-  - component: {fileID: 5812561581285170496}
   m_Layer: 0
   m_Name: Pool
   m_TagString: Untagged
@@ -1290,36 +1243,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.5, y: 69}
   m_SizeDelta: {x: 703.75, y: 309.65}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5812561581285170496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6215728583366083305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d45c1d4336b4ed3419ca962227fe7722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 7
-  m_StartCorner: 2
-  m_StartAxis: 0
-  m_CellSize: {x: 120, y: 120}
-  m_Spacing: {x: 10, y: 10}
-  m_Constraint: 0
-  m_ConstraintCount: 2
-  centerGrid: 1
-  alignment: 1
-  verticalAlignment: 1
-  autoControlChildSize: 0
-  centerLastRow: 0
-  centerLastColumn: 0
 --- !u!1 &6262569525571508405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1654,7 +1577,6 @@ GameObject:
   - component: {fileID: 6555555413059574730}
   - component: {fileID: 4488806582865169532}
   - component: {fileID: 7492492690774223129}
-  - component: {fileID: 2805229869612776441}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -1815,21 +1737,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 4488806582865169532}
   m_maskType: 0
---- !u!114 &2805229869612776441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8526307579565823767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c97fc338324f4334f8b57c4d04a6b82f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  languageSourceAsset: {fileID: 11400000, guid: 9c52a9207e501ec4a9615bd8dc981ab6, type: 2}
-  targetText: {fileID: 7492492690774223129}
-  i2Text: ui_craft
 --- !u!1 &9024151491417260855
 GameObject:
   m_ObjectHideFlags: 0

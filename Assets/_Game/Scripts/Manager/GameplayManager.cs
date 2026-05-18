@@ -21,6 +21,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     [SerializeField] private EraDataSO playableEra;
     public EraDataSO PlayableEra => playableEra;
     [SerializeField] private ContentDataSO playableContent;
+    [SerializeField] private ContentDataSO playableTowerZoneContent;
 
 #if UNITY_EDITOR
     [Header("Editor Auto Generate")]
@@ -31,6 +32,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     [SerializeField] private bool usePrebakedContentInPlayMode = true;
     private EraDataSO _lastEraEditor;
     private ContentDataSO _lastContentEditor;
+    private ContentDataSO _lastTowerZoneContentEditor;
     private bool _isGeneratingEditor;
     private bool _generateQueued;
 #endif
@@ -135,8 +137,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
         bool eraChanged = playableEra != _lastEraEditor;
         bool contentChanged = playableContent != _lastContentEditor;
+        bool towerContentChanged = playableTowerZoneContent != _lastTowerZoneContentEditor;
 
-        if (regenerateOnEraChangeOnly && !eraChanged && !contentChanged) return;
+        if (regenerateOnEraChangeOnly && !eraChanged && !contentChanged && !towerContentChanged) return;
 
         // Defer generation to avoid DestroyImmediate during OnValidate.
         if (!_generateQueued)
@@ -165,7 +168,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
             if (autoGenerateContentInEditor && playableContent != null && contentGenerator != null)
             {
-                contentGenerator.GenerateContentData(playableContent);
+                contentGenerator.GenerateContentData(playableContent, playableTowerZoneContent);
             }
         }
         finally
@@ -173,6 +176,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             _isGeneratingEditor = false;
             _lastEraEditor = playableEra;
             _lastContentEditor = playableContent;
+            _lastTowerZoneContentEditor = playableTowerZoneContent;
         }
     }
 #endif
@@ -272,6 +276,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             {
                 yield return StartCoroutine(contentGenerator.GenerateContentDataAsync(
                     playableContent,
+                    playableTowerZoneContent,
                     initializeItems: false,
                     customBatchSize: Mathf.Max(1, spawnItemsPerFrame)
                 ));
@@ -612,9 +617,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             else
                 GameEventBus.OnShowCTA?.Invoke();
 
-                // Spawn a fresh player at the start position for this mode.
-                if (playableEra != null)
-                    StartCoroutine(IsArmyMode ? CoSpawnPlayerArmy(playableEra) : CoSpawnTurnTable(playableEra));
+            // Spawn a fresh player at the start position for this mode.
+            if (playableEra != null)
+                StartCoroutine(IsArmyMode ? CoSpawnPlayerArmy(playableEra) : CoSpawnTurnTable(playableEra));
 
             return;
         }

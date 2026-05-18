@@ -21,7 +21,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 47e08f2b1e653f447af08135c7d832f5, type: 3}
     WeaponPrefab: {fileID: 7328408254243868546, guid: 8c4891512da74cd47b9a7d0091e4b650, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 1
+    Damage: 15
   - CharacterLevel: 2
     CharacterPrefab: {fileID: 4808247168321490554, guid: c8d7b92b71a8b904eaa654f5d7806216, type: 3}
     CardData:
@@ -29,7 +29,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 6cc2e7427dcd86c41b95ffb98a4bcfe5, type: 3}
     WeaponPrefab: {fileID: 1225374147583127166, guid: df80f949104e0af4abea034c50d5658a, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 2
+    Damage: 30
   - CharacterLevel: 3
     CharacterPrefab: {fileID: 4808247168321490554, guid: 97de89e22f9969e4daa27dd42f5da68e, type: 3}
     CardData:
@@ -37,7 +37,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 6e9ae956a2cd400479fb96ca92e33122, type: 3}
     WeaponPrefab: {fileID: 6687821876656520568, guid: bb822d5e66c0d4e4997e21af5e2e6f68, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 3
+    Damage: 45
   - CharacterLevel: 4
     CharacterPrefab: {fileID: 4808247168321490554, guid: 72b4ae8a9da9ba6419a840878f97ec2b, type: 3}
     CardData:
@@ -45,7 +45,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 524ce102bd3aa0e42a04d3ae42d52e49, type: 3}
     WeaponPrefab: {fileID: 189977195596353222, guid: 29ea18ece5a7af2479454b5cf592d960, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 6
+    Damage: 90
   - CharacterLevel: 5
     CharacterPrefab: {fileID: 4808247168321490554, guid: c4560c03af1bd1a43adf3a02826cae7e, type: 3}
     CardData:
@@ -53,7 +53,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 299ae3d349b45f441a60ff7a73bf8a73, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: ba39327402e530847a03d087e236539d, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 8
+    Damage: 120
   - CharacterLevel: 6
     CharacterPrefab: {fileID: 4808247168321490554, guid: f00e7f1c8c82fa443bf4413e371fb3a4, type: 3}
     CardData:
@@ -61,7 +61,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 38838e446490d6c4da63f08314a13621, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: c7da0c8c416cf984e93da9daa81109d9, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 12
+    Damage: 180
   - CharacterLevel: 7
     CharacterPrefab: {fileID: 4808247168321490554, guid: 9fdb1b3faaebeb04d83879dd31578278, type: 3}
     CardData:
@@ -69,7 +69,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 3e270f31c55cb2d46a1541b9884e1c13, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: c1b73dfd5569cc946aedf91fc7d6de1e, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 16
+    Damage: 240
   - CharacterLevel: 8
     CharacterPrefab: {fileID: 4808247168321490554, guid: f181894f35fa3be40b3a4ef1b62eb7c0, type: 3}
     CardData:
@@ -77,7 +77,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 8b5903508f28cd843a52cb0ae585a197, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: d74ffb6c3e223d043a174943be77c04b, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 21
+    Damage: 315
   - CharacterLevel: 9
     CharacterPrefab: {fileID: 4808247168321490554, guid: 8e45a40aebd8ae046861c80e3a4dbd3b, type: 3}
     CardData:
@@ -85,7 +85,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: fe10c6517e8e8784f917932270bfcfa0, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: 2a1bdfacc049f014db1110761e3186aa, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 27
+    Damage: 405
   - CharacterLevel: 10
     CharacterPrefab: {fileID: 4808247168321490554, guid: de2703e0fab088f4fb090b9a8884f8f9, type: 3}
     CardData:
@@ -93,7 +93,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: f11e3e0a15608734bb430b2681870922, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: 98261ca64d986854e8d1d628d791b819, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 35
+    Damage: 525
   - CharacterLevel: 11
     CharacterPrefab: {fileID: 4808247168321490554, guid: 345c9d5d20ffbc04ca92c68e003c304f, type: 3}
     CardData:
@@ -101,7 +101,7 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 0041ba804dff4f945be74414603b29e9, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: b630c3518329d0f49b4d18d637b37abe, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 44
+    Damage: 660
   - CharacterLevel: 12
     CharacterPrefab: {fileID: 4808247168321490554, guid: b22e33f2b5321744da3797ae310c505b, type: 3}
     CardData:
@@ -109,4 +109,4 @@ MonoBehaviour:
       Sprite: {fileID: 21300000, guid: 4b6a49f9db442564ba266eeeef55cb92, type: 3}
     WeaponPrefab: {fileID: 8885013514536442522, guid: d0f779fba07a18040a323262d92742e4, type: 3}
     ShieldPrefab: {fileID: 0}
-    Damage: 55
+    Damage: 825

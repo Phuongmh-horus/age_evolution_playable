@@ -27,7 +27,7 @@ MonoBehaviour:
   MapData: {fileID: 11400000, guid: 0ecc550812b1d1f43a327d7898e1cc42, type: 2}
   Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
   Contents:
-  - {fileID: 11400000, guid: dd09d1da3dee9a148a0af5bde36de22f, type: 2}
+  - {fileID: 11400000, guid: 65b95ef69d28cbb43b560ee7fdba5891, type: 2}
   TowerZoneContent: {fileID: 11400000, guid: c8fa5a44016f46c4ca486ed1e5229cd9, type: 2}
   CharacterList: {fileID: 11400000, guid: 054a237ded3e40b43a0c18f1f594b316, type: 2}
   HeroList: {fileID: 11400000, guid: d800e61a99b892b49b5279ec731e677a, type: 2}

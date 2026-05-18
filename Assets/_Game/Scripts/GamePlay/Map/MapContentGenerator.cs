@@ -31,6 +31,7 @@ namespace GamePlay.Map
 
         [Header("Data")]
         [SerializeField] private ContentDataSO contentData;
+        [SerializeField] private ContentDataSO contentTowerZoneData;
         [SerializeField] private MapGenerator mapGenerator;
         [Header("Startup Performance")]
         [SerializeField, Min(1)] private int spawnItemsPerFrame = 20;
@@ -58,12 +59,33 @@ namespace GamePlay.Map
         public void GenerateContentData(ContentDataSO contentDataSo, bool initializeItems = true)
         {
             contentData = contentDataSo;
+            contentTowerZoneData = null;
+            SpawnObjectsFromContent(destroyImmediate: true, initializeItems: initializeItems);
+        }
+
+        public void GenerateContentData(ContentDataSO contentDataSo, ContentDataSO towerZoneDataSo, bool initializeItems = true)
+        {
+            contentData = contentDataSo;
+            contentTowerZoneData = towerZoneDataSo;
             SpawnObjectsFromContent(destroyImmediate: true, initializeItems: initializeItems);
         }
 
         public IEnumerator GenerateContentDataAsync(ContentDataSO contentDataSo, bool initializeItems = true, int customBatchSize = -1)
         {
             contentData = contentDataSo;
+            contentTowerZoneData = null;
+            int batchSize = customBatchSize > 0 ? customBatchSize : spawnItemsPerFrame;
+            yield return CoSpawnObjectsFromContentBatched(destroyImmediate: true, initializeItems: initializeItems, batchSize: batchSize);
+        }
+
+        public IEnumerator GenerateContentDataAsync(
+            ContentDataSO contentDataSo,
+            ContentDataSO towerZoneDataSo,
+            bool initializeItems = true,
+            int customBatchSize = -1)
+        {
+            contentData = contentDataSo;
+            contentTowerZoneData = towerZoneDataSo;
             int batchSize = customBatchSize > 0 ? customBatchSize : spawnItemsPerFrame;
             yield return CoSpawnObjectsFromContentBatched(destroyImmediate: true, initializeItems: initializeItems, batchSize: batchSize);
         }
@@ -167,20 +189,25 @@ namespace GamePlay.Map
 
         private void SpawnObjectsFromContent(bool destroyImmediate, bool initializeItems)
         {
-            if (contentData == null)
+            if (contentData == null && contentTowerZoneData == null)
             {
-                Debug.LogWarning("[MapContentGenerator] ContentData is not set.");
+                Debug.LogWarning("[MapContentGenerator] ContentData and TowerZoneData are not set.");
                 return;
             }
 
             ClearGeneratedContent(destroyImmediate);
+            SpawnFromContentData(contentData, initializeItems);
+            SpawnFromContentData(contentTowerZoneData, initializeItems);
+        }
 
-            if (contentData.SpawnableObjects == null || contentData.SpawnableObjects.Count == 0)
+        private void SpawnFromContentData(ContentDataSO sourceData, bool initializeItems)
+        {
+            if (sourceData == null || sourceData.SpawnableObjects == null || sourceData.SpawnableObjects.Count == 0)
                 return;
 
-            for (int i = 0; i < contentData.SpawnableObjects.Count; i++)
+            for (int i = 0; i < sourceData.SpawnableObjects.Count; i++)
             {
-                var spawnable = contentData.SpawnableObjects[i];
+                var spawnable = sourceData.SpawnableObjects[i];
                 if (spawnable == null || spawnable.Prefab == null) continue;
 
                 // Track milestone points (FinishTower)
@@ -204,7 +231,7 @@ namespace GamePlay.Map
 
                 if (itemUnit == null)
                 {
-                    Debug.LogError($"[MapContentGenerator] Failed to spawn object at index {i}.");
+                    Debug.LogError($"[MapContentGenerator] Failed to spawn object at index {i} from data '{sourceData.name}'.");
                     continue;
                 }
 
@@ -226,28 +253,35 @@ namespace GamePlay.Map
 
         private IEnumerator CoSpawnObjectsFromContentBatched(bool destroyImmediate, bool initializeItems, int batchSize)
         {
-            if (contentData == null)
+            if (contentData == null && contentTowerZoneData == null)
             {
-                Debug.LogWarning("[MapContentGenerator] ContentData is not set.");
+                Debug.LogWarning("[MapContentGenerator] ContentData and TowerZoneData are not set.");
                 yield break;
             }
 
             ClearGeneratedContent(destroyImmediate);
 
-            if (contentData.SpawnableObjects == null || contentData.SpawnableObjects.Count == 0)
-                yield break;
-
             int safeBatchSize = Mathf.Max(1, batchSize);
             int spawnedThisBatch = 0;
-            int totalSpawnables = contentData.SpawnableObjects.Count;
+            int totalSpawnables = 0;
+            if (contentData != null && contentData.SpawnableObjects != null)
+                totalSpawnables += contentData.SpawnableObjects.Count;
+            if (contentTowerZoneData != null && contentTowerZoneData.SpawnableObjects != null)
+                totalSpawnables += contentTowerZoneData.SpawnableObjects.Count;
             if (generatedObjects.Capacity < totalSpawnables)
             {
                 generatedObjects.Capacity = totalSpawnables;
             }
 
-            for (int i = 0; i < totalSpawnables; i++)
+            IEnumerable<SpawnableObject> Enumerate(ContentDataSO src)
             {
-                var spawnable = contentData.SpawnableObjects[i];
+                if (src == null || src.SpawnableObjects == null) yield break;
+                for (int i = 0; i < src.SpawnableObjects.Count; i++)
+                    yield return src.SpawnableObjects[i];
+            }
+
+            foreach (var spawnable in Enumerate(contentData))
+            {
                 if (spawnable == null || spawnable.Prefab == null) continue;
 
                 if (spawnable.Prefab.EntityType == EntityType.FinishTower)
@@ -268,7 +302,53 @@ namespace GamePlay.Map
 
                 if (itemUnit == null)
                 {
-                    Debug.LogError($"[MapContentGenerator] Failed to spawn object at index {i}.");
+                    Debug.LogError("[MapContentGenerator] Failed to spawn object.");
+                    continue;
+                }
+
+                itemUnit.transform.localScale = spawnable.Scale;
+                spawnable.ApplyPropertyOverrides(itemUnit);
+
+                if (initializeItems && Application.isPlaying)
+                    itemUnit.Initialize();
+
+                generatedObjects.Add(itemUnit);
+                instanceToPrefabMap[itemUnit.gameObject] = spawnable.Prefab.gameObject;
+
+                if (itemUnit.EntityType == EntityType.GateNewEra)
+                    GateNewEraTrans = itemUnit.transform;
+
+                spawnedThisBatch++;
+                if (spawnedThisBatch >= safeBatchSize)
+                {
+                    spawnedThisBatch = 0;
+                    yield return null;
+                }
+            }
+
+            foreach (var spawnable in Enumerate(contentTowerZoneData))
+            {
+                if (spawnable == null || spawnable.Prefab == null) continue;
+
+                if (spawnable.Prefab.EntityType == EntityType.FinishTower)
+                    MilestonePoints.Add(spawnable.PositionOnMap);
+
+                Vector3 spawnPosition = Position + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
+                Quaternion spawnRotation = Quaternion.Euler(spawnable.Rotation);
+
+                ItemUnit itemUnit = null;
+                try
+                {
+                    itemUnit = spawnable.Prefab.Spawn(spawnPosition, spawnRotation, transform);
+                }
+                catch
+                {
+                    itemUnit = Instantiate(spawnable.Prefab, spawnPosition, spawnRotation, transform);
+                }
+
+                if (itemUnit == null)
+                {
+                    Debug.LogError("[MapContentGenerator] Failed to spawn object.");
                     continue;
                 }
 
