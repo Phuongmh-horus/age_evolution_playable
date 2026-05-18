@@ -120,14 +120,14 @@ MonoBehaviour:
   mappings:
   - Type: 4
     StateName: Attack
-    CrossFadeTime: 0.05
+    CrossFadeTime: 0.08
   - Type: 1
     StateName: Idle
-    CrossFadeTime: 0.05
+    CrossFadeTime: 0.08
   - Type: 7
     StateName: Victory
-    CrossFadeTime: 0.05
-  defaultCrossFadeTime: 0.05
+    CrossFadeTime: 0.08
+  defaultCrossFadeTime: 0.08
 --- !u!114 &947835893800108221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,10 +308,6 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7585964287692537034, guid: 09283da076d059b4e81c26409eca1bd7, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 8b320a7cdf79670499b5b9e029c9936c, type: 2}
     - target: {fileID: 895685223307445812, guid: 09283da076d059b4e81c26409eca1bd7, type: 3}
       propertyPath: m_CastShadows
       value: 0

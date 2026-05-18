@@ -217,13 +217,7 @@ public class GamePlayVariable : ScriptableObject
     public void ChangeEvolutionPointVariable(int addPoint)
     {
         if (EvolutionVariable == null) return;
-        int adjustedPoint = addPoint;
-        if (EvolutionVariable.ItemEvolveRateBonus != 0)
-        {
-            adjustedPoint = Mathf.RoundToInt(addPoint * (1f + EvolutionVariable.ItemEvolveRateBonus / 100f));
-        }
-
-        EvolutionVariable.ProgressPoint = Mathf.Max(0, EvolutionVariable.ProgressPoint + adjustedPoint);
+        EvolutionVariable.ProgressPoint = Mathf.Max(0, EvolutionVariable.ProgressPoint + addPoint);
         int previousCapacity = EvolutionVariable.Capacity;
 
         var evoConfig = ResolveEvolutionConfig();
@@ -249,12 +243,6 @@ public class GamePlayVariable : ScriptableObject
         SyncCapacityDataToPlayerState();
 
         GameEventBus.UpdateCapacityBar?.Invoke();
-    }
-
-    public void ChangeEvolveRateVariable(int addPoint)
-    {
-        if (EvolutionVariable == null) return;
-        EvolutionVariable.ItemEvolveRateBonus += addPoint;
     }
 
     /// <summary>

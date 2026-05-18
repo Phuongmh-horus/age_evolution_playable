@@ -96,7 +96,7 @@ MonoBehaviour:
   attackOriginOffset: 0.9
   attackInterval: 1
   attackDamage: 1
-  projectileDistance: 24
+  projectileDistance: 21
   projectileDuration: 0.55
   projectileRotationSpeed: -600
   unitscalevalue: 1.35

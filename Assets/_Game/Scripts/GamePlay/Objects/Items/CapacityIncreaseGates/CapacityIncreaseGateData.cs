@@ -9,7 +9,6 @@ namespace GamePlay.Items
     public class CapacityIncreaseGateData : StatModifierData
     {
         public List<CardSpawnRequestData> RequestDataList = new List<CardSpawnRequestData>();
-        [NonSerialized] public int MaxCoinsToSpawn = -1;
 
         public void AdjustValue(int level, int amount)
         {
@@ -32,13 +31,7 @@ namespace GamePlay.Items
             }
 
             // Logic thêm mới
-            RequestDataList.Add(new CardSpawnRequestData(level, amount, CardType.Character));
-        }
-
-        public override void ResetValue()
-        {
-            base.ResetValue();
-            RequestDataList.Clear();
+            RequestDataList.Add(new CardSpawnRequestData(level, amount));
         }
     }
 }

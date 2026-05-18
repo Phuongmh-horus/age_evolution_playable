@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "playable-age-evolution.sln"
+    "dotnet.defaultSolution": "age_evolution_playable.sln"
 }

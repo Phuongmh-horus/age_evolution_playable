@@ -16,7 +16,7 @@ MonoBehaviour:
   EraName: ui_mainmenu_era6
   BackgroundSprite: {fileID: 21300000, guid: bc8c3358187e1844b8a52f578439be4c, type: 3}
   CashOnStartEra: 0
-  MapData: {fileID: 11400000, guid: a62d6f53020796144bd9d218dae14237, type: 2}
+  MapData: {fileID: 11400000, guid: 5eb4f53f104ff03409269f3b44c68336, type: 2}
   Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
   Contents:
   - {fileID: 11400000, guid: d8a9e18c97e907d49899af2e4c852af3, type: 2}

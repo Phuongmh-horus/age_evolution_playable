@@ -5,7 +5,6 @@
 
 using System;
 using UnityEngine;
-using CardSystem.Data;
 
 public static class GameEventBus
 {
@@ -113,12 +112,6 @@ public static class GameEventBus
     /// Gọi khi currency thay đổi (oldValue, newValue)
     /// </summary>
     public static Action<int, int> OnCurrencyChanged;
-    public static Action<int> OnCoinChange;
-    public static Action OnCapacityGateCoinProgress;
-    public static Action<string> OnCapacityGateCardGrantedDetailed;
-    public static Action<string[]> OnCapacityGateCardsGrantedDetailed;
-    public static Action<int> OnCapacityGateCellActivated;
-    public static Action<BuffDefinition> OnCapacityGateCardRevealedBuff;
 
     /// <summary>
     /// Hiệu ứng tiền bay (visual only)
@@ -203,12 +196,6 @@ public static class GameEventBus
 
         // Currency
         OnCurrencyChanged = null;
-        OnCoinChange = null;
-        OnCapacityGateCoinProgress = null;
-        OnCapacityGateCardGrantedDetailed = null;
-        OnCapacityGateCardsGrantedDetailed = null;
-        OnCapacityGateCellActivated = null;
-        OnCapacityGateCardRevealedBuff = null;
         OnGainGold = null;
         OnCashChange = null;
         OnGemChange = null;

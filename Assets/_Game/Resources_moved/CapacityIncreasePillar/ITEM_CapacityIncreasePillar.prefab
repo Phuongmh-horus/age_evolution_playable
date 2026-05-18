@@ -606,13 +606,13 @@ MonoBehaviour:
     m_Bits: 4294967295
   size: {x: 1, y: 1}
   shapeType: 2
-  colliderOffsets: {x: 0, y: 0, z: 0}
   colliderSize: {x: 5.13, y: 4.46, z: 3.5}
   _components:
-  - {fileID: 1050903430189031241}
-  - {fileID: 3685822354733380185}
-  - {fileID: 8150801666140739055}
-  - {fileID: 475358875061819522}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   ActiveFlags: 0
   LeftOffset: 0
   RightOffset: 0
@@ -706,7 +706,7 @@ MonoBehaviour:
   healthComponent: {fileID: 3685822354733380185}
   healthTextPrefab: {fileID: 6512158636180351403, guid: efb62b88426edc84bb45da017ef8622a, type: 3}
   autoResolveHealthComponent: 1
-  defaultTextPrefabResourcePath: RoadSegment/HitDamage
+  defaultTextPrefabResourcePath: SpawnableObject/HitDamage
   flyUpDistance: 3
   flyUpDuration: 0.25
   fallDownDistance: 2.5
@@ -754,7 +754,6 @@ MonoBehaviour:
   poolEntity: {fileID: 2151603510769025371}
   animator: {fileID: 2331974963944913210}
   mappings: []
-  defaultCrossFadeTime: 0.08
 --- !u!1 &8379840075149381673
 GameObject:
   m_ObjectHideFlags: 0

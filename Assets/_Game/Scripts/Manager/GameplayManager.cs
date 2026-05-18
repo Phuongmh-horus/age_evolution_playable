@@ -21,7 +21,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     [SerializeField] private EraDataSO playableEra;
     public EraDataSO PlayableEra => playableEra;
     [SerializeField] private ContentDataSO playableContent;
-    [SerializeField] private ContentDataSO playableTowerZoneContent;
 
 #if UNITY_EDITOR
     [Header("Editor Auto Generate")]
@@ -32,7 +31,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     [SerializeField] private bool usePrebakedContentInPlayMode = true;
     private EraDataSO _lastEraEditor;
     private ContentDataSO _lastContentEditor;
-    private ContentDataSO _lastTowerZoneContentEditor;
     private bool _isGeneratingEditor;
     private bool _generateQueued;
 #endif
@@ -74,10 +72,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     [SerializeField] private float milestoneEndcardDelay = 1.0f;
 
     public static bool IsGameStarted;
-    public static int StartCoin;
-    public static int StartCoinPending;
-    public static int CoinAbsorb;
-    public static int GateCoinExcess;
     private bool _endGameSfxPlayed;
     private WeaponCraft.WeaponItem _mainWeapon;
     private Dictionary<CurrencyType, int> _currencyValues = new Dictionary<CurrencyType, int>();
@@ -141,9 +135,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
         bool eraChanged = playableEra != _lastEraEditor;
         bool contentChanged = playableContent != _lastContentEditor;
-        bool towerContentChanged = playableTowerZoneContent != _lastTowerZoneContentEditor;
 
-        if (regenerateOnEraChangeOnly && !eraChanged && !contentChanged && !towerContentChanged) return;
+        if (regenerateOnEraChangeOnly && !eraChanged && !contentChanged) return;
 
         // Defer generation to avoid DestroyImmediate during OnValidate.
         if (!_generateQueued)
@@ -172,7 +165,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
             if (autoGenerateContentInEditor && playableContent != null && contentGenerator != null)
             {
-                contentGenerator.GenerateContentData(playableContent, playableTowerZoneContent);
+                contentGenerator.GenerateContentData(playableContent);
             }
         }
         finally
@@ -180,7 +173,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             _isGeneratingEditor = false;
             _lastEraEditor = playableEra;
             _lastContentEditor = playableContent;
-            _lastTowerZoneContentEditor = playableTowerZoneContent;
         }
     }
 #endif
@@ -280,7 +272,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             {
                 yield return StartCoroutine(contentGenerator.GenerateContentDataAsync(
                     playableContent,
-                    playableTowerZoneContent,
                     initializeItems: false,
                     customBatchSize: Mathf.Max(1, spawnItemsPerFrame)
                 ));
@@ -453,10 +444,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         gamePlayVariable?.ResetWheelVariable();
         ResetCurrency(CurrencyType.Gold);
         ResetCurrency(CurrencyType.Cash);
-        StartCoin = 0;
-        StartCoinPending = 0;
-        CoinAbsorb = 0;
-        GateCoinExcess = 0;
 
         EnsureWeaponCraftStarterItem();
 
@@ -769,56 +756,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
     #region Modifier
 
-    public void ChangeStatModifierData<TData>(TData statModifierData, System.Action onItemArrived) where TData : StatModifierData
-    {
-        if (statModifierData == null) return;
-        if (statModifierData.Type is StatType.None || statModifierData.Armor > 0) return;
-
-        if (statModifierData.Type == StatType.Character && statModifierData is CapacityIncreaseGateData gateData)
-        {
-            int temp = StartCoin;
-            StartCoin = 0;
-
-            if (gateData.MaxCoinsToSpawn >= 0 && temp > gateData.MaxCoinsToSpawn)
-            {
-                GateCoinExcess = temp - gateData.MaxCoinsToSpawn;
-                temp = gateData.MaxCoinsToSpawn;
-            }
-            else
-            {
-                GateCoinExcess = 0;
-            }
-
-            int pending = StartCoinPending;
-            StartCoinPending = 0;
-            CoinAbsorb += pending;
-
-            if (Turnable != null)
-            {
-                Turnable.SpawnCurrencyItem(temp, delegate
-                {
-                    GameEventBus.OnCoinChange?.Invoke(-1);
-                    onItemArrived?.Invoke();
-                });
-            }
-            else
-            {
-                // Playable fallback (army mode or stripped wheel): consume coins instantly.
-                for (int i = 0; i < temp; i++)
-                {
-                    GameEventBus.OnCoinChange?.Invoke(-1);
-                    onItemArrived?.Invoke();
-                }
-            }
-            return;
-        }
-
-        ChangeStatModifierData(statModifierData);
-    }
-
     public void ChangeStatModifierData<TData>(TData statModifierData) where TData : StatModifierData
     {
-        if (statModifierData == null) return;
         if (statModifierData.Type is StatType.None || statModifierData.Armor > 0) return;
 
         switch (statModifierData.Type)
@@ -844,13 +783,22 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
                 {
                     if (gateData.RequestDataList != null && gateData.RequestDataList.Count > 0)
                     {
+                        for (int i = 0; i < gateData.RequestDataList.Count; i++)
+                        {
+                            var req = gateData.RequestDataList[i];
+                        }
                         AddCardsToPlayer(gateData.RequestDataList, CardSpawnEffectType.Drop);
+                    }
+                    else
+                    {
+                        Debug.LogError($"[GameplayManager] ERROR: RequestDataList is EMPTY! No cards will be added from Gate!");
                     }
                 }
                 else if (statModifierData is CapacityIncreaseFactoryData factoryData)
                 {
-                    StartCoin += factoryData.Coin;
-                    StartCoinPending += factoryData.Coin;
+                    _singleRequestBuffer.Clear();
+                    _singleRequestBuffer.Add(new CardSpawnRequestData { Amount = factoryData.Value, Level = factoryData.Level });
+                    AddCardsToPlayer(_singleRequestBuffer, CardSpawnEffectType.Drop);
                 }
                 else
                 {
@@ -864,10 +812,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
             case StatType.EvolutionPoint:
                 gamePlayVariable.ChangeEvolutionPointVariable(statModifierData.Value);
-                break;
-
-            case StatType.EvolveRate:
-                gamePlayVariable.ChangeEvolveRateVariable(statModifierData.Value);
                 break;
         }
     }

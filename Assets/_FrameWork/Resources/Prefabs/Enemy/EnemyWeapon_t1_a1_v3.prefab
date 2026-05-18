@@ -103,9 +103,6 @@ MonoBehaviour:
   components:
   - {fileID: 0}
   - {fileID: 0}
-  childrenRoot: {fileID: 0}
-  renderPosition: {x: 0, y: 0, z: 0}
-  renderEulerAngle: {x: 0, y: 0, z: 0}
   ActiveFlags: 0
 --- !u!114 &7273466621799809515
 MonoBehaviour:

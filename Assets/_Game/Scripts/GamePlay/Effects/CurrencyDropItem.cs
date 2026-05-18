@@ -252,7 +252,5 @@ public enum CurrencyType
     Gold = 1,
     Cash = 3,
     Gem = 5,
-    Diamond = 7,
-    Coin = 15,
-    CoinBuff = 16
+    Diamond = 7
 }

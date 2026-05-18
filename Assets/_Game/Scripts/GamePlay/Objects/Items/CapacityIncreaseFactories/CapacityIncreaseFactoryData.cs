@@ -9,7 +9,6 @@ namespace GamePlay.Items
     {
         [Tooltip("Cấp độ hiện tại")]
         public int Level = 1;
-        public int Coin = 0;
 
         private int _currentUpgradeValue;
         private Dictionary<int, int> _cacheCharacterFactoryUpgrade;
@@ -121,7 +120,7 @@ namespace GamePlay.Items
             if (_cacheCharacterFactoryUpgrade == null || _cacheCharacterFactoryUpgrade.Count == 0) return;
             if (Level < 1) Level = 1;
 
-            int maxLevel = GetMaxLevel();
+            int maxLevel = _cacheCharacterFactoryUpgrade.Count;
 
             // If maxed out, stop
             if (Level >= maxLevel)
@@ -143,7 +142,6 @@ namespace GamePlay.Items
                 }
 
                 int reqExp = _cacheCharacterFactoryUpgrade.GetValueOrDefault(Level);
-                if (reqExp <= 0) break;
 
                 if (_currentUpgradeValue < reqExp)
                 {
@@ -152,7 +150,6 @@ namespace GamePlay.Items
 
                 _currentUpgradeValue -= reqExp;
                 Level++;
-                Coin += Mathf.Max(0, Value);
             }
         }
 
@@ -162,7 +159,7 @@ namespace GamePlay.Items
 
             if (_cacheCharacterFactoryUpgrade == null || _cacheCharacterFactoryUpgrade.Count == 0) return 0f;
 
-            int maxLevel = GetMaxLevel();
+            int maxLevel = _cacheCharacterFactoryUpgrade.Count;
 
             if (Level >= maxLevel) return 1f;
 
@@ -173,17 +170,12 @@ namespace GamePlay.Items
             return (float)_currentUpgradeValue / reqExp;
         }
 
-        public float GetCurrentUpgradeProgress()
-        {
-            return GetUpgradeProgress();
-        }
-
         public override void ResetValue()
         {
             base.ResetValue();
             _currentUpgradeValue = 0;
             Level = 1;
-            Coin = 0;          // Armor reset is handled by StatModifierData.ResetValue() if logic exists, check if needed
+            // Armor reset is handled by StatModifierData.ResetValue() if logic exists, check if needed
         }
     }
 }

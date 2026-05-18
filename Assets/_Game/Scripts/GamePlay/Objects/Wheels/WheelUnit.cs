@@ -891,21 +891,6 @@ namespace GamePlay.Crushers
 
         // --- Card Logic ---
 
-        public void SpawnCurrencyItem(int length, Action onItemArrived = null)
-        {
-            StartCoroutine(CoSpawnCurrencyItem(length, onItemArrived));
-        }
-
-        private IEnumerator CoSpawnCurrencyItem(int length, Action onItemArrived)
-        {
-            int count = Mathf.Max(0, length);
-            for (int i = 0; i < count; i++)
-            {
-                onItemArrived?.Invoke();
-                yield return null;
-            }
-        }
-
         public void AddCards(List<CardSpawnRequestData> requests, CardSpawnEffectType effectType)
         {
             if (requests == null || requests.Count == 0)
