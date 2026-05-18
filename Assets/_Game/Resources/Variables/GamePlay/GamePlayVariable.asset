@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2413ede720647d09dcda93d7ccbbdf7, type: 3}
+  m_Name: GamePlayVariable
+  m_EditorClassIdentifier: 
+  WheelVariable: {fileID: 11400000, guid: e1d8e41256aa0f640923bb3e6fcbfc09, type: 2}
+  CharacterVariable: {fileID: 11400000, guid: 0056c9bb1b922d845996b11318f25555, type: 2}
+  EvolutionVariable: {fileID: 11400000, guid: 85fcc6a9990313144af0045ac505339e, type: 2}
+  fireRateDurationStep: 0.05
+  minFireRateDuration: 0.5
+  fireRangeDistanceStep: 1
+  moveSpeedStep: 0.5

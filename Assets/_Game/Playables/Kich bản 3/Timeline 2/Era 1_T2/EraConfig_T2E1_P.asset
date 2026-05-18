@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
+  m_Name: EraConfig_T2E1_P
+  m_EditorClassIdentifier: 
+  EraIndex: 7
+  EraName: ui_mainmenu_era7
+  BackgroundSprite: {fileID: 21300000, guid: b7d1c25c1c14d1b4d861b41018d37241, type: 3}
+  CashOnStartEra: 170
+  EnergyStartBonus: 0
+  StartEraRewards:
+  - RewardType: 6
+    ItemId: 0
+    Quantity: 10
+    StringItemId: 
+    Level: 0
+  ContentLoopAmount: 10
+  MapData: {fileID: 11400000, guid: 6bac149a1c556014da146a73a6a1ab93, type: 2}
+  Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
+  Contents:
+  - {fileID: 11400000, guid: 9d13b6a059ddb9144b17146a105c7def, type: 2}
+  TowerZoneContent: {fileID: 11400000, guid: 94f028e48b6277b4ca83a29b004d92eb, type: 2}
+  CharacterList: {fileID: 11400000, guid: 95a40fb6bf00bbf4ea76529654d5751c, type: 2}
+  HeroList: {fileID: 11400000, guid: 088ed27457810764da47083d006f46d9, type: 2}
+  Turntable: {fileID: 11400000, guid: a5f6953e818f37f44a29273b551f3f5a, type: 2}
+  EvolutionConfig: {fileID: 11400000, guid: de4008583aa42e04aa74db58e9e76711, type: 2}
+  ExtraCardConfig: {fileID: 11400000, guid: 616e31415f7e77745943ebddd5a83bdb, type: 2}
+  BoostCardConfig: {fileID: 11400000, guid: baa62c92c297ca240a24187ecc029f4e, type: 2}
+  IncomeConfig: {fileID: 11400000, guid: 137b16fa4be367845af3b49b53d328a9, type: 2}
+  CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: 79bb0b02fb9bf6b4caf0a10548ea4adc, type: 2}
+  WeaponFactoryUpgradeConfig: {fileID: 11400000, guid: 4520e1de1cc8eb44e92e4249d7c02505, type: 2}
+  ItemConfig: {fileID: 11400000, guid: ea7268aa04e801a46b4ba0a419670100, type: 2}
+  SpikeHpMultiplierConfig: {fileID: 11400000, guid: 0fd1a10275d327844ad305063aa93f01, type: 2}

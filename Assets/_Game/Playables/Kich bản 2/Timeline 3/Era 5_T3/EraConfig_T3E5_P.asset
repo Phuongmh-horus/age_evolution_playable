@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
+  m_Name: EraConfig_T3E5_P
+  m_EditorClassIdentifier: 
+  EraIndex: 1
+  EraName: ui_mainmenu_era1
+  BackgroundSprite: {fileID: 21300000, guid: 10b3c00d8ab4fa94cadfe56097e9ccaf, type: 3}
+  CashOnStartEra: 170
+  EnergyStartBonus: 0
+  StartEraRewards:
+  - RewardType: 6
+    ItemId: 0
+    Quantity: 10
+    StringItemId: 
+    Level: 0
+  ContentLoopAmount: 10
+  MapData: {fileID: 11400000, guid: fa2e025cd9508144e8ccfcceb3242e30, type: 2}
+  Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
+  Contents:
+  - {fileID: 11400000, guid: 9f8c4a1dc3329a34996d0c50bfd9b85c, type: 2}
+  TowerZoneContent: {fileID: 11400000, guid: 2ac176ab0e745834386c5d0094cf586d, type: 2}
+  CharacterList: {fileID: 11400000, guid: 77d74f1d4756e964abb944d95b27f189, type: 2}
+  HeroList: {fileID: 11400000, guid: 0dcff0d2c6303f64bb7723c8604e0d3c, type: 2}
+  Turntable: {fileID: 11400000, guid: 241fb023e4afb7741950418c537178b1, type: 2}
+  EvolutionConfig: {fileID: 11400000, guid: 2a7054a2f097b424b9d9e16edeeb3bd2, type: 2}
+  ExtraCardConfig: {fileID: 11400000, guid: b0b275bcb485e404f9380d68586924a0, type: 2}
+  BoostCardConfig: {fileID: 11400000, guid: f178099e74334c8429b24f3511197697, type: 2}
+  IncomeConfig: {fileID: 11400000, guid: 339551fe8b9cd484782807dc3628486a, type: 2}
+  CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: 5f37dd43c2a77a549ac5abcfaf2f7f8f, type: 2}
+  WeaponFactoryUpgradeConfig: {fileID: 11400000, guid: 7a4047efba72ca84d92e98cf049ebbfb, type: 2}
+  ItemConfig: {fileID: 11400000, guid: 4e95550999322b64d8f234a8516bf403, type: 2}
+  SpikeHpMultiplierConfig: {fileID: 11400000, guid: 3241e2969cec78c48b963e3bc3074f2e, type: 2}

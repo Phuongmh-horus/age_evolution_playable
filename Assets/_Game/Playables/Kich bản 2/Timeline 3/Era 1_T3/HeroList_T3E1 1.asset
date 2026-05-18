@@ -1,0 +1,311 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d8fdbdb6894befba7fb42b11761155, type: 3}
+  m_Name: HeroList_T3E1 1
+  m_EditorClassIdentifier: 
+  HeroUnlocked: 00000000
+  HeroList:
+  - ID: 0
+    CardData:
+      Prefab: {fileID: 0}
+      Material: {fileID: 2100000, guid: a72268771428bd146b4426b7105b0eef, type: 2}
+      Sprite: {fileID: 21300000, guid: a7439b402f8ca8a488c26d7741e629f4, type: 3}
+      Vfx: {fileID: -3536289938226660954, guid: d24ed965c60b89248b03afc633abde7c, type: 3}
+    HeroData:
+      Prefab: {fileID: 5187667039224062099, guid: 075592c44afba7e4391afd988b9bc992, type: 3}
+      WeaponPrefab: {fileID: -7669561559320879407, guid: 94bfee3367b12a74b84ad65803eace39, type: 3}
+    UpgradeInfoList:
+    - Level: 1
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 1
+      MilestoneEffect:
+        rid: -2
+    - Level: 2
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 2
+      MilestoneEffect:
+        rid: -2
+    - Level: 3
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 5
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 3
+      MilestoneEffect:
+        rid: -2
+    - Level: 4
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 10
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 4
+      MilestoneEffect:
+        rid: -2
+  - ID: 1
+    CardData:
+      Prefab: {fileID: 0}
+      Material: {fileID: 2100000, guid: 2fc861789bf335a43bf77805de5bc79e, type: 2}
+      Sprite: {fileID: 21300000, guid: cc740801d3981da449fe09cad5f93ec0, type: 3}
+      Vfx: {fileID: 2128532283567537225, guid: 9231302fa2eefed48bbe5f7951905525, type: 3}
+    HeroData:
+      Prefab: {fileID: 5187667039224062099, guid: 2b990fb7cf0982641bd860af5302888e, type: 3}
+      WeaponPrefab: {fileID: -4614076876958860460, guid: 8193ce8294669b8468a0758eea642385, type: 3}
+    UpgradeInfoList:
+    - Level: 1
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 1
+      MilestoneEffect:
+        rid: -2
+    - Level: 2
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 2
+      MilestoneEffect:
+        rid: -2
+    - Level: 3
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 5
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 3
+      MilestoneEffect:
+        rid: -2
+    - Level: 4
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 10
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 4
+      MilestoneEffect:
+        rid: -2
+  - ID: 2
+    CardData:
+      Prefab: {fileID: 0}
+      Material: {fileID: 2100000, guid: b55a8db0081ad824e97f5f383faa567f, type: 2}
+      Sprite: {fileID: 21300000, guid: 5928869cbaed2764cbab9908ce91c764, type: 3}
+      Vfx: {fileID: -8361893438896366291, guid: 69ed1c5dc4a54cb48bd2031e8f110188, type: 3}
+    HeroData:
+      Prefab: {fileID: 1192277504024627110, guid: e2341606ff70d594297302aaf2d77ea0, type: 3}
+      WeaponPrefab: {fileID: -4614076876958860460, guid: cabfd482feb34204ab57db74f21f609e, type: 3}
+    UpgradeInfoList:
+    - Level: 1
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 1
+      MilestoneEffect:
+        rid: -2
+    - Level: 2
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 2
+      MilestoneEffect:
+        rid: -2
+    - Level: 3
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 5
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 3
+      MilestoneEffect:
+        rid: -2
+    - Level: 4
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 10
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 4
+      MilestoneEffect:
+        rid: -2
+  - ID: 3
+    CardData:
+      Prefab: {fileID: 0}
+      Material: {fileID: 2100000, guid: d8b2d4a493eb329409be9aad3d18aef7, type: 2}
+      Sprite: {fileID: 21300000, guid: a631a4c48c68c0f4186bc63ec2b05b31, type: 3}
+      Vfx: {fileID: -1940349763439461512, guid: a4f0cdc26e4629642bf3199aa7b3ae85, type: 3}
+    HeroData:
+      Prefab: {fileID: 4510705963078071742, guid: 33992f2fec3dfe244bcbc1df8e654bf8, type: 3}
+      WeaponPrefab: {fileID: 2515058157200640138, guid: c8fe1b00a6fc920419cb5154657a61d2, type: 3}
+    UpgradeInfoList:
+    - Level: 1
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 1
+      MilestoneEffect:
+        rid: -2
+    - Level: 2
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 2
+      MilestoneEffect:
+        rid: -2
+    - Level: 3
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 5
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 3
+      MilestoneEffect:
+        rid: -2
+    - Level: 4
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 10
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 4
+      MilestoneEffect:
+        rid: -2
+  - ID: 4
+    CardData:
+      Prefab: {fileID: 0}
+      Material: {fileID: 2100000, guid: 157478d8022721d41a10374d6f7bf154, type: 2}
+      Sprite: {fileID: 21300000, guid: af2ed8aa86b0c314cb65f773ad3cd61d, type: 3}
+      Vfx: {fileID: 6078052110367783851, guid: 763b31df22929664c804f4591fc11d4f, type: 3}
+    HeroData:
+      Prefab: {fileID: 4510705963078071742, guid: 66b7bff189f851945a55e280852b42d4, type: 3}
+      WeaponPrefab: {fileID: 5040406254801163473, guid: 358b1eb3a9ab64346a07304aee62ccb0, type: 3}
+    UpgradeInfoList:
+    - Level: 1
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 1
+      MilestoneEffect:
+        rid: -2
+    - Level: 2
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 0
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 2
+      MilestoneEffect:
+        rid: -2
+    - Level: 3
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 5
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 3
+      MilestoneEffect:
+        rid: -2
+    - Level: 4
+      Price:
+        Cash: 0
+        Gem: 0
+        Ads: 0
+        EventId: 0
+        Trophy: 10
+        ChallengeToken: 0
+      StatOverride:
+        Damage: 4
+      MilestoneEffect:
+        rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
+  m_Name: EraConfig_T2E3_P
+  m_EditorClassIdentifier: 
+  EraIndex: 8
+  EraName: ui_mainmenu_era8
+  BackgroundSprite: {fileID: 21300000, guid: 3cf5ccb7254640d4c8154ee576241734, type: 3}
+  CashOnStartEra: 170
+  EnergyStartBonus: 0
+  StartEraRewards:
+  - RewardType: 6
+    ItemId: 0
+    Quantity: 10
+    StringItemId: 
+    Level: 0
+  ContentLoopAmount: 10
+  MapData: {fileID: 11400000, guid: 864f3545e59ea704789f7fe2105b90fd, type: 2}
+  Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
+  Contents:
+  - {fileID: 11400000, guid: 085752210fe2535419185ef97e810bc4, type: 2}
+  TowerZoneContent: {fileID: 11400000, guid: ee869804375ba7d4a94ab31bb4547a59, type: 2}
+  CharacterList: {fileID: 11400000, guid: 5fa5a84c6b7042d48b166a52593292dd, type: 2}
+  HeroList: {fileID: 11400000, guid: 4d48f09b55bcf88488669da6d1bbfbc9, type: 2}
+  Turntable: {fileID: 11400000, guid: 5232cd6ef07155b4785e56824c3e10c0, type: 2}
+  EvolutionConfig: {fileID: 11400000, guid: 9a00d7ba87855be4d954bb4eb6b823fa, type: 2}
+  ExtraCardConfig: {fileID: 11400000, guid: a13ec698c2e7f6b44ae8f6ca6d406de8, type: 2}
+  BoostCardConfig: {fileID: 11400000, guid: 15b532446728988438a0fe55cd99e991, type: 2}
+  IncomeConfig: {fileID: 11400000, guid: dd86bdf501fbde74a855bfde0bb005c3, type: 2}
+  CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: dabb57331b1715d49abf4fec5042ea1d, type: 2}
+  WeaponFactoryUpgradeConfig: {fileID: 11400000, guid: bb2a14a8e4654a347a586ec47a569f6f, type: 2}
+  ItemConfig: {fileID: 11400000, guid: fc6528ca09e8b994ab345635231b7641, type: 2}
+  SpikeHpMultiplierConfig: {fileID: 11400000, guid: 5bf830203a05fde48bd46d3e033f7c47, type: 2}

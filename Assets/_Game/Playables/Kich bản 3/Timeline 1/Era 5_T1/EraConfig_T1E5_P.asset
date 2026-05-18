@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
+  m_Name: EraConfig_T1E5_P
+  m_EditorClassIdentifier: 
+  EraIndex: 5
+  EraName: ui_mainmenu_era5
+  BackgroundSprite: {fileID: 21300000, guid: 989eb35cf26a390488de87ec54870fe6, type: 3}
+  CashOnStartEra: 170
+  EnergyStartBonus: 0
+  StartEraRewards:
+  - RewardType: 6
+    ItemId: 0
+    Quantity: 10
+    StringItemId: 
+    Level: 0
+  ContentLoopAmount: 10
+  MapData: {fileID: 11400000, guid: 0559e875fe67a9e4f99ec2752f837a29, type: 2}
+  Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
+  Contents:
+  - {fileID: 11400000, guid: c6cb741a595d5b246bb3938404872dc8, type: 2}
+  TowerZoneContent: {fileID: 11400000, guid: 4e519cb48d4789749aaf0b9fb6065624, type: 2}
+  CharacterList: {fileID: 11400000, guid: 39095e2c0ea642c429b33b9996c0469a, type: 2}
+  HeroList: {fileID: 11400000, guid: 1e738e60bbb2b53498490f20492c5030, type: 2}
+  Turntable: {fileID: 11400000, guid: 896443e1fa5f7d642a87edee15cbfb59, type: 2}
+  EvolutionConfig: {fileID: 11400000, guid: ee4029a9bea5a154a9eaa72b12aeeb3f, type: 2}
+  ExtraCardConfig: {fileID: 11400000, guid: c570d84b1da82aa48bf6e42c0a92a43a, type: 2}
+  BoostCardConfig: {fileID: 11400000, guid: d78db4cbf93ec504e88ab4978be742c8, type: 2}
+  IncomeConfig: {fileID: 11400000, guid: 24dd33b00d23d8b45acd4a026afa6159, type: 2}
+  CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: 7eb94052f7febcb4f9e580bd7bc062b3, type: 2}
+  WeaponFactoryUpgradeConfig: {fileID: 11400000, guid: feffb9fca3ae56b4cbb10e4d178b2027, type: 2}
+  ItemConfig: {fileID: 11400000, guid: c7012b30fd595b947b54f94fccede779, type: 2}
+  SpikeHpMultiplierConfig: {fileID: 11400000, guid: 73b905a5f2197db40b300173c9b4b42b, type: 2}

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d029688532964dd5b3f253cb528151f2, type: 3}
+  m_Name: Enemy_AttackVariable
+  m_EditorClassIdentifier: 
+  ThrowDistance: 18
+  AttackCooldown: 2
+  ThrowDuration: 1.2
+  ArcHeight: 2
+  OffsetY: 0.2
+  RotationSpeed: 6.2
+  AnimDelaySeconds: 0.3
+  WeaponReloadDelay: 1

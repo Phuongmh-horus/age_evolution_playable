@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f98322693e8b474aa6edc3a61740607, type: 3}
+  m_Name: CharacterList_T3E5_P
+  m_EditorClassIdentifier: 
+  CardPrefab: {fileID: 239414472927124989, guid: cad868139d6843d448219d936d0ac49b, type: 3}
+  Characters:
+  - CharacterLevel: 1
+    CharacterPrefab: {fileID: 4808247168321490554, guid: 10515618e33b4384da67beafcb7b4cff, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: acc4fa924d9b37246a72b0d7cfaf509d, type: 3}
+      Sprite: {fileID: 21300000, guid: bad9832fd483a0e4bbd4e4c6d817074a, type: 3}
+    WeaponPrefab: {fileID: -1391399885007432723, guid: 5fe10f18ac1ba474eb117693cb9961cc, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 5
+  - CharacterLevel: 2
+    CharacterPrefab: {fileID: 4808247168321490554, guid: 70b11f276445b7541865791960d8450e, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: f18b19c9089effc4b9db6a5b142d5a1a, type: 3}
+      Sprite: {fileID: 21300000, guid: faacdb1c32290b04598375eacd3d4606, type: 3}
+    WeaponPrefab: {fileID: 8105720114958637038, guid: 1f7e1da68ba5f9e4ca35f6906141360f, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 10
+  - CharacterLevel: 3
+    CharacterPrefab: {fileID: 4808247168321490554, guid: d34706ac50e6460479b5f5e1ec50dcdb, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: e39f3ed8b7d766045b9f308bdc52cb16, type: 3}
+      Sprite: {fileID: 21300000, guid: c8cff06982107ea4b91d56dcd90ddf8e, type: 3}
+    WeaponPrefab: {fileID: 343726934711090643, guid: 047cb6ceefd84484a970328f981cd1e8, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 15
+  - CharacterLevel: 4
+    CharacterPrefab: {fileID: 4808247168321490554, guid: a37f255d02f150341a0d7454126008ce, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: cd78ad492c3df4145a0fba0ca0eff7ec, type: 3}
+      Sprite: {fileID: 21300000, guid: cedf6077c8155df428adb5e897bd3b9b, type: 3}
+    WeaponPrefab: {fileID: -7492653476073423980, guid: d8aeb23ec271b7d419ad413e215733bb, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 30
+  - CharacterLevel: 5
+    CharacterPrefab: {fileID: 4808247168321490554, guid: 9eebe67348beb5742af5619137cca200, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: 1aee11ba60b5efa42a1d76cd1aa85d7c, type: 3}
+      Sprite: {fileID: 21300000, guid: 42e78b918f162c849a19c12d66507942, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: b93d385a6f630514aa160f97ff0e647d, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 40
+  - CharacterLevel: 6
+    CharacterPrefab: {fileID: 4808247168321490554, guid: b2ceecd5f73602548a440673c872279e, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: 1c9e6f326e9d56244ab1c24dde1edc98, type: 3}
+      Sprite: {fileID: 21300000, guid: 681fba964f4bafd4985a4f274d401dbb, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: 2c6b61fea1226e44ebde5a579a27105a, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 60
+  - CharacterLevel: 7
+    CharacterPrefab: {fileID: 4808247168321490554, guid: 8c5a732cfa79cb244a56b28ebad871db, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: dd958451ae952b8468536f7cf96dfd21, type: 3}
+      Sprite: {fileID: 21300000, guid: c858bb4a3d4df0445a25cc8500f0c71a, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: d771d6f60395a1b45a0d438d4ff9e17b, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 80
+  - CharacterLevel: 8
+    CharacterPrefab: {fileID: 4808247168321490554, guid: e1e6bbed543fcbf41a7e4577e9aed5eb, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: 28a036aabe4b7ee4283f4cf1479d896d, type: 3}
+      Sprite: {fileID: 21300000, guid: 3280e807ddbfbaf42a9382ec5052aeaa, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: 99de8627f5fb5844ebcd8bef8e3a9302, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 105
+  - CharacterLevel: 9
+    CharacterPrefab: {fileID: 4808247168321490554, guid: 60bb2ea6067257b48830df2589f36486, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: 1e25f09829c8ef1409595cf594a20420, type: 3}
+      Sprite: {fileID: 21300000, guid: e22caf59a5dc6c9439929f54fcaf595f, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: 7149a26ea6ae1814ca426d8ca3170fa6, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 135
+  - CharacterLevel: 10
+    CharacterPrefab: {fileID: 4808247168321490554, guid: 8db46646ec2d5a342a7e2653d5f4cf80, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: 8c263b7eff53e7247992b3cb48d60f6b, type: 3}
+      Sprite: {fileID: 21300000, guid: 6b7319cea06c20146b4ee537cdd1ad95, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: 0199aa7cea18ceb47a03f67364cd86ea, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 175
+  - CharacterLevel: 11
+    CharacterPrefab: {fileID: 4808247168321490554, guid: d3183c7b81f90184c812757a618beb46, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: e6f0dfed956e9294b8f5e74130e3ab75, type: 3}
+      Sprite: {fileID: 21300000, guid: dd218bbcdde893f4e856d3956d82ab84, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: 4e3264d9e22a4a04795adcfbadb53850, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 220
+  - CharacterLevel: 12
+    CharacterPrefab: {fileID: 4808247168321490554, guid: a247d001ce96d384684453c8f7276a90, type: 3}
+    CardData:
+      BackgroundSprite: {fileID: 21300000, guid: 6b7c9c4aa9e9f1247b4fc382e497775e, type: 3}
+      Sprite: {fileID: 21300000, guid: cdd15fcdf68f1814d815237fbbd36412, type: 3}
+    WeaponPrefab: {fileID: -8788055414706267750, guid: bb64c71379235e44c9c4fcfb56e42b64, type: 3}
+    ShieldPrefab: {fileID: 0}
+    Damage: 275

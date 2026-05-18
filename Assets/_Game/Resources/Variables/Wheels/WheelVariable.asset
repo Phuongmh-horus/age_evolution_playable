@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 039e6f80550c476fbb15e65face92e95, type: 3}
+  m_Name: WheelVariable
+  m_EditorClassIdentifier: 
+  ForwardSpeed: 5.8
+  XLimit: 4.5
+  StrafeMultiplier: 0.2
+  MoveSmoothness: 0.17
+  TurnDuration: 0.5
+  TotalSlots: 8
+  Radius: 1.55
+  LayerHeight: 0.5
+  UnitHorizontalSpace: 0.8
+  ArrowAngleOffset: 0
+  KnockbackDistance: 3
+  KnockbackDuration: 0.8
+  ArrowKickForce: 45
+  ArrowMaxAngle: 70
+  KickDuration: 0.05
+  ReturnDuration: 0.25
+  DropHeight: 6
+  DropDuration: 0.15
+  DelayPerCard: 0.08
+  DropEase: 5
+  SlowMotionSpeedMultiplier: 0.3
+  TargetGroundY: -0.8
+  RemoveThrowDistance: 3
+  RemoveJumpHeight: 4
+  RemoveDuration: 0.5
+  BounceHeight: 0.5
+  BounceDuration: 0.3
+  BounceSlideDist: 0.5
+  DefaultForwardSpeed: 5.8
+  DefaultXLimit: 4.5
+  DefaultStrafeMultiplier: 0.2
+  DefaultMoveSmoothness: 0.17
+  DefaultTurnDuration: 1.2
+  DefaultTotalSlots: 8
+  DefaultRadius: 1.55
+  DefaultLayerHeight: 0.5
+  DefaultUnitHorizontalSpace: 0.8
+  DefaultArrowAngleOffset: 0
+  DefaultKnockbackDistance: 3
+  DefaultKnockbackDuration: 0.8

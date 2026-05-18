@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
+  m_Name: EraConfig_T1E4_P
+  m_EditorClassIdentifier: 
+  EraIndex: 4
+  EraName: ui_mainmenu_era4
+  BackgroundSprite: {fileID: 21300000, guid: c592de16ec5b33a4f818945fc37e0c91, type: 3}
+  CashOnStartEra: 170
+  EnergyStartBonus: 0
+  StartEraRewards:
+  - RewardType: 6
+    ItemId: 0
+    Quantity: 10
+    StringItemId: 
+    Level: 0
+  ContentLoopAmount: 10
+  MapData: {fileID: 11400000, guid: 61eccb2cb4ca018448066077a8d8ae31, type: 2}
+  Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
+  Contents:
+  - {fileID: 11400000, guid: 46f516a1a09fb204b8e40f8d3978ca5a, type: 2}
+  TowerZoneContent: {fileID: 11400000, guid: f0c4b193145b13242aa96713a6fd9c30, type: 2}
+  CharacterList: {fileID: 11400000, guid: c149e5caef4c6564daf86088f08b271d, type: 2}
+  HeroList: {fileID: 11400000, guid: b35a758a505a20343891366debfe986d, type: 2}
+  Turntable: {fileID: 11400000, guid: ea3c1dcf8ec6761488e574e76d4c1f11, type: 2}
+  EvolutionConfig: {fileID: 11400000, guid: 4f0b42d20fa0b65428471ebafd4e6e54, type: 2}
+  ExtraCardConfig: {fileID: 11400000, guid: 44b41676e5452c244ad187314cee62aa, type: 2}
+  BoostCardConfig: {fileID: 11400000, guid: 1924fd98463c5d6489dbfee6c4112f61, type: 2}
+  IncomeConfig: {fileID: 11400000, guid: 46754676da637214495b274635428e86, type: 2}
+  CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: e22bb617b8d33dc4ab681a240b941c4d, type: 2}
+  WeaponFactoryUpgradeConfig: {fileID: 11400000, guid: 591bf4fa5c649ff4ea30f70872ebfede, type: 2}
+  ItemConfig: {fileID: 11400000, guid: 2f55d45af37246b4eb1adc632dd2ecf6, type: 2}
+  SpikeHpMultiplierConfig: {fileID: 11400000, guid: 2c3d7f6a342cd2a4fadc118bd71ee403, type: 2}

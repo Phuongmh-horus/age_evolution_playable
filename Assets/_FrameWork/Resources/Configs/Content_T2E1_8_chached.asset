@@ -1,0 +1,1342 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2079c0368c943943aafbc09708e34e6, type: 3}
+  m_Name: Content_T2E1_8_chached
+  m_EditorClassIdentifier: 
+  ContentId: 0
+  ContentName: 
+  Description: 
+  SpawnableObjects:
+  - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
+    PositionOnMap: 65
+    PositionOffset: {x: 3.5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
+    PositionOnMap: 90
+    PositionOffset: {x: -1.5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 7796210842903511821
+    - rid: 7796210842903511822
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7711111111111111111, guid: 1a486d2fba9034a4cb5c8b381e793330, type: 3}
+    PositionOnMap: 115
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 7796210683161870571
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
+    PositionOnMap: 160
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
+    PositionOnMap: 180
+    PositionOffset: {x: -1.5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
+    PositionOnMap: 210
+    PositionOffset: {x: 1, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 7796210842903511823
+    - rid: 7796210842903511825
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7711111111111111111, guid: 1a486d2fba9034a4cb5c8b381e793330, type: 3}
+    PositionOnMap: 240
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 7796210842903511823
+    - rid: 7796210683161870574
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 5703035666575252842, guid: 6a57fcb39413d7c4e9fe64962e2f1cd9, type: 3}
+    PositionOnMap: 269.5
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 180, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 7796210683161870575
+    - rid: 7796210683161870576
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7662387699070818353, guid: 8d0e6cbf32e2c73438a311824035ee6e, type: 3}
+    PositionOnMap: 272.5
+    PositionOffset: {x: -3.5, y: 0, z: 0}
+    Rotation: {x: 0, y: 180, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 7796210683161870577
+    - rid: 7796210683161870578
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7662387699070818353, guid: 8d0e6cbf32e2c73438a311824035ee6e, type: 3}
+    PositionOnMap: 272.5
+    PositionOffset: {x: 3.5, y: 0, z: 0}
+    Rotation: {x: 0, y: 180, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 3347983312066970618
+    - rid: 1049214744185012387
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
+    PositionOnMap: 280
+    PositionOffset: {x: 3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
+    PositionOnMap: 304
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 7796210683161870579
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 5291765111413347149, guid: 35bf57ff68288e345bac122013e6377a, type: 3}
+    PositionOnMap: 337.8
+    PositionOffset: {x: -3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012374
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 5291765111413347149, guid: 35bf57ff68288e345bac122013e6377a, type: 3}
+    PositionOnMap: 337.8
+    PositionOffset: {x: 2, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012380
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
+    PositionOnMap: 325
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 491275032316800439, guid: 7c5bb84f79883894ca000d658deb8aa8, type: 3}
+    PositionOnMap: 350
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 372.57
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012404
+    - rid: 1049214744185012405
+    - rid: 1049214744185012406
+    - rid: 1049214744185012407
+    - rid: 1049214744185012408
+    - rid: 1049214744185012409
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 372.57
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012392
+    - rid: 1049214744185012393
+    - rid: 1049214744185012394
+    - rid: 1049214744185012395
+    - rid: 1049214744185012396
+    - rid: 1049214744185012397
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 372.57
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012398
+    - rid: 1049214744185012399
+    - rid: 1049214744185012400
+    - rid: 1049214744185012401
+    - rid: 1049214744185012402
+    - rid: 1049214744185012403
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 384.8
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012410
+    - rid: 1049214744185012411
+    - rid: 1049214744185012412
+    - rid: 1049214744185012413
+    - rid: 1049214744185012414
+    - rid: 1049214744185012415
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 384.8
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012416
+    - rid: 1049214744185012417
+    - rid: 1049214744185012418
+    - rid: 1049214744185012419
+    - rid: 1049214744185012420
+    - rid: 1049214744185012421
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 384.8
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012422
+    - rid: 1049214744185012423
+    - rid: 1049214744185012424
+    - rid: 1049214744185012425
+    - rid: 1049214744185012426
+    - rid: 1049214744185012427
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 396.96
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012428
+    - rid: 1049214744185012429
+    - rid: 1049214744185012430
+    - rid: 1049214744185012431
+    - rid: 1049214744185012432
+    - rid: 1049214744185012433
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 396.96
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012434
+    - rid: 1049214744185012435
+    - rid: 1049214744185012436
+    - rid: 1049214744185012437
+    - rid: 1049214744185012438
+    - rid: 1049214744185012439
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 396.96
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012440
+    - rid: 1049214744185012441
+    - rid: 1049214744185012442
+    - rid: 1049214744185012443
+    - rid: 1049214744185012444
+    - rid: 1049214744185012445
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 409.22
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012458
+    - rid: 1049214744185012459
+    - rid: 1049214744185012460
+    - rid: 1049214744185012461
+    - rid: 1049214744185012462
+    - rid: 1049214744185012463
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 409.22
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012446
+    - rid: 1049214744185012447
+    - rid: 1049214744185012448
+    - rid: 1049214744185012449
+    - rid: 1049214744185012450
+    - rid: 1049214744185012451
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 409.22
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012452
+    - rid: 1049214744185012453
+    - rid: 1049214744185012454
+    - rid: 1049214744185012455
+    - rid: 1049214744185012456
+    - rid: 1049214744185012457
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 421.55
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012476
+    - rid: 1049214744185012477
+    - rid: 1049214744185012478
+    - rid: 1049214744185012479
+    - rid: 1049214744185012480
+    - rid: 1049214744185012481
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 421.55
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012470
+    - rid: 1049214744185012471
+    - rid: 1049214744185012472
+    - rid: 1049214744185012473
+    - rid: 1049214744185012474
+    - rid: 1049214744185012475
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 421.55
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012464
+    - rid: 1049214744185012465
+    - rid: 1049214744185012466
+    - rid: 1049214744185012467
+    - rid: 1049214744185012468
+    - rid: 1049214744185012469
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 433.75
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012482
+    - rid: 1049214744185012483
+    - rid: 1049214744185012484
+    - rid: 1049214744185012485
+    - rid: 1049214744185012486
+    - rid: 1049214744185012487
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 433.75
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012488
+    - rid: 1049214744185012489
+    - rid: 1049214744185012490
+    - rid: 1049214744185012491
+    - rid: 1049214744185012492
+    - rid: 1049214744185012493
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 433.75
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012494
+    - rid: 1049214744185012495
+    - rid: 1049214744185012496
+    - rid: 1049214744185012497
+    - rid: 1049214744185012498
+    - rid: 1049214744185012499
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 445.95
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012512
+    - rid: 1049214744185012513
+    - rid: 1049214744185012514
+    - rid: 1049214744185012515
+    - rid: 1049214744185012516
+    - rid: 1049214744185012517
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 445.95
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012500
+    - rid: 1049214744185012501
+    - rid: 1049214744185012502
+    - rid: 1049214744185012503
+    - rid: 1049214744185012504
+    - rid: 1049214744185012505
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 445.95
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012506
+    - rid: 1049214744185012507
+    - rid: 1049214744185012508
+    - rid: 1049214744185012509
+    - rid: 1049214744185012510
+    - rid: 1049214744185012511
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 458.13
+    PositionOffset: {x: 5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012524
+    - rid: 1049214744185012525
+    - rid: 1049214744185012526
+    - rid: 1049214744185012527
+    - rid: 1049214744185012528
+    - rid: 1049214744185012529
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 458.13
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012530
+    - rid: 1049214744185012531
+    - rid: 1049214744185012532
+    - rid: 1049214744185012533
+    - rid: 1049214744185012534
+    - rid: 1049214744185012535
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 4097e3fc743da924dbb0b3f6155147cb, type: 3}
+    PositionOnMap: 458.13
+    PositionOffset: {x: -5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides:
+    - rid: 1049214744185012518
+    - rid: 1049214744185012519
+    - rid: 1049214744185012520
+    - rid: 1049214744185012521
+    - rid: 1049214744185012522
+    - rid: 1049214744185012523
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 5541669518165071482, guid: fc29c1413a53f114c8d72068c39ef0c7, type: 3}
+    PositionOnMap: 483.67
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1049214744185012374
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 10
+    - rid: 1049214744185012380
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 10
+    - rid: 1049214744185012387
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012392
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 50
+    - rid: 1049214744185012393
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012394
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012395
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 22
+    - rid: 1049214744185012396
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012397
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012398
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 50
+    - rid: 1049214744185012399
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012400
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012401
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 22
+    - rid: 1049214744185012402
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012403
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012404
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 50
+    - rid: 1049214744185012405
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012406
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012407
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 22
+    - rid: 1049214744185012408
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012409
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012410
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 110
+    - rid: 1049214744185012411
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012412
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012413
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 33
+    - rid: 1049214744185012414
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012415
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012416
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 110
+    - rid: 1049214744185012417
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012418
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012419
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 33
+    - rid: 1049214744185012420
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012421
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012422
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 110
+    - rid: 1049214744185012423
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012424
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012425
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 33
+    - rid: 1049214744185012426
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012427
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012428
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 210
+    - rid: 1049214744185012429
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012430
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012431
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 44
+    - rid: 1049214744185012432
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012433
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012434
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 210
+    - rid: 1049214744185012435
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012436
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012437
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 44
+    - rid: 1049214744185012438
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012439
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012440
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 210
+    - rid: 1049214744185012441
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.11372549, g: 0.89411765, b: 0.16470589, a: 1}
+    - rid: 1049214744185012442
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012443
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 44
+    - rid: 1049214744185012444
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012445
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012446
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 310
+    - rid: 1049214744185012447
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012448
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012449
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 55
+    - rid: 1049214744185012450
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012451
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012452
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 310
+    - rid: 1049214744185012453
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012454
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012455
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 55
+    - rid: 1049214744185012456
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012457
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012458
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 310
+    - rid: 1049214744185012459
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012460
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012461
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 55
+    - rid: 1049214744185012462
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012463
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012464
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 500
+    - rid: 1049214744185012465
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012466
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012467
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 66
+    - rid: 1049214744185012468
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012469
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012470
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 500
+    - rid: 1049214744185012471
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012472
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012473
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 66
+    - rid: 1049214744185012474
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012475
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012476
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 500
+    - rid: 1049214744185012477
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012478
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012479
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 66
+    - rid: 1049214744185012480
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012481
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012482
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 700
+    - rid: 1049214744185012483
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012484
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012485
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 77
+    - rid: 1049214744185012486
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012487
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012488
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 700
+    - rid: 1049214744185012489
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012490
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012491
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 77
+    - rid: 1049214744185012492
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012493
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012494
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 700
+    - rid: 1049214744185012495
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012496
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012497
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 77
+    - rid: 1049214744185012498
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012499
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012500
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 1000
+    - rid: 1049214744185012501
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012502
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012503
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 88
+    - rid: 1049214744185012504
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012505
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012506
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 1000
+    - rid: 1049214744185012507
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012508
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012509
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 88
+    - rid: 1049214744185012510
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012511
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012512
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 1000
+    - rid: 1049214744185012513
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
+    - rid: 1049214744185012514
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012515
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 88
+    - rid: 1049214744185012516
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012517
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012518
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 1400
+    - rid: 1049214744185012519
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.9411765, g: 0.011764706, b: 0.84705883, a: 1}
+    - rid: 1049214744185012520
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012521
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 99
+    - rid: 1049214744185012522
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012523
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012524
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 1400
+    - rid: 1049214744185012525
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.9411765, g: 0.011764706, b: 0.84705883, a: 1}
+    - rid: 1049214744185012526
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012527
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 99
+    - rid: 1049214744185012528
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012529
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012530
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 1
+        maxHp: 1400
+    - rid: 1049214744185012531
+      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideColor: 1
+        Color: {r: 0.9411765, g: 0.011764706, b: 0.84705883, a: 1}
+    - rid: 1049214744185012532
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 1
+        CurrencyValue: {x: 25, y: 25}
+    - rid: 1049214744185012533
+      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 1, y: 1}
+        ID: 99
+    - rid: 1049214744185012534
+      type: {class: DropTrophyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 1049214744185012535
+      type: {class: DropBPKeyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        CurrencyValue: {x: 1, y: 1}
+        CanDrop: 1
+    - rid: 3347983312066970618
+      type: {class: CurrencyDropItemOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideAmount: 0
+        Amount: 10
+    - rid: 7796210683161870571
+      type: {class: FireGateOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideValue: 0
+        Value: -30
+        Armor: 0
+        LeftOffset: 0
+        RightOffset: 0
+    - rid: 7796210683161870574
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 15, y: 15}
+    - rid: 7796210683161870575
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 0
+        maxHp: 10
+    - rid: 7796210683161870576
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 15, y: 15}
+    - rid: 7796210683161870577
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 0
+        maxHp: 10
+    - rid: 7796210683161870578
+      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideCurrencyValue: 0
+        CurrencyValue: {x: 15, y: 15}
+    - rid: 7796210683161870579
+      type: {class: FireGateOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideValue: 0
+        Value: 10
+        Armor: 0
+        LeftOffset: 0
+        RightOffset: 0
+    - rid: 7796210842903511821
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 0
+        maxHp: 15
+    - rid: 7796210842903511822
+      type: {class: DiamondSpikeOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideValue: 0
+        Armor: 0
+        LeftOffset: 0
+        RightOffset: 0
+        GemGainPerPierce: 1
+    - rid: 7796210842903511823
+      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideMaxHp: 0
+        maxHp: 15
+    - rid: 7796210842903511825
+      type: {class: DiamondSpikeOverride, ns: , asm: Assembly-CSharp}
+      data:
+        overrideValue: 0
+        Armor: 0
+        LeftOffset: 0
+        RightOffset: 0
+        GemGainPerPierce: 1

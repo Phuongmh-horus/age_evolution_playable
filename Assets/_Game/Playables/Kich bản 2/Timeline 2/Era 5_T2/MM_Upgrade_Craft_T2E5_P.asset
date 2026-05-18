@@ -1,0 +1,744 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fa9199a50fff44796c00a473e61ac4, type: 3}
+  m_Name: MM_Upgrade_Craft_T2E5_P
+  m_EditorClassIdentifier: 
+  LevelPrices:
+  - Level: 1
+    Prices:
+    - Cash: 30
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 32
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 34
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 41
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 46
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 48
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 51
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 53
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 2
+    Prices:
+    - Cash: 58
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 61
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 66
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 69
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 74
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 77
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 82
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 85
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 90
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 3
+    Prices:
+    - Cash: 94
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 100
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 105
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 110
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 115
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 121
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 125
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 131
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 136
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 141
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 146
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 4
+    Prices:
+    - Cash: 153
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 159
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 166
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 171
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 178
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 184
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 191
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 197
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 204
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 209
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 5
+    Prices:
+    - Cash: 218
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 227
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 236
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 244
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 253
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 261
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 270
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 278
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 288
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 296
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 6
+    Prices:
+    - Cash: 306
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 315
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 325
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 335
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 345
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 354
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 365
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 374
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 384
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 393
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 7
+    Prices:
+    - Cash: 404
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 413
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 423
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 432
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 443
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 452
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 462
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 472
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 482
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 491
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 8
+    Prices:
+    - Cash: 503
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 513
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 524
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 535
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 546
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 557
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 568
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 578
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 590
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 600
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 9
+    Prices:
+    - Cash: 612
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 622
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 634
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 644
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 656
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 666
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 677
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 688
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 699
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 710
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  - Level: 10
+    Prices:
+    - Cash: 721
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 733
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 743
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 754
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 765
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 776
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 787
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 798
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 808
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 820
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 830
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 842
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 852
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 864
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 874
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 886
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 896
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 907
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 918
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 929
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 940
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 951
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 961
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 973
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 983
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 995
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 1005
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 1017
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 1027
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+    - Cash: 1038
+      Gem: 0
+      Ads: 0
+      EventId: 0
+      Trophy: 0
+      ChallengeToken: 0
+  _maxCardsTableCache: 

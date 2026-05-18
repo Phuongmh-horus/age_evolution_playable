@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
+  m_Name: EraConfig_T3E2_P
+  m_EditorClassIdentifier: 
+  EraIndex: 12
+  EraName: ui_mainmenu_era12
+  BackgroundSprite: {fileID: 21300000, guid: 459a34fff195eb74dba5a03fd4d563ff, type: 3}
+  CashOnStartEra: 170
+  EnergyStartBonus: 0
+  StartEraRewards:
+  - RewardType: 6
+    ItemId: 0
+    Quantity: 10
+    StringItemId: 
+    Level: 0
+  ContentLoopAmount: 10
+  MapData: {fileID: 11400000, guid: ea04acf2c1609734d9487a8d8bf3a60b, type: 2}
+  Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
+  Contents:
+  - {fileID: 11400000, guid: 7c747770888e1a34b9708f4351ee4e19, type: 2}
+  TowerZoneContent: {fileID: 11400000, guid: 62585983f39b4c347b2d59c6c8b894a3, type: 2}
+  CharacterList: {fileID: 11400000, guid: ed3c58355317d824c9af3b98fe7c349c, type: 2}
+  HeroList: {fileID: 11400000, guid: 0c93c82471179084fa72d7147d6f086b, type: 2}
+  Turntable: {fileID: 11400000, guid: 66e1ec0138b16474bb213e09afa2d88b, type: 2}
+  EvolutionConfig: {fileID: 11400000, guid: 1f62b6ee6a9f9534a9c5e433ceef0f99, type: 2}
+  ExtraCardConfig: {fileID: 11400000, guid: 13488bb47b9f0ce4fad1e8ce1fdc0e48, type: 2}
+  BoostCardConfig: {fileID: 11400000, guid: 195441cd22626394fb19dbf0af55cc9e, type: 2}
+  IncomeConfig: {fileID: 11400000, guid: 56a35c469629e4e429978ff84762dd54, type: 2}
+  CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: 2a8481fc2ecac7345b9140d451b85e46, type: 2}
+  WeaponFactoryUpgradeConfig: {fileID: 11400000, guid: 5909e79767ed0b049bb251c0cc08b949, type: 2}
+  ItemConfig: {fileID: 11400000, guid: acd33d32c3a4ac64383fb28ff01782a9, type: 2}
+  SpikeHpMultiplierConfig: {fileID: 11400000, guid: 105d55aa9d7adc84ea6133b484feaeaf, type: 2}

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
+  m_Name: EraConfig_T3E2_P
+  m_EditorClassIdentifier: 
+  EraIndex: 12
+  EraName: ui_mainmenu_era12
+  BackgroundSprite: {fileID: 21300000, guid: 459a34fff195eb74dba5a03fd4d563ff, type: 3}
+  CashOnStartEra: 170
+  EnergyStartBonus: 0
+  StartEraRewards:
+  - RewardType: 6
+    ItemId: 0
+    Quantity: 10
+    StringItemId: 
+    Level: 0
+  ContentLoopAmount: 10
+  MapData: {fileID: 11400000, guid: ecf3c4263a4963b42b2c73fc6001aa9c, type: 2}
+  Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
+  Contents:
+  - {fileID: 11400000, guid: 0335c14186ffedf4a89bf9d666d93dad, type: 2}
+  TowerZoneContent: {fileID: 11400000, guid: 3e9a46fb712ac634a82b6f840883459c, type: 2}
+  CharacterList: {fileID: 11400000, guid: f3100c28d523a40468c4b96f9dcfcd69, type: 2}
+  HeroList: {fileID: 11400000, guid: 4ae33421d1fa70246a7a362339d9a319, type: 2}
+  Turntable: {fileID: 11400000, guid: f31fa43ac9421ed4982d99610be932f2, type: 2}
+  EvolutionConfig: {fileID: 11400000, guid: 33faffb1b21656f4887e93699c3b7d16, type: 2}
+  ExtraCardConfig: {fileID: 11400000, guid: 7274696d2b8ee4f4c9ae72d755cccab0, type: 2}
+  BoostCardConfig: {fileID: 11400000, guid: 2d5e26424d56ab043ad75f7476ed6257, type: 2}
+  IncomeConfig: {fileID: 11400000, guid: c8c70284c98ed3e4ca4062a3c25ef8c4, type: 2}
+  CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: 11de19574b632094794058d4580e9460, type: 2}
+  WeaponFactoryUpgradeConfig: {fileID: 11400000, guid: c38b928c92e9ca64d93c17dfe7031a94, type: 2}
+  ItemConfig: {fileID: 11400000, guid: 18a43efac2b5e694a89f2fcd3f4ea557, type: 2}
+  SpikeHpMultiplierConfig: {fileID: 11400000, guid: 57982a28e1fad1f4d8d1bbd5b7ff80c0, type: 2}
