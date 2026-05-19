@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using GamePlay.Data;
 
 namespace GamePlay.Items
 {
@@ -9,7 +10,9 @@ namespace GamePlay.Items
         [SerializeField] private MeshRenderer renderBackground;
         [SerializeField] private Slider slider;
         [SerializeField] private Image icon;
-        [SerializeField] private SpriteListData spriteListData;
+        [SerializeField] private Image iconBackground;
+        [SerializeField] private SpriteCardTypeData spriteCardTypeData;
+        [SerializeField] private StatsUpgradeIcon statsUpgradeIcon;
         [SerializeField] private Color activeColor = Color.yellow;
 
         private StatModifierData _statData;
@@ -68,6 +71,10 @@ namespace GamePlay.Items
                 Type = elementData.Type,
                 Value = elementData.Value
             };
+
+            m_levelCard = data.StartLevel;
+            if (spriteCardTypeData.TryGetSprite(m_levelCard, out var spriteBackground))
+                iconBackground.sprite = spriteBackground.Unknown;
         }
 
         public void UpdateProgress(int remainingGold)
@@ -78,9 +85,26 @@ namespace GamePlay.Items
 
         public void UpdateLevelCard(int level)
         {
+            if (m_levelCard >= level) return;
             m_levelCard = level;
-            if (icon != null && spriteListData != null && spriteListData.sprites != null && level < spriteListData.sprites.Count)
-                icon.sprite = spriteListData.sprites[level];
+            if (icon != null)
+            {
+                icon.enabled = level >= 1;
+                if (level >= 1 && elementData != null && statsUpgradeIcon != null)
+                {
+                    var sprite = statsUpgradeIcon.GetIcon(elementData.Type);
+                    if (sprite != null)
+                        icon.sprite = sprite;
+                    else icon.enabled = false;
+                }
+            }
+
+            if (level <= 1 && iconBackground != null)
+            {
+                if (spriteCardTypeData.TryGetSprite(level, out var spriteBackground))
+                    iconBackground.sprite = spriteBackground.Normal;
+                else iconBackground.enabled = false;
+            }
         }
     }
 }

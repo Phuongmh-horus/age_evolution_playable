@@ -259,9 +259,9 @@ namespace GamePlay.Items
 
                 if (cycleGoldSpent >= targetGoldPerCycle)
                 {
+                    levelIndex++;
                     element.UpdateLevelCard(levelIndex);
                     element.UpdateProgress(0);
-                    levelIndex++;
                 }
             }
         }

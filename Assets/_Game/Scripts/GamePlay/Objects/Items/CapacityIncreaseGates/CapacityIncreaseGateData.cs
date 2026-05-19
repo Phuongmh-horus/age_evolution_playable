@@ -10,6 +10,7 @@ namespace GamePlay.Items
         public StatType Type;
         public int Value;
         public int ValueUpgrade;
+        public int StartLevel;
         public int Cost;
         public int UpgradeRequire;
     }
