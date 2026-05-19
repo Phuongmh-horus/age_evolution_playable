@@ -12,15 +12,15 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - AMBIENT
   - DIFFUSE
   - FOG
-  - LUNA_OUTPUT_FIX
   - _LIGHTMAPUV_UV1
   m_InvalidKeywords:
+  - AMBIENT
   - ANIME_SOFT
   - BASE_CONTRAST
   - BASE_SATURATION
+  - LUNA_OUTPUT_FIX
   - MATCAP_PERSPECTIVE
   - OUTLINE_PASS_DISABLED
   - _DETAILBLEND_MULTIPLY
@@ -168,7 +168,7 @@ Material:
     - _BumpScale: 1
     - _CameraFadeEnd: 0
     - _CameraFadeStart: 0
-    - _Contrast: 0.9
+    - _Contrast: 0.85
     - _Cull: 2
     - _Cutoff: 0.5
     - _Cutout: 0
@@ -268,7 +268,7 @@ Material:
     - _RimContrast: 5
     - _RimInverse: 0
     - _SampleGI: 0
-    - _Saturation: 0.93
+    - _Saturation: 0.9
     - _ShadowOverlayAnimation: 0
     - _ShadowOverlayBrightness: 1
     - _ShadowOverlaySpeedU: 0.1
