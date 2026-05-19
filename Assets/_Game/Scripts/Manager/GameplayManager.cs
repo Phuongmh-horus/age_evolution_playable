@@ -209,6 +209,11 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         CombatSystem.Instance?.ManualUpdate();
     }
 
+    public void RunUpgradeEffect()
+    {
+        ActiveArmy.PlayEffect(EffectType.Land, ActiveArmy.transform);
+    }
+
     // Stub removed to allow generic ChangeStatModifierData to handle EvolutionPoint logic.
 
     #region Load Playable Level
@@ -786,13 +791,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             case StatType.Character:
                 if (statModifierData is CapacityIncreaseGateData gateData)
                 {
-                    if (gateData.RequestDataList != null && gateData.RequestDataList.Count > 0)
+                    if (gateData.ElementDataList != null && gateData.ElementDataList.Count > 0)
                     {
-                        for (int i = 0; i < gateData.RequestDataList.Count; i++)
-                        {
-                            var req = gateData.RequestDataList[i];
-                        }
-                        AddCardsToPlayer(gateData.RequestDataList, CardSpawnEffectType.Drop);
+                        AddCardsToPlayer(gateData.ElementDataList, CardSpawnEffectType.Drop);
                     }
                     else
                     {
@@ -846,6 +847,24 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             ActiveArmy?.AddCards(cards, effect);
         else
             Turnable?.AddCards(cards, effect);
+    }
+
+    private void AddCardsToPlayer(List<IncreaseElementData> ElementDataList, CardSpawnEffectType effect)
+    {
+        if (ElementDataList == null || ElementDataList.Count == 0) return;
+
+        var cardRequests = new List<CardSpawnRequestData>(ElementDataList.Count);
+        for (int i = 0; i < ElementDataList.Count; i++)
+        {
+            var data = ElementDataList[i];
+            cardRequests.Add(new CardSpawnRequestData
+            {
+                Amount = data.Value,
+                Level = 1,
+                CardType = CardType.Character
+            });
+        }
+        AddCardsToPlayer(cardRequests, effect);
     }
 
     private void EnsureWeaponCraftStarterItem()

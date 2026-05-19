@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5793518464968641885}
+  - component: {fileID: 14779208455542377}
   m_Layer: 5
   m_Name: Cell(Clone)_3
   m_TagString: Untagged
@@ -42,6 +43,26 @@ RectTransform:
   m_AnchoredPosition: {x: 1347, y: -380}
   m_SizeDelta: {x: 200, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &14779208455542377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11865341179575584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c1f9fc55e04c84aa3b58d48c225452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementData:
+    Type: 0
+    Value: 0
+    Cost: 0
+    UpgradeRequire: 0
+  renderBackground: {fileID: 0}
+  slider: {fileID: 0}
+  activeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &323875295472555261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2246,6 +2267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3352356564028084825}
+  - component: {fileID: 8879793150020282371}
   m_Layer: 5
   m_Name: Cell(Clone)_1
   m_TagString: Untagged
@@ -2279,6 +2301,26 @@ RectTransform:
   m_AnchoredPosition: {x: 222, y: -380}
   m_SizeDelta: {x: 200, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8879793150020282371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4020693121125092720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c1f9fc55e04c84aa3b58d48c225452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementData:
+    Type: 0
+    Value: 0
+    Cost: 0
+    UpgradeRequire: 0
+  renderBackground: {fileID: 0}
+  slider: {fileID: 0}
+  activeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &4135075306097794823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2448,7 +2490,7 @@ MonoBehaviour:
   bottomColor:
     serializedVersion: 2
     rgba: 4278190080
-  _topColor: {r: 0, g: 1, b: 1, a: 0}
+  _topColor: {r: 0.09416164, g: 0.8679245, b: 0.8679245, a: 0}
   _bottomColor: {r: 0, g: 0.73698807, b: 1, a: 1}
 --- !u!1 &4173049305137609814
 GameObject:
@@ -3075,15 +3117,31 @@ MonoBehaviour:
     Type: 3
     Value: 0
     Armor: 0
-    RequestDataList: []
+    ElementDataList:
+    - Type: 1
+      Value: 0
+      Cost: 20
+      UpgradeRequire: 20
+    - Type: 2
+      Value: 0
+      Cost: 15
+      UpgradeRequire: 15
+    - Type: 3
+      Value: 2
+      Cost: 30
+      UpgradeRequire: 30
   slots:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  speed: -75
-  waitForPurchaseFinishDelay: 1
-  cardCosts: 05000000050000000a000000140000002300000028000000280000002d000000320000003700000041000000460000004b0000005000000050000000
   despawnBeltWhenFull: 1
+  rootAnimTrans: {fileID: 2641918410202572847}
+  increaseElements:
+  - {fileID: 8879793150020282371}
+  - {fileID: 1514673535225205947}
+  - {fileID: 14779208455542377}
+  goldDrainDuration: 1.5
+  phase3Duration: 0.5
 --- !u!114 &8138363187892157136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4362,6 +4420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4838781703523623770}
+  - component: {fileID: 1514673535225205947}
   m_Layer: 5
   m_Name: Cell(Clone)_2
   m_TagString: Untagged
@@ -4395,6 +4454,26 @@ RectTransform:
   m_AnchoredPosition: {x: 775, y: -380}
   m_SizeDelta: {x: 200, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1514673535225205947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7615530547345912228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c1f9fc55e04c84aa3b58d48c225452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementData:
+    Type: 0
+    Value: 0
+    Cost: 0
+    UpgradeRequire: 0
+  renderBackground: {fileID: 0}
+  slider: {fileID: 0}
+  activeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &7904036834786709012
 GameObject:
   m_ObjectHideFlags: 0
