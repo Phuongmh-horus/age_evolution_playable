@@ -31,6 +31,12 @@ public class GamePlayVariable : ScriptableObject
     [Tooltip("Mỗi điểm MoveSpeed sẽ cộng vào ForwardSpeed của WheelVariable.")]
     [SerializeField] private float moveSpeedStep = 0.5f;
 
+    [Header("Evolution Bonus (Capacity Pillar)")]
+    [Tooltip("Bonus theo phần trăm cho EvolutionPoint (0.2 = +20%). Dùng cho hiệu ứng tăng tỉ lệ evolve.")]
+    [SerializeField, Min(0f)] private float itemEvolveRateBonus = 0f;
+    [Tooltip("Bonus cộng thẳng thêm vào EvolutionPoint mỗi lần nhận điểm.")]
+    [SerializeField, Min(0)] private int itemEvolveFlatBonus = 0;
+
     /// <summary>
     /// Reset state theo phạm vi run (không reset evolution/capacity).
     /// </summary>
@@ -217,7 +223,10 @@ public class GamePlayVariable : ScriptableObject
     public void ChangeEvolutionPointVariable(int addPoint)
     {
         if (EvolutionVariable == null) return;
-        EvolutionVariable.ProgressPoint = Mathf.Max(0, EvolutionVariable.ProgressPoint + addPoint);
+        int safeInput = Mathf.Max(0, addPoint);
+        int bonusFromRate = Mathf.Max(0, Mathf.RoundToInt(safeInput * itemEvolveRateBonus));
+        int totalAdded = safeInput + bonusFromRate + Mathf.Max(0, itemEvolveFlatBonus);
+        EvolutionVariable.ProgressPoint = Mathf.Max(0, EvolutionVariable.ProgressPoint + totalAdded);
         int previousCapacity = EvolutionVariable.Capacity;
 
         var evoConfig = ResolveEvolutionConfig();

@@ -18,9 +18,6 @@ namespace WeaponCraft
         [SerializeField] private float progressMinFill = 0.532f;
         [SerializeField] private float progressMaxFill = 0.792f;
         private MaterialPropertyBlock _progressMpb;
-        private int _valueCollect;
-        private int _countCollect;
-
         private const string collectFormat = @"<sprite name=""coin""> {0}";
         private const string bonusCollectFormat = @"+{0} <sprite name=""coin"">";
 
@@ -29,6 +26,7 @@ namespace WeaponCraft
 
         [Header("Hit Component")]
         [SerializeField] private HitComponent hitComponent;
+        [SerializeField] private HitTextFlyEffect hitTextFlyEffect;
 
         [Header("Effect Component")]
         [SerializeField] private EffectComponent effectComponent;
@@ -75,6 +73,11 @@ namespace WeaponCraft
                 effectComponent = GetComponentInChildren<EffectComponent>(true);
             }
 
+            if (hitTextFlyEffect == null)
+            {
+                hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
+            }
+
             _originalScale = transform.localScale;
         }
 
@@ -119,8 +122,6 @@ namespace WeaponCraft
             base.Initialize();
 
             _awaitingGoldReset = false;
-            _valueCollect      = 0;
-            _countCollect      = 0;
             _originalScale     = transform.localScale;
 
             bool shouldRefreshEvents = false;
@@ -176,6 +177,12 @@ namespace WeaponCraft
             }
 
             UpdateCollectVisual();
+            EnsureHitTextEffect(false);
+            if (hitTextFlyEffect != null)
+            {
+                hitTextFlyEffect.enabled = true;
+                hitTextFlyEffect.WarmupRuntimeCaches();
+            }
 
             if (shouldRefreshEvents)
             {
@@ -193,7 +200,14 @@ namespace WeaponCraft
         {
             if (collectText != null)
             {
-                collectText.text = string.Format(collectFormat, _countCollect * (Data?.Value ?? 1));
+                int pooled = Mathf.Max(0, GameplayManager.StartCoin);
+                collectText.text = string.Format(collectFormat, pooled);
+            }
+
+            if (bonusCollectText != null)
+            {
+                int rewardPerTick = ResolveGoldRewardPerProgressTick();
+                bonusCollectText.text = string.Format(bonusCollectFormat, rewardPerTick);
             }
         }
 
@@ -219,25 +233,13 @@ namespace WeaponCraft
             }
         }
 
-        protected override void AdjustStatModifierValue(int value = 0)
-        {
-            if (value > 0)  
-            {
-                _valueCollect += value;
-                RecalculateCountCollect();
-            }
-        }
-        private void RecalculateCountCollect()
-        {
-            int maxHealth = healthComponent != null ? Mathf.Max(1, healthComponent.MaxHealth) : 1;
-            _countCollect = Mathf.Max(0, _valueCollect / maxHealth);
-        }
+        protected override void AdjustStatModifierValue(int value = 0) { }
 
         protected override void HandleWheelCollision()
         {
             PlayScalePulse();
             CashOutGold();
-            base.HandleWheelCollision();
+            DespawnInterval();
             Pack.Effector?.PlayEffect(EffectType.Land);
         }
 
@@ -252,8 +254,7 @@ namespace WeaponCraft
             if (current <= 0)
             {
                 _awaitingGoldReset = true;
-                // _countCollect++;
-                _valueCollect += GetBaseGoldValue();
+                GrantCoinOnProgressTick();
                 UpdateCollectVisual();
                 Pack.Effector?.PlayEffect(EffectType.Break, transform.position, Quaternion.identity);
 
@@ -377,16 +378,51 @@ namespace WeaponCraft
 
         private void CashOutGold()
         {
-            int amount = Mathf.Max(0, _countCollect * (Data?.Value ?? 1));
-            if (0 >= amount) return;
             var gameplayManager = GameplayManager.Instance;
-            if (gameplayManager != null)
+            if (gameplayManager == null)
             {
-                gameplayManager.AddCurrency(CurrencyType.Gold, amount, transform.position);
+                return;
             }
 
-            _valueCollect = 0;
-            _countCollect = 0;
+            int amount = gameplayManager.ConsumeCapacityCoinPool();
+            if (0 >= amount) return;
+            gameplayManager.AddCurrency(CurrencyType.Gold, amount, transform.position);
+
+            UpdateCollectVisual();
+        }
+
+        private void GrantCoinOnProgressTick()
+        {
+            var gameplayManager = GameplayManager.Instance;
+            if (gameplayManager == null)
+            {
+                return;
+            }
+
+            int reward = ResolveGoldRewardPerProgressTick();
+            gameplayManager.AddCapacityCoinToPool(reward);
+        }
+
+        private int ResolveGoldRewardPerProgressTick()
+        {
+            int baseReward = GetBaseGoldValue();
+            var gameplayManager = GameplayManager.Instance;
+            if (gameplayManager == null)
+            {
+                return baseReward;
+            }
+
+            return gameplayManager.GetGoldGateRewardPerProgressTick(baseReward);
+        }
+
+        private void EnsureHitTextEffect(bool allowAddRuntime)
+        {
+            if (hitTextFlyEffect != null) return;
+            hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
+            if (hitTextFlyEffect == null && allowAddRuntime)
+            {
+                hitTextFlyEffect = gameObject.AddComponent<HitTextFlyEffect>();
+            }
         }
     }
 }

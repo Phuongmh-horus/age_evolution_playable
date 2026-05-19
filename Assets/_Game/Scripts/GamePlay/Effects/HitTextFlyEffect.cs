@@ -24,7 +24,6 @@ public class HitTextFlyEffect : MonoBehaviour
     private static readonly HashSet<int> warmedTextPrefabIds = new HashSet<int>();
 
     private bool _isSubscribed;
-    private int _lastHitFrame = -1;
 
     public static void TickActiveControllers(float deltaTime)
     {
@@ -141,9 +140,6 @@ public class HitTextFlyEffect : MonoBehaviour
     public void OnHit(int damage)
     {
         if (damage <= 0) return;
-
-        if (_lastHitFrame == Time.frameCount) return;
-        _lastHitFrame = Time.frameCount;
 
         if (healthTextPrefab == null)
         {

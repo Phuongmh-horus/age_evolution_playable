@@ -116,6 +116,13 @@ namespace GamePlay.Items
 
         [Header("Health Settings")]
         [SerializeField] private bool forceImmortal = true;
+        [Header("Capacity Coin Reward")]
+        [SerializeField] private bool enableLegacyFactoryCoinReward = false;
+        [SerializeField, Min(1)] private int baseCoinPerProgressTick = 3;
+        [SerializeField] private bool useCurrentCapacityAsReward = true;
+        [SerializeField] private bool rewardOnNonWheelHit = true;
+        [SerializeField] private bool rewardOnWheelHit = true;
+        private int _lastCoinRewardFrame = -1;
 
         protected void Awake()
         {
@@ -375,6 +382,11 @@ namespace GamePlay.Items
 
         protected override void HandleWheelCollision()
         {
+            if (enableLegacyFactoryCoinReward && rewardOnWheelHit)
+            {
+                TryGrantCapacityCoinReward();
+            }
+
             EnsureUnitsSpawned();
             PlayScalePulse();
             SoundManager.Instance.PlayOneShot(hitByWheelSound);
@@ -451,8 +463,33 @@ namespace GamePlay.Items
         protected override void HandleNonWheelCollision(IAttacker source)
         {
             base.HandleNonWheelCollision(source);
-            
+
+            if (enableLegacyFactoryCoinReward && rewardOnNonWheelHit)
+            {
+                TryGrantCapacityCoinReward();
+            }
+
             PlayScalePulse();
+        }
+
+        private void TryGrantCapacityCoinReward()
+        {
+            if (_lastCoinRewardFrame == Time.frameCount) return;
+            _lastCoinRewardFrame = Time.frameCount;
+
+            var gm = GameplayManager.Instance;
+            if (gm == null) return;
+
+            int reward = Mathf.Max(1, baseCoinPerProgressTick);
+            if (useCurrentCapacityAsReward &&
+                gm.gamePlayVariable != null &&
+                gm.gamePlayVariable.EvolutionVariable != null)
+            {
+                int currentCapacity = Mathf.Max(1, gm.gamePlayVariable.EvolutionVariable.Capacity);
+                reward = Mathf.Max(reward, currentCapacity);
+            }
+
+            gm.AddCapacityCoinToPool(reward);
         }
 
         private void EnsureHitTextEffect(bool allowAddRuntime)

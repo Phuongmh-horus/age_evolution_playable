@@ -271,12 +271,6 @@ GameObject:
   - component: {fileID: 4263060515600946823}
   - component: {fileID: -7239696538845763034}
   - component: {fileID: 4692578061521761579}
-  - component: {fileID: 5403801453190756174}
-  - component: {fileID: 5896156909568041609}
-  - component: {fileID: 1026007133594141255}
-  - component: {fileID: 3929078593937919727}
-  - component: {fileID: -4463269527852348584}
-  - component: {fileID: -812503067234074928}
   m_Layer: 0
   m_Name: Tower_t1_a1_5
   m_TagString: Untagged
@@ -297,8 +291,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 402044001599129362}
-  - {fileID: 4261142851725306618}
+  - {fileID: 2532535681195983224}
   - {fileID: 4738565461119830803}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -317,11 +310,10 @@ MonoBehaviour:
   CacheTransform: {fileID: 6326261627148179680}
   poolEntity: {fileID: 7105555401399310678}
   shapeType: 2
-  colliderSize: {x: 3.85, y: 4.14, z: 2.7}
-  isActive: 0
+  colliderSize: {x: 4, y: 4.14, z: 3}
+  isActive: 1
   isCustomCaster: 0
   hitTransform: {fileID: 0}
-  debugAttackerRadius: 0
 --- !u!114 &7105555401399310678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,33 +326,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98bbf41b8da63c34f9c6c0ce300ae426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Transform: {fileID: 6326261627148179680}
-  EntityType: 18
+  _transform: {fileID: 0}
+  _entityType: 18
+  damage: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: {x: 1, y: 1}
+  shapeType: 1
+  colliderOffsets: {x: 0, y: 0, z: 0}
+  colliderSize: {x: 3.5, y: 5, z: 3}
   _components:
-  - _underlyingValue: {fileID: 4852332088695781464}
-  - _underlyingValue: {fileID: 8145146069618088512}
-  - _underlyingValue: {fileID: -7239696538845763034}
-  - _underlyingValue: {fileID: 4692578061521761579}
-  - _underlyingValue: {fileID: 5403801453190756174}
-  - _underlyingValue: {fileID: 5896156909568041609}
-  - _underlyingValue: {fileID: 1026007133594141255}
-  - _underlyingValue: {fileID: 3929078593937919727}
-  - _underlyingValue: {fileID: -4463269527852348584}
-  - _underlyingValue: {fileID: -812503067234074928}
+  - {fileID: 4852332088695781464}
+  - {fileID: 8145146069618088512}
+  - {fileID: 4692578061521761579}
   ActiveFlags: 0
   LeftOffset: 0
   RightOffset: 0
-  MapIndex: 0
-  _dieEffectOffsetY: 0.5
-  _dieAnimForDeath: 0.2
-  IsInLastRow: 0
-  healthTxt: {fileID: 6589273797468325807}
+  deathScaleEffect: {fileID: 0}
+  _tutElement: {fileID: 0}
+  autoAddHitTextFlyEffectAtRuntime: 1
+  healthComponent: {fileID: 8145146069618088512}
+  currentHpText: {fileID: 6589273797468325807}
+  maxHpText: {fileID: 0}
   blockDebrisController: {fileID: 7229887573008007063}
-  destroySfx: 10
-  hitByWheelSfx: 7
-  BaseMesh: {fileID: 0}
-  Color: {r: 0.23529412, g: 0.8, b: 0.15686275, a: 1}
-  TowerZoneDataIndex: 0
+  hitTextFlyEffect: {fileID: 4263060515600946823}
+  isOverrideVisual: 1
+  baseMesh: {fileID: 0}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  towerVisualRoot: {fileID: 2532535681195983224}
+  colorPropertyNames:
+  - _BaseColor
+  - _Color
+  - _TintColor
+  destroySfx: 17
+  hitByWheelSfx: 12
+  moneyRoot: {fileID: 6326261627148179680}
+  moneyDropImpulse: 1.5
+  moneyGroundY: 0
+  dropMoneyOnWheelDestroy: 1
+  scaleUp: 1.08
+  scaleUpDuration: 0.08
+  scaleDownDuration: 0.15
+  onTowerDestroyedFallback:
+    m_PersistentCalls:
+      m_Calls: []
+  flowProvider: {fileID: 4852332088695781464}
+  _hitComponent: {fileID: 4852332088695781464}
 --- !u!114 &8145146069618088512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,124 +385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a392e452bed495b8987bcb6ab3686d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CacheTransform: {fileID: 6326261627148179680}
-  poolEntity: {fileID: 7105555401399310678}
-  maxHp: 150
-  IsImmortal: 0
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDie:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7229887573008007063}
-        m_TargetAssemblyTypeName: GamePlay.Effects.BlockDebrisController, Assembly-CSharp
-        m_MethodName: TriggerDebrisEffect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: -7239696538845763034}
-        m_TargetAssemblyTypeName: GamePlay.Effects.DropCurrencyEffect, Assembly-CSharp
-        m_MethodName: SpawnItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7105555401399310678}
-        m_TargetAssemblyTypeName: CashTowerController, Assembly-CSharp
-        m_MethodName: PlayDestroySoundEffect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5403801453190756174}
-        m_TargetAssemblyTypeName: GamePlay.Effects.DropDiamondComponent, Assembly-CSharp
-        m_MethodName: SpawnItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5896156909568041609}
-        m_TargetAssemblyTypeName: DropTrophyEffect, Assembly-CSharp
-        m_MethodName: SpawnItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1026007133594141255}
-        m_TargetAssemblyTypeName: DropBPKeyEffect, Assembly-CSharp
-        m_MethodName: SpawnItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3929078593937919727}
-        m_TargetAssemblyTypeName: DropBPKeyEffect, Assembly-CSharp
-        m_MethodName: SpawnItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: -4463269527852348584}
-        m_TargetAssemblyTypeName: DropBPKeyEffect, Assembly-CSharp
-        m_MethodName: SpawnItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: -812503067234074928}
-        m_TargetAssemblyTypeName: GamePlay.Effects.DropHeroDustEffect, Assembly-CSharp
-        m_MethodName: SpawnItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  maxHealth: 10
+  currentHealth: 10
+  isImmortal: 0
 --- !u!114 &7229887573008007063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,15 +422,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 8145146069618088512}
-  popupPrefab: {fileID: 3928252636572854181, guid: 5787dd6330532474c8305897f18925be, type: 3}
-  critIcon: {fileID: 21300000, guid: cd93cad75baad9746967774b64ff8a5b, type: 3}
-  critColor: {r: 1, g: 0.5, b: 0, a: 1}
+  healthTextPrefab: {fileID: 6512158636180351403, guid: efb62b88426edc84bb45da017ef8622a, type: 3}
+  autoResolveHealthComponent: 1
+  defaultTextPrefabResourcePath: SpawnableObject/HitDamage
   flyUpDistance: 2
   flyUpDuration: 0.25
   fallDownDistance: 2.5
   fallDuration: 0.5
-  horizontalRange: 2
-  spawnOffset: {x: 0, y: 2, z: -3}
+  horizontalRandomRange: 0
+  heightOffset: 2
+  zOffset: 0
+  prewarmPoolCount: 12
 --- !u!114 &-7239696538845763034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,11 +445,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b6998e509a4b343817b7523df78995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currencyDropItemPrefab: {fileID: 5291765111413347149, guid: 35bf57ff68288e345bac122013e6377a, type: 3}
-  dropManager: {fileID: 0}
+  currencyDropItemPrefab: {fileID: 5291765111413347149, guid: ab145eacd4766f44093bd3b8580e0f58, type: 3}
   minCurrencyItems: 1
   maxCurrencyItems: 1
-  CurrencyValue: {x: 100, y: 100}
+  CurrencyValue: {x: 3, y: 3}
   explosionForce: 10
   upwardForce: 3
   spawnRadius: 1
@@ -570,163 +468,151 @@ MonoBehaviour:
   CacheTransform: {fileID: 6326261627148179680}
   poolEntity: {fileID: 7105555401399310678}
   effects:
-    _serializedList:
-    - Key: 14
-      Value:
-        Sfx: 1
-        Vfx: {fileID: 0}
-        effects:
-        - rid: 5471240456366457768
-  references:
-    version: 2
-    RefIds:
-    - rid: 5471240456366457768
-      type: {class: HitScaleEffect, ns: GamePlay.Effects, asm: Assembly-CSharp}
-      data:
-        _targetTransform: {fileID: 0}
-        punchStrength: 0.05
-        duration: 0.15
-        vibrato: 1
-        elasticity: 1
-        _hitDelay: 0.1
---- !u!114 &5403801453190756174
-MonoBehaviour:
+  - Type: 0
+    VfxPrefab: {fileID: 0}
+    ParentToTarget: 1
+    SfxClip: {fileID: 0}
+    WaitForAction: 0.5
+  audioSource: {fileID: 3503759529552683749}
+  useGlobalSoundManagerFallback: 1
+  warnIfNoAudioRouteInEditor: 0
+--- !u!1 &8719291428649503445
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725728750486215032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64ba437166a28d24dab28fa83cd4a45d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currencyDropItemPrefab: {fileID: 9104652466108699094, guid: 4973de3f132585246b7776ccd5ed4de8, type: 3}
-  dropManager: {fileID: 0}
-  minCurrencyItems: 1
-  maxCurrencyItems: 1
-  CurrencyValue: {x: 0, y: 0}
-  explosionForce: 10
-  upwardForce: 3
-  spawnRadius: 1
-  flyUp: 1
-  diamondPrefab: {fileID: 1071725110057295272}
-  enableBonusDiamondDrop: 1
-  baseDropChance: 0
-  bonusDiamondAmount: 1
-  CanDropDiamond: 0
---- !u!114 &5896156909568041609
-MonoBehaviour:
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2532535681195983224}
+  - component: {fileID: 3503759529552683749}
+  m_Layer: 0
+  m_Name: Tower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2532535681195983224
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725728750486215032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3072585c4df320840b90a14eb9ab0c10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currencyDropItemPrefab: {fileID: 5291765111413347149, guid: b1606395c9ac70b479d2b29c9eacd156, type: 3}
-  dropManager: {fileID: 0}
-  minCurrencyItems: 0
-  maxCurrencyItems: 0
-  CurrencyValue: {x: 0, y: 0}
-  explosionForce: 10
-  upwardForce: 3
-  spawnRadius: 1
-  flyUp: 1
-  CanDrop: 0
---- !u!114 &1026007133594141255
-MonoBehaviour:
+  m_GameObject: {fileID: 8719291428649503445}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4261142851725306618}
+  - {fileID: 402044001599129362}
+  m_Father: {fileID: 6326261627148179680}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &3503759529552683749
+AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725728750486215032}
+  m_GameObject: {fileID: 8719291428649503445}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be14d9889f9800244a275859be39de15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currencyDropItemPrefab: {fileID: 5291765111413347149, guid: 54908ed3738e39d4fb393e8fd1e5fa4c, type: 3}
-  dropManager: {fileID: 0}
-  minCurrencyItems: 0
-  maxCurrencyItems: 0
-  CurrencyValue: {x: 0, y: 0}
-  explosionForce: 5
-  upwardForce: 3
-  spawnRadius: 1
-  flyUp: 1
-  CanDrop: 0
---- !u!114 &3929078593937919727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725728750486215032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7643b77b09e3f643b0788dd44fe35d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currencyDropItemPrefab: {fileID: 5291765111413347149, guid: fe3fd5322f9f462458934537d9f20b78, type: 3}
-  dropManager: {fileID: 0}
-  minCurrencyItems: 0
-  maxCurrencyItems: 0
-  CurrencyValue: {x: 0, y: 0}
-  explosionForce: 5
-  upwardForce: 3
-  spawnRadius: 1
-  flyUp: 1
---- !u!114 &-4463269527852348584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725728750486215032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5dcc35ca0810fe40bd55d93734d76c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currencyDropItemPrefab: {fileID: 9104652466108699094, guid: f58ab94648a649b48b91669d2af0da34, type: 3}
-  dropManager: {fileID: 0}
-  gemPrefab: {fileID: 3488405647655465024}
-  CurrencyValue: {x: 0, y: 0}
-  explosionForce: 5
-  upwardForce: 3
-  spawnRadius: 1
-  flyUp: 1
---- !u!114 &-812503067234074928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725728750486215032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd0276ca45ffb7b4090699c025b6978b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropManager: {fileID: 0}
-  minCurrencyItems: 1
-  maxCurrencyItems: 1
-  CurrencyValue: {x: 0, y: 0}
-  spawnRadius: 1
-  flyUp: 1
-  heroDustPrefab: {fileID: 0}
-  CanDropHeroDust: 0
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &152807509686083833
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 6326261627148179680}
+    m_TransformParent: {fileID: 2532535681195983224}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
       propertyPath: m_LocalScale.x
@@ -746,7 +632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.61
+      value: 4.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -762,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
       propertyPath: m_LocalRotation.z
@@ -784,13 +670,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
       propertyPath: m_Name
       value: finish_diamond
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -802,18 +692,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
   m_PrefabInstance: {fileID: 152807509686083833}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1071725110057295272 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 00b82e77e73be6c4eb14cd3d627b42c6, type: 3}
-  m_PrefabInstance: {fileID: 152807509686083833}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4370787030686584081
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 6326261627148179680}
+    m_TransformParent: {fileID: 2532535681195983224}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d2b9f990ba3bfb347b41c0cf84d41a8c, type: 3}
       propertyPath: m_LocalScale.x
@@ -849,11 +734,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d2b9f990ba3bfb347b41c0cf84d41a8c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d2b9f990ba3bfb347b41c0cf84d41a8c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d2b9f990ba3bfb347b41c0cf84d41a8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -884,11 +769,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2b9f990ba3bfb347b41c0cf84d41a8c, type: 3}
---- !u!1 &3488405647655465024 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d2b9f990ba3bfb347b41c0cf84d41a8c, type: 3}
-  m_PrefabInstance: {fileID: 4370787030686584081}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4261142851725306618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2b9f990ba3bfb347b41c0cf84d41a8c, type: 3}

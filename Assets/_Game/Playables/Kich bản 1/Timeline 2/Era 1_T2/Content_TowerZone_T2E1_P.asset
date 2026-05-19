@@ -22,7 +22,9 @@ MonoBehaviour:
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 322
     PositionOffset: {x: -5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -31,10 +33,12 @@ MonoBehaviour:
     - rid: 5658998658205483472
     - rid: 5658998658205483473
     - rid: 5658998658205483474
-    - rid: 5658998658205483475
-    - rid: 5658998658205483476
-    - rid: 5658998658205483477
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+    - rid: 7276668440326176768
+    - rid: 7276668440326176769
+    - rid: 7276668440326176770
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 322
     PositionOffset: {x: 5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -43,10 +47,12 @@ MonoBehaviour:
     - rid: 5658998658205483478
     - rid: 5658998658205483479
     - rid: 5658998658205483480
-    - rid: 5658998658205483481
-    - rid: 5658998658205483482
-    - rid: 5658998658205483483
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+    - rid: 7276668440326176771
+    - rid: 7276668440326176772
+    - rid: 7276668440326176773
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 322
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -55,10 +61,12 @@ MonoBehaviour:
     - rid: 5658998658205483484
     - rid: 5658998658205483485
     - rid: 5658998658205483486
-    - rid: 5658998658205483487
-    - rid: 5658998658205483488
-    - rid: 5658998658205483489
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+    - rid: 5658998658205483475
+    - rid: 5658998658205483476
+    - rid: 5658998658205483477
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 325.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -67,10 +75,12 @@ MonoBehaviour:
     - rid: 5658998658205483490
     - rid: 5658998658205483491
     - rid: 5658998658205483492
-    - rid: 5658998658205483493
-    - rid: 5658998658205483494
-    - rid: 5658998658205483495
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+    - rid: 7276668440326176774
+    - rid: 7276668440326176775
+    - rid: 7276668440326176776
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 325.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -79,15 +89,19 @@ MonoBehaviour:
     - rid: 5658998658205483496
     - rid: 5658998658205483497
     - rid: 5658998658205483498
-    - rid: 5658998658205483499
-    - rid: 5658998658205483500
-    - rid: 5658998658205483501
+    - rid: 5658998658205483481
+    - rid: 5658998658205483482
+    - rid: 5658998658205483483
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 327.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 329.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -97,9 +111,11 @@ MonoBehaviour:
     - rid: 5658998658205483502
     - rid: 5658998658205483503
     - rid: 5658998658205483504
-    - rid: 5658998658205483505
-    - rid: 5658998658205483506
-    - rid: 5658998658205483507
+    - rid: 5658998658205483487
+    - rid: 5658998658205483488
+    - rid: 5658998658205483489
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 329.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -109,9 +125,11 @@ MonoBehaviour:
     - rid: 5658998658205483508
     - rid: 5658998658205483509
     - rid: 5658998658205483510
-    - rid: 5658998658205483511
-    - rid: 5658998658205483512
-    - rid: 5658998658205483513
+    - rid: 5658998658205483493
+    - rid: 5658998658205483494
+    - rid: 5658998658205483495
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 329.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -121,9 +139,11 @@ MonoBehaviour:
     - rid: 5658998658205483514
     - rid: 5658998658205483515
     - rid: 5658998658205483516
-    - rid: 5658998658205483517
-    - rid: 5658998658205483518
-    - rid: 5658998658205483519
+    - rid: 5658998658205483499
+    - rid: 5658998658205483500
+    - rid: 5658998658205483501
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 333.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -133,9 +153,11 @@ MonoBehaviour:
     - rid: 5658998658205483526
     - rid: 5658998658205483527
     - rid: 5658998658205483528
-    - rid: 5658998658205483529
-    - rid: 5658998658205483530
-    - rid: 5658998658205483531
+    - rid: 5658998658205483505
+    - rid: 5658998658205483506
+    - rid: 5658998658205483507
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 333.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -145,9 +167,11 @@ MonoBehaviour:
     - rid: 5658998658205483520
     - rid: 5658998658205483521
     - rid: 5658998658205483522
-    - rid: 5658998658205483523
-    - rid: 5658998658205483524
-    - rid: 5658998658205483525
+    - rid: 5658998658205483511
+    - rid: 5658998658205483512
+    - rid: 5658998658205483513
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 337
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -157,9 +181,11 @@ MonoBehaviour:
     - rid: 5658998658205483532
     - rid: 5658998658205483533
     - rid: 5658998658205483534
-    - rid: 5658998658205483535
-    - rid: 5658998658205483536
-    - rid: 5658998658205483537
+    - rid: 5658998658205483517
+    - rid: 5658998658205483518
+    - rid: 5658998658205483519
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 337
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -169,9 +195,11 @@ MonoBehaviour:
     - rid: 5658998658205483538
     - rid: 5658998658205483539
     - rid: 5658998658205483540
-    - rid: 5658998658205483541
-    - rid: 5658998658205483542
-    - rid: 5658998658205483543
+    - rid: 5658998658205483529
+    - rid: 5658998658205483530
+    - rid: 5658998658205483531
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 337
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -181,9 +209,11 @@ MonoBehaviour:
     - rid: 5658998658205483544
     - rid: 5658998658205483545
     - rid: 5658998658205483546
-    - rid: 5658998658205483547
-    - rid: 5658998658205483548
-    - rid: 5658998658205483549
+    - rid: 5658998658205483523
+    - rid: 5658998658205483524
+    - rid: 5658998658205483525
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 340.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -193,9 +223,11 @@ MonoBehaviour:
     - rid: 5658998658205483550
     - rid: 5658998658205483551
     - rid: 5658998658205483552
-    - rid: 5658998658205483553
-    - rid: 5658998658205483554
-    - rid: 5658998658205483555
+    - rid: 5658998658205483535
+    - rid: 5658998658205483536
+    - rid: 5658998658205483537
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 340.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -205,15 +237,19 @@ MonoBehaviour:
     - rid: 5658998658205483556
     - rid: 5658998658205483557
     - rid: 5658998658205483558
-    - rid: 5658998658205483559
-    - rid: 5658998658205483560
-    - rid: 5658998658205483561
+    - rid: 5658998658205483541
+    - rid: 5658998658205483542
+    - rid: 5658998658205483543
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 342.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 344.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -223,9 +259,11 @@ MonoBehaviour:
     - rid: 5658998658205483562
     - rid: 5658998658205483563
     - rid: 5658998658205483564
-    - rid: 5658998658205483565
-    - rid: 5658998658205483566
-    - rid: 5658998658205483567
+    - rid: 5658998658205483547
+    - rid: 5658998658205483548
+    - rid: 5658998658205483549
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 344.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -235,9 +273,11 @@ MonoBehaviour:
     - rid: 5658998658205483568
     - rid: 5658998658205483569
     - rid: 5658998658205483570
-    - rid: 5658998658205483571
-    - rid: 5658998658205483572
-    - rid: 5658998658205483573
+    - rid: 5658998658205483553
+    - rid: 5658998658205483554
+    - rid: 5658998658205483555
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 344.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -247,9 +287,11 @@ MonoBehaviour:
     - rid: 5658998658205483574
     - rid: 5658998658205483575
     - rid: 5658998658205483576
-    - rid: 5658998658205483577
-    - rid: 5658998658205483578
-    - rid: 5658998658205483579
+    - rid: 5658998658205483559
+    - rid: 5658998658205483560
+    - rid: 5658998658205483561
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 348.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -259,9 +301,11 @@ MonoBehaviour:
     - rid: 5658998658205483586
     - rid: 5658998658205483587
     - rid: 5658998658205483588
-    - rid: 5658998658205483589
-    - rid: 5658998658205483590
-    - rid: 5658998658205483591
+    - rid: 5658998658205483565
+    - rid: 5658998658205483566
+    - rid: 5658998658205483567
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 348.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -271,9 +315,11 @@ MonoBehaviour:
     - rid: 5658998658205483580
     - rid: 5658998658205483581
     - rid: 5658998658205483582
-    - rid: 5658998658205483583
-    - rid: 5658998658205483584
-    - rid: 5658998658205483585
+    - rid: 5658998658205483571
+    - rid: 5658998658205483572
+    - rid: 5658998658205483573
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 352
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -283,9 +329,11 @@ MonoBehaviour:
     - rid: 5658998658205483592
     - rid: 5658998658205483593
     - rid: 5658998658205483594
-    - rid: 5658998658205483595
-    - rid: 5658998658205483596
-    - rid: 5658998658205483597
+    - rid: 5658998658205483577
+    - rid: 5658998658205483578
+    - rid: 5658998658205483579
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 352
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -295,9 +343,11 @@ MonoBehaviour:
     - rid: 5658998658205483598
     - rid: 5658998658205483599
     - rid: 5658998658205483600
-    - rid: 5658998658205483601
-    - rid: 5658998658205483602
-    - rid: 5658998658205483603
+    - rid: 5658998658205483589
+    - rid: 5658998658205483590
+    - rid: 5658998658205483591
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 352
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -307,9 +357,11 @@ MonoBehaviour:
     - rid: 5658998658205483604
     - rid: 5658998658205483605
     - rid: 5658998658205483606
-    - rid: 5658998658205483607
-    - rid: 5658998658205483608
-    - rid: 5658998658205483609
+    - rid: 5658998658205483583
+    - rid: 5658998658205483584
+    - rid: 5658998658205483585
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 355.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -319,9 +371,11 @@ MonoBehaviour:
     - rid: 5658998658205483610
     - rid: 5658998658205483611
     - rid: 5658998658205483612
-    - rid: 5658998658205483613
-    - rid: 5658998658205483614
-    - rid: 5658998658205483615
+    - rid: 5658998658205483595
+    - rid: 5658998658205483596
+    - rid: 5658998658205483597
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 355.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -331,15 +385,19 @@ MonoBehaviour:
     - rid: 5658998658205483616
     - rid: 5658998658205483617
     - rid: 5658998658205483618
-    - rid: 5658998658205483619
-    - rid: 5658998658205483620
-    - rid: 5658998658205483621
+    - rid: 5658998658205483601
+    - rid: 5658998658205483602
+    - rid: 5658998658205483603
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 357.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 359.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -349,9 +407,11 @@ MonoBehaviour:
     - rid: 5658998658205483622
     - rid: 5658998658205483623
     - rid: 5658998658205483624
-    - rid: 5658998658205483625
-    - rid: 5658998658205483626
-    - rid: 5658998658205483627
+    - rid: 5658998658205483607
+    - rid: 5658998658205483608
+    - rid: 5658998658205483609
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 359.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -361,9 +421,11 @@ MonoBehaviour:
     - rid: 5658998658205483628
     - rid: 5658998658205483629
     - rid: 5658998658205483630
-    - rid: 5658998658205483631
-    - rid: 5658998658205483632
-    - rid: 5658998658205483633
+    - rid: 5658998658205483613
+    - rid: 5658998658205483614
+    - rid: 5658998658205483615
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 359.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -373,9 +435,11 @@ MonoBehaviour:
     - rid: 5658998658205483634
     - rid: 5658998658205483635
     - rid: 5658998658205483636
-    - rid: 5658998658205483637
-    - rid: 5658998658205483638
-    - rid: 5658998658205483639
+    - rid: 5658998658205483619
+    - rid: 5658998658205483620
+    - rid: 5658998658205483621
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 363.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -385,9 +449,11 @@ MonoBehaviour:
     - rid: 5658998658205483646
     - rid: 5658998658205483647
     - rid: 5658998658205483648
-    - rid: 5658998658205483649
-    - rid: 5658998658205483650
-    - rid: 5658998658205483651
+    - rid: 5658998658205483625
+    - rid: 5658998658205483626
+    - rid: 5658998658205483627
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 363.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -397,9 +463,11 @@ MonoBehaviour:
     - rid: 5658998658205483640
     - rid: 5658998658205483641
     - rid: 5658998658205483642
-    - rid: 5658998658205483643
-    - rid: 5658998658205483644
-    - rid: 5658998658205483645
+    - rid: 5658998658205483631
+    - rid: 5658998658205483632
+    - rid: 5658998658205483633
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 367
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -409,9 +477,11 @@ MonoBehaviour:
     - rid: 5658998658205483652
     - rid: 5658998658205483653
     - rid: 5658998658205483654
-    - rid: 5658998658205483655
-    - rid: 5658998658205483656
-    - rid: 5658998658205483657
+    - rid: 5658998658205483637
+    - rid: 5658998658205483638
+    - rid: 5658998658205483639
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 367
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -421,9 +491,11 @@ MonoBehaviour:
     - rid: 5658998658205483658
     - rid: 5658998658205483659
     - rid: 5658998658205483660
-    - rid: 5658998658205483661
-    - rid: 5658998658205483662
-    - rid: 5658998658205483663
+    - rid: 5658998658205483649
+    - rid: 5658998658205483650
+    - rid: 5658998658205483651
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 367
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -433,9 +505,11 @@ MonoBehaviour:
     - rid: 5658998658205483664
     - rid: 5658998658205483665
     - rid: 5658998658205483666
-    - rid: 5658998658205483667
-    - rid: 5658998658205483668
-    - rid: 5658998658205483669
+    - rid: 5658998658205483643
+    - rid: 5658998658205483644
+    - rid: 5658998658205483645
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 370.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -445,9 +519,11 @@ MonoBehaviour:
     - rid: 5658998658205483670
     - rid: 5658998658205483671
     - rid: 5658998658205483672
-    - rid: 5658998658205483673
-    - rid: 5658998658205483674
-    - rid: 5658998658205483675
+    - rid: 5658998658205483655
+    - rid: 5658998658205483656
+    - rid: 5658998658205483657
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 370.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -457,15 +533,19 @@ MonoBehaviour:
     - rid: 5658998658205483676
     - rid: 5658998658205483677
     - rid: 5658998658205483678
-    - rid: 5658998658205483679
-    - rid: 5658998658205483680
-    - rid: 5658998658205483681
+    - rid: 5658998658205483661
+    - rid: 5658998658205483662
+    - rid: 5658998658205483663
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 372.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 374.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -475,9 +555,11 @@ MonoBehaviour:
     - rid: 5658998658205483694
     - rid: 5658998658205483695
     - rid: 5658998658205483696
-    - rid: 5658998658205483697
-    - rid: 5658998658205483698
-    - rid: 5658998658205483699
+    - rid: 5658998658205483667
+    - rid: 5658998658205483668
+    - rid: 5658998658205483669
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 374.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -487,9 +569,11 @@ MonoBehaviour:
     - rid: 5658998658205483682
     - rid: 5658998658205483683
     - rid: 5658998658205483684
-    - rid: 5658998658205483685
-    - rid: 5658998658205483686
-    - rid: 5658998658205483687
+    - rid: 5658998658205483673
+    - rid: 5658998658205483674
+    - rid: 5658998658205483675
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 374.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -499,9 +583,11 @@ MonoBehaviour:
     - rid: 5658998658205483688
     - rid: 5658998658205483689
     - rid: 5658998658205483690
-    - rid: 5658998658205483691
-    - rid: 5658998658205483692
-    - rid: 5658998658205483693
+    - rid: 5658998658205483679
+    - rid: 5658998658205483680
+    - rid: 5658998658205483681
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 378.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -511,9 +597,11 @@ MonoBehaviour:
     - rid: 5658998658205483706
     - rid: 5658998658205483707
     - rid: 5658998658205483708
-    - rid: 5658998658205483709
-    - rid: 5658998658205483710
-    - rid: 5658998658205483711
+    - rid: 5658998658205483697
+    - rid: 5658998658205483698
+    - rid: 5658998658205483699
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 378.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -523,9 +611,11 @@ MonoBehaviour:
     - rid: 5658998658205483700
     - rid: 5658998658205483701
     - rid: 5658998658205483702
-    - rid: 5658998658205483703
-    - rid: 5658998658205483704
-    - rid: 5658998658205483705
+    - rid: 5658998658205483685
+    - rid: 5658998658205483686
+    - rid: 5658998658205483687
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 382
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -535,9 +625,11 @@ MonoBehaviour:
     - rid: 5658998658205483712
     - rid: 5658998658205483713
     - rid: 5658998658205483714
-    - rid: 5658998658205483715
-    - rid: 5658998658205483716
-    - rid: 5658998658205483717
+    - rid: 5658998658205483691
+    - rid: 5658998658205483692
+    - rid: 5658998658205483693
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 382
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -547,9 +639,11 @@ MonoBehaviour:
     - rid: 5658998658205483718
     - rid: 5658998658205483719
     - rid: 5658998658205483720
-    - rid: 5658998658205483721
-    - rid: 5658998658205483722
-    - rid: 5658998658205483723
+    - rid: 5658998658205483709
+    - rid: 5658998658205483710
+    - rid: 5658998658205483711
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 382
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -559,9 +653,11 @@ MonoBehaviour:
     - rid: 5658998658205483724
     - rid: 5658998658205483725
     - rid: 5658998658205483726
-    - rid: 5658998658205483727
-    - rid: 5658998658205483728
-    - rid: 5658998658205483729
+    - rid: 5658998658205483703
+    - rid: 5658998658205483704
+    - rid: 5658998658205483705
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 385.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -571,9 +667,11 @@ MonoBehaviour:
     - rid: 5658998658205483730
     - rid: 5658998658205483731
     - rid: 5658998658205483732
-    - rid: 5658998658205483733
-    - rid: 5658998658205483734
-    - rid: 5658998658205483735
+    - rid: 5658998658205483715
+    - rid: 5658998658205483716
+    - rid: 5658998658205483717
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 385.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -583,15 +681,19 @@ MonoBehaviour:
     - rid: 5658998658205483736
     - rid: 5658998658205483737
     - rid: 5658998658205483738
-    - rid: 5658998658205483739
-    - rid: 5658998658205483740
-    - rid: 5658998658205483741
+    - rid: 5658998658205483721
+    - rid: 5658998658205483722
+    - rid: 5658998658205483723
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 387.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 389.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -601,9 +703,11 @@ MonoBehaviour:
     - rid: 5658998658205483742
     - rid: 5658998658205483743
     - rid: 5658998658205483744
-    - rid: 5658998658205483745
-    - rid: 5658998658205483746
-    - rid: 5658998658205483747
+    - rid: 5658998658205483727
+    - rid: 5658998658205483728
+    - rid: 5658998658205483729
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 389.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -613,9 +717,11 @@ MonoBehaviour:
     - rid: 5658998658205483748
     - rid: 5658998658205483749
     - rid: 5658998658205483750
-    - rid: 5658998658205483751
-    - rid: 5658998658205483752
-    - rid: 5658998658205483753
+    - rid: 5658998658205483733
+    - rid: 5658998658205483734
+    - rid: 5658998658205483735
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 389.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -625,9 +731,11 @@ MonoBehaviour:
     - rid: 5658998658205483754
     - rid: 5658998658205483755
     - rid: 5658998658205483756
-    - rid: 5658998658205483757
-    - rid: 5658998658205483758
-    - rid: 5658998658205483759
+    - rid: 5658998658205483739
+    - rid: 5658998658205483740
+    - rid: 5658998658205483741
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 393.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -637,9 +745,11 @@ MonoBehaviour:
     - rid: 5658998658205483766
     - rid: 5658998658205483767
     - rid: 5658998658205483768
-    - rid: 5658998658205483769
-    - rid: 5658998658205483770
-    - rid: 5658998658205483771
+    - rid: 5658998658205483745
+    - rid: 5658998658205483746
+    - rid: 5658998658205483747
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 393.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -649,9 +759,11 @@ MonoBehaviour:
     - rid: 5658998658205483760
     - rid: 5658998658205483761
     - rid: 5658998658205483762
-    - rid: 5658998658205483763
-    - rid: 5658998658205483764
-    - rid: 5658998658205483765
+    - rid: 5658998658205483751
+    - rid: 5658998658205483752
+    - rid: 5658998658205483753
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 397
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -661,9 +773,11 @@ MonoBehaviour:
     - rid: 5658998658205483772
     - rid: 5658998658205483773
     - rid: 5658998658205483774
-    - rid: 5658998658205483775
-    - rid: 5658998658205483776
-    - rid: 5658998658205483777
+    - rid: 5658998658205483757
+    - rid: 5658998658205483758
+    - rid: 5658998658205483759
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 397
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -673,9 +787,11 @@ MonoBehaviour:
     - rid: 5658998658205483778
     - rid: 5658998658205483779
     - rid: 5658998658205483780
-    - rid: 5658998658205483781
-    - rid: 5658998658205483782
-    - rid: 5658998658205483783
+    - rid: 5658998658205483769
+    - rid: 5658998658205483770
+    - rid: 5658998658205483771
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 397
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -685,9 +801,11 @@ MonoBehaviour:
     - rid: 5658998658205483784
     - rid: 5658998658205483785
     - rid: 5658998658205483786
-    - rid: 5658998658205483787
-    - rid: 5658998658205483788
-    - rid: 5658998658205483789
+    - rid: 5658998658205483763
+    - rid: 5658998658205483764
+    - rid: 5658998658205483765
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 400.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -697,9 +815,11 @@ MonoBehaviour:
     - rid: 5658998658205483790
     - rid: 5658998658205483791
     - rid: 5658998658205483792
-    - rid: 5658998658205483793
-    - rid: 5658998658205483794
-    - rid: 5658998658205483795
+    - rid: 5658998658205483775
+    - rid: 5658998658205483776
+    - rid: 5658998658205483777
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 400.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -709,15 +829,19 @@ MonoBehaviour:
     - rid: 5658998658205483796
     - rid: 5658998658205483797
     - rid: 5658998658205483798
-    - rid: 5658998658205483799
-    - rid: 5658998658205483800
-    - rid: 5658998658205483801
+    - rid: 5658998658205483781
+    - rid: 5658998658205483782
+    - rid: 5658998658205483783
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 402.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 404.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -727,9 +851,11 @@ MonoBehaviour:
     - rid: 5658998658205483814
     - rid: 5658998658205483815
     - rid: 5658998658205483816
-    - rid: 5658998658205483817
-    - rid: 5658998658205483818
-    - rid: 5658998658205483819
+    - rid: 5658998658205483787
+    - rid: 5658998658205483788
+    - rid: 5658998658205483789
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 404.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -739,9 +865,11 @@ MonoBehaviour:
     - rid: 5658998658205483802
     - rid: 5658998658205483803
     - rid: 5658998658205483804
-    - rid: 5658998658205483805
-    - rid: 5658998658205483806
-    - rid: 5658998658205483807
+    - rid: 5658998658205483793
+    - rid: 5658998658205483794
+    - rid: 5658998658205483795
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 404.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -751,9 +879,11 @@ MonoBehaviour:
     - rid: 5658998658205483808
     - rid: 5658998658205483809
     - rid: 5658998658205483810
-    - rid: 5658998658205483811
-    - rid: 5658998658205483812
-    - rid: 5658998658205483813
+    - rid: 5658998658205483799
+    - rid: 5658998658205483800
+    - rid: 5658998658205483801
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 408.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -763,9 +893,11 @@ MonoBehaviour:
     - rid: 5658998658205483826
     - rid: 5658998658205483827
     - rid: 5658998658205483828
-    - rid: 5658998658205483829
-    - rid: 5658998658205483830
-    - rid: 5658998658205483831
+    - rid: 5658998658205483817
+    - rid: 5658998658205483818
+    - rid: 5658998658205483819
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 408.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -775,9 +907,11 @@ MonoBehaviour:
     - rid: 5658998658205483820
     - rid: 5658998658205483821
     - rid: 5658998658205483822
-    - rid: 5658998658205483823
-    - rid: 5658998658205483824
-    - rid: 5658998658205483825
+    - rid: 5658998658205483805
+    - rid: 5658998658205483806
+    - rid: 5658998658205483807
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 412
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -787,9 +921,11 @@ MonoBehaviour:
     - rid: 5658998658205483832
     - rid: 5658998658205483833
     - rid: 5658998658205483834
-    - rid: 5658998658205483835
-    - rid: 5658998658205483836
-    - rid: 5658998658205483837
+    - rid: 5658998658205483811
+    - rid: 5658998658205483812
+    - rid: 5658998658205483813
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 412
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -799,9 +935,11 @@ MonoBehaviour:
     - rid: 5658998658205483838
     - rid: 5658998658205483839
     - rid: 5658998658205483840
-    - rid: 5658998658205483841
-    - rid: 5658998658205483842
-    - rid: 5658998658205483843
+    - rid: 5658998658205483829
+    - rid: 5658998658205483830
+    - rid: 5658998658205483831
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 412
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -811,9 +949,11 @@ MonoBehaviour:
     - rid: 5658998658205483844
     - rid: 5658998658205483845
     - rid: 5658998658205483846
-    - rid: 5658998658205483847
-    - rid: 5658998658205483848
-    - rid: 5658998658205483849
+    - rid: 5658998658205483823
+    - rid: 5658998658205483824
+    - rid: 5658998658205483825
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 415.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -823,9 +963,11 @@ MonoBehaviour:
     - rid: 5658998658205483850
     - rid: 5658998658205483851
     - rid: 5658998658205483852
-    - rid: 5658998658205483853
-    - rid: 5658998658205483854
-    - rid: 5658998658205483855
+    - rid: 5658998658205483835
+    - rid: 5658998658205483836
+    - rid: 5658998658205483837
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 415.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -835,15 +977,19 @@ MonoBehaviour:
     - rid: 5658998658205483856
     - rid: 5658998658205483857
     - rid: 5658998658205483858
-    - rid: 5658998658205483859
-    - rid: 5658998658205483860
-    - rid: 5658998658205483861
+    - rid: 5658998658205483841
+    - rid: 5658998658205483842
+    - rid: 5658998658205483843
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 417.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 419.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -853,9 +999,11 @@ MonoBehaviour:
     - rid: 5658998658205483862
     - rid: 5658998658205483863
     - rid: 5658998658205483864
-    - rid: 5658998658205483865
-    - rid: 5658998658205483866
-    - rid: 5658998658205483867
+    - rid: 5658998658205483847
+    - rid: 5658998658205483848
+    - rid: 5658998658205483849
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 419.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -865,9 +1013,11 @@ MonoBehaviour:
     - rid: 5658998658205483868
     - rid: 5658998658205483869
     - rid: 5658998658205483870
-    - rid: 5658998658205483871
-    - rid: 5658998658205483872
-    - rid: 5658998658205483873
+    - rid: 5658998658205483853
+    - rid: 5658998658205483854
+    - rid: 5658998658205483855
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 419.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -877,9 +1027,11 @@ MonoBehaviour:
     - rid: 5658998658205483874
     - rid: 5658998658205483875
     - rid: 5658998658205483876
-    - rid: 5658998658205483877
-    - rid: 5658998658205483878
-    - rid: 5658998658205483879
+    - rid: 5658998658205483859
+    - rid: 5658998658205483860
+    - rid: 5658998658205483861
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 423.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -889,9 +1041,11 @@ MonoBehaviour:
     - rid: 5658998658205483886
     - rid: 5658998658205483887
     - rid: 5658998658205483888
-    - rid: 5658998658205483889
-    - rid: 5658998658205483890
-    - rid: 5658998658205483891
+    - rid: 5658998658205483865
+    - rid: 5658998658205483866
+    - rid: 5658998658205483867
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 423.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -901,9 +1055,11 @@ MonoBehaviour:
     - rid: 5658998658205483880
     - rid: 5658998658205483881
     - rid: 5658998658205483882
-    - rid: 5658998658205483883
-    - rid: 5658998658205483884
-    - rid: 5658998658205483885
+    - rid: 5658998658205483871
+    - rid: 5658998658205483872
+    - rid: 5658998658205483873
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 427
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -913,9 +1069,11 @@ MonoBehaviour:
     - rid: 5658998658205483892
     - rid: 5658998658205483893
     - rid: 5658998658205483894
-    - rid: 5658998658205483895
-    - rid: 5658998658205483896
-    - rid: 5658998658205483897
+    - rid: 5658998658205483877
+    - rid: 5658998658205483878
+    - rid: 5658998658205483879
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 427
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -925,9 +1083,11 @@ MonoBehaviour:
     - rid: 5658998658205483898
     - rid: 5658998658205483899
     - rid: 5658998658205483900
-    - rid: 5658998658205483901
-    - rid: 5658998658205483902
-    - rid: 5658998658205483903
+    - rid: 5658998658205483889
+    - rid: 5658998658205483890
+    - rid: 5658998658205483891
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 427
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -937,9 +1097,11 @@ MonoBehaviour:
     - rid: 5658998658205483904
     - rid: 5658998658205483905
     - rid: 5658998658205483906
-    - rid: 5658998658205483907
-    - rid: 5658998658205483908
-    - rid: 5658998658205483909
+    - rid: 5658998658205483883
+    - rid: 5658998658205483884
+    - rid: 5658998658205483885
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 430.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -949,9 +1111,11 @@ MonoBehaviour:
     - rid: 5658998658205483910
     - rid: 5658998658205483911
     - rid: 5658998658205483912
-    - rid: 5658998658205483913
-    - rid: 5658998658205483914
-    - rid: 5658998658205483915
+    - rid: 5658998658205483895
+    - rid: 5658998658205483896
+    - rid: 5658998658205483897
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 430.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -961,15 +1125,19 @@ MonoBehaviour:
     - rid: 5658998658205483916
     - rid: 5658998658205483917
     - rid: 5658998658205483918
-    - rid: 5658998658205483919
-    - rid: 5658998658205483920
-    - rid: 5658998658205483921
+    - rid: 5658998658205483901
+    - rid: 5658998658205483902
+    - rid: 5658998658205483903
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 432.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 434.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -979,9 +1147,11 @@ MonoBehaviour:
     - rid: 5658998658205483922
     - rid: 5658998658205483923
     - rid: 5658998658205483924
-    - rid: 5658998658205483925
-    - rid: 5658998658205483926
-    - rid: 5658998658205483927
+    - rid: 5658998658205483907
+    - rid: 5658998658205483908
+    - rid: 5658998658205483909
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 434.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -991,9 +1161,11 @@ MonoBehaviour:
     - rid: 5658998658205483928
     - rid: 5658998658205483929
     - rid: 5658998658205483930
-    - rid: 5658998658205483931
-    - rid: 5658998658205483932
-    - rid: 5658998658205483933
+    - rid: 5658998658205483913
+    - rid: 5658998658205483914
+    - rid: 5658998658205483915
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 434.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1003,9 +1175,11 @@ MonoBehaviour:
     - rid: 5658998658205483934
     - rid: 5658998658205483935
     - rid: 5658998658205483936
-    - rid: 5658998658205483937
-    - rid: 5658998658205483938
-    - rid: 5658998658205483939
+    - rid: 5658998658205483919
+    - rid: 5658998658205483920
+    - rid: 5658998658205483921
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 438.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1015,9 +1189,11 @@ MonoBehaviour:
     - rid: 5658998658205483946
     - rid: 5658998658205483947
     - rid: 5658998658205483948
-    - rid: 5658998658205483949
-    - rid: 5658998658205483950
-    - rid: 5658998658205483951
+    - rid: 5658998658205483925
+    - rid: 5658998658205483926
+    - rid: 5658998658205483927
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 438.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1027,9 +1203,11 @@ MonoBehaviour:
     - rid: 5658998658205483940
     - rid: 5658998658205483941
     - rid: 5658998658205483942
-    - rid: 5658998658205483943
-    - rid: 5658998658205483944
-    - rid: 5658998658205483945
+    - rid: 5658998658205483931
+    - rid: 5658998658205483932
+    - rid: 5658998658205483933
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 442
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1039,9 +1217,11 @@ MonoBehaviour:
     - rid: 5658998658205483952
     - rid: 5658998658205483953
     - rid: 5658998658205483954
-    - rid: 5658998658205483955
-    - rid: 5658998658205483956
-    - rid: 5658998658205483957
+    - rid: 5658998658205483937
+    - rid: 5658998658205483938
+    - rid: 5658998658205483939
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 442
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1051,9 +1231,11 @@ MonoBehaviour:
     - rid: 5658998658205483958
     - rid: 5658998658205483959
     - rid: 5658998658205483960
-    - rid: 5658998658205483961
-    - rid: 5658998658205483962
-    - rid: 5658998658205483963
+    - rid: 5658998658205483949
+    - rid: 5658998658205483950
+    - rid: 5658998658205483951
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 442
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1063,9 +1245,11 @@ MonoBehaviour:
     - rid: 5658998658205483964
     - rid: 5658998658205483965
     - rid: 5658998658205483966
-    - rid: 5658998658205483967
-    - rid: 5658998658205483968
-    - rid: 5658998658205483969
+    - rid: 5658998658205483943
+    - rid: 5658998658205483944
+    - rid: 5658998658205483945
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 445.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1075,9 +1259,11 @@ MonoBehaviour:
     - rid: 5658998658205483970
     - rid: 5658998658205483971
     - rid: 5658998658205483972
-    - rid: 5658998658205483973
-    - rid: 5658998658205483974
-    - rid: 5658998658205483975
+    - rid: 5658998658205483955
+    - rid: 5658998658205483956
+    - rid: 5658998658205483957
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 445.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1087,15 +1273,19 @@ MonoBehaviour:
     - rid: 5658998658205483976
     - rid: 5658998658205483977
     - rid: 5658998658205483978
-    - rid: 5658998658205483979
-    - rid: 5658998658205483980
-    - rid: 5658998658205483981
+    - rid: 5658998658205483961
+    - rid: 5658998658205483962
+    - rid: 5658998658205483963
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 447.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 449.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1105,9 +1295,11 @@ MonoBehaviour:
     - rid: 5658998658205483982
     - rid: 5658998658205483983
     - rid: 5658998658205483984
-    - rid: 5658998658205483985
-    - rid: 5658998658205483986
-    - rid: 5658998658205483987
+    - rid: 5658998658205483967
+    - rid: 5658998658205483968
+    - rid: 5658998658205483969
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 449.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1117,9 +1309,11 @@ MonoBehaviour:
     - rid: 5658998658205483988
     - rid: 5658998658205483989
     - rid: 5658998658205483990
-    - rid: 5658998658205483991
-    - rid: 5658998658205483992
-    - rid: 5658998658205483993
+    - rid: 5658998658205483973
+    - rid: 5658998658205483974
+    - rid: 5658998658205483975
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 449.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1129,9 +1323,11 @@ MonoBehaviour:
     - rid: 5658998658205483994
     - rid: 5658998658205483995
     - rid: 5658998658205483996
-    - rid: 5658998658205483997
-    - rid: 5658998658205483998
-    - rid: 5658998658205483999
+    - rid: 5658998658205483979
+    - rid: 5658998658205483980
+    - rid: 5658998658205483981
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 453.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1141,9 +1337,11 @@ MonoBehaviour:
     - rid: 5658998658205484006
     - rid: 5658998658205484007
     - rid: 5658998658205484008
-    - rid: 5658998658205484009
-    - rid: 5658998658205484010
-    - rid: 5658998658205484011
+    - rid: 5658998658205483985
+    - rid: 5658998658205483986
+    - rid: 5658998658205483987
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 453.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1153,9 +1351,11 @@ MonoBehaviour:
     - rid: 5658998658205484000
     - rid: 5658998658205484001
     - rid: 5658998658205484002
-    - rid: 5658998658205484003
-    - rid: 5658998658205484004
-    - rid: 5658998658205484005
+    - rid: 5658998658205483991
+    - rid: 5658998658205483992
+    - rid: 5658998658205483993
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 457
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1165,9 +1365,11 @@ MonoBehaviour:
     - rid: 5658998658205484012
     - rid: 5658998658205484013
     - rid: 5658998658205484014
-    - rid: 5658998658205484015
-    - rid: 5658998658205484016
-    - rid: 5658998658205484017
+    - rid: 5658998658205483997
+    - rid: 5658998658205483998
+    - rid: 5658998658205483999
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 457
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1177,9 +1379,11 @@ MonoBehaviour:
     - rid: 5658998658205484018
     - rid: 5658998658205484019
     - rid: 5658998658205484020
-    - rid: 5658998658205484021
-    - rid: 5658998658205484022
-    - rid: 5658998658205484023
+    - rid: 5658998658205484009
+    - rid: 5658998658205484010
+    - rid: 5658998658205484011
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 457
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1189,9 +1393,11 @@ MonoBehaviour:
     - rid: 5658998658205484024
     - rid: 5658998658205484025
     - rid: 5658998658205484026
-    - rid: 5658998658205484027
-    - rid: 5658998658205484028
-    - rid: 5658998658205484029
+    - rid: 5658998658205484003
+    - rid: 5658998658205484004
+    - rid: 5658998658205484005
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 460.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1201,9 +1407,11 @@ MonoBehaviour:
     - rid: 5658998658205484030
     - rid: 5658998658205484031
     - rid: 5658998658206269440
-    - rid: 5658998658206269441
-    - rid: 5658998658206269442
-    - rid: 5658998658206269443
+    - rid: 5658998658205484015
+    - rid: 5658998658205484016
+    - rid: 5658998658205484017
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 460.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1213,15 +1421,19 @@ MonoBehaviour:
     - rid: 5658998658206269444
     - rid: 5658998658206269445
     - rid: 5658998658206269446
-    - rid: 5658998658206269447
-    - rid: 5658998658206269448
-    - rid: 5658998658206269449
+    - rid: 5658998658205484021
+    - rid: 5658998658205484022
+    - rid: 5658998658205484023
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 462.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 464.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1231,9 +1443,11 @@ MonoBehaviour:
     - rid: 5658998658206269450
     - rid: 5658998658206269451
     - rid: 5658998658206269452
-    - rid: 5658998658206269453
-    - rid: 5658998658206269454
-    - rid: 5658998658206269455
+    - rid: 5658998658205484027
+    - rid: 5658998658205484028
+    - rid: 5658998658205484029
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 464.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1243,9 +1457,11 @@ MonoBehaviour:
     - rid: 5658998658206269456
     - rid: 5658998658206269457
     - rid: 5658998658206269458
-    - rid: 5658998658206269459
-    - rid: 5658998658206269460
-    - rid: 5658998658206269461
+    - rid: 5658998658206269441
+    - rid: 5658998658206269442
+    - rid: 5658998658206269443
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 464.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1255,9 +1471,11 @@ MonoBehaviour:
     - rid: 5658998658206269462
     - rid: 5658998658206269463
     - rid: 5658998658206269464
-    - rid: 5658998658206269465
-    - rid: 5658998658206269466
-    - rid: 5658998658206269467
+    - rid: 5658998658206269447
+    - rid: 5658998658206269448
+    - rid: 5658998658206269449
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 468.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1267,9 +1485,11 @@ MonoBehaviour:
     - rid: 5658998658206269474
     - rid: 5658998658206269475
     - rid: 5658998658206269476
-    - rid: 5658998658206269477
-    - rid: 5658998658206269478
-    - rid: 5658998658206269479
+    - rid: 5658998658206269453
+    - rid: 5658998658206269454
+    - rid: 5658998658206269455
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 468.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1279,9 +1499,11 @@ MonoBehaviour:
     - rid: 5658998658206269468
     - rid: 5658998658206269469
     - rid: 5658998658206269470
-    - rid: 5658998658206269471
-    - rid: 5658998658206269472
-    - rid: 5658998658206269473
+    - rid: 5658998658206269459
+    - rid: 5658998658206269460
+    - rid: 5658998658206269461
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 472
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1291,9 +1513,11 @@ MonoBehaviour:
     - rid: 5658998658206269480
     - rid: 5658998658206269481
     - rid: 5658998658206269482
-    - rid: 5658998658206269483
-    - rid: 5658998658206269484
-    - rid: 5658998658206269485
+    - rid: 5658998658206269465
+    - rid: 5658998658206269466
+    - rid: 5658998658206269467
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 472
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1303,9 +1527,11 @@ MonoBehaviour:
     - rid: 5658998658206269486
     - rid: 5658998658206269487
     - rid: 5658998658206269488
-    - rid: 5658998658206269489
-    - rid: 5658998658206269490
-    - rid: 5658998658206269491
+    - rid: 5658998658206269477
+    - rid: 5658998658206269478
+    - rid: 5658998658206269479
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 472
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1315,9 +1541,11 @@ MonoBehaviour:
     - rid: 5658998658206269492
     - rid: 5658998658206269493
     - rid: 5658998658206269494
-    - rid: 5658998658206269495
-    - rid: 5658998658206269496
-    - rid: 5658998658206269497
+    - rid: 5658998658206269471
+    - rid: 5658998658206269472
+    - rid: 5658998658206269473
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 475.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1327,9 +1555,11 @@ MonoBehaviour:
     - rid: 5658998658206269498
     - rid: 5658998658206269499
     - rid: 5658998658206269500
-    - rid: 5658998658206269501
-    - rid: 5658998658206269502
-    - rid: 5658998658206269503
+    - rid: 5658998658206269483
+    - rid: 5658998658206269484
+    - rid: 5658998658206269485
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 475.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1339,15 +1569,19 @@ MonoBehaviour:
     - rid: 5658998658206269504
     - rid: 5658998658206269505
     - rid: 5658998658206269506
-    - rid: 5658998658206269507
-    - rid: 5658998658206269508
-    - rid: 5658998658206269509
+    - rid: 5658998658206269489
+    - rid: 5658998658206269490
+    - rid: 5658998658206269491
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 477.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 479.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1357,9 +1591,11 @@ MonoBehaviour:
     - rid: 5658998658206269510
     - rid: 5658998658206269511
     - rid: 5658998658206269512
-    - rid: 5658998658206269513
-    - rid: 5658998658206269514
-    - rid: 5658998658206269515
+    - rid: 5658998658206269495
+    - rid: 5658998658206269496
+    - rid: 5658998658206269497
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 479.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1369,9 +1605,11 @@ MonoBehaviour:
     - rid: 5658998658206269516
     - rid: 5658998658206269517
     - rid: 5658998658206269518
-    - rid: 5658998658206269519
-    - rid: 5658998658206269520
-    - rid: 5658998658206269521
+    - rid: 5658998658206269501
+    - rid: 5658998658206269502
+    - rid: 5658998658206269503
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 479.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1381,9 +1619,11 @@ MonoBehaviour:
     - rid: 5658998658206269522
     - rid: 5658998658206269523
     - rid: 5658998658206269524
-    - rid: 5658998658206269525
-    - rid: 5658998658206269526
-    - rid: 5658998658206269527
+    - rid: 5658998658206269507
+    - rid: 5658998658206269508
+    - rid: 5658998658206269509
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 483.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1393,9 +1633,11 @@ MonoBehaviour:
     - rid: 5658998658206269534
     - rid: 5658998658206269535
     - rid: 5658998658206269536
-    - rid: 5658998658206269537
-    - rid: 5658998658206269538
-    - rid: 5658998658206269539
+    - rid: 5658998658206269513
+    - rid: 5658998658206269514
+    - rid: 5658998658206269515
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 483.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1405,9 +1647,11 @@ MonoBehaviour:
     - rid: 5658998658206269528
     - rid: 5658998658206269529
     - rid: 5658998658206269530
-    - rid: 5658998658206269531
-    - rid: 5658998658206269532
-    - rid: 5658998658206269533
+    - rid: 5658998658206269519
+    - rid: 5658998658206269520
+    - rid: 5658998658206269521
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 487
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1417,9 +1661,11 @@ MonoBehaviour:
     - rid: 5658998658206269540
     - rid: 5658998658206269541
     - rid: 5658998658206269542
-    - rid: 5658998658206269543
-    - rid: 5658998658206269544
-    - rid: 5658998658206269545
+    - rid: 5658998658206269525
+    - rid: 5658998658206269526
+    - rid: 5658998658206269527
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 487
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1429,9 +1675,11 @@ MonoBehaviour:
     - rid: 5658998658206269546
     - rid: 5658998658206269547
     - rid: 5658998658206269548
-    - rid: 5658998658206269549
-    - rid: 5658998658206269550
-    - rid: 5658998658206269551
+    - rid: 5658998658206269537
+    - rid: 5658998658206269538
+    - rid: 5658998658206269539
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 487
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1441,9 +1689,11 @@ MonoBehaviour:
     - rid: 5658998658206269552
     - rid: 5658998658206269553
     - rid: 5658998658206269554
-    - rid: 5658998658206269555
-    - rid: 5658998658206269556
-    - rid: 5658998658206269557
+    - rid: 5658998658206269531
+    - rid: 5658998658206269532
+    - rid: 5658998658206269533
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 490.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1453,9 +1703,11 @@ MonoBehaviour:
     - rid: 5658998658206269558
     - rid: 5658998658206269559
     - rid: 5658998658206269560
-    - rid: 5658998658206269561
-    - rid: 5658998658206269562
-    - rid: 5658998658206269563
+    - rid: 5658998658206269543
+    - rid: 5658998658206269544
+    - rid: 5658998658206269545
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 490.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1465,15 +1717,19 @@ MonoBehaviour:
     - rid: 5658998658206269564
     - rid: 5658998658206269565
     - rid: 5658998658206269566
-    - rid: 5658998658206269567
-    - rid: 5658998658206269568
-    - rid: 5658998658206269569
+    - rid: 5658998658206269549
+    - rid: 5658998658206269550
+    - rid: 5658998658206269551
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 492.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 494.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1483,9 +1739,11 @@ MonoBehaviour:
     - rid: 5658998658206269582
     - rid: 5658998658206269583
     - rid: 5658998658206269584
-    - rid: 5658998658206269585
-    - rid: 5658998658206269586
-    - rid: 5658998658206269587
+    - rid: 5658998658206269555
+    - rid: 5658998658206269556
+    - rid: 5658998658206269557
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 494.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1495,9 +1753,11 @@ MonoBehaviour:
     - rid: 5658998658206269570
     - rid: 5658998658206269571
     - rid: 5658998658206269572
-    - rid: 5658998658206269573
-    - rid: 5658998658206269574
-    - rid: 5658998658206269575
+    - rid: 5658998658206269561
+    - rid: 5658998658206269562
+    - rid: 5658998658206269563
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 494.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1507,9 +1767,11 @@ MonoBehaviour:
     - rid: 5658998658206269576
     - rid: 5658998658206269577
     - rid: 5658998658206269578
-    - rid: 5658998658206269579
-    - rid: 5658998658206269580
-    - rid: 5658998658206269581
+    - rid: 5658998658206269567
+    - rid: 5658998658206269568
+    - rid: 5658998658206269569
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 498.05002
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1519,9 +1781,11 @@ MonoBehaviour:
     - rid: 5658998658206269594
     - rid: 5658998658206269595
     - rid: 5658998658206269596
-    - rid: 5658998658206269597
-    - rid: 5658998658206269598
-    - rid: 5658998658206269599
+    - rid: 5658998658206269585
+    - rid: 5658998658206269586
+    - rid: 5658998658206269587
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 498.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1531,9 +1795,11 @@ MonoBehaviour:
     - rid: 5658998658206269588
     - rid: 5658998658206269589
     - rid: 5658998658206269590
-    - rid: 5658998658206269591
-    - rid: 5658998658206269592
-    - rid: 5658998658206269593
+    - rid: 5658998658206269573
+    - rid: 5658998658206269574
+    - rid: 5658998658206269575
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 502
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1543,9 +1809,11 @@ MonoBehaviour:
     - rid: 5658998658206269600
     - rid: 5658998658206269601
     - rid: 5658998658206269602
-    - rid: 5658998658206269603
-    - rid: 5658998658206269604
-    - rid: 5658998658206269605
+    - rid: 5658998658206269579
+    - rid: 5658998658206269580
+    - rid: 5658998658206269581
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 502
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1555,9 +1823,11 @@ MonoBehaviour:
     - rid: 5658998658206269606
     - rid: 5658998658206269607
     - rid: 5658998658206269608
-    - rid: 5658998658206269609
-    - rid: 5658998658206269610
-    - rid: 5658998658206269611
+    - rid: 5658998658206269597
+    - rid: 5658998658206269598
+    - rid: 5658998658206269599
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 502
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1567,9 +1837,11 @@ MonoBehaviour:
     - rid: 5658998658206269612
     - rid: 5658998658206269613
     - rid: 5658998658206269614
-    - rid: 5658998658206269615
-    - rid: 5658998658206269616
-    - rid: 5658998658206269617
+    - rid: 5658998658206269591
+    - rid: 5658998658206269592
+    - rid: 5658998658206269593
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 505.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1579,9 +1851,11 @@ MonoBehaviour:
     - rid: 5658998658206269618
     - rid: 5658998658206269619
     - rid: 5658998658206269620
-    - rid: 5658998658206269621
-    - rid: 5658998658206269622
-    - rid: 5658998658206269623
+    - rid: 5658998658206269603
+    - rid: 5658998658206269604
+    - rid: 5658998658206269605
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 505.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1591,15 +1865,19 @@ MonoBehaviour:
     - rid: 5658998658206269624
     - rid: 5658998658206269625
     - rid: 5658998658206269626
-    - rid: 5658998658206269627
-    - rid: 5658998658206269628
-    - rid: 5658998658206269629
+    - rid: 5658998658206269609
+    - rid: 5658998658206269610
+    - rid: 5658998658206269611
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 507.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 509.40002
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1609,9 +1887,11 @@ MonoBehaviour:
     - rid: 5658998658206269630
     - rid: 5658998658206269631
     - rid: 5658998658206269632
-    - rid: 5658998658206269633
-    - rid: 5658998658206269634
-    - rid: 5658998658206269635
+    - rid: 5658998658206269615
+    - rid: 5658998658206269616
+    - rid: 5658998658206269617
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 509.40002
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1621,9 +1901,11 @@ MonoBehaviour:
     - rid: 5658998658206269636
     - rid: 5658998658206269637
     - rid: 5658998658206269638
-    - rid: 5658998658206269639
-    - rid: 5658998658206269640
-    - rid: 5658998658206269641
+    - rid: 5658998658206269621
+    - rid: 5658998658206269622
+    - rid: 5658998658206269623
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 509.40002
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1633,9 +1915,11 @@ MonoBehaviour:
     - rid: 5658998658206269642
     - rid: 5658998658206269643
     - rid: 5658998658206269644
-    - rid: 5658998658206269645
-    - rid: 5658998658206269646
-    - rid: 5658998658206269647
+    - rid: 5658998658206269627
+    - rid: 5658998658206269628
+    - rid: 5658998658206269629
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 513.05005
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1645,9 +1929,11 @@ MonoBehaviour:
     - rid: 5658998658206269654
     - rid: 5658998658206269655
     - rid: 5658998658206269656
-    - rid: 5658998658206269657
-    - rid: 5658998658206269658
-    - rid: 5658998658206269659
+    - rid: 5658998658206269633
+    - rid: 5658998658206269634
+    - rid: 5658998658206269635
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 513.05005
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1657,9 +1943,11 @@ MonoBehaviour:
     - rid: 5658998658206269648
     - rid: 5658998658206269649
     - rid: 5658998658206269650
-    - rid: 5658998658206269651
-    - rid: 5658998658206269652
-    - rid: 5658998658206269653
+    - rid: 5658998658206269639
+    - rid: 5658998658206269640
+    - rid: 5658998658206269641
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 517
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1669,9 +1957,11 @@ MonoBehaviour:
     - rid: 5658998658206269660
     - rid: 5658998658206269661
     - rid: 5658998658206269662
-    - rid: 5658998658206269663
-    - rid: 5658998658206269664
-    - rid: 5658998658206269665
+    - rid: 5658998658206269645
+    - rid: 5658998658206269646
+    - rid: 5658998658206269647
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 517
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1681,9 +1971,11 @@ MonoBehaviour:
     - rid: 5658998658206269666
     - rid: 5658998658206269667
     - rid: 5658998658206269668
-    - rid: 5658998658206269669
-    - rid: 5658998658206269670
-    - rid: 5658998658206269671
+    - rid: 5658998658206269657
+    - rid: 5658998658206269658
+    - rid: 5658998658206269659
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 517
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1693,9 +1985,11 @@ MonoBehaviour:
     - rid: 5658998658206269672
     - rid: 5658998658206269673
     - rid: 5658998658206269674
-    - rid: 5658998658206269675
-    - rid: 5658998658206269676
-    - rid: 5658998658206269677
+    - rid: 5658998658206269651
+    - rid: 5658998658206269652
+    - rid: 5658998658206269653
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 520.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1705,9 +1999,11 @@ MonoBehaviour:
     - rid: 5658998658206269678
     - rid: 5658998658206269679
     - rid: 5658998658206269680
-    - rid: 5658998658206269681
-    - rid: 5658998658206269682
-    - rid: 5658998658206269683
+    - rid: 5658998658206269663
+    - rid: 5658998658206269664
+    - rid: 5658998658206269665
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 520.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1717,15 +2013,19 @@ MonoBehaviour:
     - rid: 5658998658206269684
     - rid: 5658998658206269685
     - rid: 5658998658206269686
-    - rid: 5658998658206269687
-    - rid: 5658998658206269688
-    - rid: 5658998658206269689
+    - rid: 5658998658206269669
+    - rid: 5658998658206269670
+    - rid: 5658998658206269671
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 522.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 524.4
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1735,9 +2035,11 @@ MonoBehaviour:
     - rid: 5658998658206269702
     - rid: 5658998658206269703
     - rid: 5658998658206269704
-    - rid: 5658998658206269705
-    - rid: 5658998658206269706
-    - rid: 5658998658206269707
+    - rid: 5658998658206269675
+    - rid: 5658998658206269676
+    - rid: 5658998658206269677
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 524.4
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1747,9 +2049,11 @@ MonoBehaviour:
     - rid: 5658998658206269690
     - rid: 5658998658206269691
     - rid: 5658998658206269692
-    - rid: 5658998658206269693
-    - rid: 5658998658206269694
-    - rid: 5658998658206269695
+    - rid: 5658998658206269681
+    - rid: 5658998658206269682
+    - rid: 5658998658206269683
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 524.4
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1759,9 +2063,11 @@ MonoBehaviour:
     - rid: 5658998658206269696
     - rid: 5658998658206269697
     - rid: 5658998658206269698
-    - rid: 5658998658206269699
-    - rid: 5658998658206269700
-    - rid: 5658998658206269701
+    - rid: 5658998658206269687
+    - rid: 5658998658206269688
+    - rid: 5658998658206269689
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 528.05005
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1771,9 +2077,11 @@ MonoBehaviour:
     - rid: 5658998658206269714
     - rid: 5658998658206269715
     - rid: 5658998658206269716
-    - rid: 5658998658206269717
-    - rid: 5658998658206269718
-    - rid: 5658998658206269719
+    - rid: 5658998658206269705
+    - rid: 5658998658206269706
+    - rid: 5658998658206269707
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 528.05005
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1783,9 +2091,11 @@ MonoBehaviour:
     - rid: 5658998658206269708
     - rid: 5658998658206269709
     - rid: 5658998658206269710
-    - rid: 5658998658206269711
-    - rid: 5658998658206269712
-    - rid: 5658998658206269713
+    - rid: 5658998658206269693
+    - rid: 5658998658206269694
+    - rid: 5658998658206269695
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 532
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1795,9 +2105,11 @@ MonoBehaviour:
     - rid: 5658998658206269720
     - rid: 5658998658206269721
     - rid: 5658998658206269722
-    - rid: 5658998658206269723
-    - rid: 5658998658206269724
-    - rid: 5658998658206269725
+    - rid: 5658998658206269699
+    - rid: 5658998658206269700
+    - rid: 5658998658206269701
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 532
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1807,9 +2119,11 @@ MonoBehaviour:
     - rid: 5658998658206269726
     - rid: 5658998658206269727
     - rid: 5658998658206269728
-    - rid: 5658998658206269729
-    - rid: 5658998658206269730
-    - rid: 5658998658206269731
+    - rid: 5658998658206269717
+    - rid: 5658998658206269718
+    - rid: 5658998658206269719
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 532
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1819,9 +2133,11 @@ MonoBehaviour:
     - rid: 5658998658206269732
     - rid: 5658998658206269733
     - rid: 5658998658206269734
-    - rid: 5658998658206269735
-    - rid: 5658998658206269736
-    - rid: 5658998658206269737
+    - rid: 5658998658206269711
+    - rid: 5658998658206269712
+    - rid: 5658998658206269713
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 535.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1831,9 +2147,11 @@ MonoBehaviour:
     - rid: 5658998658206269738
     - rid: 5658998658206269739
     - rid: 5658998658206269740
-    - rid: 5658998658206269741
-    - rid: 5658998658206269742
-    - rid: 5658998658206269743
+    - rid: 5658998658206269723
+    - rid: 5658998658206269724
+    - rid: 5658998658206269725
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 535.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1843,15 +2161,19 @@ MonoBehaviour:
     - rid: 5658998658206269744
     - rid: 5658998658206269745
     - rid: 5658998658206269746
-    - rid: 5658998658206269747
-    - rid: 5658998658206269748
-    - rid: 5658998658206269749
+    - rid: 5658998658206269729
+    - rid: 5658998658206269730
+    - rid: 5658998658206269731
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 537.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 539.4
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1861,9 +2183,11 @@ MonoBehaviour:
     - rid: 5658998658206269750
     - rid: 5658998658206269751
     - rid: 5658998658206269752
-    - rid: 5658998658206269753
-    - rid: 5658998658206269754
-    - rid: 5658998658206269755
+    - rid: 5658998658206269735
+    - rid: 5658998658206269736
+    - rid: 5658998658206269737
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 539.4
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1873,9 +2197,11 @@ MonoBehaviour:
     - rid: 5658998658206269756
     - rid: 5658998658206269757
     - rid: 5658998658206269758
-    - rid: 5658998658206269759
-    - rid: 5658998658206269760
-    - rid: 5658998658206269761
+    - rid: 5658998658206269741
+    - rid: 5658998658206269742
+    - rid: 5658998658206269743
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 539.4
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1885,9 +2211,11 @@ MonoBehaviour:
     - rid: 5658998658206269762
     - rid: 5658998658206269763
     - rid: 5658998658206269764
-    - rid: 5658998658206269765
-    - rid: 5658998658206269766
-    - rid: 5658998658206269767
+    - rid: 5658998658206269747
+    - rid: 5658998658206269748
+    - rid: 5658998658206269749
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 543.05005
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1897,9 +2225,11 @@ MonoBehaviour:
     - rid: 5658998658206269774
     - rid: 5658998658206269775
     - rid: 5658998658206269776
-    - rid: 5658998658206269777
-    - rid: 5658998658206269778
-    - rid: 5658998658206269779
+    - rid: 5658998658206269753
+    - rid: 5658998658206269754
+    - rid: 5658998658206269755
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 543.05005
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1909,9 +2239,11 @@ MonoBehaviour:
     - rid: 5658998658206269768
     - rid: 5658998658206269769
     - rid: 5658998658206269770
-    - rid: 5658998658206269771
-    - rid: 5658998658206269772
-    - rid: 5658998658206269773
+    - rid: 5658998658206269759
+    - rid: 5658998658206269760
+    - rid: 5658998658206269761
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 547
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1921,9 +2253,11 @@ MonoBehaviour:
     - rid: 5658998658206269780
     - rid: 5658998658206269781
     - rid: 5658998658206269782
-    - rid: 5658998658206269783
-    - rid: 5658998658206269784
-    - rid: 5658998658206269785
+    - rid: 5658998658206269765
+    - rid: 5658998658206269766
+    - rid: 5658998658206269767
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 547
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -1933,9 +2267,11 @@ MonoBehaviour:
     - rid: 5658998658206269786
     - rid: 5658998658206269787
     - rid: 5658998658206269788
-    - rid: 5658998658206269789
-    - rid: 5658998658206269790
-    - rid: 5658998658206269791
+    - rid: 5658998658206269777
+    - rid: 5658998658206269778
+    - rid: 5658998658206269779
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 547
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1945,9 +2281,11 @@ MonoBehaviour:
     - rid: 5658998658206269792
     - rid: 5658998658206269793
     - rid: 5658998658206269794
-    - rid: 5658998658206269795
-    - rid: 5658998658206269796
-    - rid: 5658998658206269797
+    - rid: 5658998658206269771
+    - rid: 5658998658206269772
+    - rid: 5658998658206269773
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 550.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -1957,9 +2295,11 @@ MonoBehaviour:
     - rid: 5658998658206269798
     - rid: 5658998658206269799
     - rid: 5658998658206269800
-    - rid: 5658998658206269801
-    - rid: 5658998658206269802
-    - rid: 5658998658206269803
+    - rid: 5658998658206269783
+    - rid: 5658998658206269784
+    - rid: 5658998658206269785
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 550.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -1969,15 +2309,19 @@ MonoBehaviour:
     - rid: 5658998658206269804
     - rid: 5658998658206269805
     - rid: 5658998658206269806
-    - rid: 5658998658206269807
-    - rid: 5658998658206269808
-    - rid: 5658998658206269809
+    - rid: 5658998658206269789
+    - rid: 5658998658206269790
+    - rid: 5658998658206269791
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
     PositionOnMap: 552.51
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 554.4
     PositionOffset: {x: -5, y: 0, z: 0}
@@ -1987,9 +2331,11 @@ MonoBehaviour:
     - rid: 5658998658206269810
     - rid: 5658998658206269811
     - rid: 5658998658206269812
-    - rid: 5658998658206269813
-    - rid: 5658998658206269814
-    - rid: 5658998658206269815
+    - rid: 5658998658206269795
+    - rid: 5658998658206269796
+    - rid: 5658998658206269797
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 554.4
     PositionOffset: {x: 5, y: 0, z: 0}
@@ -1999,9 +2345,11 @@ MonoBehaviour:
     - rid: 5658998658206269816
     - rid: 5658998658206269817
     - rid: 5658998658206269818
-    - rid: 5658998658206269819
-    - rid: 5658998658206269820
-    - rid: 5658998658206269821
+    - rid: 5658998658206269801
+    - rid: 5658998658206269802
+    - rid: 5658998658206269803
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 554.4
     PositionOffset: {x: 0, y: 0, z: 0}
@@ -2011,9 +2359,11 @@ MonoBehaviour:
     - rid: 5658998658206269822
     - rid: 5658998658206269823
     - rid: 5658998658206269824
-    - rid: 5658998658206269825
-    - rid: 5658998658206269826
-    - rid: 5658998658206269827
+    - rid: 5658998658206269807
+    - rid: 5658998658206269808
+    - rid: 5658998658206269809
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 558.05005
     PositionOffset: {x: -2.54, y: 0, z: 0}
@@ -2023,9 +2373,11 @@ MonoBehaviour:
     - rid: 5658998658206269834
     - rid: 5658998658206269835
     - rid: 5658998658206269836
-    - rid: 5658998658206269837
-    - rid: 5658998658206269838
-    - rid: 5658998658206269839
+    - rid: 5658998658206269813
+    - rid: 5658998658206269814
+    - rid: 5658998658206269815
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 558.05005
     PositionOffset: {x: 2.63, y: 0, z: 0}
@@ -2035,19 +2387,24 @@ MonoBehaviour:
     - rid: 5658998658206269828
     - rid: 5658998658206269829
     - rid: 5658998658206269830
-    - rid: 5658998658206269831
-    - rid: 5658998658206269832
-    - rid: 5658998658206269833
+    - rid: 5658998658206269819
+    - rid: 5658998658206269820
+    - rid: 5658998658206269821
+    overrideMaxHp: 0
+    maxHp: 10
   - Prefab: {fileID: 5541669518165071482, guid: fc29c1413a53f114c8d72068c39ef0c7, type: 3}
     PositionOnMap: 571.06
     PositionOffset: {x: 0, y: 0.59, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
-  HasBoss: 0
+    overrideMaxHp: 0
+    maxHp: 10
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 5658998658205483472
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -6302,18 +6659,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658206269825
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1171
-    - rid: 5658998658206269826
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658206269827
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658206269828
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -6329,18 +6674,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658206269831
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1171
-    - rid: 5658998658206269832
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658206269833
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658206269834
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -6356,15 +6689,30 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658206269837
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1171
-    - rid: 5658998658206269838
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658206269839
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
+    - rid: 7276668440326176768
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176769
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176770
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176771
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176772
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176773
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176774
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176775
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 7276668440326176776
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 

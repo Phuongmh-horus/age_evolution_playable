@@ -31,6 +31,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     [SerializeField] private int maxBricksInFlight = 28;
     [SerializeField] private int maxVisualBricksPerBurst = 3;
     [SerializeField] private float minVisualSpawnInterval = 0.05f;
+    [SerializeField] private bool forceVisualBricksMatchDamage = true;
     [SerializeField] private bool batchCapacityGainPerFrame = true;
     [SerializeField] private BrickLayer brickLayer;
     [SerializeField] private BrickFallSettings _brickFallSettings;
@@ -214,7 +215,8 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         
         if (isChainedPillar && chain)
         {
-            HandleChainHit();
+            int chainDamage = source != null ? Mathf.Max(1, source.Damage) : 1;
+            HandleChainHit(chainDamage);
             return;
         }
 
@@ -224,9 +226,6 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (!brickLayer.isActivated) brickLayer.isActivated = true;
 
         int damage = source != null ? source.Damage : 1;
-        if (hitTextFlyEffect != null)
-            hitTextFlyEffect.OnHit(Mathf.Max(1, damage));
-        
         TriggerBrickFall(source != null ? source.Position : transform.position, damage);
         PlayScalePulse();
     }
@@ -235,7 +234,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     {
         if (isChainedPillar && chain)
         {
-            HandleChainHit();
+            HandleChainHit(1);
             return;
         }
 
@@ -243,11 +242,13 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         base.HandleWheelCollision();
     }
 
-    private void HandleChainHit()
+    private void HandleChainHit(int shownDamage)
     {
         if (chain == null) return;
 
         chain.ApplyDamage();
+        if (hitTextFlyEffect != null)
+            hitTextFlyEffect.OnHit(Mathf.Max(1, shownDamage));
         if (Data != null)
             Data.Armor = Mathf.Max(0, chain.RemainingHealth);
 
@@ -301,26 +302,29 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         int logicalBrickCount = Mathf.Max(1, bricksPerDamage * safeDamage);
         int visualBrickCount = logicalBrickCount;
 
-        // Performance mode: reduce only visual bricks, keep total capacity reward equivalent.
-        if (reduceBricksPerDamage)
+        if (!forceVisualBricksMatchDamage)
         {
-            visualBrickCount = Mathf.Max(1, Mathf.CeilToInt(logicalBrickCount * 0.2f));
-        }
+            // Performance mode: reduce only visual bricks, keep total capacity reward equivalent.
+            if (reduceBricksPerDamage)
+            {
+                visualBrickCount = Mathf.Max(1, Mathf.CeilToInt(logicalBrickCount * 0.2f));
+            }
 
-        if (maxVisualBricksPerHit > 0)
-        {
-            visualBrickCount = Mathf.Min(visualBrickCount, maxVisualBricksPerHit);
-        }
+            if (maxVisualBricksPerHit > 0)
+            {
+                visualBrickCount = Mathf.Min(visualBrickCount, maxVisualBricksPerHit);
+            }
 
-        if (maxBricksInFlight > 0)
-        {
-            int room = Mathf.Max(0, maxBricksInFlight - _bricksInFlight);
-            visualBrickCount = Mathf.Min(visualBrickCount, room);
-        }
+            if (maxBricksInFlight > 0)
+            {
+                int room = Mathf.Max(0, maxBricksInFlight - _bricksInFlight);
+                visualBrickCount = Mathf.Min(visualBrickCount, room);
+            }
 
-        if (maxVisualBricksPerBurst > 0)
-        {
-            visualBrickCount = Mathf.Min(visualBrickCount, maxVisualBricksPerBurst);
+            if (maxVisualBricksPerBurst > 0)
+            {
+                visualBrickCount = Mathf.Min(visualBrickCount, maxVisualBricksPerBurst);
+            }
         }
 
         int capacityUnit = 1;
@@ -330,7 +334,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         }
 
         int logicalCapacity = logicalBrickCount * capacityUnit;
-        float spawnInterval = Mathf.Max(0f, minVisualSpawnInterval);
+        float spawnInterval = forceVisualBricksMatchDamage ? 0f : Mathf.Max(0f, minVisualSpawnInterval);
         if (spawnInterval > 0f && Time.time < _nextVisualSpawnTime)
         {
             QueueCapacityGain(logicalCapacity);

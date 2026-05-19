@@ -87,7 +87,7 @@ MonoBehaviour:
   collisionCheckRangeZ: 22
   collisionSize: {x: 3, y: 3}
   characterList: {fileID: 11400000, guid: a0a4046a522e97b4ca8b615cafd20aa6, type: 2}
-  fallbackCharacterLevel: 1
+  fallbackCharacterLevel: 3
   maxActiveSpawnedUnits: 17
   unitSpacing: 1.5
   attackMode: 2
@@ -96,7 +96,7 @@ MonoBehaviour:
   attackOriginOffset: 0.9
   attackInterval: 1
   attackDamage: 1
-  projectileDistance: 21
+  projectileDistance: 25
   projectileDuration: 0.55
   projectileRotationSpeed: -600
   unitscalevalue: 1.35

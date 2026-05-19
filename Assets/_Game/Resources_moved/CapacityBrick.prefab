@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8707033898026285271}
   - component: {fileID: 1785680552558237004}
   - component: {fileID: -7361016770618091757}
+  - component: {fileID: 3839950479083146026}
+  - component: {fileID: 935432575755178556}
   m_Layer: 0
   m_Name: CapacityBrick
   m_TagString: Untagged
@@ -97,3 +99,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1785680552558237004}
+--- !u!114 &3839950479083146026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4534439711159034648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d729196a3599db24b9c00163b02f9254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brickMeshRenderer: {fileID: 1785680552558237004}
+  scaleUp: 1.1
+  scaleDown: 0.9
+  scaleStageDuration: 0.08
+  brickWidth: 0.8
+  brickLength: 0.5
+  brickHeight: 0.5
+  brickFallMotion: {fileID: 935432575755178556}
+  isActivated: 0
+--- !u!114 &935432575755178556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4534439711159034648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d12a3cd5ef4d8c87afdaf49b8f7f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: ae5815c2f7e34d94ab4c52c5b5ed9abf, type: 2}

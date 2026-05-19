@@ -409,6 +409,9 @@ public class UICapacityBar : MonoBehaviour
         float yPos = _worldCorners[0].y + (_worldCorners[1].y - _worldCorners[0].y) * progress;
 
         Vector3 worldPosition = new Vector3(xPos, yPos, _worldCorners[0].z);
-        return worldPosition;
+
+        // Contract with CameraFollow.GetCapacityBarWorldPosition:
+        // this callback must provide a screen-space point.
+        return RectTransformUtility.WorldToScreenPoint(cam, worldPosition);
     }
 }

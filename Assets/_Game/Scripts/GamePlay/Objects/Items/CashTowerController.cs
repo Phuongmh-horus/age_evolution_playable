@@ -44,6 +44,7 @@ namespace GamePlay.Items
 
         [Header("Visuals")]
         [SerializeField] private bool isOverrideVisual = true;
+        [SerializeField] private bool applyBaseColorOnInitialize = false;
         [SerializeField] private MeshRenderer baseMesh;
         [SerializeField] private Color baseColor = Color.white;
         [SerializeField] private Transform towerVisualRoot;
@@ -136,7 +137,7 @@ namespace GamePlay.Items
 
             CacheMoneyItems();
             BuildColorRendererCache();
-            if (isOverrideVisual)
+            if (isOverrideVisual && applyBaseColorOnInitialize)
                 ApplyColor(baseColor);
 
             _originalScale = transform.localScale;

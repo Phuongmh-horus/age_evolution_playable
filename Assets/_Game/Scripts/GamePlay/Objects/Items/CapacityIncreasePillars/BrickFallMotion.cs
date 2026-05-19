@@ -261,16 +261,56 @@ public class BrickFallMotion : MonoBehaviour
         _flyDurationWithOffset = Mathf.Max(0.1f, settings.FlyDuration + offset);
         _invFlyDuration = 1f / Mathf.Max(0.0001f, _flyDurationWithOffset);
 
-        if (CameraFollow.Instance != null)
-        {
-            _flyTargetPosition = CameraFollow.Instance.GetCapacityBarWorldPosition();
-        }
-        else
+        if (!TryResolveCapacityBarTarget(out _flyTargetPosition))
         {
             _flyTargetPosition = _transform.position + Vector3.up * 2f;
         }
 
         _angularVelocity = Vector3.zero;
+    }
+
+    private bool TryResolveCapacityBarTarget(out Vector3 target)
+    {
+        target = Vector3.zero;
+
+        Camera cam = null;
+        if (CameraFollow.Instance != null)
+        {
+            cam = CameraFollow.Instance.GetCamera();
+        }
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
+
+        if (GameEventBus.GetCapacityBarPosition != null)
+        {
+            Vector3 pos = GameEventBus.GetCapacityBarPosition.Invoke();
+
+            bool looksLikeScreenPoint =
+                pos.x >= -16f && pos.x <= Screen.width + 16f &&
+                pos.y >= -16f && pos.y <= Screen.height + 16f;
+
+            if (looksLikeScreenPoint && cam != null)
+            {
+                float depth = Vector3.Dot(_flyStartPosition - cam.transform.position, cam.transform.forward);
+                depth = Mathf.Max(1f, depth);
+                pos.z = depth;
+                target = cam.ScreenToWorldPoint(pos);
+                return true;
+            }
+
+            target = pos;
+            return true;
+        }
+
+        if (CameraFollow.Instance != null)
+        {
+            target = CameraFollow.Instance.GetCapacityBarWorldPosition();
+            return true;
+        }
+
+        return false;
     }
 
     private bool StepFlyToCapacity(float dt)

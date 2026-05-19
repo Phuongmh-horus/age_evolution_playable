@@ -176,7 +176,6 @@ namespace GamePlay.ComponentSystems
                            (1u << (int)EntityType.CapacityFactory) |
                            (1u << (int)EntityType.CapacityGate) |
                            (1u << (int)EntityType.PowerGate) |
-                           (1u << (int)EntityType.FinishTrigger) |
                            (1u << (int)EntityType.FinishTower) |
                            (1u << (int)EntityType.GateNewEra);
 

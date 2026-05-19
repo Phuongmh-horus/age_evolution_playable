@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GamePlay.Characters;
 using GamePlay.ComponentSystems;
 using UnityEngine;
+using GamePlay.Crushers;
 
 namespace GamePlay.Items
 {
@@ -15,12 +16,6 @@ namespace GamePlay.Items
         [Header("Playable Options")]
         [Tooltip("Nếu gate đã full slot thì có nuốt (despawn) belt không?")]
         [SerializeField] private bool despawnBeltWhenFull = true;
-
-        [Header("Gold Gate Settings")]
-        [SerializeField] private Transform rootAnimTrans;
-        [SerializeField] private List<IncreaseElement> increaseElements;
-        [SerializeField] private float goldDrainDuration = 1.5f;
-        [SerializeField] private float phase3Duration = 0.5f;
 
         private readonly Dictionary<int, List<CharacterUnit>> _beltUnits = new Dictionary<int, List<CharacterUnit>>();
         private int _beltUnitCount;
@@ -64,17 +59,6 @@ namespace GamePlay.Items
 
             ClearBelts();
 
-            // Sync Data.ElementDataList to increaseElements
-            if (Data != null && Data.ElementDataList != null && increaseElements != null)
-            {
-                int count = Mathf.Min(Data.ElementDataList.Count, increaseElements.Count);
-                for (int i = 0; i < count; i++)
-                {
-                    if (increaseElements[i] != null)
-                        increaseElements[i].SetElementData(Data.ElementDataList[i]);
-                }
-            }
-
             // --- REDUNDANT COLLIDER REMOVED (Migrated to CollisionSystem) ---
             // Gate detection is now handled by WheelUnit via CollisionSystem iteration.
             
@@ -91,6 +75,37 @@ namespace GamePlay.Items
             // Gọi base của ItemUnit (skip StatModifierItem vì nó sẽ gọi AdjustStatModifierValue không cần thiết)
             // Chúng ta override hoàn toàn để kiểm soát flow
             base.Initialize();
+
+            // [FIX] Ensure base value is added to RequestDataList so "Normal Gates" work
+            // MUST be done AFTER base.Initialize() because base.Initialize calls ResetStatModifierValue() which clears the list!
+            if (Data.RequestDataList == null) 
+                Data.RequestDataList = new List<CardSpawnRequestData>();
+            else 
+                Data.RequestDataList.Clear(); // [FIX] Ensure clean state from Pool
+            
+            // [FIX] Prevent x2 Card Issue:
+            // Do NOT pre-fill RequestDataList with base Value.
+            // Only 'AddCharacter' should populate the list for collection gates.
+            // If this is a static reward gate (no factory), Data.Value is usually sufficient, 
+            // but for a dynamic gate, this caused doubling.
+            // We assume 'CapacityIncreaseGate' is primarily for collection.
+            
+            /*
+            // Only add default if list is empty but Value is set
+            if (Data.RequestDataList.Count == 0 && Data.Value > 0)
+            {
+                // Assign base value to Level 1, ensuring the gate has rewards even without factory units
+                Data.AdjustValue(1, Data.Value);
+            }
+            */
+
+            // [REFERENCE CODE FLOW]:
+            // Gate trong game gốc KHÔNG tự có Value ban đầu.
+            // Flow đúng: Factory spawn characters → ConveyorBelt mang đến Gate → Gate.AddCharacter()
+            // → RequestDataList được populate → Wheel hit Gate → Cards được add vào Wheel
+            //
+            // Nếu wheel hit Gate mà không có Factory phía trước, RequestDataList sẽ trống
+            // và không có cards nào được add. Đây là behavior đúng của game gốc.
 
             // keep single base.Initialize() call above; avoid duplicate event/collision registration.
         }
@@ -165,135 +180,20 @@ namespace GamePlay.Items
             _beltUnits.Clear();
         }
 
-
-        [ContextMenu("TEST: Add Dummy Belt (Level 1)")]
         protected override void HandleWheelCollision()
         {
-            if (_hasCollided) return;
+            if (_hasCollided) return; // [FIX] Strict Lock
             _hasCollided = true;
-            StartCoroutine(CollisionSequence());
-        }
 
-        private IEnumerator CollisionSequence()
-        {
-            // Phase 1: select element based on gold, assign Data, update visual
-            int gold = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-            IncreaseElement selected = GetBestEligibleElement(gold);
-            if (selected == null)
+            if (Data.RequestDataList != null && Data.RequestDataList.Count > 0)
             {
-
-
-                // Phase 3: tip RootAnimTrans 90° then apply config
-                yield return StartCoroutine(Phase3());
-                EndOfPhase();
-                yield break;
             }
-
-            selected.SetActiveVisual();
-
-            // Cache initial distance for Phase 2
-            float distanceOffset = 0f;
-            if (rootAnimTrans != null)
+            else
             {
-                Transform playerTrans = GameplayManager.Instance.PlayerTransform;
-                if (playerTrans != null)
-                    distanceOffset = rootAnimTrans.position.z - playerTrans.position.z;
+                Debug.LogWarning($"[Gate] WARNING: RequestDataList is EMPTY or NULL! Cards will NOT be added!");
             }
-
-            // Phase 2: follow player Z + drain gold animation
-            yield return StartCoroutine(Phase2(selected, distanceOffset));
-
-            // Phase 3: tip RootAnimTrans 90° then apply config
-            yield return StartCoroutine(Phase3());
-
-            if (selected.LevelCard > 0)
-            {
-                selected.StatData.Value = selected.GetCurrentValue();
-                GameplayManager.Instance.ChangeStatModifierData(selected.StatData);
-                GameplayManager.Instance.RunUpgradeEffect();
-            }
-            EndOfPhase();
-
-            void EndOfPhase()
-            {
-
-
-                ClearBelts();
-                // DespawnInterval();
-            }
-        }
-
-        private IEnumerator Phase2(IncreaseElement element, float distanceOffset)
-        {
-            int totalGold = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-            if (totalGold <= 0) yield break;
-
-            Transform playerTrans = GameplayManager.Instance.PlayerTransform;
-            int spendPerFrame = Mathf.Max(1, Mathf.CeilToInt(totalGold / (goldDrainDuration * 60f)));
-
-            int levelIndex = 0;
-            while (GameplayManager.Instance.GetCurrency(CurrencyType.Gold) > 0)
-            {
-                int cycleGoldSpent = 0;
-                int targetGoldPerCycle = element.GoldCost;
-                element.InitProgress(targetGoldPerCycle);
-
-                while (cycleGoldSpent < targetGoldPerCycle && GameplayManager.Instance.GetCurrency(CurrencyType.Gold) > 0)
-                {
-                    if (rootAnimTrans != null && playerTrans != null)
-                    {
-                        Vector3 pos = rootAnimTrans.position;
-                        pos.z = playerTrans.position.z + distanceOffset;
-                        rootAnimTrans.position = pos;
-                    }
-
-                    int goldBefore = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-                    GameplayManager.Instance.TrySpendCurrency(CurrencyType.Gold, spendPerFrame);
-                    int goldAfter = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-                    int goldSpent = goldBefore - goldAfter;
-                    cycleGoldSpent += goldSpent;
-
-                    element.UpdateProgress(cycleGoldSpent);
-                    yield return null;
-                }
-
-                if (cycleGoldSpent >= targetGoldPerCycle)
-                {
-                    levelIndex++;
-                    element.UpdateLevelCard(levelIndex);
-                    element.UpdateProgress(0);
-                }
-            }
-        }
-
-        private IEnumerator Phase3()
-        {
-            if (rootAnimTrans == null) yield break;
-
-            Quaternion from = rootAnimTrans.localRotation;
-            Quaternion to = from * Quaternion.Euler(90f, 0f, 0f);
-            float elapsed = 0f;
-
-            while (elapsed < phase3Duration)
-            {
-                elapsed += Time.deltaTime;
-                rootAnimTrans.localRotation = Quaternion.Lerp(from, to, elapsed / phase3Duration);
-                yield return null;
-            }
-
-            rootAnimTrans.localRotation = to;
-        }
-
-        private IncreaseElement GetBestEligibleElement(int gold)
-        {
-            IncreaseElement best = null;
-            foreach (var element in increaseElements)
-            {
-                if (element == null || !element.IsEligible(gold)) continue;
-                if (best == null || element.GoldCost > best.GoldCost)
-                    best = element;
-            }
-            return best;
+            GameplayManager.Instance.ChangeStatModifierData(Data);
+            DespawnInterval();
         }
 
         protected override void HandleNonWheelCollision(IAttacker source) { }
@@ -339,12 +239,18 @@ namespace GamePlay.Items
 
             list.Add(belt);
 
-            // 3) Increase count
+            // 3) Increase count + update data
             _beltUnitCount++;
+            AdjustStatModifierValue(belt.Level, 1);
 
             // 4) Return slot for conveyor jump target
             var targetSlot = slots[_beltUnitCount - 1];
             return targetSlot;
+        }
+
+        private void AdjustStatModifierValue(int level, int amount)
+        {
+            Data.AdjustValue(level, amount);
         }
     }
 }

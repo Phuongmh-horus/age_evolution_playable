@@ -17,7 +17,6 @@ namespace GamePlay.Items
 
         MoveSpeed,
         EvolutionPoint,
-        CharacterLevel,
     }
 
     [Serializable]

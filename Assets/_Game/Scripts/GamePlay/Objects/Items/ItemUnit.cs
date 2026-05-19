@@ -336,12 +336,17 @@ namespace GamePlay.Items
         {
             if (source == null) return;
 
-            // [FIX] Debounce: block same attacker in same frame (prevents x2/x6 bugs from duplicate events/collisions)
-            if (_lastHitFrame == Time.frameCount && _lastAttacker == source) 
-                return;
+            // Debounce only Wheel collisions to avoid duplicate trigger bugs.
+            // For Character/Projectile hits, multiple attacks can land in the same frame
+            // and must all be processed.
+            if (source.EntityType == GamePlay.Entities.EntityType.Wheel)
+            {
+                if (_lastHitFrame == Time.frameCount && _lastAttacker == source)
+                    return;
 
-            _lastHitFrame = Time.frameCount;
-            _lastAttacker = source;
+                _lastHitFrame = Time.frameCount;
+                _lastAttacker = source;
+            }
 
             // Playable: Add missing visual feedback from Reference
             if ((ActiveFlags & CapabilityFlags.Effector) != 0)
@@ -387,10 +392,7 @@ namespace GamePlay.Items
         /// </summary>
         protected virtual void HandleNonWheelCollision(IAttacker source)
         {
-            var hitText = GetHitTextFlyEffect();
-            if (source != null && hitText != null)
-                hitText.OnHit(Mathf.Max(1, source.Damage));
-
+            // Damage text should come from HealthComponent.OnTakeDamaged to avoid double popups.
             Pack.Healable?.TakeDamage(source);
         }
 

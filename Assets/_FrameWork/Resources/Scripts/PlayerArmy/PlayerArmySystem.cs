@@ -1006,76 +1006,9 @@ namespace PlayerArmy
                 return false;
             }
 
-            var collisionSystem = CollisionSystem.Instance;
-            if (collisionSystem == null || collisionSystem.Count <= 0)
-            {
-                return false;
-            }
-
             Vector2 attackWindow = ResolveAttackWindow();
-            Vector3 forward = unit.transform.forward;
-            Vector3 right = unit.transform.right;
-            Vector3 origin = unit.transform.position + forward * Mathf.Max(0f, attackOriginOffset);
-
-            float range = Mathf.Max(0.1f, attackWindow.y);
-            float halfWidth = Mathf.Max(0.05f, attackWindow.x * 0.5f);
-            IHitable bestTarget = null;
-            float bestForward = float.MaxValue;
-            Vector3 bestTargetPos = default;
-
-            for (int i = 0; i < collisionSystem.Count; i++)
-            {
-                var target = collisionSystem.GetTargetBySortedIndex(i);
-                if (target == null || !target.IsActive)
-                {
-                    continue;
-                }
-
-                if (ReferenceEquals(target, unit))
-                {
-                    continue;
-                }
-
-                var targetTr = collisionSystem.GetTransform(i);
-                if (targetTr == null)
-                {
-                    continue;
-                }
-
-                var colData = collisionSystem.GetColliderData(i);
-                uint categoryBits = colData.CategoryBits != 0
-                    ? colData.CategoryBits
-                    : (uint)(1 << (int)target.EntityType);
-                if ((TargetMask & categoryBits) == 0)
-                {
-                    continue;
-                }
-
-                Vector3 delta = targetTr.position - origin;
-                float forwardDist = Vector3.Dot(delta, forward);
-                if (forwardDist < 0f || forwardDist > range)
-                {
-                    continue;
-                }
-
-                float lateralDist = Mathf.Abs(Vector3.Dot(delta, right));
-                float targetHalfWidth = Mathf.Max(Mathf.Abs(colData.Size.x), Mathf.Abs(colData.Size.z));
-                if (lateralDist > halfWidth + targetHalfWidth)
-                {
-                    continue;
-                }
-
-                if (forwardDist >= bestForward)
-                {
-                    continue;
-                }
-
-                bestForward = forwardDist;
-                bestTarget = target;
-                bestTargetPos = targetTr.position;
-            }
-
-            if (bestTarget == null)
+            Vector3 origin = unit.transform.position + unit.transform.forward * Mathf.Max(0f, attackOriginOffset);
+            if (!TryFindBestForwardTarget(unit, origin, Mathf.Max(0.1f, attackWindow.y), attackWindow.x, out var targetInfo))
             {
                 return false;
             }
@@ -1084,13 +1017,13 @@ namespace PlayerArmy
 
             int effectiveDamage = ResolveEffectiveAttackDamage();
             var attackSource = new UnitAttackSource(unit.transform, origin, attackWindow, effectiveDamage, TargetMask);
-            attackSource.OnAttackSucceed(bestTarget);
-            bestTarget.OnHit(attackSource);
-            OnAttackComplete?.Invoke(bestTarget);
+            attackSource.OnAttackSucceed(targetInfo.Target);
+            targetInfo.Target.OnHit(attackSource);
+            OnAttackComplete?.Invoke(targetInfo.Target);
 
             if (effectSystem != null)
             {
-                effectSystem.PlayEffectAt(EffectType.Attack, bestTargetPos, Quaternion.identity, unit.transform, null, 0f);
+                effectSystem.PlayEffectAt(EffectType.Attack, targetInfo.Position, Quaternion.identity, unit.transform, null, 0f);
             }
 
             return true;
@@ -1126,7 +1059,6 @@ namespace PlayerArmy
                 float distance = Mathf.Max(0.1f, projectileDistance);
                 float duration = Mathf.Max(0.55f, projectileDuration);
                 int damage = ResolveEffectiveAttackDamage();
-
                 var projectile = weaponProjectilePrefab.Spawn(startPoint, rotation, null);
                 if (projectile == null)
                 {
@@ -1155,6 +1087,95 @@ namespace PlayerArmy
                 unit.HideWeapon();
             });
 
+            return true;
+        }
+
+        private struct ForwardTargetInfo
+        {
+            public IHitable Target;
+            public Vector3 Position;
+            public float ForwardDistance;
+        }
+
+        private bool TryFindBestForwardTarget(CharacterUnit unit, Vector3 origin, float range, float width, out ForwardTargetInfo result)
+        {
+            result = default;
+            if (unit == null)
+            {
+                return false;
+            }
+
+            var collisionSystem = CollisionSystem.Instance;
+            if (collisionSystem == null || collisionSystem.Count <= 0)
+            {
+                return false;
+            }
+
+            Vector3 forward = unit.transform.forward;
+            Vector3 right = unit.transform.right;
+            float halfWidth = Mathf.Max(0.05f, width * 0.5f);
+            float bestForward = float.MaxValue;
+            IHitable bestTarget = null;
+            Vector3 bestPosition = default;
+
+            for (int i = 0; i < collisionSystem.Count; i++)
+            {
+                var target = collisionSystem.GetTargetBySortedIndex(i);
+                if (target == null || !target.IsActive || ReferenceEquals(target, unit))
+                {
+                    continue;
+                }
+
+                var targetTransform = collisionSystem.GetTransform(i);
+                if (targetTransform == null)
+                {
+                    continue;
+                }
+
+                var colData = collisionSystem.GetColliderData(i);
+                uint categoryBits = colData.CategoryBits != 0
+                    ? colData.CategoryBits
+                    : (uint)(1 << (int)target.EntityType);
+                if ((TargetMask & categoryBits) == 0)
+                {
+                    continue;
+                }
+
+                Vector3 delta = targetTransform.position - origin;
+                float forwardDistance = Vector3.Dot(delta, forward);
+                if (forwardDistance < 0f || forwardDistance > range)
+                {
+                    continue;
+                }
+
+                float lateralDistance = Mathf.Abs(Vector3.Dot(delta, right));
+                float targetHalfWidth = Mathf.Max(Mathf.Abs(colData.Size.x), Mathf.Abs(colData.Size.z));
+                if (lateralDistance > halfWidth + targetHalfWidth)
+                {
+                    continue;
+                }
+
+                if (forwardDistance >= bestForward)
+                {
+                    continue;
+                }
+
+                bestForward = forwardDistance;
+                bestTarget = target;
+                bestPosition = targetTransform.position;
+            }
+
+            if (bestTarget == null)
+            {
+                return false;
+            }
+
+            result = new ForwardTargetInfo
+            {
+                Target = bestTarget,
+                Position = bestPosition,
+                ForwardDistance = bestForward
+            };
             return true;
         }
 

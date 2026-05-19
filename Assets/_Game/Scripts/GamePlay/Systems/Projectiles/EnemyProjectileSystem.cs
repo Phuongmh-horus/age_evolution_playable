@@ -319,14 +319,14 @@ namespace GamePlay.CombatSystems
                 // Active movement
                 float t = Mathf.Clamp01((now - p.StartTime) / p.Duration);
 
+                float previousT = Mathf.Clamp01((now - Time.deltaTime - p.StartTime) / p.Duration);
+                Vector3 previousPos = EvaluateProjectilePosition(p, previousT);
                 Vector3 pos = EvaluateProjectilePosition(p, t);
                 p.Transform.position = pos;
 
                 if (Mathf.Abs(p.RotationSpeed) > 0.001f)
                 {
-                     float previousT = Mathf.Clamp01((now - Time.deltaTime - p.StartTime) / p.Duration);
-                     Vector3 oldPos = EvaluateProjectilePosition(p, previousT);
-                     Vector3 direction = (pos - oldPos).normalized;
+                     Vector3 direction = (pos - previousPos).normalized;
                      
                      if (direction.sqrMagnitude > 0.001f)
                      {
@@ -343,7 +343,7 @@ namespace GamePlay.CombatSystems
                     // Mask check: attacker target mask must include player entity bit
                     if ((p.Attacker.TargetMask & playerBit) != 0)
                     {
-                        if (CheckHit(pos, p.Radius, playerPos, playerCol))
+                        if (CheckHitAlongSegment(previousPos, pos, p.Radius, playerPos, playerCol))
                         {
                             // Hit -> process immediately & remove immediately
                             p.Attacker.OnAttackSucceed(_playerHitable);
@@ -373,7 +373,7 @@ namespace GamePlay.CombatSystems
                         uint targetBit = (uint)(1 << (int)target.EntityType);
                         if ((p.Attacker.TargetMask & targetBit) == 0) continue;
 
-                        if (CheckHit(pos, p.Radius, target.Position, target.GetColliderData()))
+                        if (CheckHitAlongSegment(previousPos, pos, p.Radius, target.Position, target.GetColliderData()))
                         {
                             p.Attacker.OnAttackSucceed(target);
                             target.OnHit(p.Attacker);
@@ -418,7 +418,7 @@ namespace GamePlay.CombatSystems
                         if (Mathf.Abs(targetPos.x - pos.x) > 6f || Mathf.Abs(targetPos.z - pos.z) > 6f) continue;
 
                         var colData = collisionSystem.GetColliderData(k);
-                        if (CheckHit(pos, p.Radius, targetPos, colData))
+                        if (CheckHitAlongSegment(previousPos, pos, p.Radius, targetPos, colData))
                         {
                             p.Attacker.OnAttackSucceed(target);
                             target.OnHit(p.Attacker);
@@ -566,6 +566,39 @@ namespace GamePlay.CombatSystems
                 default:
                     return false;
             }
+        }
+
+        private static bool CheckHitAlongSegment(Vector3 fromPos, Vector3 toPos, float projRadius, Vector3 targetFeetPos, ColliderData col)
+        {
+            if (CheckHit(toPos, projRadius, targetFeetPos, col))
+            {
+                return true;
+            }
+
+            Vector3 delta = toPos - fromPos;
+            float distance = delta.magnitude;
+            if (distance <= 0.0001f)
+            {
+                return CheckHit(fromPos, projRadius, targetFeetPos, col);
+            }
+
+            // Sweep by sub-steps to prevent tunneling through thin colliders (e.g. CapacityGate).
+            float stepSize = Mathf.Max(0.05f, projRadius * 0.5f);
+            int stepCount = Mathf.Clamp(Mathf.CeilToInt(distance / stepSize), 1, 24);
+            Vector3 step = delta / stepCount;
+            Vector3 samplePos = fromPos;
+
+            for (int i = 0; i <= stepCount; i++)
+            {
+                if (CheckHit(samplePos, projRadius, targetFeetPos, col))
+                {
+                    return true;
+                }
+
+                samplePos += step;
+            }
+
+            return false;
         }
 
         private static void DisposeManaged(ref ProjectileEntry p)

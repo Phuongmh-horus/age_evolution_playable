@@ -163,6 +163,7 @@ MonoBehaviour:
   collectText: {fileID: 5918776159304040850}
   bonusCollectText: {fileID: 9008740557662754129}
   hitComponent: {fileID: 9201111111111111112}
+  hitTextFlyEffect: {fileID: 1729903725545260035}
   effectComponent: {fileID: 9201111111111111114}
   healthComponent: {fileID: 9201111111111111113}
   scaleUp: 1.08

@@ -17,6 +17,10 @@ using UnityEngine;
 
 public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers.IGameplayFlow
 {
+    // Capacity gate/factory coin pool (parity with full project flow).
+    public static int StartCoin;
+    public static int StartCoinPending;
+
     [Header("Playable Level (drag trực tiếp - không dùng DataManager/ConfigHolder)")]
     [SerializeField] private EraDataSO playableEra;
     public EraDataSO PlayableEra => playableEra;
@@ -207,11 +211,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         BrickFallMotion.TickActiveMotions(dt);
         OscillationSystem.Instance?.ManualUpdate();
         CombatSystem.Instance?.ManualUpdate();
-    }
-
-    public void RunUpgradeEffect()
-    {
-        ActiveArmy.PlayEffect(EffectType.Land, ActiveArmy.transform);
     }
 
     // Stub removed to allow generic ChangeStatModifierData to handle EvolutionPoint logic.
@@ -415,6 +414,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     public void StartGame(bool activeTurnable = true)
     {
         gamePlayVariable?.ResetNewGame();
+        StartCoin = 0;
+        StartCoinPending = 0;
 
         // Smooth transition from Waiting to FollowPlayer (avoid abrupt jump).
         CameraManager.Instance.SetCameraStateByName(
@@ -791,9 +792,21 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             case StatType.Character:
                 if (statModifierData is CapacityIncreaseGateData gateData)
                 {
-                    if (gateData.ElementDataList != null && gateData.ElementDataList.Count > 0)
+                    int payout = ConsumeCapacityCoinPool();
+                    if (payout > 0)
                     {
-                        AddCardsToPlayer(gateData.ElementDataList, CardSpawnEffectType.Drop);
+                        Vector3 worldPos = PlayerTransform != null ? PlayerTransform.position : transform.position;
+                        AddCurrency(CurrencyType.Gold, payout, worldPos);
+                        GameEventBus.OnGainGold?.Invoke();
+                    }
+
+                    if (gateData.RequestDataList != null && gateData.RequestDataList.Count > 0)
+                    {
+                        for (int i = 0; i < gateData.RequestDataList.Count; i++)
+                        {
+                            var req = gateData.RequestDataList[i];
+                        }
+                        AddCardsToPlayer(gateData.RequestDataList, CardSpawnEffectType.Drop);
                     }
                     else
                     {
@@ -802,6 +815,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
                 }
                 else if (statModifierData is CapacityIncreaseFactoryData factoryData)
                 {
+                    int gain = Mathf.Max(1, factoryData.Value);
+                    AddCapacityCoinToPool(gain);
+
                     _singleRequestBuffer.Clear();
                     _singleRequestBuffer.Add(new CardSpawnRequestData { Amount = factoryData.Value, Level = factoryData.Level });
                     AddCardsToPlayer(_singleRequestBuffer, CardSpawnEffectType.Drop);
@@ -849,24 +865,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             Turnable?.AddCards(cards, effect);
     }
 
-    private void AddCardsToPlayer(List<IncreaseElementData> ElementDataList, CardSpawnEffectType effect)
-    {
-        if (ElementDataList == null || ElementDataList.Count == 0) return;
-
-        var cardRequests = new List<CardSpawnRequestData>(ElementDataList.Count);
-        for (int i = 0; i < ElementDataList.Count; i++)
-        {
-            var data = ElementDataList[i];
-            cardRequests.Add(new CardSpawnRequestData
-            {
-                Amount = data.Value,
-                Level = 1,
-                CardType = CardType.Character
-            });
-        }
-        AddCardsToPlayer(cardRequests, effect);
-    }
-
     private void EnsureWeaponCraftStarterItem()
     {
         var craftSystem = WeaponCraft.WeaponCraftSystem.Instance;
@@ -879,6 +877,37 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         {
             craftSystem.ReceiveItem(1, transform.position);
         }
+    }
+
+    public void AddCapacityCoinToPool(int amount)
+    {
+        int safeAmount = Mathf.Max(0, amount);
+        if (safeAmount <= 0) return;
+        StartCoin += safeAmount;
+        StartCoinPending += safeAmount;
+    }
+
+    public int ConsumeCapacityCoinPool()
+    {
+        // StartCoin is the source-of-truth total.
+        // StartCoinPending is a subset (in-flight/visual pending), not an additional amount.
+        int total = Mathf.Max(0, StartCoin);
+        StartCoin = 0;
+        StartCoinPending = 0;
+        return total;
+    }
+
+    public int GetGoldGateRewardPerProgressTick(int baseReward = 3)
+    {
+        int safeBase = Mathf.Max(1, baseReward);
+        int capacity = 1;
+        if (gamePlayVariable != null && gamePlayVariable.EvolutionVariable != null)
+        {
+            capacity = Mathf.Max(1, gamePlayVariable.EvolutionVariable.Capacity);
+        }
+
+        // Keep legacy baseline payout while still scaling with Capacity when it surpasses baseline.
+        return Mathf.Max(safeBase, capacity);
     }
 
     #endregion

@@ -6,7 +6,7 @@ using Pools;
 
 namespace GamePlay.Effects
 {
-    public class DropCurrencyEffect : MonoBehaviour,IComponent
+    public class DropCurrencyEffect : MonoBehaviour, IComponent
     {
         [Header("References")]
         [SerializeField] private CurrencyDropItem currencyDropItemPrefab;

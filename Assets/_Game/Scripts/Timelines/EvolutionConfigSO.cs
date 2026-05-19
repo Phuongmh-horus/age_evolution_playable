@@ -26,7 +26,7 @@ public class EvolutionConfigSO : ScriptableObject
     [Header("Evolution Settings")]
     public List<EvolutionLevel> EvolutionLevels = new List<EvolutionLevel>();
 
-    public List<LevelUpgrade> LevelUpgrades = new List<LevelUpgrade>();
+    public List<LevelUpgrade> LevelUpgrades = new();
 
     [Header("Statistics")]
     public int TotalPoints;
@@ -215,12 +215,6 @@ public class EvolutionConfigSO : ScriptableObject
     {
         if (level <= 0) return -1;
 
-        if (EvolutionLevels == null || EvolutionLevels.Count == 0)
-        {
-            // Fallback for Playable: 10 points per level
-            return level * 10;
-        }
-
         var evolutionLevel = GetEvolutionLevelByLevel(level);
         if (evolutionLevel != null)
         {
@@ -230,19 +224,15 @@ public class EvolutionConfigSO : ScriptableObject
         return -1;
     }
 
+    /// <summary>
+    /// Kiếm tra có thể lên level tiếp theo không
+    /// </summary>
     public bool CanNextLevel(int currentLevel, int currentPoints)
     {
-        int requirePoint = GetPointsRequiredForLevel(currentLevel + 1);
+        int requirePoint = GetPointsRequiredForLevel(currentLevel);
         return currentPoints >= requirePoint;
     }
 
-    public int GetMaxLevel()
-    {
-        if (EvolutionLevels == null || EvolutionLevels.Count == 0)
-        {
-            return 5; // Default max level for Playable if config is missing
-        }
-        return EvolutionLevels.Count;
-    }
+    public int GetMaxLevel() => EvolutionLevels.Count;
 
 }
