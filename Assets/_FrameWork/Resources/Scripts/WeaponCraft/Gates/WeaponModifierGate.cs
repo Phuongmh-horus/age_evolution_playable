@@ -28,6 +28,7 @@ namespace WeaponCraft
 
         [Header("Hit Component")]
         [SerializeField] private HitComponent hitComponent;
+        [SerializeField] private HitTextFlyEffect hitTextFlyEffect;
 
         [Header("Effect Component")]
         [SerializeField] private EffectComponent effectComponent;
@@ -67,6 +68,11 @@ namespace WeaponCraft
             if (effectComponent == null)
             {
                 effectComponent = GetComponentInChildren<EffectComponent>(true);
+            }
+
+            if (hitTextFlyEffect == null)
+            {
+                hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
             }
 
             _originalScale = transform.localScale;
@@ -170,6 +176,12 @@ namespace WeaponCraft
             }
 
             UpdateCollectVirual();
+            EnsureHitTextEffect(true);
+            if (hitTextFlyEffect != null)
+            {
+                hitTextFlyEffect.enabled = true;
+                hitTextFlyEffect.WarmupRuntimeCaches();
+            }
 
             if (shouldRefreshEvents)
             {
@@ -462,6 +474,16 @@ namespace WeaponCraft
         private WeaponCraftSystem ResolveWeaponCraftSystem()
         {
             return WeaponCraftSystem.Instance;
+        }
+
+        private void EnsureHitTextEffect(bool allowAddRuntime)
+        {
+            if (hitTextFlyEffect != null) return;
+            hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
+            if (hitTextFlyEffect == null && allowAddRuntime)
+            {
+                hitTextFlyEffect = gameObject.AddComponent<HitTextFlyEffect>();
+            }
         }
     }
 }

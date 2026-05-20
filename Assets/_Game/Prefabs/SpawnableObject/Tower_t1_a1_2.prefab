@@ -354,6 +354,7 @@ MonoBehaviour:
   blockDebrisController: {fileID: 7229887573008007063}
   hitTextFlyEffect: {fileID: 4263060515600946823}
   isOverrideVisual: 1
+  applyBaseColorOnInitialize: 0
   baseMesh: {fileID: 0}
   baseColor: {r: 1, g: 1, b: 1, a: 1}
   towerVisualRoot: {fileID: 0}
@@ -594,7 +595,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3ae368180d0dc2c42a9677957d257c1d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ae368180d0dc2c42a9677957d257c1d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -602,7 +603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ae368180d0dc2c42a9677957d257c1d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ae368180d0dc2c42a9677957d257c1d, type: 3}
       propertyPath: m_LocalRotation.w

@@ -196,19 +196,20 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     {
         yield return StartCoroutine(CoLoadPlayableLevel());
         yield return StartCoroutine(CoInitializeGeneratedContent());
+        GameEventBus.UpdateCapacityBar?.Invoke();
         StartGame();
     }
 
     private void Update()
     {
-        if (!IsGameStarted) return;
-
         float dt = Time.deltaTime;
 
         // Playable/Luna: be defensive (systems may be missing in some stripped builds)
         HitTextFlyEffect.TickActiveControllers(dt);
         DeathScaleEffect.TickActiveEffects(dt);
         BrickFallMotion.TickActiveMotions(dt);
+        if (!IsGameStarted) return;
+
         OscillationSystem.Instance?.ManualUpdate();
         CombatSystem.Instance?.ManualUpdate();
     }
@@ -900,14 +901,14 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     }
 
     public int ConsumeCapacityCoinPool()
-        {
+    {
         // StartCoin is the source-of-truth total.
         // StartCoinPending is a subset (in-flight/visual pending), not an additional amount.
         int total = Mathf.Max(0, StartCoin);
         StartCoin = 0;
         StartCoinPending = 0;
         return total;
-        }
+    }
 
     public int GetGoldGateRewardPerProgressTick(int baseReward = 3)
     {
@@ -918,9 +919,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             capacity = Mathf.Max(1, gamePlayVariable.EvolutionVariable.Capacity);
         }
 
-        // Keep legacy baseline payout while still scaling with Capacity when it surpasses baseline.
-        return Mathf.Max(safeBase, capacity);
+        return safeBase + capacity;
     }
+
 
     #endregion
 }

@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Plugins/Demigiant/DOTween/Modules/DOTween.Modules.asmdef.meta
 guid: 44b1f20120eb00b44b32a0e82e99c87a
 AssemblyDefinitionImporter:
+========
+guid: d9175ea08e03ab444b617161e710298f
+NativeFormatImporter:
+>>>>>>>> Stashed changes:Assets/Resources/DOTweenSettings.asset.meta
   externalObjects: {}
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -6,11 +6,8 @@ using Random = UnityEngine.Random;
 public class BrickFallMotion : MonoBehaviour
 {
     [SerializeField] private BrickFallSettings settings;
-
     private static readonly List<BrickFallMotion> activeMotions = new List<BrickFallMotion>(64);
-
     public float TotalMotionTime { get; private set; }
-
     public event Action OnReachedCapacityBar;
 
     private bool _active;
@@ -21,14 +18,11 @@ public class BrickFallMotion : MonoBehaviour
 
     private Vector3 _fallStartPosition;
     private Vector3 _fallTargetPosition;
-
     private Vector3 _bounceStartPosition;
     private Vector3 _bounceEndPosition;
-
     private Vector3 _angularVelocity;
     private Vector3 _initialScale;
     private float _calculatedFallDuration;
-
     private float _elapsedLifetime;
     private bool _isFlyingToCapacity;
     private float _flyElapsed;
@@ -293,10 +287,14 @@ public class BrickFallMotion : MonoBehaviour
 
             if (looksLikeScreenPoint && cam != null)
             {
-                float depth = Vector3.Dot(_flyStartPosition - cam.transform.position, cam.transform.forward);
-                depth = Mathf.Max(1f, depth);
-                pos.z = depth;
-                target = cam.ScreenToWorldPoint(pos);
+
+                Ray ray = cam.ScreenPointToRay(pos);
+                float depth = Vector3.Dot(
+                    _originalParent != null ? _originalParent.position - cam.transform.position
+                                           : _flyStartPosition - cam.transform.position,
+                    cam.transform.forward);
+                depth = Mathf.Max(2f, depth);
+                target = ray.origin + ray.direction * depth;
                 return true;
             }
 

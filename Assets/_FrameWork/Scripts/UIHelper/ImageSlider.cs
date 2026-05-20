@@ -56,9 +56,15 @@ public class ImageSlider : MonoBehaviour
 
     private void UpdateProgress()
     {
-        if (_maxValue == 0) return;
+        if (_maxValue == 0)
+        {
+            return;
+        }
         _progress = Mathf.Clamp01(_value / _maxValue);
-        if (filterImg) filterImg.fillAmount = _progress;
+        if (filterImg)
+        {
+            filterImg.fillAmount = _progress;
+        }
     }
 
     private void OnDestroy()

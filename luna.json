@@ -86,7 +86,10 @@
             "dotnetVersion": ""
         },
         "assets": {
-            "export": [],
+            "export": [
+                "resources",
+                "streamingAssets"
+            ],
             "excludes": [
                 "Assets/Kho/Feature/mesh/pillar.fbx",
                 "Assets/Kho/Feature/mesh/pillar_block.fbx",
@@ -717,7 +720,7 @@
             ]
         },
         "scenes": [
-            "Assets/_FrameWork/Scenes/S_GamePlay_2.unity"
+            "Assets/_FrameWork/Scenes/S_GamePlay.unity"
         ],
         "disabledScenes": [],
         "startupScene": 0,
@@ -747,7 +750,7 @@
         "enableMecanimWASM": true,
         "minify": true,
         "forceUncompressed": false,
-        "forceBase64": false,
+        "forceBase64": true,
         "graphicsConstraint": 24,
         "genericCheck": true,
         "disableAntiAliasing": true,
@@ -12926,8 +12929,8 @@
             "enabled": false
         },
         "playerPrefs": true,
-        "enableStaticBatching": false,
-        "enableDynamicBatching": false,
+        "enableStaticBatching": true,
+        "enableDynamicBatching": true,
         "forceSourcesBasedCompilation": false
     },
     "assets": {
@@ -12979,8 +12982,8 @@
                 "default": {
                     "channels": 1,
                     "startTime": "00:00.000",
-                    "endTime": "00:00.000",
-                    "lengthInSeconds": 0.0,
+                    "endTime": "00:15.000",
+                    "lengthInSeconds": 15.0,
                     "bitrate": 128,
                     "script": "",
                     "ext": ""

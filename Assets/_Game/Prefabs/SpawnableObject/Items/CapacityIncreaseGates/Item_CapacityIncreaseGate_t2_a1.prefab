@@ -62,7 +62,6 @@ MonoBehaviour:
   statsUpgradeIcon: {fileID: 11400000, guid: f71e83eb651079b4da9e0339907070f8, type: 2}
   bgGradientData: {fileID: 11400000, guid: 8851c3d5223d7e545a75f7432f52c523, type: 2}
   goldText: {fileID: 526694438883751327}
-  activeColor: {r: 0.2509804, g: 0.63529414, b: 1, a: 1}
 --- !u!1 &323875295472555261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,7 +1870,6 @@ MonoBehaviour:
   statsUpgradeIcon: {fileID: 11400000, guid: f71e83eb651079b4da9e0339907070f8, type: 2}
   bgGradientData: {fileID: 11400000, guid: 8851c3d5223d7e545a75f7432f52c523, type: 2}
   goldText: {fileID: 1601214635221819437}
-  activeColor: {r: 0.2509804, g: 0.63529414, b: 1, a: 1}
 --- !u!1 &4135075306097794823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,20 +2633,20 @@ MonoBehaviour:
       Value: 200
       ValueUpgrade: 100
       StartLevel: 0
-      Cost: 15
-      UpgradeRequire: 15
+      Cost: 20
+      UpgradeRequire: 20
     - Type: 2
       Value: 10
       ValueUpgrade: 5
       StartLevel: 0
-      Cost: 20
-      UpgradeRequire: 20
-    - Type: 3
-      Value: 2
-      ValueUpgrade: 1
-      StartLevel: 0
       Cost: 30
       UpgradeRequire: 30
+    - Type: 3
+      Value: 1
+      ValueUpgrade: 1
+      StartLevel: 0
+      Cost: 50
+      UpgradeRequire: 50
   slots: []
   despawnBeltWhenFull: 1
   rootAnimTrans: {fileID: 2641918410202572847}
@@ -3879,7 +3877,6 @@ MonoBehaviour:
   statsUpgradeIcon: {fileID: 11400000, guid: f71e83eb651079b4da9e0339907070f8, type: 2}
   bgGradientData: {fileID: 11400000, guid: 8851c3d5223d7e545a75f7432f52c523, type: 2}
   goldText: {fileID: 8243594128993089199}
-  activeColor: {r: 0.25, g: 0.63529414, b: 1, a: 1}
 --- !u!1 &8051253520187312873
 GameObject:
   m_ObjectHideFlags: 0

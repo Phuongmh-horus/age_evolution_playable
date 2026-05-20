@@ -262,6 +262,7 @@ public class GamePlayVariable : ScriptableObject
         if (EvolutionVariable == null) return;
         EvolutionVariable.Capacity = Mathf.Max(0, EvolutionVariable.Capacity + addPoint);
         SyncCapacityDataToPlayerState();
+        GameEventBus.UpdateCapacityBar?.Invoke();
     }
 
     private EvolutionConfigSO ResolveEvolutionConfig()

@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 1298791220465758178}
-  healthTextPrefab: {fileID: 0}
+  healthTextPrefab: {fileID: 6512158636180351403, guid: efb62b88426edc84bb45da017ef8622a, type: 3}
   autoResolveHealthComponent: 0
   defaultTextPrefabResourcePath: SpawnableObject/HitDamage
   flyUpDistance: 3

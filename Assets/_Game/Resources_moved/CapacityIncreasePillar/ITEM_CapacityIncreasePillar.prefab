@@ -625,7 +625,7 @@ MonoBehaviour:
     Armor: 0
   bricksRoot: {fileID: 8308781305436913712}
   bricksPerDamage: 1
-  reduceBricksPerDamage: 0
+  reduceBricksPerDamage: 1
   maxVisualBricksPerHit: 20
   maxBricksInFlight: 20
   maxVisualBricksPerBurst: 3

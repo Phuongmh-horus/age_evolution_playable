@@ -280,7 +280,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 0.595
+  m_FillAmount: 0.05
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -719,4 +719,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filterImg: {fileID: 6253379346593797774}
-  _progress: 0.595
+  _progress: 0.05

@@ -18,4 +18,3 @@ MonoBehaviour:
   ContentLength: 320
   FinishLength: 0
   BackGround: {fileID: 8505278108759490763, guid: 02f7b0096c891444c91da1ea5b19a896, type: 3}
-  MapLengthDataList: []

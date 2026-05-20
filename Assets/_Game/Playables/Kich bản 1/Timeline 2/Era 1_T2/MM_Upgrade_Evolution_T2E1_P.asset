@@ -16,23 +16,23 @@ MonoBehaviour:
   - Level: 1
     PointsRequired: 0
   - Level: 2
-    PointsRequired: 50
+    PointsRequired: 60
   - Level: 3
-    PointsRequired: 100
+    PointsRequired: 120
   - Level: 4
-    PointsRequired: 200
+    PointsRequired: 240
   - Level: 5
-    PointsRequired: 400
+    PointsRequired: 480
   - Level: 6
-    PointsRequired: 800
+    PointsRequired: 960
   - Level: 7
-    PointsRequired: 1600
+    PointsRequired: 1920
   - Level: 8
-    PointsRequired: 3200
+    PointsRequired: 3840
   - Level: 9
-    PointsRequired: 6400
+    PointsRequired: 7680
   - Level: 10
-    PointsRequired: 12800
+    PointsRequired: 15360
   LevelUpgrades: []
   TotalPoints: 0
-  TotalPointsRequired: 25550
+  TotalPointsRequired: 30660

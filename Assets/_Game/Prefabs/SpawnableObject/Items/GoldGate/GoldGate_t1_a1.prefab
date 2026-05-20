@@ -155,7 +155,7 @@ MonoBehaviour:
   autoAddHitTextFlyEffectAtRuntime: 1
   Data:
     Type: 0
-    Value: 3
+    Value: 2
     Armor: 0
   progressSprite: {fileID: 8396836112737975809}
   progressMinFill: 0.532

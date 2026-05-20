@@ -22,7 +22,7 @@ MonoBehaviour:
     WeaponPrefab: {fileID: 6706172149129167379, guid: fe6ba220336818b499668d75f44cceda, type: 3}
     UnitDamage: 3
     WeaponDamage: 1
-    FireRange: 19
+    FireRange: 20
   - characterLevel: 2
     CharacterPrefab: {fileID: 440069439194356736, guid: 0a8b5767667eb534889a210ac4810fe7, type: 3}
     CardData:
@@ -31,7 +31,7 @@ MonoBehaviour:
     WeaponPrefab: {fileID: 6706172149129167379, guid: 48041911b9726304abd549cf730718d9, type: 3}
     UnitDamage: 5
     WeaponDamage: 2
-    FireRange: 21
+    FireRange: 23
   - characterLevel: 3
     CharacterPrefab: {fileID: 1372216057998118721, guid: 23038aa7919ec4742b644ed30938948f, type: 3}
     CardData:
@@ -40,7 +40,7 @@ MonoBehaviour:
     WeaponPrefab: {fileID: 6706172149129167379, guid: 8337e9671a4c7064f9afd942b78563d1, type: 3}
     UnitDamage: 7
     WeaponDamage: 3
-    FireRange: 24
+    FireRange: 26
   - characterLevel: 4
     CharacterPrefab: {fileID: 6269225836784746350, guid: 84048d40d6e22a542880a79087b52656, type: 3}
     CardData:
@@ -49,7 +49,7 @@ MonoBehaviour:
     WeaponPrefab: {fileID: 6706172149129167379, guid: 1908c4d1a7e04fc42af4fba97e27f7d1, type: 3}
     UnitDamage: 9
     WeaponDamage: 4
-    FireRange: 27
+    FireRange: 29
   - characterLevel: 5
     CharacterPrefab: {fileID: 9144215148042233058, guid: cb3d44d4333483b4fa9d0a8e29d77a8f, type: 3}
     CardData:
@@ -58,4 +58,4 @@ MonoBehaviour:
     WeaponPrefab: {fileID: 6706172149129167379, guid: 2b92e4c6916d1444197ffd832a8f0b1d, type: 3}
     UnitDamage: 11
     WeaponDamage: 5
-    FireRange: 30
+    FireRange: 32

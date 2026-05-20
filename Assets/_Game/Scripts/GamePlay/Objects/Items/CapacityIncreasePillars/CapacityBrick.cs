@@ -2,10 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 // using Alchemy.Inspector;
+using GamePlay.Items;
 using UnityEngine;
 
 public class CapacityBrick : MonoBehaviour
 {
+    private static readonly StatModifierCapacityData FallbackCapacityGainData = new StatModifierCapacityData
+    {
+        Type = StatType.EvolutionPoint,
+        Armor = 0
+    };
+
     [SerializeField] private MeshRenderer brickMeshRenderer;
     [Header("Scale Pulse")]
     [SerializeField] private float scaleUp = 1.1f;
@@ -70,10 +77,39 @@ public class CapacityBrick : MonoBehaviour
         if (brickFallMotion != null)
             brickFallMotion.OnReachedCapacityBar -= HandleReachedCapacityBar;
 
-        // Propagate event to pillar
-        OnReachedCapacityBar?.Invoke(_capacityValue);
+        bool deliveredToPillar = false;
+        var callback = OnReachedCapacityBar;
+        if (callback != null)
+        {
+            try
+            {
+                callback.Invoke(_capacityValue);
+                deliveredToPillar = true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[CapacityBrick] Deliver callback failed: {e}");
+            }
+        }
+
+        if (!deliveredToPillar)
+        {
+            ApplyCapacityGainFallback(_capacityValue);
+        }
+
         OnReachedCapacityBar = null; // Clear to avoid stale subscriptions
         _capacityValue = 1;
+    }
+
+    private static void ApplyCapacityGainFallback(int gained)
+    {
+        if (GameplayManager.Instance == null)
+        {
+            return;
+        }
+
+        FallbackCapacityGainData.Value = Mathf.Max(1, gained);
+        GameplayManager.Instance.ChangeStatModifierData(FallbackCapacityGainData);
     }
 
     private void TriggerScalePulse()

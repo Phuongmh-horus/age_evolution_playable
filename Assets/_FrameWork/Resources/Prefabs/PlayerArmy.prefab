@@ -89,7 +89,7 @@ MonoBehaviour:
   characterList: {fileID: 11400000, guid: a0a4046a522e97b4ca8b615cafd20aa6, type: 2}
   fallbackCharacterLevel: 3
   maxActiveSpawnedUnits: 17
-  unitSpacing: 1.5
+  unitSpacing: 1
   attackMode: 2
   meleeAttackSize: {x: 1.4, y: 2.2}
   rangedAttackSize: {x: 1.8, y: 6}

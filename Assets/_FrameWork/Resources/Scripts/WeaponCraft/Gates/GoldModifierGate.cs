@@ -123,6 +123,7 @@ namespace WeaponCraft
 
             _awaitingGoldReset = false;
             _originalScale     = transform.localScale;
+            RegisterCapacityBarEvents();
 
             bool shouldRefreshEvents = false;
 
@@ -214,6 +215,7 @@ namespace WeaponCraft
         private void OnDisable()
         {
             UnregisterHealthVisualEvents();
+            UnregisterCapacityBarEvents();
 
             if (_scalePulseRoutine != null)
             {
@@ -225,6 +227,7 @@ namespace WeaponCraft
         private void OnDestroy()
         {
             UnregisterHealthVisualEvents();
+            UnregisterCapacityBarEvents();
 
             if (_scalePulseRoutine != null)
             {
@@ -293,6 +296,22 @@ namespace WeaponCraft
             }
 
             healthComponent.OnHealthChange -= HandleHealthVisualChanged;
+        }
+
+        private void RegisterCapacityBarEvents()
+        {
+            GameEventBus.UpdateCapacityBar -= HandleCapacityBarUpdated;
+            GameEventBus.UpdateCapacityBar += HandleCapacityBarUpdated;
+        }
+
+        private void UnregisterCapacityBarEvents()
+        {
+            GameEventBus.UpdateCapacityBar -= HandleCapacityBarUpdated;
+        }
+
+        private void HandleCapacityBarUpdated()
+        {
+            UpdateCollectVisual();
         }
 
         private void HandleHealthVisualChanged(int current, int max)

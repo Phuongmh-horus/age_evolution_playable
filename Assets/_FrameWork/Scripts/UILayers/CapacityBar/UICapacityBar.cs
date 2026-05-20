@@ -38,6 +38,10 @@ public class UICapacityBar : MonoBehaviour
     private Coroutine _updateCoroutine;
     private float _lastUpdateTime;
     private const float UPDATE_THROTTLE = 0.016f;
+    private const float FALLBACK_POLL_INTERVAL = 0.2f;
+    private float _lastFallbackPollTime;
+    private int _lastObservedCapacity = int.MinValue;
+    private int _lastObservedProgress = int.MinValue;
 
     private int _activeVFXCount = 0;
     private bool _vfxRoutineRunning;
@@ -53,8 +57,14 @@ public class UICapacityBar : MonoBehaviour
 
     private void Awake()
     {
-        GameEventBus.UpdateCapacityBar = UpdateDataThrottled;
         if (canvas == null) canvas = GetComponentInParent<Canvas>();
+    }
+
+    private void OnEnable()
+    {
+        GameEventBus.UpdateCapacityBar -= UpdateDataThrottled;
+        GameEventBus.UpdateCapacityBar += UpdateDataThrottled;
+        GameEventBus.GetCapacityBarPosition = GetCapacityBarPosition;
     }
 
     private void Start()
@@ -63,7 +73,24 @@ public class UICapacityBar : MonoBehaviour
         EnsureVfxSpriteLoaded();
         SyncFromPlayerData();
         UpdateData();
-        GameEventBus.GetCapacityBarPosition = GetCapacityBarPosition;
+    }
+
+    private void LateUpdate()
+    {
+        if (Time.unscaledTime - _lastFallbackPollTime < FALLBACK_POLL_INTERVAL) return;
+        _lastFallbackPollTime = Time.unscaledTime;
+
+        var gamePlayConfig = ResolveGamePlayVariable();
+        var evolutionVariable = gamePlayConfig?.EvolutionVariable;
+        if (evolutionVariable == null) return;
+
+        int capacity = evolutionVariable.Capacity;
+        int progress = evolutionVariable.ProgressPoint;
+        if (capacity == _lastObservedCapacity && progress == _lastObservedProgress) return;
+
+        _lastObservedCapacity = capacity;
+        _lastObservedProgress = progress;
+        UpdateDataThrottled();
     }
 
     private void SyncFromPlayerData()
@@ -153,7 +180,6 @@ public class UICapacityBar : MonoBehaviour
             int currentPoints = evolutionVariable.ProgressPoint;
             int currentCapacity = evolutionVariable.Capacity;
             int maxLevel = evolutionConfig.GetMaxLevel();
-            
             if (currentCapacity >= maxLevel)
             {
                 currentLevel.text = currentCapacity.ToString();
@@ -170,7 +196,6 @@ public class UICapacityBar : MonoBehaviour
                 }
 
                 slider.SetValue(maxPointsNeeded, maxPointsNeeded);
-
                 if (!_isFirstSetup)
                 {
                     if (currentPoints > _previousPoints)
@@ -243,6 +268,13 @@ public class UICapacityBar : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+    }
+
+    private void OnDisable()
+    {
+        GameEventBus.UpdateCapacityBar -= UpdateDataThrottled;
+        if (GameEventBus.GetCapacityBarPosition == GetCapacityBarPosition)
+            GameEventBus.GetCapacityBarPosition = null;
     }
 
     private Vector3[] _worldCorners = new Vector3[4];
@@ -414,4 +446,5 @@ public class UICapacityBar : MonoBehaviour
         // this callback must provide a screen-space point.
         return RectTransformUtility.WorldToScreenPoint(cam, worldPosition);
     }
+
 }

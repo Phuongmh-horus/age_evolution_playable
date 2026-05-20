@@ -69,20 +69,21 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private int _bricksInFlight;
     private int _bricksReachedCapacity;
     private int _pendingCapacityGain;
+    private int _inFlightCapacityGain;
+    private bool _ignoreBrickCallbacks;
     private float _nextVisualSpawnTime;
     private bool _warnedMissingChain;
     private readonly StatModifierCapacityData _capacityGainData = new StatModifierCapacityData();
 
     private void Awake()
     {
-        // [FIX] Auto-set EntityType in Awake (earlier than Start) for collision registration
         if (_entityType == GamePlay.Entities.EntityType.None || _entityType == GamePlay.Entities.EntityType.Item)
         {
             _entityType = GamePlay.Entities.EntityType.ResourceTower;
         }
 
         ResolveChain();
-        EnsureHitTextEffect(false);
+        EnsureHitTextEffect(true);
     }
 
     private void Start()
@@ -102,14 +103,20 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         _bricksInFlight = 0;
         _bricksReachedCapacity = 0;
         _pendingCapacityGain = 0;
+        _inFlightCapacityGain = 0;
+        _ignoreBrickCallbacks = false;
         _nextVisualSpawnTime = 0f;
+    }
+
+    private void OnEnable()
+    {
+        _ignoreBrickCallbacks = false;
     }
 
     public override void Initialize()
     {
         _entityType = GamePlay.Entities.EntityType.ResourceTower;
 
-        // [FIX] Find HitComponent FIRST - this is the visual collider we want to use!
         var hitComp = hitComponent;
         if (hitComp != null)
         {
@@ -136,7 +143,6 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (TryGetComponent<Rigidbody>(out var rb)) Destroy(rb);
         if (TryGetComponent<Collider>(out var col)) Destroy(col);
 
-        // [FIX] Register HitComponent DIRECTLY if found, bypassing Pack.Hitable which may be ItemUnit(self)
         if (hitComp != null)
         {
             var colData = hitComp.GetColliderData();
@@ -144,11 +150,8 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         }
         else if ((ActiveFlags & CapabilityFlags.Hit) != 0 && Pack.Hitable != null)
         {
-            // Fallback to Pack.Hitable (which is ItemUnit)
             CollisionSystem.Register(Pack.Hitable, transform);
         }
-        // -----------------------------------------------
-
         RegisterEvents(true);
 
         PrepareInitialBrickLayer();
@@ -159,9 +162,11 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         _bricksInFlight = 0;
         _bricksReachedCapacity = 0;
         _pendingCapacityGain = 0;
+        _inFlightCapacityGain = 0;
+        _ignoreBrickCallbacks = false;
         _nextVisualSpawnTime = 0f;
 
-        EnsureHitTextEffect(false);
+        EnsureHitTextEffect(true);
         if (hitTextFlyEffect != null)
         {
             hitTextFlyEffect.enabled = true;
@@ -198,25 +203,10 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
     protected override void HandleNonWheelCollision(IAttacker source)
     {
-        // Pillars ARE HP-based (usually), so we KEEP source.Damage.
-        // User said "Gate and Factory were wrong", implies Pillar might be different or was "scaled wrongly" too?
-        // If Pillar is HP-based, and Character Dmg is 6, it takes 6 damage. This is correct scaling.
-        // If User says "Pillar is also wrong", maybe they want Pillar to react to 1 hit = 1 brick?
-        // Looking at `bricksPerDamage = 1`. If damage is 6, it spawns 6 bricks?
-        // If `bricksPerDamage` is used, high damage spawns MANY bricks.
-        // If intention is "1 Hit = 1 Brick", then we should ALSO force 1.
-        // But Pillars usually have HP. Let's assume High Damage = Good for Pillar (breaks faster).
-        
-        // HOWEVER, if the user complains "Damage scale logic is wrong... each different", 
-        // and Luna build shows x10 or x6...
-        // Perhaps Pillar Logic (Brick Trigger) is OVERWHELMING the game if damage is 50 or 6?
-        
-        // Let's stick to RAW DAMAGE for Pillar (as it has `Data.Armor`), but ensure visual text is synced.
-        
+        int shownDamage = source != null ? Mathf.Max(1, source.Damage) : 1;
         if (isChainedPillar && chain)
         {
-            int chainDamage = source != null ? Mathf.Max(1, source.Damage) : 1;
-            HandleChainHit(chainDamage);
+            HandleChainHit(shownDamage);
             return;
         }
 
@@ -225,7 +215,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (brickLayer == null) return;
         if (!brickLayer.isActivated) brickLayer.isActivated = true;
 
-        int damage = source != null ? source.Damage : 1;
+        int damage = shownDamage;
         TriggerBrickFall(source != null ? source.Position : transform.position, damage);
         PlayScalePulse();
     }
@@ -247,8 +237,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (chain == null) return;
 
         chain.ApplyDamage();
-        if (hitTextFlyEffect != null)
-            hitTextFlyEffect.OnHit(Mathf.Max(1, shownDamage));
+        hitTextFlyEffect?.OnHit(Mathf.Max(1, shownDamage));
         if (Data != null)
             Data.Armor = Mathf.Max(0, chain.RemainingHealth);
 
@@ -380,6 +369,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
             int bricksLeftIncludingCurrent = Mathf.Max(1, visualBrickCount - i);
             int capacityForThisBrick = Mathf.Max(1, Mathf.CeilToInt((float)remainingCapacity / bricksLeftIncludingCurrent));
             remainingCapacity = Mathf.Max(0, remainingCapacity - capacityForThisBrick);
+            _inFlightCapacityGain += capacityForThisBrick;
 
             brick.SetCapacityValue(capacityForThisBrick);
             brick.StartFall(brickOutward);
@@ -448,12 +438,14 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
     private void OnDisable()
     {
+        _ignoreBrickCallbacks = false;
         FlushQueuedCapacityGain();
     }
 
     private void OnBrickReachedCapacity(int gained)
     {
         _bricksInFlight = Mathf.Max(0, _bricksInFlight - 1);
+        _inFlightCapacityGain = Mathf.Max(0, _inFlightCapacityGain - Mathf.Max(1, gained));
         _bricksReachedCapacity++;
         QueueCapacityGain(gained);
 
@@ -464,7 +456,9 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     {
         int safeGain = Mathf.Max(1, gained);
 
-        if (!batchCapacityGainPerFrame)
+        // Pillar can be disabled/despawned while spawned bricks are still flying to the capacity bar.
+        // In that case Update() won't run to flush batched gain, so apply immediately to keep UI/gameplay in sync.
+        if (!batchCapacityGainPerFrame || !isActiveAndEnabled)
         {
             ApplyCapacityGain(safeGain);
             return;
