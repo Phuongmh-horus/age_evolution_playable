@@ -1,37 +1,23 @@
 using System;
 using System.Collections.Generic;
-using GamePlay.Crushers;
 using UnityEngine;
 
 namespace GamePlay.Items
 {
-    [Serializable] // Bắt buộc để hiện trong Inspector
+    [Serializable]
+    public class IncreaseElementData
+    {
+        public StatType Type;
+        public int Value;
+        public int ValueUpgrade;
+        public int StartLevel;
+        public int Cost;
+        public int UpgradeRequire;
+    }
+
+    [Serializable]
     public class CapacityIncreaseGateData : StatModifierData
     {
-        public List<CardSpawnRequestData> RequestDataList = new List<CardSpawnRequestData>();
-
-        public void AdjustValue(int level, int amount)
-        {
-            if (RequestDataList == null)
-            {
-                Debug.LogError($"[GateData] RequestDataList is NULL! Creating new list.");
-                RequestDataList = new List<CardSpawnRequestData>();
-            }
-
-            int count = RequestDataList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                if (RequestDataList[i].Level == level)
-                {
-                    var data = RequestDataList[i];
-                    data.Amount += amount;
-                    RequestDataList[i] = data;
-                    return;
-                }
-            }
-
-            // Logic thêm mới
-            RequestDataList.Add(new CardSpawnRequestData(level, amount));
-        }
+        public List<IncreaseElementData> ElementDataList = new List<IncreaseElementData>();
     }
 }

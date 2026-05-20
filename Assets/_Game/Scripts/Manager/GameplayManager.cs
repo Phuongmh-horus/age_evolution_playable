@@ -213,6 +213,11 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         CombatSystem.Instance?.ManualUpdate();
     }
 
+    public void RunUpgradeEffect()
+    {
+        ActiveArmy.PlayEffect(EffectType.Land, ActiveArmy.transform);
+    }
+
     // Stub removed to allow generic ChangeStatModifierData to handle EvolutionPoint logic.
 
     #region Load Playable Level
@@ -792,21 +797,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             case StatType.Character:
                 if (statModifierData is CapacityIncreaseGateData gateData)
                 {
-                    int payout = ConsumeCapacityCoinPool();
-                    if (payout > 0)
+                    if (gateData.ElementDataList != null && gateData.ElementDataList.Count > 0)
                     {
-                        Vector3 worldPos = PlayerTransform != null ? PlayerTransform.position : transform.position;
-                        AddCurrency(CurrencyType.Gold, payout, worldPos);
-                        GameEventBus.OnGainGold?.Invoke();
-                    }
-
-                    if (gateData.RequestDataList != null && gateData.RequestDataList.Count > 0)
-                    {
-                        for (int i = 0; i < gateData.RequestDataList.Count; i++)
-                        {
-                            var req = gateData.RequestDataList[i];
-                        }
-                        AddCardsToPlayer(gateData.RequestDataList, CardSpawnEffectType.Drop);
+                        AddCardsToPlayer(gateData.ElementDataList, CardSpawnEffectType.Drop);
                     }
                     else
                     {
@@ -865,6 +858,25 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             Turnable?.AddCards(cards, effect);
     }
 
+    private void AddCardsToPlayer(List<IncreaseElementData> elementDataList, CardSpawnEffectType effect)
+    {
+        if (elementDataList == null || elementDataList.Count == 0) return;
+
+        bool isArmyMode   = IsArmyMode;
+        var  cardRequests = new List<CardSpawnRequestData>(elementDataList.Count);
+        for (int i = 0; i < elementDataList.Count; i++)
+        {
+            var data = elementDataList[i];
+            cardRequests.Add(new CardSpawnRequestData
+            {
+                Amount   = data.Value,
+                Level    = isArmyMode ? -1 : 1,
+                CardType = CardType.Character
+            });
+        }
+        AddCardsToPlayer(cardRequests, effect);
+    }
+
     private void EnsureWeaponCraftStarterItem()
     {
         var craftSystem = WeaponCraft.WeaponCraftSystem.Instance;
@@ -888,14 +900,14 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     }
 
     public int ConsumeCapacityCoinPool()
-    {
+        {
         // StartCoin is the source-of-truth total.
         // StartCoinPending is a subset (in-flight/visual pending), not an additional amount.
         int total = Mathf.Max(0, StartCoin);
         StartCoin = 0;
         StartCoinPending = 0;
         return total;
-    }
+        }
 
     public int GetGoldGateRewardPerProgressTick(int baseReward = 3)
     {
