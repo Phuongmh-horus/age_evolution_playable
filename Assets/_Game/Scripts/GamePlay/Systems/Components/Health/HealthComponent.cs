@@ -106,19 +106,12 @@ namespace GamePlay.HealthSystems
 
         public void TakeDamage(int amount)
         {
-            if (amount <= 0 || IsDead) return;
+            ApplyDamageInternal(amount, notifyDamageEvent: true);
+        }
 
-            // [FIX] Fire event even if Immortal to show FlyText/Feedback
-            OnTakeDamaged?.Invoke(amount);
-
-            if (isImmortal) return;
-
-            currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
-
-            NotifyHealthChanged();
-
-            if (currentHealth <= 0)
-                OnDead?.Invoke();
+        public void TakeDamageSilently(int amount)
+        {
+            ApplyDamageInternal(amount, notifyDamageEvent: false);
         }
 
         public void SetImmortal(bool value, bool clampCurrent = true)
@@ -137,6 +130,26 @@ namespace GamePlay.HealthSystems
         {
             OnHealthChanged?.Invoke(currentHealth, maxHealth);
             OnHealthChange?.Invoke(currentHealth, maxHealth);
+        }
+
+        private void ApplyDamageInternal(int amount, bool notifyDamageEvent)
+        {
+            if (amount <= 0 || IsDead) return;
+
+            if (notifyDamageEvent)
+            {
+                // Fire event even if Immortal to show FlyText/Feedback
+                OnTakeDamaged?.Invoke(amount);
+            }
+
+            if (isImmortal) return;
+
+            currentHealth = Mathf.Clamp(currentHealth - amount, 0, maxHealth);
+
+            NotifyHealthChanged();
+
+            if (currentHealth <= 0)
+                OnDead?.Invoke();
         }
 
         #endregion

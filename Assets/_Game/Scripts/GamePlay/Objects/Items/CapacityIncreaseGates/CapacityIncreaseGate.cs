@@ -19,21 +19,21 @@ namespace GamePlay.Items
 
         private readonly Dictionary<int, List<CharacterUnit>> _beltUnits = new Dictionary<int, List<CharacterUnit>>();
         private int _beltUnitCount;
-        private bool _hasCollided = false; // [FIX] Prevent Double Collision
+        private bool _hasCollided = false;
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
             Data.Type = StatType.Character;
-            
+
             // [FIX] Auto-set EntityType for Gate
             if (_entityType == GamePlay.Entities.EntityType.None)
             {
                 _entityType = GamePlay.Entities.EntityType.CapacityGate;
             }
         }
-        #endif
+#endif
 
         private void Awake()
         {
@@ -47,21 +47,21 @@ namespace GamePlay.Items
 
         public override void Initialize()
         {
-             _hasCollided = false; // Reset lock on init
+            _hasCollided = false; // Reset lock on init
 
             // [FIX] Ensure collider size is large enough for Wheel hit (Gate is tall/wide)
             // Only fallback to default if inspector size is invalid/zero.
             if (colliderSize.x <= 0f || colliderSize.y <= 0f || colliderSize.z <= 0f)
                 colliderSize = new Vector3(5f, 5f, 5f);
- 
-             // [FIX] Capacity gate TextMesh should respect depth (avoid overlaying front objects).
-             ApplyDepthToTexts();
+
+            // [FIX] Capacity gate TextMesh should respect depth (avoid overlaying front objects).
+            ApplyDepthToTexts();
 
             ClearBelts();
 
             // --- REDUNDANT COLLIDER REMOVED (Migrated to CollisionSystem) ---
             // Gate detection is now handled by WheelUnit via CollisionSystem iteration.
-            
+
             /*
             _entityType = GamePlay.Entities.EntityType.CapacityGate;
             var col = GetComponent<BoxCollider>();
@@ -78,18 +78,18 @@ namespace GamePlay.Items
 
             // [FIX] Ensure base value is added to RequestDataList so "Normal Gates" work
             // MUST be done AFTER base.Initialize() because base.Initialize calls ResetStatModifierValue() which clears the list!
-            if (Data.RequestDataList == null) 
+            if (Data.RequestDataList == null)
                 Data.RequestDataList = new List<CardSpawnRequestData>();
-            else 
+            else
                 Data.RequestDataList.Clear(); // [FIX] Ensure clean state from Pool
-            
+
             // [FIX] Prevent x2 Card Issue:
             // Do NOT pre-fill RequestDataList with base Value.
             // Only 'AddCharacter' should populate the list for collection gates.
             // If this is a static reward gate (no factory), Data.Value is usually sufficient, 
             // but for a dynamic gate, this caused doubling.
             // We assume 'CapacityIncreaseGate' is primarily for collection.
-            
+
             /*
             // Only add default if list is empty but Value is set
             if (Data.RequestDataList.Count == 0 && Data.Value > 0)
@@ -118,7 +118,7 @@ namespace GamePlay.Items
         private IEnumerator FixTextDepthDelayed()
         {
             // [FIX] Wait for TMP/Luna initialization to finish
-            yield return null; 
+            yield return null;
 
             var texts = GetComponentsInChildren<TMPro.TMP_Text>(true);
             if (texts == null || texts.Length == 0) yield break;
@@ -129,8 +129,8 @@ namespace GamePlay.Items
             {
                 if (t == null) continue;
 
-                t.isOverlay = false; 
-                
+                t.isOverlay = false;
+
                 // Force update to ensure renderer is live
                 t.ForceMeshUpdate();
 
@@ -149,7 +149,7 @@ namespace GamePlay.Items
                     var shared = renderer.sharedMaterial;
                     if (shared != null && shared.renderQueue != 3000)
                     {
-                         shared.renderQueue = 3000;
+                        shared.renderQueue = 3000;
                     }
                 }
             }

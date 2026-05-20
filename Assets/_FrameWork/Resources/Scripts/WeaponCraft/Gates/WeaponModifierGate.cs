@@ -229,7 +229,11 @@ namespace WeaponCraft
 
         protected override void HandleNonWheelCollision(IAttacker source)
         {
-            base.HandleNonWheelCollision(source);
+            ApplyDamageAcrossProgressCycles(source);
+            if (source != null)
+            {
+                AdjustStatModifierValue(source.Damage);
+            }
             PlayScalePulse();
         }
 
@@ -385,6 +389,52 @@ namespace WeaponCraft
             _valueCollect = 0;
             _countCollect = 0;
             UpdateCollectVirual();
+        }
+
+        private void ApplyDamageAcrossProgressCycles(IAttacker source)
+        {
+            if (source == null)
+            {
+                return;
+            }
+
+            if (healthComponent == null)
+            {
+                healthComponent = GetComponentInChildren<HealthComponent>(true);
+            }
+
+            if (healthComponent == null)
+            {
+                Pack.Healable?.TakeDamage(source);
+                return;
+            }
+
+            int remainingDamage = Mathf.Max(0, source.Damage);
+            bool firstCycle = true;
+            while (remainingDamage > 0)
+            {
+                int maxHealth = Mathf.Max(1, healthComponent.MaxHealth);
+                int currentHealth = Mathf.Clamp(healthComponent.CurrentHealth, 0, maxHealth);
+                if (currentHealth <= 0)
+                {
+                    healthComponent.SetMaxHealth(maxHealth, refill: true);
+                    currentHealth = maxHealth;
+                }
+
+                int damageThisCycle = Mathf.Min(remainingDamage, currentHealth);
+                if (firstCycle)
+                {
+                    // Keep one hit text with full original damage.
+                    healthComponent.TakeDamage(remainingDamage);
+                    firstCycle = false;
+                }
+                else
+                {
+                    // Overflow cycles should not spawn extra hit texts.
+                    healthComponent.TakeDamageSilently(damageThisCycle);
+                }
+                remainingDamage -= damageThisCycle;
+            }
         }
 
         private int ResolveCollectTier(WeaponCraftSystem system)

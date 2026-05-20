@@ -106,14 +106,18 @@ namespace GamePlay.Items
 
         public override void AdjustValue(int amount)
         {
+            if (amount <= 0) return;
+
             // Initial Setup if needed
             GetUpgradeDict();
 
             // 1. Armor Logic: Damage reduces armor first
             if (Armor > 0)
             {
-                Armor -= 1;
-                return;
+                int absorbed = Mathf.Min(Armor, amount);
+                Armor -= absorbed;
+                amount -= absorbed;
+                if (amount <= 0) return;
             }
 
             // 2. Validate Data
