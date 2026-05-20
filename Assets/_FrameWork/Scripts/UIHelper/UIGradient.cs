@@ -14,6 +14,15 @@ public class UIGradient : BaseMeshEffect
     [SerializeField] private Color _topColor = Color.white;
     [SerializeField] private Color _bottomColor = Color.black;
 
+    public void Set(Color32 top, Color32 bot)
+    {
+        _topColor = top;
+        _bottomColor = bot;
+        
+        if (graphic != null)
+            graphic.SetVerticesDirty();
+    }
+
     public override void ModifyMesh(VertexHelper helper)
     {
         if (!IsActive() || helper.currentVertCount == 0)

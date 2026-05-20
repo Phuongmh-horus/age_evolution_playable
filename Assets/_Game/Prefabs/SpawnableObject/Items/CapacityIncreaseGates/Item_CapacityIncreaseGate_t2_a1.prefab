@@ -54,19 +54,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85c1f9fc55e04c84aa3b58d48c225452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementData:
-    Type: 0
-    Value: 0
-    ValueUpgrade: 0
-    StartLevel: 0
-    Cost: 0
-    UpgradeRequire: 0
-  renderBackground: {fileID: 0}
+  gradient: {fileID: 2137898159785553705}
   slider: {fileID: 3765268511427335024}
   icon: {fileID: 1801272555436687068}
   iconBackground: {fileID: 1916788177168172173}
   spriteCardTypeData: {fileID: 11400000, guid: b5b89f16d043f5e48a8e04abd868af51, type: 2}
   statsUpgradeIcon: {fileID: 11400000, guid: f71e83eb651079b4da9e0339907070f8, type: 2}
+  bgGradientData: {fileID: 11400000, guid: 8851c3d5223d7e545a75f7432f52c523, type: 2}
+  goldText: {fileID: 526694438883751327}
   activeColor: {r: 0.2509804, g: 0.63529414, b: 1, a: 1}
 --- !u!1 &323875295472555261
 GameObject:
@@ -335,7 +330,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -572.00006, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8595252251379928171
@@ -1868,19 +1863,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85c1f9fc55e04c84aa3b58d48c225452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementData:
-    Type: 0
-    Value: 0
-    ValueUpgrade: 0
-    StartLevel: 0
-    Cost: 0
-    UpgradeRequire: 0
-  renderBackground: {fileID: 0}
+  gradient: {fileID: 5787858322545937714}
   slider: {fileID: 7059543127188189254}
   icon: {fileID: 3116932357212378028}
   iconBackground: {fileID: 8220594702185803675}
   spriteCardTypeData: {fileID: 11400000, guid: b5b89f16d043f5e48a8e04abd868af51, type: 2}
   statsUpgradeIcon: {fileID: 11400000, guid: f71e83eb651079b4da9e0339907070f8, type: 2}
+  bgGradientData: {fileID: 11400000, guid: 8851c3d5223d7e545a75f7432f52c523, type: 2}
+  goldText: {fileID: 1601214635221819437}
   activeColor: {r: 0.2509804, g: 0.63529414, b: 1, a: 1}
 --- !u!1 &4135075306097794823
 GameObject:
@@ -3881,19 +3871,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85c1f9fc55e04c84aa3b58d48c225452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementData:
-    Type: 0
-    Value: 0
-    ValueUpgrade: 0
-    StartLevel: 0
-    Cost: 0
-    UpgradeRequire: 0
-  renderBackground: {fileID: 0}
+  gradient: {fileID: 8818193060467120242}
   slider: {fileID: 2468083210805776085}
   icon: {fileID: 6889653925675343584}
   iconBackground: {fileID: 8260875103484686456}
   spriteCardTypeData: {fileID: 11400000, guid: b5b89f16d043f5e48a8e04abd868af51, type: 2}
   statsUpgradeIcon: {fileID: 11400000, guid: f71e83eb651079b4da9e0339907070f8, type: 2}
+  bgGradientData: {fileID: 11400000, guid: 8851c3d5223d7e545a75f7432f52c523, type: 2}
+  goldText: {fileID: 8243594128993089199}
   activeColor: {r: 0.25, g: 0.63529414, b: 1, a: 1}
 --- !u!1 &8051253520187312873
 GameObject:

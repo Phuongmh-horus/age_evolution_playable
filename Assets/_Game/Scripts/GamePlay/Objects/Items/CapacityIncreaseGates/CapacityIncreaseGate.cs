@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GamePlay.CardSystem;
 using GamePlay.Characters;
 using GamePlay.ComponentSystems;
 using UnityEngine;
@@ -203,15 +204,17 @@ namespace GamePlay.Items
             // Phase 2: follow player Z + drain gold animation
             yield return StartCoroutine(Phase2(selected, distanceOffset));
 
-            // Phase 3: tip RootAnimTrans 90° then apply config
-            yield return StartCoroutine(Phase3());
-
             if (selected.LevelCard > 0)
             {
-                selected.StatData.Value = selected.GetCurrentValue();
+                selected.RefreshByLevelCard();
                 GameplayManager.Instance.ChangeStatModifierData(selected.StatData);
                 GameplayManager.Instance.RunUpgradeEffect();
+                WeaponCardSystem.Instance?.PlayCollectAnimation(
+                    selected.ElementData, selected.LevelCard, selected.transform);
             }
+
+            // Phase 3: tip RootAnimTrans 90° then apply config
+            yield return StartCoroutine(Phase3());
             EndOfPhase();
 
             void EndOfPhase()

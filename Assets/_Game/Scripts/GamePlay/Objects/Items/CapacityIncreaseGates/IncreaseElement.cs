@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using GamePlay.Data;
@@ -6,17 +9,19 @@ namespace GamePlay.Items
 {
     public class IncreaseElement : MonoBehaviour
     {
-        [SerializeField] private IncreaseElementData elementData;
-        [SerializeField] private MeshRenderer renderBackground;
+        [SerializeField] private UIGradient gradient;
         [SerializeField] private Slider slider;
         [SerializeField] private Image icon;
         [SerializeField] private Image iconBackground;
+        
         [SerializeField] private SpriteCardTypeData spriteCardTypeData;
         [SerializeField] private StatsUpgradeIcon statsUpgradeIcon;
-        [SerializeField] private Color activeColor = Color.yellow;
-
+        [SerializeField] private BackgroundGradientData bgGradientData;
+        
+        [SerializeField] private TextMeshProUGUI goldText;
+        
         private StatModifierData _statData;
-        private MaterialPropertyBlock _propertyBlock;
+        private IncreaseElementData elementData;
 
         public int GoldCost => elementData != null ? elementData.Cost : 0;
 
@@ -27,31 +32,27 @@ namespace GamePlay.Items
         public IncreaseElementData ElementData => elementData;
         public bool IsEligible(int gold) => elementData != null && gold >= elementData.Cost;
 
-        public int GetCurrentValue()
-        {
-            if (elementData == null) return 0;
-            return elementData.Value + (elementData.ValueUpgrade * m_levelCard);
-        }
-
         private void Awake()
         {
-            if (elementData == null) return;
-            _statData = new StatModifierData
-            {
-                Type = elementData.Type,
-                Value = elementData.Value
-            };
+            SetNormalVisual();
+        }
+
+        private void SetGradient(GradientColor gradientColor)
+        {
+            gradient?.Set(gradientColor.from, gradientColor.to);
         }
 
         public void SetActiveVisual()
         {
-            if (renderBackground == null) return;
-            _propertyBlock ??= new MaterialPropertyBlock();
-            renderBackground.GetPropertyBlock(_propertyBlock);
-            _propertyBlock.SetColor("_EmissionColor", activeColor);
-            _propertyBlock.SetColor("_Color", activeColor);
-            _propertyBlock.SetColor("_BaseColor", activeColor);
-            renderBackground.SetPropertyBlock(_propertyBlock);
+            if (bgGradientData == null) return;
+            SetGradient(bgGradientData.Active);
+        }
+
+        [ContextMenu("Set InActive Visual")]
+        public void SetNormalVisual()
+        {
+            if (bgGradientData == null) return;
+            SetGradient(bgGradientData.Normal);
         }
 
         public void InitProgress(int maxGold)
@@ -62,14 +63,29 @@ namespace GamePlay.Items
             slider.value = maxGold;
         }
 
+        public void RefreshByLevelCard()
+        {
+            var value = elementData != null
+                ? elementData.Value + (elementData.ValueUpgrade * (m_levelCard - 1))
+                : 0;
+
+            StatData.Value = value;
+        }
+
         public void SetElementData(IncreaseElementData data)
         {
             elementData = data;
             if (elementData == null) return;
-            _statData = new StatModifierData
+            
+            if (goldText != null)
+                goldText.text = data.Cost.ToString();
+            
+            _statData = new CapacityIncreaseGateData()
             {
                 Type = elementData.Type,
-                Value = elementData.Value
+                Value = elementData.Value,
+                
+                ElementDataList = new List<IncreaseElementData>() { elementData },
             };
 
             m_levelCard = data.StartLevel;
@@ -87,22 +103,24 @@ namespace GamePlay.Items
         {
             if (m_levelCard >= level) return;
             m_levelCard = level;
-            if (icon != null)
-            {
-                icon.enabled = level >= 1;
-                if (level >= 1 && elementData != null && statsUpgradeIcon != null)
-                {
-                    var sprite = statsUpgradeIcon.GetIcon(elementData.Type);
-                    if (sprite != null)
-                        icon.sprite = sprite;
-                    else icon.enabled = false;
-                }
-            }
+
+            // Hidden ngay tu dau nen khong can
+            // if (icon != null)
+            // {
+            //     icon.enabled = level >= 1;
+            //     if (level >= 1 && elementData != null && statsUpgradeIcon != null)
+            //     {
+            //         var sprite = statsUpgradeIcon.GetIcon(elementData.Type);
+            //         if (sprite != null)
+            //             icon.sprite = sprite;
+            //         else icon.enabled = false;
+            //     }
+            // }
 
             if (level <= 1 && iconBackground != null)
             {
                 if (spriteCardTypeData.TryGetSprite(level, out var spriteBackground))
-                    iconBackground.sprite = spriteBackground.Normal;
+                    iconBackground.sprite = spriteBackground.Unknown; // spriteBackground.Normal;
                 else iconBackground.enabled = false;
             }
         }
