@@ -400,7 +400,7 @@ namespace GamePlay.Items
         {
             if (gateRenderer == null) return;
 
-            _propBlock ??= new MaterialPropertyBlock();
+            if (_propBlock == null) _propBlock = new MaterialPropertyBlock();
             gateRenderer.GetPropertyBlock(_propBlock);
 
             Color targetColor = Data.Value > 0 ? increaseColor : decreaseColor;
@@ -524,3 +524,4 @@ namespace GamePlay.Items
         }
     }
 }
+

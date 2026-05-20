@@ -2,8 +2,8 @@
 
 public class TowerZone : ItemUnit
 {
-    protected override async void HandleWheelCollision()
+    protected override void HandleWheelCollision()
     {
-
+        base.HandleWheelCollision();
     }
 }

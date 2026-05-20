@@ -269,7 +269,7 @@ namespace PlayerArmy
         {
             ResolveDependencies();
             maxActiveSpawnedUnits = Mathf.Clamp(maxActiveSpawnedUnits, 1, HardMaxActiveSpawnedUnits);
-            characterUnits ??= new List<CharacterUnit>();
+            if (characterUnits == null) characterUnits = new List<CharacterUnit>();
         }
 #endif
 
@@ -702,7 +702,7 @@ namespace PlayerArmy
                 effectSystem = GetComponentInChildren<PlayerArmyEffectSystem>(true);
             }
 
-            characterUnits ??= new List<CharacterUnit>();
+            if (characterUnits == null) characterUnits = new List<CharacterUnit>();
         }
 
         private CharacterListDataSO ResolveCharacterList()
@@ -1411,3 +1411,4 @@ namespace PlayerArmy
         }
     }
 }
+

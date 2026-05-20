@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using GamePlay.Entities;
 using GamePlay.Items;
 using GamePlay.Roads;
@@ -160,7 +159,19 @@ namespace GamePlay.Map
             if (milestonePrefab == null) return null;
 
             // If MilestonePoints not ready, just spawn at generator origin.
-            float positionOnMap = MilestonePoints.Count > 0 ? MilestonePoints.Min() : 0f;
+            float positionOnMap = 0f;
+            if (MilestonePoints.Count > 0)
+            {
+                bool hasValue = false;
+                foreach (float value in MilestonePoints)
+                {
+                    if (!hasValue || value < positionOnMap)
+                    {
+                        positionOnMap = value;
+                        hasValue = true;
+                    }
+                }
+            }
 
             MilestoneOnMap result = null;
 
@@ -435,11 +446,19 @@ namespace GamePlay.Map
             if (spawnablePrefabs == null || spawnablePrefabs.Count == 0)
             {
                 // Default: use prefabs from existing content data if available
-                spawnablePrefabs = contentData.SpawnableObjects?
-                    .Where(x => x != null && x.Prefab != null)
-                    .Select(x => x.Prefab.gameObject)
-                    .Distinct()
-                    .ToList();
+                if (contentData.SpawnableObjects != null)
+                {
+                    spawnablePrefabs = new List<GameObject>();
+                    for (int i = 0; i < contentData.SpawnableObjects.Count; i++)
+                    {
+                        var entry = contentData.SpawnableObjects[i];
+                        if (entry == null || entry.Prefab == null) continue;
+                        GameObject prefabGo = entry.Prefab.gameObject;
+                        if (prefabGo == null) continue;
+                        if (!spawnablePrefabs.Contains(prefabGo))
+                            spawnablePrefabs.Add(prefabGo);
+                    }
+                }
             }
 
             if (spawnablePrefabs == null || spawnablePrefabs.Count == 0)

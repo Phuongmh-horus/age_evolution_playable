@@ -335,7 +335,7 @@ namespace WeaponCraft
             float fillAmount = Mathf.Lerp(progressMinFill, progressMaxFill, Mathf.Clamp01(healthPercent));
 
             UpdateCollectVisual();
-            _progressMpb ??= new MaterialPropertyBlock();
+            if (_progressMpb == null) _progressMpb = new MaterialPropertyBlock();
             progressSprite.GetPropertyBlock(_progressMpb);
             _progressMpb.SetFloat(FillAmountProp, fillAmount);
             progressSprite.SetPropertyBlock(_progressMpb);
@@ -491,3 +491,4 @@ namespace WeaponCraft
         }
     }
 }
+

@@ -2639,8 +2639,8 @@ MonoBehaviour:
       Value: 10
       ValueUpgrade: 5
       StartLevel: 0
-      Cost: 30
-      UpgradeRequire: 30
+      Cost: 35
+      UpgradeRequire: 35
     - Type: 3
       Value: 1
       ValueUpgrade: 1

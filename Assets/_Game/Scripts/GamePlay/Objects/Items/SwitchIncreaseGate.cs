@@ -66,7 +66,7 @@ namespace GamePlay.Items
             base.OnValidate();
 
             _entityType = GamePlay.Entities.EntityType.PowerGate;
-            Data ??= new SwitchIncreaseGateData();
+            if (Data == null) Data = new SwitchIncreaseGateData();
 
             if (rewardText == null)
             {
@@ -96,7 +96,7 @@ namespace GamePlay.Items
         {
             base.Initialize();
 
-            Data ??= new SwitchIncreaseGateData();
+            if (Data == null) Data = new SwitchIncreaseGateData();
             EnsureRewardConfigIntegrity();
             EnsureRewardTextIntegrity();
             EnsureEffectComponentIntegrity();
@@ -328,8 +328,8 @@ namespace GamePlay.Items
                     Data.RewardConfigs[i] = rewardConfig;
                 }
 
-                rewardConfig.StatModifierData ??= new StatModifierData();
-                rewardConfig.RequestDataList ??= new List<CardSpawnRequestData>();
+                if (rewardConfig.StatModifierData == null) rewardConfig.StatModifierData = new StatModifierData();
+                if (rewardConfig.RequestDataList == null) rewardConfig.RequestDataList = new List<CardSpawnRequestData>();
             }
         }
 
@@ -626,3 +626,4 @@ namespace GamePlay.Items
         }
     }
 }
+

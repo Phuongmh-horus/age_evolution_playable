@@ -37,7 +37,7 @@ public class CharacterFactoryUpgradeDataSO : ScriptableObject
     {
         get
         {
-            _upgradeConfigsCache ??= BuildUpgradeConfigs();
+            if (_upgradeConfigsCache == null) _upgradeConfigsCache = BuildUpgradeConfigs();
             return _upgradeConfigsCache;
         }
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using GamePlay.CollisionSystems;
 using GamePlay.CombatSystems;
 using GamePlay.ComponentSystems;
@@ -552,3 +551,4 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     }
 #endif
 }
+

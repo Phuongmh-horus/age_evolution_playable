@@ -49,18 +49,18 @@ public static class DataManager
             PlayerData = new PlayerData();
 
         // Currency
-        PlayerData.Currency ??= new CurrencyData();
+        if (PlayerData.Currency == null) PlayerData.Currency = new CurrencyData();
         PlayerData.Currency.Cash = 1000; // Starting cash cho playable
         PlayerData.Currency.Gem = 0;
 
         // Wheel
-        PlayerData.WheelData ??= new WheelData();
+        if (PlayerData.WheelData == null) PlayerData.WheelData = new WheelData();
         PlayerData.WheelData.CardCount = 1;
         PlayerData.WheelData.CardLevel = 1;
         PlayerData.WheelData.CardStar = 0;
 
         // Capacity
-        PlayerData.CapacityData ??= new CapacityData();
+        if (PlayerData.CapacityData == null) PlayerData.CapacityData = new CapacityData();
         PlayerData.CapacityData.Level = 1;
         PlayerData.CapacityData.Capacity = 1;
         PlayerData.CapacityData.Progress = 0;
@@ -69,7 +69,7 @@ public static class DataManager
         PlayerData.IncomeLevel = 1;
 
         // Level
-        PlayerData.LevelSaveData ??= new LevelSaveData();
+        if (PlayerData.LevelSaveData == null) PlayerData.LevelSaveData = new LevelSaveData();
         PlayerData.LevelSaveData.EraId = 1;
         PlayerData.LevelSaveData.ContentId = 0;
     }
@@ -376,3 +376,4 @@ public class LevelSaveData
     public int ContentId = 0;
     public int Milestone = 0;
 }
+
