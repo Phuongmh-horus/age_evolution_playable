@@ -18,7 +18,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: body_MAT
-    second: {fileID: 2100000, guid: 7e1ba37719086c14e874dab8ec94d737, type: 2}
+    second: {fileID: 2100000, guid: ad6d31b6b78388344903557f62b2727f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -35,7 +35,7 @@ ModelImporter:
       name: material
     second: {fileID: 2100000, guid: f3d7d69b9e6cce84690d48cb9df70318, type: 2}
   materials:
-    materialImportMode: 0
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

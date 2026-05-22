@@ -19,5 +19,6 @@ namespace GamePlay.Items
     public class CapacityIncreaseGateData : StatModifierData
     {
         public List<IncreaseElementData> ElementDataList = new List<IncreaseElementData>();
+        public int UpgradeSteps;
     }
 }

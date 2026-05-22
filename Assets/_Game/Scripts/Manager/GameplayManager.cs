@@ -775,52 +775,72 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
     public void ChangeStatModifierData<TData>(TData statModifierData) where TData : StatModifierData
     {
+        if (statModifierData == null) return;
         if (statModifierData.Type is StatType.None || statModifierData.Armor > 0) return;
 
         switch (statModifierData.Type)
         {
             case StatType.FireRate:
-                gamePlayVariable.ChangeFireRateVariable(statModifierData.Value);
-                if (ActiveArmy != null)
                 {
-                    ActiveArmy.ApplyFireRateModifier(statModifierData.Value);
+                    int upgradeSteps = ResolveUpgradeSteps(statModifierData);
+                    gamePlayVariable.ChangeFireRateVariable(upgradeSteps);
+                    if (ActiveArmy != null)
+                    {
+                        ActiveArmy.ApplyFireRateModifier(upgradeSteps);
+                    }
+                    break;
                 }
-                break;
 
             case StatType.FireRange:
-                gamePlayVariable.ChangeFireRangeVariable(statModifierData.Value);
-                if (ActiveArmy != null)
                 {
-                    ActiveArmy.ApplyFireRangeModifier(statModifierData.Value);
+                    int upgradeSteps = ResolveUpgradeSteps(statModifierData);
+                    gamePlayVariable.ChangeFireRangeVariable(upgradeSteps);
+                    if (ActiveArmy != null)
+                    {
+                        ActiveArmy.ApplyFireRangeModifier(upgradeSteps);
+                    }
+                    break;
                 }
-                break;
 
             case StatType.Character:
-                if (statModifierData is CapacityIncreaseGateData gateData)
                 {
-                    if (gateData.ElementDataList != null && gateData.ElementDataList.Count > 0)
+                    if (statModifierData is CapacityIncreaseGateData gateData)
                     {
-                        AddCardsToPlayer(gateData.ElementDataList, CardSpawnEffectType.Drop);
+                        if (gateData.ElementDataList != null && gateData.ElementDataList.Count > 0 && gateData.UpgradeSteps > 0)
+                        {
+                            AddCharacterCardsFromGate(gateData, CardSpawnEffectType.Drop);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("[GameplayManager] Character upgrade gate resolved with no valid upgrade step.");
+                        }
+                    }
+                    else if (statModifierData is CapacityIncreaseFactoryData factoryData)
+                    {
+                        int gain = Mathf.Max(1, factoryData.Value);
+                        AddCapacityCoinToPool(gain);
+
+                        _singleRequestBuffer.Clear();
+                        _singleRequestBuffer.Add(new CardSpawnRequestData { Amount = factoryData.Value, Level = factoryData.Level });
+                        AddCardsToPlayer(_singleRequestBuffer, CardSpawnEffectType.Drop);
                     }
                     else
                     {
-                        Debug.LogError($"[GameplayManager] ERROR: RequestDataList is EMPTY! No cards will be added from Gate!");
+                        Debug.LogWarning($"[GameplayManager] Unknown StatModifierData type for Character: {statModifierData.GetType().Name}");
                     }
+                    break;
                 }
-                else if (statModifierData is CapacityIncreaseFactoryData factoryData)
-                {
-                    int gain = Mathf.Max(1, factoryData.Value);
-                    AddCapacityCoinToPool(gain);
 
-                    _singleRequestBuffer.Clear();
-                    _singleRequestBuffer.Add(new CardSpawnRequestData { Amount = factoryData.Value, Level = factoryData.Level });
-                    AddCardsToPlayer(_singleRequestBuffer, CardSpawnEffectType.Drop);
-                }
-                else
+            case StatType.CharacterLevel:
                 {
-                    Debug.LogWarning($"[GameplayManager] Unknown StatModifierData type for Character: {statModifierData.GetType().Name}");
+                    int levelBonus = ResolveUpgradeSteps(statModifierData);
+                    if (levelBonus > 0)
+                    {
+                        ActiveArmy?.UpgradeAllUnitsToLevel(levelBonus);
+                    }
+
+                    break;
                 }
-                break;
 
             case StatType.MoveSpeed:
                 gamePlayVariable.ChangeMoveSpeedVariable(statModifierData.Value);
@@ -830,6 +850,16 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
                 gamePlayVariable.ChangeEvolutionPointVariable(statModifierData.Value);
                 break;
         }
+    }
+
+    private static int ResolveUpgradeSteps(StatModifierData statModifierData)
+    {
+        if (statModifierData is CapacityIncreaseGateData gateData)
+        {
+            return Mathf.Max(0, gateData.UpgradeSteps);
+        }
+
+        return Mathf.Max(0, statModifierData.Value);
     }
 
     public void ResetStatModifierData(StatType statType)
@@ -863,19 +893,46 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     {
         if (elementDataList == null || elementDataList.Count == 0) return;
 
-        bool isArmyMode   = IsArmyMode;
-        var  cardRequests = new List<CardSpawnRequestData>(elementDataList.Count);
+        bool isArmyMode = IsArmyMode;
+        var cardRequests = new List<CardSpawnRequestData>(elementDataList.Count);
         for (int i = 0; i < elementDataList.Count; i++)
         {
             var data = elementDataList[i];
             cardRequests.Add(new CardSpawnRequestData
             {
-                Amount   = data.Value,
-                Level    = isArmyMode ? -1 : 1,
+                Amount = data.Value,
+                Level = isArmyMode ? -1 : 1,
                 CardType = CardType.Character
             });
         }
         AddCardsToPlayer(cardRequests, effect);
+    }
+
+    private void AddCharacterCardsFromGate(CapacityIncreaseGateData gateData, CardSpawnEffectType effect)
+    {
+        if (gateData == null || gateData.ElementDataList == null || gateData.ElementDataList.Count == 0)
+        {
+            return;
+        }
+
+        int upgradeSteps = Mathf.Max(0, gateData.UpgradeSteps);
+        if (upgradeSteps <= 0)
+        {
+            return;
+        }
+
+        IncreaseElementData selectedData = gateData.ElementDataList[0];
+        int cardsPerStep = Mathf.Max(1, selectedData.Value);
+        int totalCards = cardsPerStep * upgradeSteps;
+
+        _singleRequestBuffer.Clear();
+        _singleRequestBuffer.Add(new CardSpawnRequestData
+        {
+            Amount = totalCards,
+            Level = IsArmyMode ? -1 : 1,
+            CardType = CardType.Character
+        });
+        AddCardsToPlayer(_singleRequestBuffer, effect);
     }
 
     private void EnsureWeaponCraftStarterItem()

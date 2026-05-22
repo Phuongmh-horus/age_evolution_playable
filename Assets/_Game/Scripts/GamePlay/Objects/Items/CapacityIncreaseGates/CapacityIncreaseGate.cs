@@ -26,6 +26,7 @@ namespace GamePlay.Items
         private readonly Dictionary<int, List<CharacterUnit>> _beltUnits = new Dictionary<int, List<CharacterUnit>>();
         private int _beltUnitCount;
         private bool _hasCollided = false; // [FIX] Prevent Double Collision
+        private readonly List<IncreaseElement> _eligibleElementsBuffer = new List<IncreaseElement>(8);
 
         #if UNITY_EDITOR
         protected override void OnValidate()
@@ -177,9 +178,20 @@ namespace GamePlay.Items
 
         private IEnumerator CollisionSequence()
         {
-            // Phase 1: select element based on gold, assign Data, update visual
+            if (increaseElements != null)
+            {
+                for (int i = 0; i < increaseElements.Count; i++)
+                {
+                    if (increaseElements[i] != null)
+                    {
+                        increaseElements[i].SetNormalVisual();
+                    }
+                }
+            }
+
+            // Phase 1: random an eligible element based on current gold
             int gold = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-            IncreaseElement selected = GetBestEligibleElement(gold);
+            IncreaseElement selected = GetRandomEligibleElement(gold);
             if (selected == null)
             {
 
@@ -201,11 +213,22 @@ namespace GamePlay.Items
                     distanceOffset = rootAnimTrans.position.z - playerTrans.position.z;
             }
 
-            // Phase 2: follow player Z + drain gold animation
-            yield return StartCoroutine(Phase2(selected, distanceOffset));
-
-            if (selected.LevelCard > 0)
+            // Phase 2: follow player Z + drain gold (logic first, do not update upgrade UI yet)
+            int upgradedLevels = 0;
+            yield return StartCoroutine(Phase2(selected, distanceOffset, delegate(int levels)
             {
+                upgradedLevels = levels;
+            }));
+
+            if (upgradedLevels > 0)
+            {
+                var gateStatData = selected.StatData as CapacityIncreaseGateData;
+                if (gateStatData != null)
+                {
+                    gateStatData.UpgradeSteps = upgradedLevels;
+                }
+
+                selected.UpdateLevelCard(selected.LevelCard + upgradedLevels);
                 selected.RefreshByLevelCard();
                 GameplayManager.Instance.ChangeStatModifierData(selected.StatData);
                 GameplayManager.Instance.RunUpgradeEffect();
@@ -226,47 +249,67 @@ namespace GamePlay.Items
             }
         }
 
-        private IEnumerator Phase2(IncreaseElement element, float distanceOffset)
+        private IEnumerator Phase2(IncreaseElement element, float distanceOffset, Action<int> onResolved)
         {
             int totalGold = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-            if (totalGold <= 0) yield break;
+            if (totalGold <= 0)
+            {
+                onResolved?.Invoke(0);
+                yield break;
+            }
 
             Transform playerTrans = GameplayManager.Instance.PlayerTransform;
             int spendPerFrame = Mathf.Max(1, Mathf.CeilToInt(totalGold / (goldDrainDuration * 60f)));
+            int upgradedLevels = 0;
 
-            int levelIndex = 0;
+            int nextUpgradeCost = element.GetNextUpgradeCost();
+            if (nextUpgradeCost == int.MaxValue)
+            {
+                onResolved?.Invoke(0);
+                yield break;
+            }
+
+            int currentUpgradeSpent = 0;
+            element.InitProgress(nextUpgradeCost);
+
             while (GameplayManager.Instance.GetCurrency(CurrencyType.Gold) > 0)
             {
-                int cycleGoldSpent = 0;
-                int targetGoldPerCycle = element.GoldCost;
-                element.InitProgress(targetGoldPerCycle);
-
-                while (cycleGoldSpent < targetGoldPerCycle && GameplayManager.Instance.GetCurrency(CurrencyType.Gold) > 0)
+                if (rootAnimTrans != null && playerTrans != null)
                 {
-                    if (rootAnimTrans != null && playerTrans != null)
+                    Vector3 pos = rootAnimTrans.position;
+                    pos.z = playerTrans.position.z + distanceOffset;
+                    rootAnimTrans.position = pos;
+                }
+
+                int goldBefore = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
+                GameplayManager.Instance.TrySpendCurrency(CurrencyType.Gold, spendPerFrame);
+                int goldAfter = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
+                int spent = goldBefore - goldAfter;
+
+                if (spent <= 0)
+                {
+                    break;
+                }
+
+                currentUpgradeSpent += spent;
+
+                while (currentUpgradeSpent >= nextUpgradeCost)
+                {
+                    currentUpgradeSpent -= nextUpgradeCost;
+                    upgradedLevels++;
+                    nextUpgradeCost = element.GoldCost + (element.ElementData.UpgradeRequire * (element.LevelCard + upgradedLevels));
+                    if (nextUpgradeCost <= 0)
                     {
-                        Vector3 pos = rootAnimTrans.position;
-                        pos.z = playerTrans.position.z + distanceOffset;
-                        rootAnimTrans.position = pos;
+                        nextUpgradeCost = 1;
                     }
-
-                    int goldBefore = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-                    GameplayManager.Instance.TrySpendCurrency(CurrencyType.Gold, spendPerFrame);
-                    int goldAfter = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-                    int goldSpent = goldBefore - goldAfter;
-                    cycleGoldSpent += goldSpent;
-
-                    element.UpdateProgress(cycleGoldSpent);
-                    yield return null;
                 }
 
-                if (cycleGoldSpent >= targetGoldPerCycle)
-                {
-                    levelIndex++;
-                    element.UpdateLevelCard(levelIndex);
-                    element.UpdateProgress(0);
-                }
+                element.InitProgress(nextUpgradeCost);
+                element.UpdateProgress(currentUpgradeSpent);
+                yield return null;
             }
+
+            onResolved?.Invoke(upgradedLevels);
         }
 
         private IEnumerator Phase3()
@@ -287,16 +330,33 @@ namespace GamePlay.Items
             rootAnimTrans.localRotation = to;
         }
 
-        private IncreaseElement GetBestEligibleElement(int gold)
+        private IncreaseElement GetRandomEligibleElement(int gold)
         {
-            IncreaseElement best = null;
-            foreach (var element in increaseElements)
+            _eligibleElementsBuffer.Clear();
+
+            if (increaseElements == null || increaseElements.Count == 0)
             {
-                if (element == null || !element.IsEligible(gold)) continue;
-                if (best == null || element.GoldCost > best.GoldCost)
-                    best = element;
+                return null;
             }
-            return best;
+
+            for (int i = 0; i < increaseElements.Count; i++)
+            {
+                var element = increaseElements[i];
+                if (element == null || !element.IsEligible(gold))
+                {
+                    continue;
+                }
+
+                _eligibleElementsBuffer.Add(element);
+            }
+
+            if (_eligibleElementsBuffer.Count == 0)
+            {
+                return null;
+            }
+
+            int randomIndex = UnityEngine.Random.Range(0, _eligibleElementsBuffer.Count);
+            return _eligibleElementsBuffer[randomIndex];
         }
 
         protected override void HandleNonWheelCollision(IAttacker source) { }

@@ -18,6 +18,6 @@ MonoBehaviour:
   - statType: 2
     sprite: {fileID: 21300000, guid: a3c6bbb5b123fad449c25564c66657d5, type: 3}
   - statType: 3
-    sprite: {fileID: 21300000, guid: fdd278035c25e434184e9348fe98a323, type: 3}
-  - statType: 3
+    sprite: {fileID: 21300000, guid: 507d2d647209aeb4695d21508ef96374, type: 3}
+  - statType: 6
     sprite: {fileID: 21300000, guid: d7107ba21fbcd5346a9db16b1416767b, type: 3}

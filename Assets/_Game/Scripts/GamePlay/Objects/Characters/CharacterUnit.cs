@@ -19,7 +19,6 @@ namespace GamePlay.Characters
         public static int CharacterCount = 0;
 
         [Header("Components References (Playable)")]
-        // Playable/Luna: dùng MonoBehaviour list để inspector kéo thả, rồi cast sang IComponent.
         [SerializeField] private List<MonoBehaviour> components = new List<MonoBehaviour>();
 
         private CapabilityPack _pack;
@@ -45,7 +44,7 @@ namespace GamePlay.Characters
         [Header("Character Config (Playable Override)")]
         [Tooltip("Nếu set, CharacterUnit sẽ dùng list này thay vì ConfigHolder era.")]
         [SerializeField] private CharacterListDataSO overrideCharacterList;
-        [SerializeField] private float moveSpeed = 15f; 
+        [SerializeField] private float moveSpeed = 15f;
 
         [Header("Hit Settings")]
         [SerializeField] private ShapeType hitShapeType = ShapeType.Cylinder;
@@ -64,13 +63,12 @@ namespace GamePlay.Characters
         // jump properties
         private readonly IHitable[] _hitBuffer = new IHitable[5];
         private int _hitCount;
-        
-        // Safety flag to distinguish "Combat Unit" vs "Belt Unit"
+
         private bool _isCombatActive = false;
 
         [Header("Death VFX")]
         [SerializeField] private GameObject dieVfxPrefab;
-        [SerializeField] private Vector3 dieVfxOffset = Vector3.zero; // [FIX] Offset to adjust height
+        [SerializeField] private Vector3 dieVfxOffset = Vector3.zero;
         [SerializeField] private float dieVfxLifetime = 1.2f;
         [SerializeField] private int maxDeathVfxPerFrame = 10;
         [SerializeField] private bool playDeathVfxOnAttackDespawn = false;
@@ -90,13 +88,37 @@ namespace GamePlay.Characters
 
         public Transform ProjectilePoint => EnsureProjectilePoint();
 
+        private static GameObject SafePoolGet(GameObject prefab)
+        {
+            if (prefab == null) return null;
+            if (PoolManager.Instance == null) return Instantiate(prefab);
+            try
+            {
+                var obj = PoolManager.Instance.Get(prefab);
+                return obj != null ? obj : Instantiate(prefab);
+            }
+            catch
+            {
+                return Instantiate(prefab);
+            }
+        }
+
+        private static void SafePoolRelease(GameObject obj)
+        {
+            if (obj == null) return;
+            if (PoolManager.Instance != null)
+            {
+                try { obj.SetActive(false); return; } catch { }
+            }
+            Destroy(obj);
+        }
+
         protected override void Awake()
         {
             base.Awake();
-                
+
             BuildCapabilityPackOnce();
-            Level = -1; // [FIX] Ensure Setup(level) always runs, even for level 0
-// ... (rest of Awake logic kept implicitly by using replace appropriately? No, better to be clean)
+            Level = -1;
 
             if (weaponHolder == null)
                 weaponHolder = FindChildByNameContains(transform, "Vu_khi");
@@ -104,16 +126,11 @@ namespace GamePlay.Characters
             EnsureProjectilePoint();
             EnsureBodyScalable();
 
-            // --- Force Physics Removed for Playable (Back to Custom CombatSystem) ---
-            // We strip Rigidbody/Collider and rely on CombatSystem manual update.
-            // keeping layer 0 just in case.
             gameObject.layer = 0;
 
             if (TryGetComponent<Rigidbody>(out var rb)) Destroy(rb);
             if (TryGetComponent<Collider>(out var col)) Destroy(col);
-            // ------------------------------------
-            
-            // [FIX] Ensure EntityType is set correctly for Physics/Attacker checks
+
             if (_entityType == EntityType.None) _entityType = EntityType.Character;
 
             CacheMainRendererIfNeeded();
@@ -130,7 +147,6 @@ namespace GamePlay.Characters
 
             CacheMainRendererIfNeeded();
 
-            // Auto fill components if empty (editor convenience, no external libs)
             if (components == null) components = new List<MonoBehaviour>();
             if (components.Count == 0)
             {
@@ -153,7 +169,6 @@ namespace GamePlay.Characters
 
             if (components == null) components = new List<MonoBehaviour>();
 
-            // FIX: Auto-detect if list is empty OR contains only nulls (inspector issue)
             bool hasValidComponents = false;
             for (int i = 0; i < components.Count; i++)
             {
@@ -162,10 +177,8 @@ namespace GamePlay.Characters
 
             if (!hasValidComponents)
             {
-                // Clear any potential nulls/garbage from Inspector
                 components.Clear();
 
-                // Playable Fix: Search recursively in children (true = include inactive)
                 var monos = GetComponentsInChildren<MonoBehaviour>(true);
                 for (int i = 0; i < monos.Length; i++)
                 {
@@ -173,9 +186,6 @@ namespace GamePlay.Characters
                     if (mb == null || mb == this) continue;
                     if (mb is IComponent) components.Add(mb);
                 }
-
-                // Debug: Loop removed to prevent NRE. AnimationComponent was confirmed found.
-                // Log count only for sanity check
             }
 
             for (int i = 0; i < components.Count; i++)
@@ -192,7 +202,6 @@ namespace GamePlay.Characters
                 if (val is IHealable healable) { _pack.Healable = healable; _activeFlags |= CapabilityFlags.Heal; }
             }
 
-            // Fallback: ensure AttackComponent is picked up even if inspector list is incomplete
             if (_pack.Attacker == null)
             {
                 var attackers = GetComponentsInChildren<MonoBehaviour>(true);
@@ -324,8 +333,6 @@ namespace GamePlay.Characters
             CharacterCount = Mathf.Max(0, CharacterCount - 1);
             _isCountedInRuntime = false;
         }
-        
-        // OnTriggerEnter Removed - collisions handled by CombatSystem calling OnHit/OnAttackComplete
 
         public void Setup(int level, bool includeWeapon = true)
         {
@@ -401,8 +408,6 @@ namespace GamePlay.Characters
         {
             if (target != null && target.EntityType == GamePlay.Entities.EntityType.CapacityGate)
             {
-                // Hot path: gate consumes units immediately.
-                // Keep this branch minimal and skip all attack feedback logic below.
                 DespawnInterval(true);
                 return;
             }
@@ -416,8 +421,6 @@ namespace GamePlay.Characters
                     SoundManager.Instance.PlayOneShot(sfx);
             }
 
-            // Obstacle hits (pillar/factory/gate/tower) are bursty.
-            // Skip per-unit attack animation callback and keep VFX optional+throttled to reduce peak CPU.
             if (isObstacle)
             {
                 if (playAttackVfxOnObstacleHit && effectComponent != null && CanPlayAttackVfxThisFrame())
@@ -431,10 +434,7 @@ namespace GamePlay.Characters
 
             if (effectComponent != null) effectComponent.PlayEffect(EffectType.Attack);
 
-            // Enemy targets keep a shorter despawn delay than obstacle targets.
             _pack.Animator?.PlayAnimation(AnimationType.Attack, 0f, null);
-            // Restore soldier death VFX only for enemy attack-despawn.
-            // Keep obstacle attack-despawn unchanged to avoid burst VFX cost on factories/gates/towers.
             ScheduleAttackDespawn(ResolveAttackDespawnDelay(enemyAttackDespawnDelay), dieVfxPrefab != null);
         }
 
@@ -446,9 +446,6 @@ namespace GamePlay.Characters
             }
         }
 
-        /// <summary>
-        /// Virtual method để class con (như EnemyUnit) có thể override
-        /// </summary>
         protected virtual void HandleHealthChange(int current, int max)
         {
             if (current <= 0)
@@ -479,7 +476,9 @@ namespace GamePlay.Characters
             return list.GetCharacterByLevel(Level);
         }
 
-
+        // -----------------------------------------------------------------------
+        // [FIX] SetupWeapon — use SafePoolGet instead of PoolManager.Instance.Get
+        // -----------------------------------------------------------------------
         private void SetupWeapon()
         {
             ReleaseCurrentWeapon();
@@ -488,14 +487,7 @@ namespace GamePlay.Characters
             if (_characterData.WeaponPrefab == null) return;
             if (weaponHolder == null) return;
 
-            if (PoolManager.Instance != null)
-            {
-                _currentWeapon = PoolManager.Instance.Get(_characterData.WeaponPrefab);
-            }
-            else
-            {
-                _currentWeapon = Instantiate(_characterData.WeaponPrefab);
-            }
+            _currentWeapon = SafePoolGet(_characterData.WeaponPrefab);
 
             if (_currentWeapon == null) return;
 
@@ -523,65 +515,40 @@ namespace GamePlay.Characters
             SetWeaponVisible(true);
         }
 
-        /// <summary>
-        /// Replaces the currently held weapon with an arbitrary prefab.
-        /// Pass null to clear the weapon without spawning a new one.
-        /// Optimized to work tightly with weaponHolder for efficient weapon swaps.
-        /// </summary>
         public void SetWeaponPrefabOverride(GameObject prefab)
         {
-            // Ensure weaponHolder is valid and cached
             if (!EnsureWeaponHolder())
             {
                 return;
             }
 
-            // Clear all children from weaponHolder directly (more efficient than detach)
             for (int i = weaponHolder.childCount - 1; i >= 0; i--)
             {
                 var child = weaponHolder.GetChild(i);
-                if (PoolManager.Instance != null)
-                {
-                    child.gameObject.SetActive(false);
-                }
-                else
-                {
-                    Destroy(child.gameObject);
-                }
+                SafePoolRelease(child.gameObject);
             }
 
             _currentWeapon = null;
             _currentWeaponRenderers = null;
 
-            // If prefab is null, we're done (weapon cleared)
             if (prefab == null)
             {
                 return;
             }
 
-            // Spawn new weapon directly into weaponHolder
-            if (PoolManager.Instance != null)
-            {
-                _currentWeapon = PoolManager.Instance.Get(prefab);
-            }
-            else
-            {
-                _currentWeapon = Instantiate(prefab);
-            }
+            _currentWeapon = SafePoolGet(prefab);
 
             if (_currentWeapon == null)
             {
                 return;
             }
 
-            // Parent directly to weaponHolder with local transform reset
             var weaponTransform = _currentWeapon.transform;
             weaponTransform.SetParent(weaponHolder, false);
             weaponTransform.localPosition = Vector3.zero;
             weaponTransform.localRotation = Quaternion.identity;
             weaponTransform.localScale = Vector3.one;
 
-            // Cache renderers for weapon visibility control
             _currentWeaponRenderers = _currentWeapon.GetComponentsInChildren<Renderer>(true);
             if (_currentWeapon.TryGetComponent<WeaponUnit>(out var weaponUnit))
             {
@@ -693,13 +660,13 @@ namespace GamePlay.Characters
             }
 
             ClearHits();
-            _isCombatActive = false; // Reset state
-             
+            _isCombatActive = false;
+
             if (playDeathVfx)
             {
                 PlayDeathVfx();
             }
-             
+
             Despawn();
         }
 
@@ -726,7 +693,6 @@ namespace GamePlay.Characters
                 effectComponent.PlayEffect(EffectType.Hit, transform.position, transform.rotation);
             }
 
-            // Simple reaction: despawn on hit by enemy weapon
             DespawnInterval();
             OnHitComplete?.Invoke(source);
         }
@@ -787,6 +753,9 @@ namespace GamePlay.Characters
             return Mathf.Max(delay, attackClipLength);
         }
 
+        // -----------------------------------------------------------------------
+        // [FIX] PlayDeathVfx — use SafePoolGet instead of PoolManager.Instance.Get
+        // -----------------------------------------------------------------------
         private void PlayDeathVfx()
         {
             if (dieVfxPrefab == null)
@@ -794,33 +763,25 @@ namespace GamePlay.Characters
             if (!CanSpawnDeathVfxThisFrame())
                 return;
 
-            // [FIX] Apply offset to lift VFX higher (e.g. for Puddle + Body combo)
             CacheMainRendererIfNeeded();
 
             var spawnPos = Transform.position + dieVfxOffset;
-            var vfx = PoolManager.Instance != null ? PoolManager.Instance.Get(dieVfxPrefab) : Instantiate(dieVfxPrefab);
+            var vfx = SafePoolGet(dieVfxPrefab);
             if (vfx == null) return;
 
             vfx.transform.position = spawnPos;
             vfx.transform.rotation = Quaternion.identity;
             vfx.SetActive(true);
 
-            if (_mainRenderer == null)
-            {
-                // No auto-find; requires manual assignment.
-            }
-
             if (_mainRenderer != null)
             {
                 var sync = GetCachedColorSync(vfx);
                 if (sync != null)
                 {
-                    // Debug.Log($"[CharacterUnit] Syncing Color using script on {vfx.name}");
                     sync.SyncColorFrom(_mainRenderer);
                 }
                 else
                 {
-                    // Debug.Log($"[CharacterUnit] Manual Sync Color on {vfx.name} (Script not found)");
                     Color c = GetCachedRendererColor(_mainRenderer);
 
                     var parts = GetCachedParticleSystems(vfx);
@@ -1060,10 +1021,8 @@ namespace GamePlay.Characters
                 return false;
             }
 
-            // Treat unknown/None as non-enemy so despawn delay still applies to world-object hits.
             return true;
         }
-
 
         public void Dispose()
         {
@@ -1139,15 +1098,7 @@ namespace GamePlay.Characters
             if (_currentWeapon == null) return;
 
             _currentWeapon.transform.SetParent(null, false);
-
-            if (PoolManager.Instance != null)
-            {
-                _currentWeapon.SetActive(false);
-            }
-            else
-            {
-                Destroy(_currentWeapon);
-            }
+            SafePoolRelease(_currentWeapon);
 
             _currentWeapon = null;
             _currentWeaponRenderers = null;
@@ -1167,7 +1118,6 @@ namespace GamePlay.Characters
                 renderer.enabled = visible;
             }
         }
-
 
         #region JUMP
 

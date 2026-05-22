@@ -20,8 +20,8 @@ MonoBehaviour:
       Material: {fileID: 2100000, guid: 5e6ba6a4b9e3efe44933becae152a4ae, type: 2}
       Sprite: {fileID: 21300000, guid: 0751fae7a656c98448d85c9f3fc081f4, type: 3}
     WeaponPrefab: {fileID: 6706172149129167379, guid: fe6ba220336818b499668d75f44cceda, type: 3}
-    UnitDamage: 3
-    WeaponDamage: 1
+    UnitDamage: 10
+    WeaponDamage: 2
     FireRange: 20
   - characterLevel: 2
     CharacterPrefab: {fileID: 440069439194356736, guid: 0a8b5767667eb534889a210ac4810fe7, type: 3}
@@ -29,8 +29,8 @@ MonoBehaviour:
       Material: {fileID: 2100000, guid: e76f48eefc69920488742b570f7ca9bb, type: 2}
       Sprite: {fileID: 21300000, guid: 4a0478687dc121a488fe86d482bfdd6d, type: 3}
     WeaponPrefab: {fileID: 6706172149129167379, guid: 48041911b9726304abd549cf730718d9, type: 3}
-    UnitDamage: 5
-    WeaponDamage: 2
+    UnitDamage: 15
+    WeaponDamage: 3
     FireRange: 23
   - characterLevel: 3
     CharacterPrefab: {fileID: 1372216057998118721, guid: 23038aa7919ec4742b644ed30938948f, type: 3}
@@ -38,8 +38,8 @@ MonoBehaviour:
       Material: {fileID: 2100000, guid: 062500e116856fc4e8a79bb233f7bef4, type: 2}
       Sprite: {fileID: 21300000, guid: 0ab78a83fe41780479ce1e516167f54d, type: 3}
     WeaponPrefab: {fileID: 6706172149129167379, guid: 8337e9671a4c7064f9afd942b78563d1, type: 3}
-    UnitDamage: 7
-    WeaponDamage: 3
+    UnitDamage: 20
+    WeaponDamage: 4
     FireRange: 26
   - characterLevel: 4
     CharacterPrefab: {fileID: 6269225836784746350, guid: 84048d40d6e22a542880a79087b52656, type: 3}
@@ -47,8 +47,8 @@ MonoBehaviour:
       Material: {fileID: 2100000, guid: 7ceb8240f7ab81548acb3c3e04e9b990, type: 2}
       Sprite: {fileID: 21300000, guid: dc641ecfd3dc78e4fa767d612c2753b1, type: 3}
     WeaponPrefab: {fileID: 6706172149129167379, guid: 1908c4d1a7e04fc42af4fba97e27f7d1, type: 3}
-    UnitDamage: 9
-    WeaponDamage: 4
+    UnitDamage: 25
+    WeaponDamage: 5
     FireRange: 29
   - characterLevel: 5
     CharacterPrefab: {fileID: 9144215148042233058, guid: cb3d44d4333483b4fa9d0a8e29d77a8f, type: 3}
@@ -56,6 +56,6 @@ MonoBehaviour:
       Material: {fileID: 2100000, guid: 5dd04204011d0a542a23cdbb04d67a61, type: 2}
       Sprite: {fileID: 21300000, guid: 9e52c4bf0b6ed2e4e9bab29b50f7f56a, type: 3}
     WeaponPrefab: {fileID: 6706172149129167379, guid: 2b92e4c6916d1444197ffd832a8f0b1d, type: 3}
-    UnitDamage: 11
-    WeaponDamage: 5
+    UnitDamage: 30
+    WeaponDamage: 6
     FireRange: 32

@@ -14,16 +14,7 @@ namespace GamePlay.Map
 {
     /// <summary>
     /// Runtime content spawner for a generated map.
-    ///
-    /// Playable/Luna goals:
-    /// - No dependency on Alchemy/KBCore inspector helpers.
-    /// - Keep only runtime-relevant API used by GameplayManager:
-    ///   - generatedObjects
-    ///   - GateNewEraTrans
-    ///   - MilestonePoints
-    ///   - GenerateContentData(...)
-    ///   - ClearContent()
-    /// </summary>
+    /// [FIX] All PoolManager.Get() calls are now wrapped with try-catch fallback to Instantiate()
     public class MapContentGenerator : MonoBehaviour
     {
         public Vector3 Position => transform.position;
@@ -35,25 +26,46 @@ namespace GamePlay.Map
         [Header("Startup Performance")]
         [SerializeField, Min(1)] private int spawnItemsPerFrame = 20;
 
-        // Public API expected by GameplayManager (legacy naming kept)
         public readonly List<ItemUnit> generatedObjects = new List<ItemUnit>();
         public readonly HashSet<float> MilestonePoints = new HashSet<float>();
 
-        /// <summary>
-        /// If your content contains a "GateNewEra" item, this will reference its transform.
-        /// GameplayManager can use it to aim a finish camera state.
-        /// </summary>
         public Transform GateNewEraTrans { get; private set; }
 
-        // Optional random generation (kept because it exists in the original flow)
         [Header("Random Content Generation (Optional)")]
         [SerializeField] private List<GameObject> spawnablePrefabs;
         [SerializeField] private float laneWidth = 4f;
         [SerializeField] private float spawnChance = 0.3f;
         [SerializeField] private float minDistanceBetweenObjects = 5f;
 
-        // Internal
         private readonly Dictionary<GameObject, GameObject> instanceToPrefabMap = new Dictionary<GameObject, GameObject>();
+
+        private static ItemUnit SafeSpawnItemUnit(ItemUnit prefab, Vector3 pos, Quaternion rot, Transform parent)
+        {
+            if (prefab == null) return null;
+
+            // Try Pools.Spawn extension first (if it exists on the type)
+            try
+            {
+                var spawned = prefab.Spawn(pos, rot, parent);
+                if (spawned != null) return spawned;
+            }
+            catch { }
+
+            // Direct Instantiate fallback — always works in Luna
+            return Object.Instantiate(prefab, pos, rot, parent);
+        }
+
+        private static MilestoneOnMap SafeSpawnMilestone(MilestoneOnMap prefab)
+        {
+            if (prefab == null) return null;
+            try
+            {
+                var spawned = prefab.Spawn();
+                if (spawned != null) return spawned;
+            }
+            catch { }
+            return Object.Instantiate(prefab);
+        }
 
         public void GenerateContentData(ContentDataSO contentDataSo, bool initializeItems = true)
         {
@@ -139,9 +151,6 @@ namespace GamePlay.Map
             }
         }
 
-        /// <summary>
-        /// Helper used by GameplayManager for positioning things "along the map".
-        /// </summary>
         public void SetPositionOnMap(Transform trans, float positionOnMap)
         {
             if (trans == null) return;
@@ -150,15 +159,11 @@ namespace GamePlay.Map
             trans.rotation = Quaternion.identity;
         }
 
-        /// <summary>
-        /// Spawn milestone item (if your project still uses it).
-        /// Keeps original Spawn() usage (Pools) if available; falls back to Instantiate.
-        /// </summary>
+        // [FIX] Use SafeSpawnMilestone to avoid pool registry exceptions
         public MilestoneOnMap SpawnMilestoneItem(MilestoneOnMap milestonePrefab)
         {
             if (milestonePrefab == null) return null;
 
-            // If MilestonePoints not ready, just spawn at generator origin.
             float positionOnMap = 0f;
             if (MilestonePoints.Count > 0)
             {
@@ -173,17 +178,7 @@ namespace GamePlay.Map
                 }
             }
 
-            MilestoneOnMap result = null;
-
-            // Use pool Spawn() if milestonePrefab inherits PoolEntity and has Spawn extension.
-            try
-            {
-                result = milestonePrefab.Spawn();
-            }
-            catch
-            {
-                result = Instantiate(milestonePrefab);
-            }
+            MilestoneOnMap result = SafeSpawnMilestone(milestonePrefab);
 
             result.transform.SetParent(transform);
             SetPositionOnMap(result.transform, positionOnMap);
@@ -221,24 +216,14 @@ namespace GamePlay.Map
                 var spawnable = sourceData.SpawnableObjects[i];
                 if (spawnable == null || spawnable.Prefab == null) continue;
 
-                // Track milestone points (FinishTower)
                 if (spawnable.Prefab.EntityType == EntityType.FinishTower)
                     MilestonePoints.Add(spawnable.PositionOnMap);
 
-                // Position purely by Z distance from generator origin
                 Vector3 spawnPosition = Position + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
                 Quaternion spawnRotation = Quaternion.Euler(spawnable.Rotation);
 
-                // Spawn (prefer Pools Spawn if exists on ItemUnit)
-                ItemUnit itemUnit = null;
-                try
-                {
-                    itemUnit = spawnable.Prefab.Spawn(spawnPosition, spawnRotation, transform);
-                }
-                catch
-                {
-                    itemUnit = Instantiate(spawnable.Prefab, spawnPosition, spawnRotation, transform);
-                }
+                // [FIX] SafeSpawnItemUnit avoids Luna pool registry exceptions
+                ItemUnit itemUnit = SafeSpawnItemUnit(spawnable.Prefab, spawnPosition, spawnRotation, transform);
 
                 if (itemUnit == null)
                 {
@@ -247,8 +232,6 @@ namespace GamePlay.Map
                 }
 
                 itemUnit.transform.localScale = spawnable.Scale;
-
-                // Apply overrides (if supported)
                 spawnable.ApplyPropertyOverrides(itemUnit);
 
                 if (initializeItems && Application.isPlaying)
@@ -301,15 +284,8 @@ namespace GamePlay.Map
                 Vector3 spawnPosition = Position + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
                 Quaternion spawnRotation = Quaternion.Euler(spawnable.Rotation);
 
-                ItemUnit itemUnit = null;
-                try
-                {
-                    itemUnit = spawnable.Prefab.Spawn(spawnPosition, spawnRotation, transform);
-                }
-                catch
-                {
-                    itemUnit = Instantiate(spawnable.Prefab, spawnPosition, spawnRotation, transform);
-                }
+                // [FIX] SafeSpawnItemUnit
+                ItemUnit itemUnit = SafeSpawnItemUnit(spawnable.Prefab, spawnPosition, spawnRotation, transform);
 
                 if (itemUnit == null)
                 {
@@ -347,15 +323,8 @@ namespace GamePlay.Map
                 Vector3 spawnPosition = Position + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
                 Quaternion spawnRotation = Quaternion.Euler(spawnable.Rotation);
 
-                ItemUnit itemUnit = null;
-                try
-                {
-                    itemUnit = spawnable.Prefab.Spawn(spawnPosition, spawnRotation, transform);
-                }
-                catch
-                {
-                    itemUnit = Instantiate(spawnable.Prefab, spawnPosition, spawnRotation, transform);
-                }
+                // [FIX] SafeSpawnItemUnit
+                ItemUnit itemUnit = SafeSpawnItemUnit(spawnable.Prefab, spawnPosition, spawnRotation, transform);
 
                 if (itemUnit == null)
                 {
@@ -389,7 +358,6 @@ namespace GamePlay.Map
 #if UNITY_EDITOR
             if (!Application.isPlaying && destroyImmediate)
             {
-                // In editor: remove all ItemUnit children except RoadSegment.
                 var toDelete = new List<GameObject>();
                 foreach (Transform child in transform)
                 {
@@ -408,9 +376,6 @@ namespace GamePlay.Map
             else
 #endif
             {
-                // Runtime: destroy objects; clear pools first to avoid stale references.
-                PoolSystem.ClearAllPools();
-
                 foreach (var item in generatedObjects)
                 {
                     if (item != null)
@@ -426,7 +391,7 @@ namespace GamePlay.Map
 
         #endregion
 
-        #region Optional random generation (kept for parity; safe no-op if map not generated)
+        #region Optional random generation
 
         [Header("Grid Spawn Settings (Optional)")]
         [SerializeField] private GameObject gridPrefab;
@@ -445,7 +410,6 @@ namespace GamePlay.Map
 
             if (spawnablePrefabs == null || spawnablePrefabs.Count == 0)
             {
-                // Default: use prefabs from existing content data if available
                 if (contentData.SpawnableObjects != null)
                 {
                     spawnablePrefabs = new List<GameObject>();
@@ -489,7 +453,6 @@ namespace GamePlay.Map
                 var segment = activeSegments[segmentIndex];
                 if (segment == null) continue;
 
-                // Skip first and last
                 if (segmentIndex < 1) continue;
                 if (segmentIndex >= totalSegments - 1) continue;
 

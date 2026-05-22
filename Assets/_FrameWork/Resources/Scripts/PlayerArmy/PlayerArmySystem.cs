@@ -95,6 +95,9 @@ namespace PlayerArmy
         private GameObject _weaponOverridePrefab;
         private int _baseAttackDamage = 1;
         private int _resolvedWeaponDamage;
+        private float _baseAttackInterval;
+        private float _baseProjectileDuration;
+        private int _fireRateBonusPoints;
         private float _baseFireRange;
         private float _fireRangeBonus;
 
@@ -601,13 +604,16 @@ namespace PlayerArmy
 
         public void ApplyFireRateModifier(int value)
         {
-            if (value == 0)
+            if (value <= 0)
             {
                 return;
             }
 
-            attackInterval = Mathf.Max(0.05f, attackInterval - value * 0.05f);
-            projectileDuration = Mathf.Max(0.05f, projectileDuration - value * 0.05f);
+            _fireRateBonusPoints += value;
+
+            const float fireRateStep = 0.05f;
+            attackInterval = Mathf.Max(0.05f, _baseAttackInterval - _fireRateBonusPoints * fireRateStep);
+            projectileDuration = Mathf.Max(0.05f, _baseProjectileDuration - _fireRateBonusPoints * fireRateStep);
 
             float nextAttackTime = Time.time + attackInterval;
             for (int i = 0; i < characterUnits.Count; i++)
@@ -622,9 +628,25 @@ namespace PlayerArmy
             }
         }
 
-        public void UpgradeAllUnitsToLevel(int level, bool includeWeapon = true)
+        public void UpgradeAllUnitsToLevel(int levelbonus, bool includeWeapon = true)
         {
-            int targetLevel = Mathf.Max(1, level);
+            if (levelbonus <= 0 || characterUnits == null || characterUnits.Count == 0)
+            {
+                return;
+            }
+
+            int oldLevel = 1;
+            for (int i = 0; i < characterUnits.Count; i++)
+            {
+                var unit = characterUnits[i];
+                if (unit != null && unit.Level > 0)
+                {
+                    oldLevel = unit.Level;
+                    break;
+                }
+            }
+
+            int targetLevel = Mathf.Max(1, oldLevel + levelbonus);
             var snapshot = new List<CharacterUnit>(characterUnits);
 
             for (int i = 0; i < snapshot.Count; i++)
@@ -838,6 +860,9 @@ namespace PlayerArmy
             var root = GetBodyRoot();
             _targetX = root.localPosition.x;
             _currentForwardSpeed = fallbackForwardSpeed;
+            _baseAttackInterval = Mathf.Max(0.05f, attackInterval);
+            _baseProjectileDuration = Mathf.Max(0.05f, projectileDuration);
+            _fireRateBonusPoints = 0;
             _baseFireRange = projectileDistance;
             _fireRangeBonus = 0f;
             RefreshCombatDamage();
@@ -1079,7 +1104,7 @@ namespace PlayerArmy
                         damage,
                         EnemyProjectileSystem.ProjectileSpinAxis.Y,
                         EnemyProjectileSystem.ProjectileMotionMode.Straight))
-                {   
+                {
                     projectile.Despawn();
                     TryPerformDirectAttack(unit);
                 }

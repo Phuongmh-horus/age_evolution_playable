@@ -180,11 +180,12 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (brickLayer != null)
         {
             brickLayer.ResetLayer();
-            brickLayer.Despawn(layerReturnDelay);
+            brickLayer.gameObject.SetActive(false);
             brickLayer = null;
         }
 
-        if (replacementLayerPrefabs != null && replacementLayerPrefabs.Count > 0 && replacementLayerPrefabs[0] != null)
+        if (replacementLayerPrefabs != null && replacementLayerPrefabs.Count > 0
+        && replacementLayerPrefabs[0] != null)
         {
             brickLayer = replacementLayerPrefabs[0].Spawn(parent: bricksRoot);
             brickLayer.transform.localPosition = Vector3.zero;

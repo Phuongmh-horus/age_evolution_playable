@@ -20,7 +20,7 @@ MonoBehaviour:
   Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}
   Contents:
   - {fileID: 11400000, guid: b3af8883143d94b40989fe5068db3908, type: 2}
-  CharacterList: {fileID: 11400000, guid: 403e97cfe74aac14c86b357cb07c67be, type: 2}
+  CharacterList: {fileID: 11400000, guid: a0a4046a522e97b4ca8b615cafd20aa6, type: 2}
   Turntable: {fileID: 11400000, guid: 74b06c3f3ab57a045a027805eb9d1453, type: 2}
   EvolutionConfig: {fileID: 11400000, guid: 2aecc8a88bb487143b2a694172a24939, type: 2}
   CharacterFactoryUpgradeConfig: {fileID: 11400000, guid: 144d13040f0b82b4eaeb03d722fe92bf, type: 2}

@@ -188,7 +188,6 @@ public class SoundManager : MonoSingleton<SoundManager>
             bgMusicSource = gameObject.AddComponent<AudioSource>();
             bgMusicSource.playOnAwake = false;
             bgMusicSource.loop = false;
-            bgMusicSource.spatialBlend = 0f;
         }
 
         if (fxMusicSource == null)
@@ -196,7 +195,6 @@ public class SoundManager : MonoSingleton<SoundManager>
             fxMusicSource = gameObject.AddComponent<AudioSource>();
             fxMusicSource.playOnAwake = false;
             fxMusicSource.loop = false;
-            fxMusicSource.spatialBlend = 0f;
         }
     }
 

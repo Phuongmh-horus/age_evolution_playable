@@ -32,6 +32,17 @@ namespace GamePlay.Items
         public IncreaseElementData ElementData => elementData;
         public bool IsEligible(int gold) => elementData != null && gold >= elementData.Cost;
 
+        public int GetNextUpgradeCost()
+        {
+            if (elementData == null) return int.MaxValue;
+
+            int currentLevel = Mathf.Max(0, m_levelCard);
+            int baseCost = Mathf.Max(0, elementData.Cost);
+            int stepCost = Mathf.Max(0, elementData.UpgradeRequire);
+
+            return baseCost + (stepCost * currentLevel);
+        }
+
         private void Awake()
         {
             SetNormalVisual();
@@ -65,6 +76,8 @@ namespace GamePlay.Items
 
         public void RefreshByLevelCard()
         {
+            if (_statData == null) return;
+
             var value = elementData != null
                 ? elementData.Value + (elementData.ValueUpgrade * (m_levelCard - 1))
                 : 0;
@@ -117,7 +130,21 @@ namespace GamePlay.Items
             //     }
             // }
 
-            if (level <= 1 && iconBackground != null)
+            if (icon != null && elementData != null && statsUpgradeIcon != null)
+            {
+                var statIcon = statsUpgradeIcon.GetIcon(elementData.Type);
+                if (statIcon != null)
+                {
+                    icon.sprite = statIcon;
+                    icon.enabled = true;
+                }
+                else
+                {
+                    icon.enabled = false;
+                }
+            }
+
+            if (iconBackground != null)
             {
                 if (spriteCardTypeData.TryGetSprite(level, out var spriteBackground))
                     iconBackground.sprite = spriteBackground.Unknown; // spriteBackground.Normal;

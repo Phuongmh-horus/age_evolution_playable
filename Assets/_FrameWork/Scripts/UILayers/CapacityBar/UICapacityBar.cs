@@ -70,7 +70,8 @@ public class UICapacityBar : MonoBehaviour
     private void Start()
     {
         _isFirstSetup = true;
-        EnsureVfxSpriteLoaded();
+        if (enableVfx)
+            EnsureVfxSpriteLoaded();
         SyncFromPlayerData();
         UpdateData();
     }
@@ -354,16 +355,16 @@ public class UICapacityBar : MonoBehaviour
             float progress = Mathf.Clamp01((float)targetPoint / maxPoints);
             float progressY = Mathf.Lerp(rect.yMin, rect.yMax, progress);
 
-             // Simple random spawn logic for demo parity
+            // Simple random spawn logic for demo parity
             float randomOffsetY = UnityEngine.Random.Range(yOffsetRange.x, yOffsetRange.y);
             float randomOffsetX = UnityEngine.Random.Range(xOffsetRange.x, xOffsetRange.y);
-            
+
             // Note: In real logic we used progress to chart Y. 
             // Simplified here: spawn randomly near bar center or slider handle position if we calculated it.
             // Using logic from original:
             // float progress = (float)points / maxPoints; 
             // Here just random around center for visual feedback.
-             
+
             _activeVFXCount++;
 
             var go = new GameObject("VFX_IncreaseCapacityBar_Sprite", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));

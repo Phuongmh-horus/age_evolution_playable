@@ -140,13 +140,11 @@ namespace GamePlay.ComponentSystems
                 }
                 else if (onComplete == null)
                 {
-                    // No effect and no callback intent -> avoid coroutine churn on hot hit paths.
                     return;
                 }
 
                 if (onComplete == null)
                 {
-                    // Fire-and-forget effect: don't allocate wait coroutine.
                     return;
                 }
 
@@ -176,6 +174,20 @@ namespace GamePlay.ComponentSystems
             _waitRoutine = null;
             onComplete?.Invoke();
         }
+        private static GameObject SafePoolGet(GameObject prefab)
+        {
+            if (prefab == null) return null;
+            if (PoolManager.Instance == null) return Instantiate(prefab);
+            try
+            {
+                var obj = PoolManager.Instance.Get(prefab);
+                return obj != null ? obj : Instantiate(prefab);
+            }
+            catch
+            {
+                return Instantiate(prefab);
+            }
+        }
 
         private void ExecuteEffect(EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
         {
@@ -185,8 +197,9 @@ namespace GamePlay.ComponentSystems
                 if (entry.ParentToTarget)
                     targetParent = parent != null ? parent : CacheTransform;
 
-                bool canPool = PoolManager.Instance != null && HasParticleSystems(entry.VfxPrefab);
-                GameObject vfx = canPool ? PoolManager.Instance.Get(entry.VfxPrefab) : Instantiate(entry.VfxPrefab);
+                bool hasParticles = HasParticleSystems(entry.VfxPrefab);
+
+                GameObject vfx = SafePoolGet(entry.VfxPrefab);
                 if (vfx != null)
                 {
                     vfx.transform.SetParent(targetParent, false);
@@ -194,7 +207,7 @@ namespace GamePlay.ComponentSystems
                     vfx.transform.rotation = rotation;
                     vfx.SetActive(true);
 
-                    if (canPool)
+                    if (hasParticles && PoolManager.Instance != null)
                     {
                         float lifeTime = GetParticleLifetime(vfx);
                         if (lifeTime > 0f)
@@ -290,5 +303,3 @@ namespace GamePlay.ComponentSystems
         }
     }
 }
-
-

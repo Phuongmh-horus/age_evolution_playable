@@ -15,7 +15,7 @@ namespace GamePlay.Data
     public class StatsUpgradeIcon : ScriptableObject
     {
         [SerializeField]
-        private List<StatSpriteType> iconList = new();
+        private List<StatSpriteType> iconList = new List<StatSpriteType>();
 
         private Dictionary<StatType, Sprite> cachedIconMap;
 

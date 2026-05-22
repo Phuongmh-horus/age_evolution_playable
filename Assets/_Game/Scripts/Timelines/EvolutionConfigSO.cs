@@ -26,7 +26,7 @@ public class EvolutionConfigSO : ScriptableObject
     [Header("Evolution Settings")]
     public List<EvolutionLevel> EvolutionLevels = new List<EvolutionLevel>();
 
-    public List<LevelUpgrade> LevelUpgrades = new();
+    public List<LevelUpgrade> LevelUpgrades = new List<LevelUpgrade>();
 
     [Header("Statistics")]
     public int TotalPoints;

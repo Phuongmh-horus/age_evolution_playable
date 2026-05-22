@@ -6,12 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-/// <summary>
-/// Luna playable UI manager:
-/// - Tutorial overlay (tap to start)
-/// - Endcard win/lose
-/// - CTA buttons
-/// </summary>
+// Luna playable UI manager.
+// [FIX] Removed ConvertLegacyTextToTmp() which called FontEngine.LoadFontFace(Font, int)
 public class LunaUIManager : MonoBehaviour
 {
     public static LunaUIManager Instance { get; private set; }
@@ -22,8 +18,7 @@ public class LunaUIManager : MonoBehaviour
     [SerializeField] private RectTransform tutorialHand;
     [SerializeField] private RectTransform tutorialHandTrack;
     [SerializeField] private TMP_Text tutorialTMPText;
-    [FormerlySerializedAs("tutorialText")]
-    [SerializeField] private Text tutorialTextLegacy;
+
     [SerializeField] private float handMoveDistance = 200f;
     [SerializeField] private float handMoveDuration = 1.2f;
     [SerializeField] private Vector2 handOffset = Vector2.zero;
@@ -83,7 +78,11 @@ public class LunaUIManager : MonoBehaviour
             return;
         }
         Instance = this;
-        ResolveTutorialTextReference();
+
+        if (tutorialTMPText == null && tutorialLayer != null)
+        {
+            tutorialTMPText = tutorialLayer.GetComponentInChildren<TMP_Text>(true);
+        }
     }
 
     private void OnDestroy()
@@ -93,7 +92,6 @@ public class LunaUIManager : MonoBehaviour
 
     private void Start()
     {
-        ResolveTutorialTextReference();
         EnsureEventSystem();
         if (tutorialLayer != null)
         {
@@ -397,7 +395,7 @@ public class LunaUIManager : MonoBehaviour
     }
 
     private IEnumerator ButtonImpactThenPulseRoutine()
-         {
+    {
         float impactDuration = Mathf.Max(0.05f, ctaImpactDuration);
         float impactT = 0f;
         while (impactT < impactDuration)
@@ -441,7 +439,6 @@ public class LunaUIManager : MonoBehaviour
             float scale;
             if (_useCtaOnlyPulse)
             {
-                // Pulse between small scale and max scale continuously.
                 scale = Mathf.Lerp(ctaOnlyStartScale, ctaOnlyPulseScale, t);
             }
             else
@@ -479,88 +476,6 @@ public class LunaUIManager : MonoBehaviour
         var go = new GameObject("EventSystem");
         go.AddComponent<EventSystem>();
         go.AddComponent<StandaloneInputModule>();
-    }
-
-    private void ResolveTutorialTextReference()
-    {
-        if (tutorialTMPText != null)
-        {
-            return;
-        }
-
-        if (tutorialTextLegacy != null)
-        {
-            tutorialTMPText = tutorialTextLegacy.GetComponent<TMP_Text>();
-            if (tutorialTMPText == null)
-            {
-                tutorialTMPText = tutorialTextLegacy.GetComponentInChildren<TMP_Text>(true);
-            }
-
-            if (tutorialTMPText == null)
-            {
-                tutorialTMPText = ConvertLegacyTextToTmp(tutorialTextLegacy);
-            }
-        }
-
-        if (tutorialTMPText == null && tutorialLayer != null)
-        {
-            tutorialTMPText = tutorialLayer.GetComponentInChildren<TMP_Text>(true);
-        }
-    }
-
-    private static TMP_Text ConvertLegacyTextToTmp(Text legacyText)
-    {
-        if (legacyText == null)
-        {
-            return null;
-        }
-
-        var tmp = legacyText.GetComponent<TextMeshProUGUI>();
-        if (tmp == null)
-        {
-            tmp = legacyText.gameObject.AddComponent<TextMeshProUGUI>();
-        }
-
-        tmp.text = legacyText.text;
-        tmp.fontSize = legacyText.fontSize;
-        tmp.color = legacyText.color;
-        tmp.raycastTarget = legacyText.raycastTarget;
-        tmp.alignment = ConvertAlignment(legacyText.alignment);
-
-        if (tmp.font == null && TMP_Settings.defaultFontAsset != null)
-        {
-            tmp.font = TMP_Settings.defaultFontAsset;
-        }
-
-        legacyText.enabled = false;
-        return tmp;
-    }
-
-    private static TextAlignmentOptions ConvertAlignment(TextAnchor anchor)
-    {
-        switch (anchor)
-        {
-            case TextAnchor.UpperLeft:
-                return TextAlignmentOptions.TopLeft;
-            case TextAnchor.UpperCenter:
-                return TextAlignmentOptions.Top;
-            case TextAnchor.UpperRight:
-                return TextAlignmentOptions.TopRight;
-            case TextAnchor.MiddleLeft:
-                return TextAlignmentOptions.Left;
-            case TextAnchor.MiddleCenter:
-                return TextAlignmentOptions.Center;
-            case TextAnchor.MiddleRight:
-                return TextAlignmentOptions.Right;
-            case TextAnchor.LowerLeft:
-                return TextAlignmentOptions.BottomLeft;
-            case TextAnchor.LowerCenter:
-                return TextAlignmentOptions.Bottom;
-            case TextAnchor.LowerRight:
-                return TextAlignmentOptions.BottomRight;
-            default:
-                return TextAlignmentOptions.Center;
-        }
     }
 
     private IEnumerator TextPulseRoutine()

@@ -87,7 +87,7 @@ MonoBehaviour:
   collisionCheckRangeZ: 22
   collisionSize: {x: 3, y: 3}
   characterList: {fileID: 11400000, guid: a0a4046a522e97b4ca8b615cafd20aa6, type: 2}
-  fallbackCharacterLevel: 3
+  fallbackCharacterLevel: 2
   maxActiveSpawnedUnits: 17
   unitSpacing: 1
   attackMode: 2
