@@ -101,7 +101,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ac6fbeff8e8c4494081443481db19ae7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 241577f8a35aa564dacb134a9d58823b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
@@ -156,7 +156,7 @@ Material:
     - _AnimeThreshold1: 0.45
     - _AnimeThreshold2: 0.85
     - _BlendOp: 0
-    - _Brightness: 1.7
+    - _Brightness: 1.6
     - _BumpScale: 1
     - _CameraFadeEnd: 0
     - _CameraFadeStart: 0
@@ -177,7 +177,7 @@ Material:
     - _DiffuseBrightness: 1
     - _DiffuseContrast: 1
     - _DiffusePerPixel: 0
-    - _DiffuseWrap: 0.05
+    - _DiffuseWrap: 0.2
     - _DstBlend: 0
     - _EmissiveAnimated: 0
     - _EmissiveAnimationIntensity: 1

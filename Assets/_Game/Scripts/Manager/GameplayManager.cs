@@ -194,9 +194,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
     private IEnumerator CoBootPlayable()
     {
+        DataManager.ResetToDefault();
         yield return StartCoroutine(CoLoadPlayableLevel());
         yield return StartCoroutine(CoInitializeGeneratedContent());
-        GameEventBus.UpdateCapacityBar?.Invoke();
         StartGame();
     }
 
@@ -231,6 +231,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     private IEnumerator CoReload()
     {
         IsGameStarted = false;
+        DataManager.ResetToDefault();
 
         yield return StartCoroutine(CoLoadPlayableLevel());
         yield return StartCoroutine(CoInitializeGeneratedContent());
@@ -420,6 +421,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     public void StartGame(bool activeTurnable = true)
     {
         gamePlayVariable?.ResetNewGame();
+        gamePlayVariable?.ResetEvolutionVariable();
         StartCoin = 0;
         StartCoinPending = 0;
 
@@ -461,6 +463,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         gamePlayVariable?.ResetWheelVariable();
         ResetCurrency(CurrencyType.Gold);
         ResetCurrency(CurrencyType.Cash);
+        GameEventBus.UpdateCapacityBar?.Invoke();
 
         EnsureWeaponCraftStarterItem();
 

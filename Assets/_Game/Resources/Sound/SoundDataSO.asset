@@ -14,29 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundDataList:
   - Name: 1
-    Clip: {fileID: 8300000, guid: 96160ef1befbf304db25da2d967b1090, type: 3}
-    VolumeDefault: 1
+    Clip: {fileID: 8300000, guid: 3c0689bc9fdce8643bbb7ff9de0e456f, type: 3}
+    VolumeDefault: 0.5
   - Name: 6
-    Clip: {fileID: 8300000, guid: c3a02e5cde756eb4ab318e18887eb28e, type: 3}
+    Clip: {fileID: 8300000, guid: 16f84bf77323c5f46bebc99242292f42, type: 3}
     VolumeDefault: 1
   - Name: 9
-    Clip: {fileID: 8300000, guid: 687b5ce6144a17c46b2482b4089e6288, type: 3}
+    Clip: {fileID: 8300000, guid: db12146efa7b0aa4186a2f6f59f49cf8, type: 3}
     VolumeDefault: 1
   - Name: 10
-    Clip: {fileID: 8300000, guid: 73cc3c1de9bdd0f4dab79abc50b71d6d, type: 3}
-    VolumeDefault: 1
+    Clip: {fileID: 8300000, guid: b87dd0b5dd4dd2645aa0c905be5fda3e, type: 3}
+    VolumeDefault: 0.1
   - Name: 11
-    Clip: {fileID: 8300000, guid: 206aacccf0b8bd645afd8012627f7dc9, type: 3}
-    VolumeDefault: 1
-  - Name: 13
-    Clip: {fileID: 8300000, guid: 7bbf0bf79f5571a488498695a3cd32ba, type: 3}
+    Clip: {fileID: 8300000, guid: 5c233c835f2b600448f978ba5237fa66, type: 3}
     VolumeDefault: 1
   - Name: 14
-    Clip: {fileID: 8300000, guid: 7b3424b2c64a5144badd2aa3290c64f4, type: 3}
-    VolumeDefault: 1
+    Clip: {fileID: 8300000, guid: a5e005e1197d3424498443497d0856db, type: 3}
+    VolumeDefault: 0.5
   - Name: 17
-    Clip: {fileID: 8300000, guid: dfe1beaaa596b464f93065912ab4eaac, type: 3}
-    VolumeDefault: 1
+    Clip: {fileID: 8300000, guid: 9091e30ab02c322468d630ec56e3ce3b, type: 3}
+    VolumeDefault: 0.5
   - Name: 8
-    Clip: {fileID: 8300000, guid: 687b5ce6144a17c46b2482b4089e6288, type: 3}
-    VolumeDefault: 1
+    Clip: {fileID: 8300000, guid: db12146efa7b0aa4186a2f6f59f49cf8, type: 3}
+    VolumeDefault: 2

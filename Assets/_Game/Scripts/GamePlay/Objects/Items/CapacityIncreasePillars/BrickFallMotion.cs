@@ -267,6 +267,17 @@ public class BrickFallMotion : MonoBehaviour
     {
         target = Vector3.zero;
 
+        // Prefer CameraFollow's normalized world target first.
+        // It already encapsulates UI callback + screen conversion + safe fallbacks.
+        if (CameraFollow.Instance != null)
+        {
+            target = CameraFollow.Instance.GetCapacityBarWorldPosition();
+            if (IsFiniteVector(target))
+            {
+                return true;
+            }
+        }
+
         Camera cam = null;
         if (CameraFollow.Instance != null)
         {
@@ -280,35 +291,48 @@ public class BrickFallMotion : MonoBehaviour
         if (GameEventBus.GetCapacityBarPosition != null)
         {
             Vector3 pos = GameEventBus.GetCapacityBarPosition.Invoke();
-
-            bool looksLikeScreenPoint =
-                pos.x >= -16f && pos.x <= Screen.width + 16f &&
-                pos.y >= -16f && pos.y <= Screen.height + 16f;
-
-            if (looksLikeScreenPoint && cam != null)
+            if (!IsFiniteVector(pos))
             {
-
-                Ray ray = cam.ScreenPointToRay(pos);
-                float depth = Vector3.Dot(
-                    _originalParent != null ? _originalParent.position - cam.transform.position
-                                           : _flyStartPosition - cam.transform.position,
-                    cam.transform.forward);
-                depth = Mathf.Max(2f, depth);
-                target = ray.origin + ray.direction * depth;
-                return true;
+                pos = Vector3.zero;
             }
 
-            target = pos;
-            return true;
-        }
+            // UI callback may return (0,0,0) in early frames before bar is fully initialized.
+            // Treat it as unresolved so we can use stable fallback instead of flying to wrong spot.
+            bool unresolvedScreenPoint = Mathf.Abs(pos.x) < 0.001f && Mathf.Abs(pos.y) < 0.001f;
+            if (!unresolvedScreenPoint)
+            {
+                bool looksLikeScreenPoint =
+                    pos.x >= -16f && pos.x <= Screen.width + 16f &&
+                    pos.y >= -16f && pos.y <= Screen.height + 16f;
 
-        if (CameraFollow.Instance != null)
-        {
-            target = CameraFollow.Instance.GetCapacityBarWorldPosition();
-            return true;
+                if (looksLikeScreenPoint && cam != null)
+                {
+                    float depth = Vector3.Dot(_flyStartPosition - cam.transform.position, cam.transform.forward);
+                    depth = Mathf.Max(5f, Mathf.Abs(depth));
+                    pos.z = depth;
+                    target = cam.ScreenToWorldPoint(pos);
+                    if (IsFiniteVector(target))
+                    {
+                        return true;
+                    }
+                }
+
+                target = pos;
+                if (IsFiniteVector(target))
+                {
+                    return true;
+                }
+            }
         }
 
         return false;
+    }
+
+    private static bool IsFiniteVector(Vector3 value)
+    {
+        return !float.IsNaN(value.x) && !float.IsInfinity(value.x) &&
+               !float.IsNaN(value.y) && !float.IsInfinity(value.y) &&
+               !float.IsNaN(value.z) && !float.IsInfinity(value.z);
     }
 
     private bool StepFlyToCapacity(float dt)
@@ -325,7 +349,8 @@ public class BrickFallMotion : MonoBehaviour
 
         _transform.position = new Vector3(flatPos.x, currentHeight, flatPos.z);
 
-        float scaleT = Mathf.Clamp01(_flyElapsed / settings.FlyScaleDownDuration);
+        float safeScaleDuration = Mathf.Max(0.0001f, settings.FlyScaleDownDuration);
+        float scaleT = Mathf.Clamp01(_flyElapsed / safeScaleDuration);
         _transform.localScale = Vector3.Lerp(_initialScale, Vector3.zero, scaleT);
 
         if (t < 1f)

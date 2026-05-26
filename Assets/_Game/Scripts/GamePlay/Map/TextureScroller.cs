@@ -31,6 +31,8 @@ namespace GamePlay.Roads
         private Material _material;
         private Vector2 _currentOffset = Vector2.zero;
         private bool _isScrolling = true;
+        private Vector2 _scrollVector;
+        private int _texturePropertyId;
 
         #region Unity Lifecycle
 
@@ -77,6 +79,9 @@ namespace GamePlay.Roads
             {
                 _material = targetRenderer.sharedMaterial; // Dùng material gốc
             }
+
+            _texturePropertyId = Shader.PropertyToID(texturePropertyName);
+            _scrollVector = GetScrollVector(direction);
         }
 
         /// <summary>
@@ -93,6 +98,7 @@ namespace GamePlay.Roads
         public void SetDirection(ScrollDirection newDirection)
         {
             direction = newDirection;
+            _scrollVector = GetScrollVector(newDirection);
         }
 
         /// <summary>
@@ -111,7 +117,7 @@ namespace GamePlay.Roads
             _currentOffset = Vector2.zero;
             if (_material != null)
             {
-                _material.SetTextureOffset(texturePropertyName, _currentOffset);
+                _material.SetTextureOffset(_texturePropertyId, _currentOffset);
             }
         }
 
@@ -135,22 +141,21 @@ namespace GamePlay.Roads
             if (_material == null) return;
 
             float dt = Time.deltaTime;
-            Vector2 scrollVector = GetScrollVector();
 
             // Cộng dồn offset
-            _currentOffset += scrollVector * scrollSpeed * dt;
+            _currentOffset += _scrollVector * scrollSpeed * dt;
 
             // Giữ giá trị trong khoảng 0-1 để tránh số quá lớn
             _currentOffset.x %= 1.0f;
             _currentOffset.y %= 1.0f;
 
             // Gán vào material
-            _material.SetTextureOffset(texturePropertyName, _currentOffset);
+            _material.SetTextureOffset(_texturePropertyId, _currentOffset);
         }
 
-        private Vector2 GetScrollVector()
+        private static Vector2 GetScrollVector(ScrollDirection scrollDirection)
         {
-            switch (direction)
+            switch (scrollDirection)
             {
                 case ScrollDirection.Up:
                     return Vector2.up;
@@ -191,6 +196,9 @@ namespace GamePlay.Roads
         {
             if (targetRenderer == null)
                 Debug.LogWarning($"[TextureScroller] Missing MeshRenderer on {gameObject.name}. Assign in Inspector.");
+
+            _texturePropertyId = Shader.PropertyToID(texturePropertyName);
+            _scrollVector = GetScrollVector(direction);
         }
 #endif
 

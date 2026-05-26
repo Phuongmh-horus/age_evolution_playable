@@ -71,6 +71,8 @@ public class SoundManager : MonoSingleton<SoundManager>
     }
 
     private bool _isLoopRandomBGM;
+    private float _nextBgmCheckTime;
+    private const float BgmPollInterval = 0.2f;
 
     private void Update()
     {
@@ -78,6 +80,9 @@ public class SoundManager : MonoSingleton<SoundManager>
         {
             return;
         }
+        if (Time.unscaledTime < _nextBgmCheckTime) return;
+        _nextBgmCheckTime = Time.unscaledTime + BgmPollInterval;
+
         if (_isLoopRandomBGM && !bgMusicSource.isPlaying)
         {
             AudioClip clip = RandomBGM();

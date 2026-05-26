@@ -28,7 +28,7 @@ namespace WeaponCraft
         private readonly Dictionary<WeaponItem, int> sequenceByItem = new Dictionary<WeaponItem, int>();
         private int nextSequence = 1;
         private Coroutine processRoutine;
-        private int _lastNotifiedTopTier = -1;
+        private int _equippedTopTier = -1;
 
         public event Action<WeaponItem> ItemAdded;
 
@@ -94,14 +94,15 @@ namespace WeaponCraft
             return spawnedItems.Count > 0 ? spawnedItems[0] : null;
         }
 
-        public List <WeaponItem> ReceiveItem(int tier, Vector3 flyFromPosition, int count)
+        public List<WeaponItem> ReceiveItem(int tier, Vector3 flyFromPosition, int count)
         {
             count = Mathf.Max(1, count);
+            int safeTier = Mathf.Clamp(tier, 1, GetMaxTier());
 
             var runtimeItems = new List<WeaponItem>(count);
             for (int i = 0; i < count; i++)
             {
-                var runtimeItem = new WeaponItem(tier);
+                var runtimeItem = new WeaponItem(safeTier);
                 EnsureSequence(runtimeItem);
                 runtimeItems.Add(runtimeItem);
                 ItemAdded?.Invoke(runtimeItem);
@@ -185,6 +186,8 @@ namespace WeaponCraft
                 visualSystem = visualRoot.AddComponent<WeaponCraftVisualSystem>();
             }
 
+            visualSystem.MergeVisualCompleted -= HandleMergeVisualCompleted;
+            visualSystem.MergeVisualCompleted += HandleMergeVisualCompleted;
             visualSystem.Bind(config);
         }
 
@@ -195,8 +198,7 @@ namespace WeaponCraft
                 return;
             }
 
-            if (//processRoutine != null || 
-                incomingItems.Count == 0)
+            if (processRoutine != null || incomingItems.Count == 0)
             {
                 return;
             }
@@ -208,22 +210,22 @@ namespace WeaponCraft
         {
             // try
             // {
-                while (incomingItems.Count > 0)
+            while (incomingItems.Count > 0)
+            {
+                var incoming = incomingItems.Dequeue();
+                var batch = BuildBatch(incoming);
+
+                if (visualSystem != null && batch.Count > 0)
                 {
-                    var incoming = incomingItems.Dequeue();
-                    var batch = BuildBatch(incoming);
-
-                    if (visualSystem != null && batch.Count > 0)
-                    {
-                        yield return visualSystem.PlayBatch(batch);
-                    }
-
-                    NotifyMainWeaponChanged();
+                    yield return visualSystem.PlayBatch(batch);
                 }
+
+                NotifyMainWeaponChanged();
+            }
             // }
             // finally
             // {
-                processRoutine = null;
+            processRoutine = null;
             // }
         }
 
@@ -239,18 +241,33 @@ namespace WeaponCraft
             }
 
             var topItem = items[0];
+            TryEquipIfHigher(topItem);
+        }
 
-            if (topItem.Tier == _lastNotifiedTopTier)
+        private void HandleMergeVisualCompleted(WeaponItem mergedItem)
+        {
+            TryEquipIfHigher(mergedItem);
+        }
+
+        private void TryEquipIfHigher(WeaponItem candidate)
+        {
+            if (candidate == null)
             {
                 return;
             }
 
-            _lastNotifiedTopTier = topItem.Tier;
+            int candidateTier = Mathf.Max(1, candidate.Tier);
+            if (candidateTier <= _equippedTopTier)
+            {
+                return;
+            }
+
+            _equippedTopTier = candidateTier;
 
             var manager = GameplayManager.Instance;
             if (manager != null)
             {
-                manager.SetMainWeapon(topItem);
+                manager.SetMainWeapon(candidate);
             }
         }
 
@@ -472,7 +489,36 @@ namespace WeaponCraft
 
         private int GetMaxTier()
         {
-            return config != null ? config.MaxTier : int.MaxValue;
+            int maxTier = config != null ? config.MaxTier : 1;
+
+            if (config != null && config.TierVisuals != null)
+            {
+                for (int i = 0; i < config.TierVisuals.Count; i++)
+                {
+                    var entry = config.TierVisuals[i];
+                    if (entry == null) continue;
+                    if (entry.Tier > maxTier)
+                    {
+                        maxTier = entry.Tier;
+                    }
+                }
+            }
+
+            var manager = GameplayManager.Instance;
+            var characterList = manager != null && manager.PlayableEra != null ? manager.PlayableEra.CharacterList : null;
+            var lookup = characterList != null ? characterList.GetCharacterLookup() : null;
+            if (lookup != null)
+            {
+                foreach (var level in lookup.Keys)
+                {
+                    if (level > maxTier)
+                    {
+                        maxTier = level;
+                    }
+                }
+            }
+
+            return Mathf.Max(1, maxTier);
         }
     }
 }

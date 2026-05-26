@@ -25,7 +25,7 @@ ModelImporter:
       name: cloth_MAT1
     second: {fileID: 2100000, guid: 7e98a40f788dd3d4686aa9874bf8877c, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

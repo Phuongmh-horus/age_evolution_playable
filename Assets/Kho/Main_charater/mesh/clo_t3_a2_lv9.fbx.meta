@@ -15,7 +15,7 @@ ModelImporter:
       name: cloth_MAT
     second: {fileID: 2100000, guid: 69e6761a17817a0468e97f31a375698f, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -86,7 +86,7 @@ ModelImporter:
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 0
+    normalSmoothingSource: 2
   referencedClips: []
   importAnimation: 0
   humanDescription:

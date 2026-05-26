@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e068cea96457d6248a90662b2d73ec56
+guid: 3a5c23a87b9ea2c4fba2821b8556ab94
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -13,17 +13,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: blackhole
-    second: {fileID: 2100000, guid: e636348818f05db49891dc68992b823e, type: 2}
+    second: {fileID: 2100000, guid: 153af2e77c05ca74b9eacaaad165ddc4, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: color
-    second: {fileID: 2100000, guid: 458d1568f623d574e9afa1f9f3991eb9, type: 2}
+    second: {fileID: 2100000, guid: 04a0c35d0fc2613469666a0b92b5238c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: road
-    second: {fileID: 2100000, guid: 823c210a8c93a54439cf27541ea9cfd0, type: 2}
+    second: {fileID: 2100000, guid: 97d3de52004b28942afb35609f53b1cb, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

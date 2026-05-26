@@ -134,7 +134,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8685667724671559986}
-  m_Mesh: {fileID: 7381605344876344457, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
+  m_Mesh: {fileID: 7381605344876344457, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
 --- !u!23 &8192815154620690610
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6924e0a88aef67346a959daf8eb5eff2, type: 2}
+  - {fileID: 2100000, guid: 340888ce4b42ae1478fbc15b340d966c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -185,18 +185,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3285501306908149498}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -5950116142727116776, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -205,33 +193,41 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6924e0a88aef67346a959daf8eb5eff2, type: 2}
-    - target: {fileID: 919132149155446097, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
-      propertyPath: m_Name
-      value: road_finish
-      objectReference: {fileID: 0}
     - target: {fileID: 7835823962393075030, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5950116142727116776, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 340888ce4b42ae1478fbc15b340d966c, type: 2}
+    - target: {fileID: -2763083672794944326, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 340888ce4b42ae1478fbc15b340d966c, type: 2}
+    - target: {fileID: 919132149155446097, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
+      propertyPath: m_Name
+      value: road_finish
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
       insertIndex: -1
       addedObject: {fileID: 459702316823287738}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6412778073114365505}
-  m_SourcePrefab: {fileID: 100100000, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
 --- !u!4 &2801676189169657952 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
   m_PrefabInstance: {fileID: 2408076541257699211}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3290544779398542042 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6c36482a7ed5f7040b2ce5975cec8a1c, type: 3}
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0dd8e6d137887fa46b3c0a6670a5f768, type: 3}
   m_PrefabInstance: {fileID: 2408076541257699211}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &6412778073114365505

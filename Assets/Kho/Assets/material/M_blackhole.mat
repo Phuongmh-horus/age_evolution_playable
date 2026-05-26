@@ -17,7 +17,6 @@ Material:
   m_InvalidKeywords:
   - AMBIENT
   - ANIME_SOFT
-  - LUNA_OUTPUT_FIX
   - MATCAP_PERSPECTIVE
   - OUTLINE_PASS_DISABLED
   - _DETAILBLEND_MULTIPLY
@@ -29,7 +28,6 @@ Material:
   - _LAYER2UV_UV1
   - _LAYER3BLEND_ALPHA_BLEND
   - _LAYER3UV_UV1
-  - _LOCKCOLOR_ON
   - _MATCAPBLEND_MULTIPLY
   - _NORMALUV2_UV1
   - _NORMALUV_UV1
@@ -102,7 +100,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 781ceaf2febd8da46990e18d000d147e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3cea694d3ad61d043bce3e6b8cff8986, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
@@ -217,15 +215,8 @@ Material:
     - _Layer3Brightness: 1
     - _Layer3UV: 0
     - _Layer3VertexColor: 0
-    - _LightTintAmount: 0
     - _LightmapBrightness: 1
     - _LightmapUV: 0
-    - _LockColor: 1
-    - _LunaFinalGamma: 1.08
-    - _LunaFinalSat: 1.05
-    - _LunaGammaCorrection: 0
-    - _LunaOutputFix: 1
-    - _LunaOutputPower: 2.2
     - _MatCapBlend: 0
     - _MatCapBrightness: 1
     - _MatCapContrast: 1

@@ -101,7 +101,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 3f4dfeba5f979074e90ce2dcedf0f67b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 79f3ee5fd427d5942926dfc26683d1ec, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
@@ -250,7 +250,7 @@ Material:
     - _RimBlend: 1
     - _RimContrast: 5
     - _RimInverse: 0
-    - _Saturation: 1.2
+    - _Saturation: 1.1
     - _ShadowOverlayAnimation: 0
     - _ShadowOverlayBrightness: 1
     - _ShadowOverlaySpeedU: 0.1

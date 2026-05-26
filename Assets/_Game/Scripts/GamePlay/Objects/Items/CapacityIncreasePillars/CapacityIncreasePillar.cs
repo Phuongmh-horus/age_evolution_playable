@@ -180,14 +180,15 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (brickLayer != null)
         {
             brickLayer.ResetLayer();
-            brickLayer.gameObject.SetActive(false);
+            if (Application.isPlaying) Destroy(brickLayer.gameObject);
+            else DestroyImmediate(brickLayer.gameObject);
             brickLayer = null;
         }
 
         if (replacementLayerPrefabs != null && replacementLayerPrefabs.Count > 0
         && replacementLayerPrefabs[0] != null)
         {
-            brickLayer = replacementLayerPrefabs[0].Spawn(parent: bricksRoot);
+            brickLayer = Instantiate(replacementLayerPrefabs[0], bricksRoot);
             brickLayer.transform.localPosition = Vector3.zero;
             brickLayer.transform.localRotation = Quaternion.identity;
             brickLayer.transform.localScale = Vector3.one;
@@ -502,7 +503,10 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         {
             finishedLayer.isActivated = true;
             finishedLayer.isCached = true;
-            finishedLayer.Despawn(layerReturnDelay);
+            if (Application.isPlaying)
+                Destroy(finishedLayer.gameObject, Mathf.Max(0f, layerReturnDelay));
+            else
+                DestroyImmediate(finishedLayer.gameObject);
         }
 
         if (replacementLayerPrefabs == null || replacementLayerPrefabs.Count == 0) return;
@@ -511,7 +515,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (_nextReplacementIndex >= replacementLayerPrefabs.Count)
             _nextReplacementIndex = replacementLayerPrefabs.Count - 1;
 
-        var newLayer = replacementLayerPrefabs[_nextReplacementIndex].Spawn(parent: bricksRoot);
+        var newLayer = Instantiate(replacementLayerPrefabs[_nextReplacementIndex], bricksRoot);
         newLayer.transform.localPosition = Vector3.zero;
         newLayer.transform.localRotation = Quaternion.identity;
         newLayer.transform.localScale = bricksRoot.localScale;

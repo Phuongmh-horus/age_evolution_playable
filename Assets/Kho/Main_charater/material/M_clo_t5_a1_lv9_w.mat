@@ -14,7 +14,6 @@ Material:
   m_ValidKeywords:
   - AMBIENT
   - ANIME_SOFT
-  - BASE_SATURATION
   - DIFFUSE
   - FOG
   - MATCAP_PERSPECTIVE
@@ -101,7 +100,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d2637518327631c41aa8e32b7803082e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 74ed56f5e79e6a44dba8570650ae71bb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
@@ -250,7 +249,7 @@ Material:
     - _RimBlend: 1
     - _RimContrast: 5
     - _RimInverse: 0
-    - _Saturation: 1.2
+    - _Saturation: 1
     - _ShadowOverlayAnimation: 0
     - _ShadowOverlayBrightness: 1
     - _ShadowOverlaySpeedU: 0.1

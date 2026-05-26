@@ -177,7 +177,7 @@ Material:
     - _DiffuseBrightness: 1
     - _DiffuseContrast: 1
     - _DiffusePerPixel: 0
-    - _DiffuseWrap: 0.05
+    - _DiffuseWrap: 0.15
     - _DstBlend: 0
     - _EmissiveAnimated: 0
     - _EmissiveAnimationIntensity: 1

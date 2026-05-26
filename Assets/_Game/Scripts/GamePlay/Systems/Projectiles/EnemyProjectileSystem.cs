@@ -85,6 +85,7 @@ namespace GamePlay.CombatSystems
 
         private IHitable _playerHitable;
         private readonly List<IHitable> _extraTargets = new List<IHitable>(32);
+        private readonly HashSet<IHitable> _extraTargetSet = new HashSet<IHitable>();
         private bool _isGameplayPaused;
         private float _pausedAtTime;
 
@@ -118,6 +119,7 @@ namespace GamePlay.CombatSystems
             public IMover Mover;
 
             public float Radius;
+            public PoolEntity PoolEntity;
         }
 
         private readonly List<ProjectileEntry> _projectiles = new List<ProjectileEntry>(64);
@@ -145,14 +147,15 @@ namespace GamePlay.CombatSystems
         private void RegisterTargetInternal(IHitable target)
         {
             if (target == null) return;
-            if (_extraTargets.Contains(target)) return;
+            if (!_extraTargetSet.Add(target)) return;
             _extraTargets.Add(target);
         }
 
         private void UnregisterTargetInternal(IHitable target)
         {
             if (target == null) return;
-            _extraTargets.Remove(target);
+            if (_extraTargetSet.Remove(target))
+                _extraTargets.Remove(target);
         }
 
 
@@ -167,7 +170,7 @@ namespace GamePlay.CombatSystems
             {
                 var p = _projectiles[i];
                 DisposeManaged(ref p);
-                TryDespawnProjectile(p.Transform);
+                TryDespawnProjectile(p.Transform, p.PoolEntity);
             }
 
             _projectiles.Clear();
@@ -236,7 +239,8 @@ namespace GamePlay.CombatSystems
                 WaitEndTime = 0f,
                 Attacker = attacker,
                 Mover = mover,
-                Radius = radius
+                Radius = radius,
+                PoolEntity = projectileTransform.GetComponent<PoolEntity>()
             };
 
             _projectiles.Add(entry);
@@ -310,7 +314,7 @@ namespace GamePlay.CombatSystems
                         // Delay done -> notify movement finished then remove
                         p.Mover?.OnMovementFinished();
                         DisposeManaged(ref p);
-                        TryDespawnProjectile(p.Transform);
+                        TryDespawnProjectile(p.Transform, p.PoolEntity);
                         _projectiles.RemoveAt(i);
                     }
                     continue;
@@ -350,7 +354,7 @@ namespace GamePlay.CombatSystems
                             _playerHitable.OnHit(p.Attacker);
 
                             DisposeManaged(ref p);
-                            TryDespawnProjectile(p.Transform);
+                            TryDespawnProjectile(p.Transform, p.PoolEntity);
                             _projectiles.RemoveAt(i);
                             continue;
                         }
@@ -379,7 +383,7 @@ namespace GamePlay.CombatSystems
                             target.OnHit(p.Attacker);
 
                             DisposeManaged(ref p);
-                            TryDespawnProjectile(p.Transform);
+                            TryDespawnProjectile(p.Transform, p.PoolEntity);
                             _projectiles.RemoveAt(i);
                             goto NextProjectile;
                         }
@@ -396,15 +400,7 @@ namespace GamePlay.CombatSystems
                         if (target == null || !target.IsActive) continue;
                         if (ReferenceEquals(target, _playerHitable)) continue;
 
-                        bool isExtraTarget = false;
-                        for (int extraIndex = 0; extraIndex < _extraTargets.Count; extraIndex++)
-                        {
-                            if (ReferenceEquals(_extraTargets[extraIndex], target))
-                            {
-                                isExtraTarget = true;
-                                break;
-                            }
-                        }
+                        bool isExtraTarget = _extraTargetSet.Contains(target);
 
                         if (isExtraTarget) continue;
 
@@ -424,7 +420,7 @@ namespace GamePlay.CombatSystems
                             target.OnHit(p.Attacker);
 
                             DisposeManaged(ref p);
-                            TryDespawnProjectile(p.Transform);
+                            TryDespawnProjectile(p.Transform, p.PoolEntity);
                             _projectiles.RemoveAt(i);
                             goto NextProjectile;
                         }
@@ -437,7 +433,7 @@ namespace GamePlay.CombatSystems
                 {
                     p.Mover?.OnMovementFinished();
                     DisposeManaged(ref p);
-                    TryDespawnProjectile(p.Transform);
+                    TryDespawnProjectile(p.Transform, p.PoolEntity);
                     _projectiles.RemoveAt(i);
                     continue;
                 }
@@ -610,12 +606,11 @@ namespace GamePlay.CombatSystems
             p.Attacker = null;
         }
 
-        private static void TryDespawnProjectile(Transform projectileTransform)
+        private static void TryDespawnProjectile(Transform projectileTransform, PoolEntity poolEntity)
         {
             if (projectileTransform == null) return;
             if (!projectileTransform.gameObject.activeInHierarchy) return;
 
-            var poolEntity = projectileTransform.GetComponent<GamePlay.Entities.PoolEntity>();
             if (poolEntity != null)
             {
                 poolEntity.Despawn();

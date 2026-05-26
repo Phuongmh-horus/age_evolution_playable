@@ -12,13 +12,13 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - AMBIENT
   - DIFFUSE
   - FOG
-  - LUNA_OUTPUT_FIX
   - _LIGHTMAPUV_UV1
   m_InvalidKeywords:
+  - AMBIENT
   - ANIME_SOFT
+  - LUNA_OUTPUT_FIX
   - MATCAP_PERSPECTIVE
   - OUTLINE_PASS_DISABLED
   - SHADOWS_ENABLED
@@ -100,7 +100,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: be516b8106004364d8d47a1df2ea038e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 597779e51e55fe443be0aac7899307e5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:

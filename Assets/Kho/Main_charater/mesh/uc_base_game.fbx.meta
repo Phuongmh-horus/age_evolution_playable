@@ -12,11 +12,6 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: body_MAT1
-    second: {fileID: 2100000, guid: 92f81a0dc9ece5c4f96fa95a818216ab, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: cloth_MAT
     second: {fileID: 2100000, guid: 92f81a0dc9ece5c4f96fa95a818216ab, type: 2}
   - first:

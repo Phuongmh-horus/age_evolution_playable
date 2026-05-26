@@ -17,11 +17,6 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: cloth_MAT
-    second: {fileID: 2100000, guid: fa7ba52e995026149beb161693905bbe, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: cloth_MAT1
     second: {fileID: 2100000, guid: fa7ba52e995026149beb161693905bbe, type: 2}
   materials:

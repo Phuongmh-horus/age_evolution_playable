@@ -106,3 +106,8 @@ InitTestScene*.unity*
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
 LunaTemp
+.claude
+CLAUDE.md
+AGENTS.md
+Playable_Exports
+Assets/Editor/PlayableExporter

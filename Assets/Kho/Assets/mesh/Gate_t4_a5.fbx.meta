@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e54222ceb09c3a84ba4167c8342be8b2
+guid: 2fa89ec3348f5834bb30eed18bf662d9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_Gate_t4_a5
-    second: {fileID: 2100000, guid: 22fd74d831fb4034880cad86b4308887, type: 2}
+    second: {fileID: 2100000, guid: bc297021e35eaeb4db2f4364f85d5f9d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

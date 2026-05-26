@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2079c0368c943943aafbc09708e34e6, type: 3}
+  m_Name: "K\u1ECBch b\u1EA3n 1"
+  m_EditorClassIdentifier: 
+  ContentId: 0
+  ContentName: 
+  Description: 
+  SpawnableObjects:
+  - Prefab: {fileID: 2151603510769025371, guid: bcac58a34dc112a4bb3d58c344cac776, type: 3}
+    PositionOnMap: 35
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 2151603510769025371, guid: bcac58a34dc112a4bb3d58c344cac776, type: 3}
+    PositionOnMap: 70
+    PositionOffset: {x: 3.5, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
+    PositionOnMap: 100
+    PositionOffset: {x: 3.3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
+    PositionOnMap: 130
+    PositionOffset: {x: -3.3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 4524268157165728757, guid: b0838959935472d45baa5feba5178c93, type: 3}
+    PositionOnMap: 160
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
+    PositionOnMap: 200
+    PositionOffset: {x: 3.3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
+    PositionOnMap: 230
+    PositionOffset: {x: -3.3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
+    PositionOnMap: 260
+    PositionOffset: {x: 3.3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 4524268157165728757, guid: b0838959935472d45baa5feba5178c93, type: 3}
+    PositionOnMap: 280
+    PositionOffset: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  - Prefab: {fileID: 1776284816366546494, guid: 896b01924f6b7b94fb948759b943424a, type: 3}
+    PositionOnMap: 300
+    PositionOffset: {x: -3, y: 0, z: 0}
+    Rotation: {x: -0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    propertyOverrides: []
+    overrideMaxHp: 0
+    maxHp: 10
+  references:
+    version: 2
+    RefIds: []

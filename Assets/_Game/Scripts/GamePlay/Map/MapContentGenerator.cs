@@ -126,14 +126,15 @@ namespace GamePlay.Map
             instanceToPrefabMap.Clear();
             GateNewEraTrans = null;
 
-            for (int i = 0; i < transform.childCount; i++)
+            var prebakedItems = GetComponentsInChildren<ItemUnit>(true);
+            for (int i = 0; i < prebakedItems.Length; i++)
             {
-                var child = transform.GetChild(i);
-                if (child == null) continue;
-                if (child.GetComponent<RoadSegment>() != null) continue;
-
-                var item = child.GetComponent<ItemUnit>();
+                var item = prebakedItems[i];
                 if (item == null) continue;
+                if (item.transform == transform) continue;
+
+                if (IsRoadSegmentRoot(item.transform))
+                    continue;
 
                 if (initializeItems && Application.isPlaying)
                     item.Initialize();
@@ -149,6 +150,13 @@ namespace GamePlay.Map
                     MilestonePoints.Add(positionOnMap);
                 }
             }
+        }
+
+        private static bool IsRoadSegmentRoot(Transform target)
+        {
+            if (target == null) return false;
+            var segment = target.GetComponent<RoadSegment>();
+            return segment != null;
         }
 
         public void SetPositionOnMap(Transform trans, float positionOnMap)

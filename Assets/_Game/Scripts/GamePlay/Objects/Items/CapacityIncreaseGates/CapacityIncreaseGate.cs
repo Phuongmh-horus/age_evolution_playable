@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GamePlay.CardSystem;
 using GamePlay.Characters;
 using GamePlay.ComponentSystems;
+using GamePlay.Effects;
 using UnityEngine;
 
 namespace GamePlay.Items
@@ -23,24 +24,28 @@ namespace GamePlay.Items
         [SerializeField] private float goldDrainDuration = 1.5f;
         [SerializeField] private float phase3Duration = 0.5f;
 
+        [Header("Buff Applied Effect")]
+        [SerializeField] private EffectType buffAppliedEffectType = EffectType.Land;
+
+
         private readonly Dictionary<int, List<CharacterUnit>> _beltUnits = new Dictionary<int, List<CharacterUnit>>();
         private int _beltUnitCount;
         private bool _hasCollided = false; // [FIX] Prevent Double Collision
         private readonly List<IncreaseElement> _eligibleElementsBuffer = new List<IncreaseElement>(8);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
             Data.Type = StatType.Character;
-            
+
             // [FIX] Auto-set EntityType for Gate
             if (_entityType == GamePlay.Entities.EntityType.None)
             {
                 _entityType = GamePlay.Entities.EntityType.CapacityGate;
             }
         }
-        #endif
+#endif
 
         private void Awake()
         {
@@ -54,15 +59,15 @@ namespace GamePlay.Items
 
         public override void Initialize()
         {
-             _hasCollided = false; // Reset lock on init
+            _hasCollided = false; // Reset lock on init
 
             // [FIX] Ensure collider size is large enough for Wheel hit (Gate is tall/wide)
             // Only fallback to default if inspector size is invalid/zero.
             if (colliderSize.x <= 0f || colliderSize.y <= 0f || colliderSize.z <= 0f)
                 colliderSize = new Vector3(5f, 5f, 5f);
- 
-             // [FIX] Capacity gate TextMesh should respect depth (avoid overlaying front objects).
-             ApplyDepthToTexts();
+
+            // [FIX] Capacity gate TextMesh should respect depth (avoid overlaying front objects).
+            ApplyDepthToTexts();
 
             ClearBelts();
 
@@ -79,7 +84,7 @@ namespace GamePlay.Items
 
             // --- REDUNDANT COLLIDER REMOVED (Migrated to CollisionSystem) ---
             // Gate detection is now handled by WheelUnit via CollisionSystem iteration.
-            
+
             /*
             _entityType = GamePlay.Entities.EntityType.CapacityGate;
             var col = GetComponent<BoxCollider>();
@@ -105,7 +110,7 @@ namespace GamePlay.Items
         private IEnumerator FixTextDepthDelayed()
         {
             // [FIX] Wait for TMP/Luna initialization to finish
-            yield return null; 
+            yield return null;
 
             var texts = GetComponentsInChildren<TMPro.TMP_Text>(true);
             if (texts == null || texts.Length == 0) yield break;
@@ -116,8 +121,8 @@ namespace GamePlay.Items
             {
                 if (t == null) continue;
 
-                t.isOverlay = false; 
-                
+                t.isOverlay = false;
+
                 // Force update to ensure renderer is live
                 t.ForceMeshUpdate();
 
@@ -136,7 +141,7 @@ namespace GamePlay.Items
                     var shared = renderer.sharedMaterial;
                     if (shared != null && shared.renderQueue != 3000)
                     {
-                         shared.renderQueue = 3000;
+                        shared.renderQueue = 3000;
                     }
                 }
             }
@@ -215,7 +220,7 @@ namespace GamePlay.Items
 
             // Phase 2: follow player Z + drain gold (logic first, do not update upgrade UI yet)
             int upgradedLevels = 0;
-            yield return StartCoroutine(Phase2(selected, distanceOffset, delegate(int levels)
+            yield return StartCoroutine(Phase2(selected, distanceOffset, delegate (int levels)
             {
                 upgradedLevels = levels;
             }));
@@ -234,6 +239,11 @@ namespace GamePlay.Items
                 GameplayManager.Instance.RunUpgradeEffect();
                 WeaponCardSystem.Instance?.PlayCollectAnimation(
                     selected.ElementData, selected.LevelCard, selected.transform);
+                Pack.Effector?.PlayEffect(
+                    buffAppliedEffectType,
+                    selected.transform.position,
+                    Quaternion.identity,
+                    selected.transform);
             }
 
             // Phase 3: tip RootAnimTrans 90° then apply config
@@ -311,7 +321,6 @@ namespace GamePlay.Items
 
             onResolved?.Invoke(upgradedLevels);
         }
-
         private IEnumerator Phase3()
         {
             if (rootAnimTrans == null) yield break;

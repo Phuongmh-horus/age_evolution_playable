@@ -431,12 +431,52 @@ namespace PlayerArmy
                 return desiredLevel;
             }
 
-            if (lookup.ContainsKey(fallbackCharacterLevel))
+            int maxLevel = int.MinValue;
+            int minLevel = int.MaxValue;
+            foreach (var key in lookup.Keys)
             {
-                return fallbackCharacterLevel;
+                if (key > maxLevel)
+                {
+                    maxLevel = key;
+                }
+                if (key < minLevel)
+                {
+                    minLevel = key;
+                }
             }
 
-            int lowestLevel = int.MaxValue;
+            if (maxLevel == int.MinValue || minLevel == int.MaxValue)
+            {
+                return desiredLevel;
+            }
+
+            // Clamp overflow upgrades to highest available level instead of wrapping to low tiers.
+            if (desiredLevel > maxLevel)
+            {
+                return maxLevel;
+            }
+
+            if (desiredLevel < minLevel)
+            {
+                return minLevel;
+            }
+
+            // Choose the nearest lower-or-equal available level.
+            int bestLower = int.MinValue;
+            foreach (var key in lookup.Keys)
+            {
+                if (key <= desiredLevel && key > bestLower)
+                {
+                    bestLower = key;
+                }
+            }
+
+            if (bestLower != int.MinValue)
+            {
+                return bestLower;
+            }
+
+            int lowestLevel = minLevel;
             foreach (var key in lookup.Keys)
             {
                 if (key < lowestLevel)
@@ -596,7 +636,7 @@ namespace PlayerArmy
             for (int i = 0; i < requests.Count; i++)
             {
                 var req = requests[i];
-                int level = req.Level > 0 ? req.Level : fallbackCharacterLevel;
+                int level = req.Level > 0 ? req.Level : ResolveCurrentArmyLevel();
                 int amount = Mathf.Max(1, req.Amount);
                 SpawnUnits(level, amount, syncNextAttackTime, playMoveAnimation);
             }
@@ -647,6 +687,7 @@ namespace PlayerArmy
             }
 
             int targetLevel = Mathf.Max(1, oldLevel + levelbonus);
+            fallbackCharacterLevel = targetLevel;
             var snapshot = new List<CharacterUnit>(characterUnits);
 
             for (int i = 0; i < snapshot.Count; i++)
@@ -685,6 +726,26 @@ namespace PlayerArmy
                     newUnit.Setup(targetLevel, false);
                 }
             }
+        }
+
+        private int ResolveCurrentArmyLevel()
+        {
+            int level = Mathf.Max(1, fallbackCharacterLevel);
+            for (int i = 0; i < characterUnits.Count; i++)
+            {
+                var unit = characterUnits[i];
+                if (unit == null || unit.Level <= 0)
+                {
+                    continue;
+                }
+
+                if (unit.Level > level)
+                {
+                    level = unit.Level;
+                }
+            }
+
+            return level;
         }
 
         public void PlayAnimationForAllUnits(AnimationType animationType, float waitForAction = 0f)

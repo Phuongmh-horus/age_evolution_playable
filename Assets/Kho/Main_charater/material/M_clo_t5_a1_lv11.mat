@@ -177,7 +177,7 @@ Material:
     - _DiffuseBrightness: 1
     - _DiffuseContrast: 1
     - _DiffusePerPixel: 0
-    - _DiffuseWrap: 0.05
+    - _DiffuseWrap: 0.15
     - _DstBlend: 0
     - _EmissiveAnimated: 0
     - _EmissiveAnimationIntensity: 1
@@ -312,7 +312,7 @@ Material:
     - _LightmapColor: {r: 1, g: 1, b: 1, a: 1}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
     - _MatCapRot: {r: 0, g: 0, b: 0, a: 0}
-    - _OutlineColor: {r: 1, g: 0, b: 0.89019614, a: 1}
+    - _OutlineColor: {r: 1, g: 0, b: 0.8901961, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimDirection: {r: 0, g: 0, b: 0, a: 0}

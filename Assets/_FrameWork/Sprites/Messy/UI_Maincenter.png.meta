@@ -45,7 +45,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 100
+    crunchedCompression: 1
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -128,7 +141,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 1792
-        width: 240
+        width: 256
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -316,9 +329,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1111
-        width: 44
-        height: 296
+        y: 1110
+        width: 45
+        height: 300
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -342,7 +355,7 @@ TextureImporter:
         height: 104
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 31, z: 32, w: 30}
+      border: {x: 36, y: 0, z: 37, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -816,27 +829,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Maincenter_52
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1408
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4581f3d93ee90e94e890b41e4dd32ac0
-      internalID: -35932763
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: UI_Maincenter_53
       rect:
         serializedVersion: 2
@@ -1140,7 +1132,7 @@ TextureImporter:
         height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 35, y: 0, z: 35, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1161,7 +1153,7 @@ TextureImporter:
         height: 97
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 35, y: 0, z: 35, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1176,10 +1168,10 @@ TextureImporter:
       name: UI_Maincenter_77
       rect:
         serializedVersion: 2
-        x: 694
-        y: 1260
-        width: 187
-        height: 212
+        x: 663
+        y: 1250
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1680,13 +1672,13 @@ TextureImporter:
       name: UI_Maincenter_26
       rect:
         serializedVersion: 2
-        x: 0
-        y: 660
-        width: 144
-        height: 448
+        x: 151
+        y: 1068
+        width: 35
+        height: 161
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 93, y: 72, z: 41, w: 182}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2134,90 +2126,6 @@ TextureImporter:
       bones: []
       spriteID: 701ca5e83efc4c54abbc1514b152159c
       internalID: -565913872
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI_Maincenter_76
-      rect:
-        serializedVersion: 2
-        x: 1796
-        y: 1588
-        width: 190
-        height: 190
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 010ca962c0d126a49ab9c297320d1850
-      internalID: 27456362
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI_Maincenter_78
-      rect:
-        serializedVersion: 2
-        x: 1116
-        y: 804
-        width: 200
-        height: 100
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2d89ec59c0010d541b3be10079b1f0b4
-      internalID: 348669546
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI_Maincenter_80
-      rect:
-        serializedVersion: 2
-        x: 1115
-        y: 587
-        width: 208
-        height: 208
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ebc791b401dd2e246b939e712764c0b4
-      internalID: 2122526926
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI_Maincenter_82
-      rect:
-        serializedVersion: 2
-        x: 1347
-        y: 398
-        width: 156
-        height: 120
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 480afb00d962b404582df940ff4744f2
-      internalID: -1642227395
       vertices: []
       indices: 
       edges: []

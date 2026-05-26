@@ -156,7 +156,7 @@ Material:
     - _AnimeThreshold1: 0.45
     - _AnimeThreshold2: 0.85
     - _BlendOp: 0
-    - _Brightness: 1.7
+    - _Brightness: 1.4
     - _BumpScale: 1
     - _CameraFadeEnd: 0
     - _CameraFadeStart: 0
@@ -250,7 +250,7 @@ Material:
     - _RimBlend: 1
     - _RimContrast: 5
     - _RimInverse: 0
-    - _Saturation: 1.2
+    - _Saturation: 1.15
     - _ShadowOverlayAnimation: 0
     - _ShadowOverlayBrightness: 1
     - _ShadowOverlaySpeedU: 0.1

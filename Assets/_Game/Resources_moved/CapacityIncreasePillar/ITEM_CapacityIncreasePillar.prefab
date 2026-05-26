@@ -731,10 +731,10 @@ MonoBehaviour:
   CacheTransform: {fileID: 5097109414927324780}
   poolEntity: {fileID: 2151603510769025371}
   effects:
-  - Type: 0
+  - Type: 14
     VfxPrefab: {fileID: 0}
     ParentToTarget: 1
-    SfxClip: {fileID: 0}
+    SfxClip: {fileID: 8300000, guid: 3c0689bc9fdce8643bbb7ff9de0e456f, type: 3}
     WaitForAction: 0.5
   audioSource: {fileID: 0}
   useGlobalSoundManagerFallback: 1

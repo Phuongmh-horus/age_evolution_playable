@@ -88,7 +88,7 @@ public class CapacityBrick : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.LogError($"[CapacityBrick] Deliver callback failed: {e}");
+
             }
         }
 

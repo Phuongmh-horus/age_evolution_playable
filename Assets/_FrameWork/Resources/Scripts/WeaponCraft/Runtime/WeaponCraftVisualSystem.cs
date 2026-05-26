@@ -6,6 +6,8 @@ namespace WeaponCraft
 {
     public sealed class WeaponCraftVisualSystem : MonoBehaviour
     {
+        public event System.Action<WeaponItem> MergeVisualCompleted;
+
         private sealed class VisualEntry
         {
             public WeaponItem Item;
@@ -23,6 +25,8 @@ namespace WeaponCraft
 
         [Header("Layout")]
         [SerializeField] private List<RectTransform> slots = new List<RectTransform>();
+        [Header("Speed")]
+        [SerializeField, Min(1f)] private float mergeSpeedMultiplier = 1.5f;
 
         private WeaponCraftConfigSO config;
 
@@ -248,6 +252,7 @@ namespace WeaponCraft
             var resultEntry = CreateEntry(operation.Item, targetPosition);
             entries.Insert(resultIndex, resultEntry);
             AttachEntryToSlot(resultEntry, resultIndex);
+            MergeVisualCompleted?.Invoke(operation.Item);
 
             yield return StartCoroutine(ReflowAllEntries(GetReflowDuration()));
         }
@@ -588,17 +593,20 @@ namespace WeaponCraft
 
         private float GetMergeMoveDuration()
         {
-            return config != null ? config.MergeMoveDuration : 0.2f;
+            float baseDuration = config != null ? config.MergeMoveDuration : 0.2f;
+            return Mathf.Max(0.01f, baseDuration / Mathf.Max(1f, mergeSpeedMultiplier));
         }
 
         private float GetReflowDuration()
         {
-            return config != null ? config.LayoutReflowDuration : 0.15f;
+            float baseDuration = config != null ? config.LayoutReflowDuration : 0.15f;
+            return Mathf.Max(0.01f, baseDuration / Mathf.Max(1f, mergeSpeedMultiplier));
         }
 
         private float GetMergeSpawnDelay()
         {
-            return config != null ? config.MergeSpawnDelay : 0.05f;
+            float baseDelay = config != null ? config.MergeSpawnDelay : 0.05f;
+            return Mathf.Max(0f, baseDelay / Mathf.Max(1f, mergeSpeedMultiplier));
         }
 
         private void EnsureRoot()

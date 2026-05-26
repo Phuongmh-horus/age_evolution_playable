@@ -84,7 +84,7 @@ MonoBehaviour:
   strafeFollowMultiplier: 2
   xLimit: 4
   collisionCheckRangeX: 7
-  collisionCheckRangeZ: 22
+  collisionCheckRangeZ: 25
   collisionSize: {x: 3, y: 3}
   characterList: {fileID: 11400000, guid: a0a4046a522e97b4ca8b615cafd20aa6, type: 2}
   fallbackCharacterLevel: 2
@@ -100,7 +100,7 @@ MonoBehaviour:
   projectileDuration: 0.55
   projectileRotationSpeed: -600
   unitscalevalue: 1.35
-  weaponProjectilePrefab: {fileID: 1917486832313472047, guid: fe6ba220336818b499668d75f44cceda, type: 3}
+  weaponProjectilePrefab: {fileID: 1917486832313472047, guid: 1706a5c2cc2c2384b9909b1e7f7d9aba, type: 3}
   inputManager: {fileID: 0}
   effectSystem: {fileID: 16920303580411128}
   characterUnits: []
