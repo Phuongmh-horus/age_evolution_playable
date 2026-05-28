@@ -22,6 +22,8 @@ public class DeathScaleEffect : MonoBehaviour
 
     public static void TickActiveEffects(float deltaTime)
     {
+        if (activeEffects.Count == 0) return;
+
         for (int i = activeEffects.Count - 1; i >= 0; i--)
         {
             var effect = activeEffects[i];
@@ -137,7 +139,21 @@ public class DeathScaleEffect : MonoBehaviour
 
     private void UnregisterTick()
     {
+        if (!_registeredForTick) return;
         _registeredForTick = false;
+
+        for (int i = activeEffects.Count - 1; i >= 0; i--)
+        {
+            if (!ReferenceEquals(activeEffects[i], this)) continue;
+            RemoveAtSwapBack(i);
+            break;
+        }
+    }
+
+    public static void ClearAll()
+    {
+        activeEffects.Clear();
+        activeEffects.TrimExcess();
     }
 
     private static void RemoveAtSwapBack(int index)

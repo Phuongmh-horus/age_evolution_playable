@@ -56,7 +56,6 @@ ExportedObj/
 *.svd
 *.pdb
 *.mdb
-*.lscache
 *.opendb
 *.VC.db
 

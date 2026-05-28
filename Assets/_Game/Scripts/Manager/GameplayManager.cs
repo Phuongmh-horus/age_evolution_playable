@@ -11,6 +11,7 @@ using GamePlay.Items;
 using GamePlay.Managers;
 using GamePlay.Map;
 using GamePlay.OscillationSystems;
+using GamePlay.Effects;
 using PlayerArmy;
 using Pools;
 using UnityEngine;
@@ -194,6 +195,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
     private IEnumerator CoBootPlayable()
     {
+        ClearRuntimeTickCaches();
         DataManager.ResetToDefault();
         yield return StartCoroutine(CoLoadPlayableLevel());
         yield return StartCoroutine(CoInitializeGeneratedContent());
@@ -208,6 +210,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         HitTextFlyEffect.TickActiveControllers(dt);
         DeathScaleEffect.TickActiveEffects(dt);
         BrickFallMotion.TickActiveMotions(dt);
+        CurrencyDropItem.TickActiveDrops(dt);
         if (!IsGameStarted) return;
 
         OscillationSystem.Instance?.ManualUpdate();
@@ -231,6 +234,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     private IEnumerator CoReload()
     {
         IsGameStarted = false;
+        ClearRuntimeTickCaches();
         DataManager.ResetToDefault();
 
         yield return StartCoroutine(CoLoadPlayableLevel());
@@ -239,6 +243,12 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         CameraManager.Instance.SetCameraStateByName(CameraFollow.CameraStateName.Waiting, CameraFollow.TransitionMode.Instant);
 
         StartGame();
+    }
+
+    private static void ClearRuntimeTickCaches()
+    {
+        CurrencyDropItem.ClearActiveDrops();
+        DeathScaleEffect.ClearAll();
     }
 
     private IEnumerator CoLoadPlayableLevel()

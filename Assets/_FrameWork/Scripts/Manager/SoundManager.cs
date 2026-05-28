@@ -76,6 +76,7 @@ public class SoundManager : MonoSingleton<SoundManager>
 
     private void Update()
     {
+        if (!_isLoopRandomBGM) return;
         if (backgroundMusics == null || backgroundMusics.Count <= 0)
         {
             return;

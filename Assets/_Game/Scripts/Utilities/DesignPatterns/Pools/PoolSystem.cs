@@ -105,20 +105,11 @@ public static class PoolSystem
         {
             var root = GetOrCreateRoot();
             var poolName = $"[Pool]_{prefab.name}";
-            Transform existing = null;
-            if (root != null)
-            {
-                var existingGo = GameObject.Find(poolName);
-                if (existingGo != null)
-                {
-                    existing = existingGo.transform;
-                }
-            }
 
             pool = new Pool
             {
                 PrefabComponent = prefab,
-                Root = existing != null ? existing : new GameObject(poolName).transform
+                Root = new GameObject(poolName).transform
             };
             if (root != null && pool.Root.parent != root)
             {

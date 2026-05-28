@@ -173,9 +173,7 @@ namespace GamePlay.CollisionSystems
         /// </summary>
         public void EnsureDataIsReady()
         {
-            // Avoid per-frame full scans when nothing changed.
-            bool shouldCompact = _isDirty || (Time.frameCount & 31) == 0;
-            if (shouldCompact && CompactInvalidEntries())
+            if (_isDirty && CompactInvalidEntries())
             {
                 _isDirty = true;
             }

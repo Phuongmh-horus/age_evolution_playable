@@ -10,13 +10,13 @@ namespace GamePlay.Effects
         [SerializeField] private DebrisBlock debrisPrefab;
 
         [Header("Spawn Settings")]
-        [SerializeField] private int minBlocks = 10;
-        [SerializeField] private int maxBlocks = 20;
+        [SerializeField] private int minBlocks = 5;
+        [SerializeField] private int maxBlocks = 10;
 
         [Header("Physics Settings")]
         [SerializeField] private float explosionForce = 5f;
-        [SerializeField] private float upwardForce = 3f;
-        [SerializeField] private float lifetime = 2f;
+        [SerializeField] private float upwardForce = 1f;
+        [SerializeField] private float lifetime = 1f;
 
         [Header("Block Settings")]
         [SerializeField] private Vector2 blockScaleRange = new Vector2(0.1f, 0.3f);
@@ -43,7 +43,7 @@ namespace GamePlay.Effects
         {
             // Get random position inside the collision shape
             Vector3 randomPos = GetRandomPositionInShape(center);
-            
+
             // Instantiate block
             var blockObj = PoolManager.Instance.Get(debrisPrefab);
             blockObj.transform.SetParent(PoolManager.Instance.transform);

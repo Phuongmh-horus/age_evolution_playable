@@ -72,7 +72,9 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private bool _ignoreBrickCallbacks;
     private float _nextVisualSpawnTime;
     private bool _warnedMissingChain;
+    private int _lastBreakFxFrame = -1;
     private readonly StatModifierCapacityData _capacityGainData = new StatModifierCapacityData();
+    private readonly List<Stack<BrickLayer>> _replacementLayerPools = new List<Stack<BrickLayer>>(8);
 
     private void Awake()
     {
@@ -88,6 +90,8 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private void Start()
     {
         _nextReplacementIndex = 0;
+        EnsureReplacementLayerPools();
+        _lastBreakFxFrame = -1;
 
         SetupChainFromData();
 
@@ -110,11 +114,13 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private void OnEnable()
     {
         _ignoreBrickCallbacks = false;
+        _lastBreakFxFrame = -1;
     }
 
     public override void Initialize()
     {
         _entityType = GamePlay.Entities.EntityType.ResourceTower;
+        _lastBreakFxFrame = -1;
 
         var hitComp = hitComponent;
         if (hitComp != null)
@@ -176,19 +182,19 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private void PrepareInitialBrickLayer()
     {
         _nextReplacementIndex = 0;
+        EnsureReplacementLayerPools();
 
         if (brickLayer != null)
         {
-            brickLayer.ResetLayer();
-            if (Application.isPlaying) Destroy(brickLayer.gameObject);
-            else DestroyImmediate(brickLayer.gameObject);
+            brickLayer.ResetLayer(forceResetFlying: true);
+            ReturnLayerToPool(brickLayer, 0);
             brickLayer = null;
         }
 
         if (replacementLayerPrefabs != null && replacementLayerPrefabs.Count > 0
         && replacementLayerPrefabs[0] != null)
         {
-            brickLayer = Instantiate(replacementLayerPrefabs[0], bricksRoot);
+            brickLayer = GetLayerFromPool(0);
             brickLayer.transform.localPosition = Vector3.zero;
             brickLayer.transform.localRotation = Quaternion.identity;
             brickLayer.transform.localScale = Vector3.one;
@@ -245,7 +251,11 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (chain.RemainingHealth < 1)
         {
             chain.PlayBreakAnimation();
-            Pack.Effector.PlayEffect(EffectType.Break);
+            if (_lastBreakFxFrame != Time.frameCount)
+            {
+                _lastBreakFxFrame = Time.frameCount;
+                Pack.Effector?.PlayEffect(EffectType.Hit);
+            }
             isChainedPillar = false;
         }
     }
@@ -503,10 +513,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         {
             finishedLayer.isActivated = true;
             finishedLayer.isCached = true;
-            if (Application.isPlaying)
-                Destroy(finishedLayer.gameObject, Mathf.Max(0f, layerReturnDelay));
-            else
-                DestroyImmediate(finishedLayer.gameObject);
+            ReturnLayerToPool(finishedLayer, layerIndex);
         }
 
         if (replacementLayerPrefabs == null || replacementLayerPrefabs.Count == 0) return;
@@ -515,7 +522,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (_nextReplacementIndex >= replacementLayerPrefabs.Count)
             _nextReplacementIndex = replacementLayerPrefabs.Count - 1;
 
-        var newLayer = Instantiate(replacementLayerPrefabs[_nextReplacementIndex], bricksRoot);
+        var newLayer = GetLayerFromPool(_nextReplacementIndex);
         newLayer.transform.localPosition = Vector3.zero;
         newLayer.transform.localRotation = Quaternion.identity;
         newLayer.transform.localScale = bricksRoot.localScale;
@@ -532,6 +539,62 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
         _currentLayerCount++;
         _currentBrickIndex = newLayer.bricks != null ? newLayer.bricks.Count - 1 : 0;
+    }
+
+    private void EnsureReplacementLayerPools()
+    {
+        int targetCount = replacementLayerPrefabs != null ? replacementLayerPrefabs.Count : 0;
+        while (_replacementLayerPools.Count < targetCount)
+        {
+            _replacementLayerPools.Add(new Stack<BrickLayer>(2));
+        }
+    }
+
+    private BrickLayer GetLayerFromPool(int prefabIndex)
+    {
+        EnsureReplacementLayerPools();
+        if (replacementLayerPrefabs == null || prefabIndex < 0 || prefabIndex >= replacementLayerPrefabs.Count)
+            return null;
+
+        var stack = _replacementLayerPools[prefabIndex];
+        BrickLayer layer = null;
+        while (stack.Count > 0 && layer == null)
+        {
+            layer = stack.Pop();
+        }
+
+        if (layer == null)
+        {
+            var prefab = replacementLayerPrefabs[prefabIndex];
+            if (prefab == null) return null;
+            layer = Instantiate(prefab, bricksRoot);
+        }
+        else
+        {
+            layer.transform.SetParent(bricksRoot, false);
+            layer.gameObject.SetActive(true);
+        }
+
+        layer.ResetLayer();
+        layer.isCached = false;
+        layer.isActivated = true;
+        return layer;
+    }
+
+    private void ReturnLayerToPool(BrickLayer layer, int poolIndexHint)
+    {
+        if (layer == null)
+            return;
+
+        layer.ResetLayer(forceResetFlying: false);
+        layer.isActivated = false;
+        layer.isCached = true;
+        layer.gameObject.SetActive(false);
+        layer.transform.SetParent(bricksRoot, false);
+
+        EnsureReplacementLayerPools();
+        int safeIndex = Mathf.Clamp(poolIndexHint, 0, Mathf.Max(0, _replacementLayerPools.Count - 1));
+        _replacementLayerPools[safeIndex].Push(layer);
     }
 
     private void EnsureHitTextEffect(bool allowAddRuntime)

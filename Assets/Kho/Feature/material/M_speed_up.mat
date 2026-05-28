@@ -12,13 +12,14 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - AMBIENT
+  - DIFFUSE
   - FOG
-  - LUNA_OUTPUT_FIX
   - TRANSPARENCY_MASK
   - _LIGHTMAPUV_UV1
   m_InvalidKeywords:
+  - AMBIENT
   - ANIME_SOFT
+  - LUNA_OUTPUT_FIX
   - MATCAP_PERSPECTIVE
   - OUTLINE_PASS_DISABLED
   - SHADOWS_ENABLED
@@ -172,7 +173,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DetailUV: 0
     - _DetailVertexColors: 0
-    - _Diffuse: 0
+    - _Diffuse: 1
     - _DiffuseBrightness: 1
     - _DiffuseContrast: 1
     - _DiffusePerPixel: 0

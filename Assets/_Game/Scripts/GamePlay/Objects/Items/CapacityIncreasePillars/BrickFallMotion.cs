@@ -387,13 +387,13 @@ public class BrickFallMotion : MonoBehaviour
         UnregisterTick();
         if (_transform == null) return;
 
-        if (_originalParent == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        _active = false;
+        _isFlyingToCapacity = false;
+        _flyElapsed = 0f;
+        _fallPhaseElapsed = 0f;
+        _bouncePhaseElapsed = 0f;
 
-        if (_transform.parent != _originalParent)
+        if (_originalParent != null && _transform.parent != _originalParent)
         {
             _transform.SetParent(_originalParent, false);
         }
@@ -401,7 +401,6 @@ public class BrickFallMotion : MonoBehaviour
         _transform.localScale = _initialScale;
         _transform.localPosition = _originalPosition;
         _transform.localRotation = _originalRotation;
-        _active = false;
     }
 
     private void RegisterTick()

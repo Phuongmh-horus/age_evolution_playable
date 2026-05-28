@@ -295,7 +295,6 @@ namespace PlayerArmy
             UpdateMovement(dt);
 
             UpdateCollisionChecks();
-            PruneInactiveSpawnedUnits();
 
             if (currentState == PlayerArmyState.Active)
             {

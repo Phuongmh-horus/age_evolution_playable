@@ -15,7 +15,7 @@ MonoBehaviour:
   soundDataList:
   - Name: 1
     Clip: {fileID: 8300000, guid: 3c0689bc9fdce8643bbb7ff9de0e456f, type: 3}
-    VolumeDefault: 0.5
+    VolumeDefault: 1
   - Name: 6
     Clip: {fileID: 8300000, guid: 16f84bf77323c5f46bebc99242292f42, type: 3}
     VolumeDefault: 1
@@ -24,16 +24,16 @@ MonoBehaviour:
     VolumeDefault: 1
   - Name: 10
     Clip: {fileID: 8300000, guid: b87dd0b5dd4dd2645aa0c905be5fda3e, type: 3}
-    VolumeDefault: 0.1
+    VolumeDefault: 1
   - Name: 11
     Clip: {fileID: 8300000, guid: 5c233c835f2b600448f978ba5237fa66, type: 3}
     VolumeDefault: 1
   - Name: 14
     Clip: {fileID: 8300000, guid: a5e005e1197d3424498443497d0856db, type: 3}
-    VolumeDefault: 0.5
+    VolumeDefault: 1
   - Name: 17
     Clip: {fileID: 8300000, guid: 9091e30ab02c322468d630ec56e3ce3b, type: 3}
-    VolumeDefault: 0.5
+    VolumeDefault: 1
   - Name: 8
     Clip: {fileID: 8300000, guid: db12146efa7b0aa4186a2f6f59f49cf8, type: 3}
-    VolumeDefault: 2
+    VolumeDefault: 1

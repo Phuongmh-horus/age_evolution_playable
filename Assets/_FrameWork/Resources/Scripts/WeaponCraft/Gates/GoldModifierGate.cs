@@ -43,6 +43,7 @@ namespace WeaponCraft
         private Coroutine _scalePulseRoutine;
         private int _lastScalePulseFrame = -1;
         private bool _awaitingGoldReset;
+        private int _lastBreakFxFrame = -1;
 
         protected void Awake()
         {
@@ -122,6 +123,7 @@ namespace WeaponCraft
             base.Initialize();
 
             _awaitingGoldReset = false;
+            _lastBreakFxFrame = -1;
             _originalScale     = transform.localScale;
             RegisterCapacityBarEvents();
 
@@ -256,10 +258,15 @@ namespace WeaponCraft
         {
             if (current <= 0)
             {
+                bool canPlayBreakFx = !_awaitingGoldReset && _lastBreakFxFrame != Time.frameCount;
                 _awaitingGoldReset = true;
                 GrantCoinOnProgressTick();
                 UpdateCollectVisual();
-                Pack.Effector?.PlayEffect(EffectType.Break, transform.position, Quaternion.identity);
+                if (canPlayBreakFx)
+                {
+                    _lastBreakFxFrame = Time.frameCount;
+                    Pack.Effector?.PlayEffect(EffectType.Break, transform.position, Quaternion.identity);
+                }
 
                 if (healthComponent != null)
                 {

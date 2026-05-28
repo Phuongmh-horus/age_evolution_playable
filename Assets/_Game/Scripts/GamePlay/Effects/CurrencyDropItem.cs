@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GamePlay.Entities;
 using GamePlay.Items;
 using UnityEngine;
@@ -6,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class CurrencyDropItem : ItemUnit
 {
+    private static readonly List<CurrencyDropItem> s_activeDrops = new List<CurrencyDropItem>(128);
     public CurrencyType Type;
     public float Amount;
 
@@ -30,7 +32,9 @@ public class CurrencyDropItem : ItemUnit
     [SerializeField] private float groundY = 0f;
 
     private bool _isSimulating;
-    private Coroutine _simRoutine;
+    private bool _registeredForTick;
+    private Vector3 _simVelocity;
+    private Vector3 _simPosition;
 
     public bool canClaim;
 
@@ -44,6 +48,28 @@ public class CurrencyDropItem : ItemUnit
     {
         base.Initialize();
         canClaim = true;
+    }
+
+    public static void TickActiveDrops(float dt)
+    {
+        if (s_activeDrops.Count == 0) return;
+
+        for (int i = s_activeDrops.Count - 1; i >= 0; i--)
+        {
+            var item = s_activeDrops[i];
+            if (item == null || !item._isSimulating || !item.gameObject.activeInHierarchy)
+            {
+                if (item != null) item._registeredForTick = false;
+                RemoveAtSwapBack(i);
+                continue;
+            }
+
+            if (!item.StepSimulation(dt))
+            {
+                item._registeredForTick = false;
+                RemoveAtSwapBack(i);
+            }
+        }
     }
 
     private void Awake()
@@ -68,12 +94,12 @@ public class CurrencyDropItem : ItemUnit
         // 2. Aggressively cache the clip
         if (claimClip == null)
         {
-             // Try to load cached static first
-             if (_cachedMoneyClip == null)
-             {
-                 _cachedMoneyClip = Resources.Load<AudioClip>("Sound/SFX_MoneyCollect");
-             }
-             claimClip = _cachedMoneyClip;
+            // Try to load cached static first
+            if (_cachedMoneyClip == null)
+            {
+                _cachedMoneyClip = Resources.Load<AudioClip>("Sound/SFX_MoneyCollect");
+            }
+            claimClip = _cachedMoneyClip;
         }
     }
 
@@ -167,7 +193,9 @@ public class CurrencyDropItem : ItemUnit
         if (flyUp)
         {
             _isSimulating = true;
-            _simRoutine = StartCoroutine(PhysicsSimRoutine());
+            _simVelocity = _initialVelocity;
+            _simPosition = transform.position;
+            RegisterActiveDrop();
         }
     }
 
@@ -186,53 +214,31 @@ public class CurrencyDropItem : ItemUnit
         groundY = value;
     }
 
-    private System.Collections.IEnumerator PhysicsSimRoutine()
+    private bool StepSimulation(float dt)
     {
-        Vector3 currentVelocity = _initialVelocity;
-        Vector3 currentPosition = transform.position;
+        _simVelocity.y -= _gravity * dt;
+        _simPosition += _simVelocity * dt;
 
-        while (_isSimulating)
+        if (_simPosition.y <= groundY)
         {
-            float dt = Time.deltaTime;
+            _simPosition.y = groundY;
+            transform.position = _simPosition;
+            transform.rotation = Quaternion.Euler(Vector3.zero);
+            _isSimulating = false;
 
-            // gravity
-            currentVelocity.y -= _gravity * dt;
+            if (autoClaimOnGround)
+                ClaimReward();
 
-            // integrate
-            currentPosition += currentVelocity * dt;
-
-            // ground
-            if (currentPosition.y <= groundY)
-            {
-                currentPosition.y = groundY;
-                transform.position = currentPosition;
-
-                transform.rotation = Quaternion.Euler(Vector3.zero);
-
-                _isSimulating = false;
-                _simRoutine = null;
-
-                if (autoClaimOnGround)
-                    ClaimReward();
-
-                yield break;
-            }
-
-            transform.position = currentPosition;
-            yield return null;
+            return false;
         }
 
-        _simRoutine = null;
+        transform.position = _simPosition;
+        return true;
     }
 
     private void StopSimulation()
     {
         _isSimulating = false;
-        if (_simRoutine != null)
-        {
-            StopCoroutine(_simRoutine);
-            _simRoutine = null;
-        }
     }
 
     private void OnDisable()
@@ -243,6 +249,27 @@ public class CurrencyDropItem : ItemUnit
     private void OnDestroy()
     {
         StopSimulation();
+    }
+
+    private void RegisterActiveDrop()
+    {
+        if (_registeredForTick) return;
+        _registeredForTick = true;
+        s_activeDrops.Add(this);
+    }
+
+    private static void RemoveAtSwapBack(int index)
+    {
+        int last = s_activeDrops.Count - 1;
+        if (index < 0 || index > last) return;
+        s_activeDrops[index] = s_activeDrops[last];
+        s_activeDrops.RemoveAt(last);
+    }
+
+    public static void ClearActiveDrops()
+    {
+        s_activeDrops.Clear();
+        s_activeDrops.TrimExcess();
     }
 }
 

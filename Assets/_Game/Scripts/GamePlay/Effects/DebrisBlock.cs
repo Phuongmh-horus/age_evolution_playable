@@ -18,8 +18,11 @@ namespace GamePlay.Effects
         private Vector3 _startPosition;
         private bool _hasBounced;
 
-        private Coroutine _routine;
         private MaterialPropertyBlock _propBlock;
+        private bool _simulating;
+        private Vector3 _currentVelocity;
+        private Vector3 _currentPosition;
+        private float _elapsedTime;
 
         public void SetColor(Color color)
         {
@@ -37,8 +40,7 @@ namespace GamePlay.Effects
             _lifetime = Mathf.Max(0.01f, lifetime);
             _hasBounced = false;
             _startPosition = transform.position;
-
-            StopRoutine();
+            _elapsedTime = 0f;
 
             _angularVelocity = new Vector3(
                 Random.Range(-360f, 360f),
@@ -46,70 +48,75 @@ namespace GamePlay.Effects
                 Random.Range(-360f, 360f)
             );
 
-            _routine = StartCoroutine(PhysicsRoutine());
+            _currentVelocity = _initialVelocity;
+            _currentPosition = _startPosition;
+            _simulating = true;
+            enabled = true;
         }
 
-        private System.Collections.IEnumerator PhysicsRoutine()
+        private bool Step(float dt)
         {
-            float elapsedTime = 0f;
-            Vector3 currentVelocity = _initialVelocity;
-            Vector3 currentPosition = _startPosition;
-
-            while (elapsedTime < _lifetime)
+            if (dt <= 0f)
             {
-                float dt = Time.deltaTime;
-                elapsedTime += dt;
+                dt = Time.unscaledDeltaTime;
+            }
 
-                currentVelocity.y -= _gravity * dt;
-                currentPosition += currentVelocity * dt;
+            _elapsedTime += dt;
 
-                // ground collision only when x in [-7, 7] (giữ logic gốc)
-                bool isWithinXRange = currentPosition.x >= -7f && currentPosition.x <= 7f;
+            _currentVelocity.y -= _gravity * dt;
+            _currentPosition += _currentVelocity * dt;
 
-                if (currentPosition.y <= 0f && isWithinXRange)
+            bool isWithinXRange = _currentPosition.x >= -7f && _currentPosition.x <= 7f;
+            if (_currentPosition.y <= 0f && isWithinXRange)
+            {
+                if (!_hasBounced)
                 {
-                    if (!_hasBounced)
-                    {
-                        currentVelocity.y = Mathf.Abs(currentVelocity.y) * _bounceMultiplier;
-                        currentVelocity.x *= _bounceMultiplier;
-                        currentVelocity.z *= _bounceMultiplier;
-                        _hasBounced = true;
-                        currentPosition.y = 0f;
-                    }
-                    else
-                    {
-                        currentVelocity = Vector3.zero;
-                        currentPosition.y = 0f;
-                    }
+                    _currentVelocity.y = Mathf.Abs(_currentVelocity.y) * _bounceMultiplier;
+                    _currentVelocity.x *= _bounceMultiplier;
+                    _currentVelocity.z *= _bounceMultiplier;
+                    _hasBounced = true;
+                    _currentPosition.y = 0f;
                 }
-
-                transform.position = currentPosition;
-                transform.Rotate(_angularVelocity * dt, Space.Self);
-
-                yield return null;
+                else
+                {
+                    _currentVelocity = Vector3.zero;
+                    _currentPosition.y = 0f;
+                }
             }
 
-            _routine = null;
+            transform.position = _currentPosition;
+            transform.Rotate(_angularVelocity * dt, Space.Self);
+
+            if (_elapsedTime < _lifetime)
+            {
+                return true;
+            }
+
+            _simulating = false;
             gameObject.SetActive(false);
+            return false;
         }
 
-        private void StopRoutine()
+        private void Update()
         {
-            if (_routine != null)
-            {
-                StopCoroutine(_routine);
-                _routine = null;
-            }
+            if (!_simulating) return;
+            Step(Time.unscaledDeltaTime);
+        }
+
+        private void StopSimulation()
+        {
+            _simulating = false;
+            enabled = false;
         }
 
         private void OnDisable()
         {
-            StopRoutine();
+            StopSimulation();
         }
 
         private void OnDestroy()
         {
-            StopRoutine();
+            StopSimulation();
         }
     }
 }

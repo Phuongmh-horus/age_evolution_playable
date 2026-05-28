@@ -580,7 +580,7 @@ namespace GamePlay.CombatSystems
 
             // Sweep by sub-steps to prevent tunneling through thin colliders (e.g. CapacityGate).
             float stepSize = Mathf.Max(0.05f, projRadius * 0.5f);
-            int stepCount = Mathf.Clamp(Mathf.CeilToInt(distance / stepSize), 1, 24);
+            int stepCount = Mathf.Clamp(Mathf.CeilToInt(distance / stepSize), 1, 8);
             Vector3 step = delta / stepCount;
             Vector3 samplePos = fromPos;
 

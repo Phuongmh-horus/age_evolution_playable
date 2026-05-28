@@ -250,6 +250,11 @@ namespace GamePlay.Map
 
                 if (_wheelTransform != null)
                 {
+                    if (!GameplayManager.IsGameStarted)
+                    {
+                        yield return _cullWait;
+                        continue;
+                    }
                     UpdateBackgroundVisibility();
                 }
 

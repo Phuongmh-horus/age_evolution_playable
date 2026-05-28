@@ -36,17 +36,19 @@ public class BrickLayer : PoolEntity
 //         }
 //     }
 
-    public void ResetLayer()
+    public void ResetLayer(bool forceResetFlying = false)
     {
         foreach (var brick in bricks)
         {
             if (brick == null) continue;
 
-            if (brick.brickFallMotion != null)
-                brick.brickFallMotion.ResetBrick();
+            var motion = brick.brickFallMotion;
+            bool isFlying = motion != null && motion.IsActivated();
+            if (motion != null && (forceResetFlying || !isFlying))
+                motion.ResetBrick();
 
             brick.isActivated = false;
-            if (!brick.gameObject.activeSelf)
+            if (!isFlying && !brick.gameObject.activeSelf)
                 brick.gameObject.SetActive(true);
         }
     }

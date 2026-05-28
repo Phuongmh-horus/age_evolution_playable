@@ -5,6 +5,15 @@ namespace PlayerArmy
     [DisallowMultipleComponent]
     public class ArmyUnit : MonoBehaviour
     {
+        private sealed class WeaponPoolTag : MonoBehaviour
+        {
+            public int PrefabId;
+        }
+
+        private static readonly System.Collections.Generic.Dictionary<int, System.Collections.Generic.Stack<GameObject>> s_weaponPool
+            = new System.Collections.Generic.Dictionary<int, System.Collections.Generic.Stack<GameObject>>(16);
+        private const int MaxPoolPerPrefab = 24;
+
         [Header("Animation")]
         [SerializeField] private Animator animator;
         [SerializeField] private string idleState = "Idle";
@@ -16,6 +25,7 @@ namespace PlayerArmy
         [SerializeField] private Transform weaponHand;
         [SerializeField] private Transform spawnBulletPosition;
         [SerializeField] private GameObject currentWeapon;
+        private int _currentWeaponPrefabId;
 
         public Animator Animator => animator;
         public Transform SpawnBulletPosition => spawnBulletPosition;
@@ -80,7 +90,9 @@ namespace PlayerArmy
                 return;
             }
 
-            currentWeapon = Instantiate(weaponPrefab, weaponHand, false);
+            int prefabId = weaponPrefab.GetInstanceID();
+            currentWeapon = RentWeapon(weaponPrefab, prefabId);
+            _currentWeaponPrefabId = prefabId;
             currentWeapon.transform.localPosition = Vector3.zero;
             currentWeapon.transform.localRotation = Quaternion.identity;
             currentWeapon.transform.localScale = Vector3.one;
@@ -93,8 +105,9 @@ namespace PlayerArmy
                 return;
             }
 
-            Destroy(currentWeapon);
+            ReturnWeapon(currentWeapon, _currentWeaponPrefabId);
             currentWeapon = null;
+            _currentWeaponPrefabId = 0;
         }
 
 #if UNITY_EDITOR
@@ -152,6 +165,70 @@ namespace PlayerArmy
             }
 
             return null;
+        }
+
+        private static GameObject RentWeapon(GameObject prefab, int prefabId)
+        {
+            if (prefab == null)
+            {
+                return null;
+            }
+
+            if (s_weaponPool.TryGetValue(prefabId, out var stack))
+            {
+                while (stack.Count > 0)
+                {
+                    var pooled = stack.Pop();
+                    if (pooled != null)
+                    {
+                        pooled.SetActive(true);
+                        return pooled;
+                    }
+                }
+            }
+
+            var instance = Instantiate(prefab);
+            var tag = instance.GetComponent<WeaponPoolTag>();
+            if (tag == null) tag = instance.AddComponent<WeaponPoolTag>();
+            tag.PrefabId = prefabId;
+            return instance;
+        }
+
+        private static void ReturnWeapon(GameObject weapon, int fallbackPrefabId)
+        {
+            if (weapon == null)
+            {
+                return;
+            }
+
+            int prefabId = fallbackPrefabId;
+            var tag = weapon.GetComponent<WeaponPoolTag>();
+            if (tag != null && tag.PrefabId != 0)
+            {
+                prefabId = tag.PrefabId;
+            }
+
+            if (prefabId == 0)
+            {
+                Destroy(weapon);
+                return;
+            }
+
+            if (!s_weaponPool.TryGetValue(prefabId, out var stack))
+            {
+                stack = new System.Collections.Generic.Stack<GameObject>(8);
+                s_weaponPool[prefabId] = stack;
+            }
+
+            if (stack.Count >= MaxPoolPerPrefab)
+            {
+                Destroy(weapon);
+                return;
+            }
+
+            weapon.transform.SetParent(null, false);
+            weapon.SetActive(false);
+            stack.Push(weapon);
         }
     }
 }

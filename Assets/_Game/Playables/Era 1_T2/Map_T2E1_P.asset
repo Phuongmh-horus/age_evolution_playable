@@ -17,4 +17,4 @@ MonoBehaviour:
   RoadSegment: {fileID: 7527074010458380552, guid: 491f44c72f8a37d4cbda80dbbc5100f7, type: 3}
   ContentLength: 320
   FinishLength: 0
-  BackGround: {fileID: 8956736424523339536, guid: 025dcb690e5dc8b43b5f75fd878471e0, type: 3}
+  BackGround: {fileID: 541599379090928097, guid: 22a5bc4e165b2f84a95ab339a82a6657, type: 3}

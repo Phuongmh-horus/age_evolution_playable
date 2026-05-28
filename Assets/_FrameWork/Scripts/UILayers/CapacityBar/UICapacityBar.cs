@@ -54,6 +54,8 @@ public class UICapacityBar : MonoBehaviour
     private bool _warnedMissingEvolutionConfig;
     private bool _warnedInvalidPointsRequired;
     private bool _warnedMissingVfxSprite;
+    private GamePlayVariable _cachedGamePlayVariable;
+    private EraDataSO _cachedEraConfig;
 
     private void Awake()
     {
@@ -78,6 +80,7 @@ public class UICapacityBar : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!GameplayManager.IsGameStarted) return;
         if (Time.unscaledTime - _lastFallbackPollTime < FALLBACK_POLL_INTERVAL) return;
         _lastFallbackPollTime = Time.unscaledTime;
 
@@ -244,22 +247,40 @@ public class UICapacityBar : MonoBehaviour
 
     private GamePlayVariable ResolveGamePlayVariable()
     {
+        if (_cachedGamePlayVariable != null)
+            return _cachedGamePlayVariable;
+
         if (GameplayManager.Instance != null && GameplayManager.Instance.gamePlayVariable != null)
-            return GameplayManager.Instance.gamePlayVariable;
+        {
+            _cachedGamePlayVariable = GameplayManager.Instance.gamePlayVariable;
+            return _cachedGamePlayVariable;
+        }
 
         if (ConfigHolder.Instance != null)
-            return ConfigHolder.Instance.GamePlayVariable;
+        {
+            _cachedGamePlayVariable = ConfigHolder.Instance.GamePlayVariable;
+            return _cachedGamePlayVariable;
+        }
 
         return null;
     }
 
     private EraDataSO ResolveEraConfig()
     {
+        if (_cachedEraConfig != null)
+            return _cachedEraConfig;
+
         if (GameplayManager.Instance != null && GameplayManager.Instance.PlayableEra != null)
-            return GameplayManager.Instance.PlayableEra;
+        {
+            _cachedEraConfig = GameplayManager.Instance.PlayableEra;
+            return _cachedEraConfig;
+        }
 
         if (ConfigHolder.Instance != null)
-            return ConfigHolder.Instance.GetCurrentEraConfig();
+        {
+            _cachedEraConfig = ConfigHolder.Instance.GetCurrentEraConfig();
+            return _cachedEraConfig;
+        }
 
         return null;
     }

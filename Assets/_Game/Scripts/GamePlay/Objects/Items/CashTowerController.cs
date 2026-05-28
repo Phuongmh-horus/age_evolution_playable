@@ -409,7 +409,19 @@ namespace GamePlay.Items
                 t.gameObject.SetActive(true);
 
                 var rb = t.GetComponent<Rigidbody>();
-                if (rb != null) Destroy(rb);
+                if (rb != null)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    rb.isKinematic = true;
+                    rb.useGravity = false;
+                }
+
+                var col = t.GetComponent<Collider>();
+                if (col != null)
+                {
+                    col.enabled = false;
+                }
 
                 var currency = existingCurrency != null ? existingCurrency : t.gameObject.AddComponent<CurrencyDropItem>();
 

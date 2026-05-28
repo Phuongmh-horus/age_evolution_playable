@@ -45,6 +45,7 @@ namespace WeaponCraft
         private Coroutine _scalePulseRoutine;
         private int _lastScalePulseFrame = -1;
         private bool _awaitingCraftReset;
+        private int _lastBreakFxFrame = -1;
 
         protected void Awake()
         {
@@ -119,6 +120,7 @@ namespace WeaponCraft
             base.Initialize();
 
             _awaitingCraftReset = false;
+            _lastBreakFxFrame = -1;
             _valueCollect = 0;
             _countCollect = 0;
             _originalScale = transform.localScale;
@@ -253,8 +255,13 @@ namespace WeaponCraft
         {
             if (current <= 0)
             {
+                bool canPlayBreakFx = !_awaitingCraftReset && _lastBreakFxFrame != Time.frameCount;
                 _awaitingCraftReset = true;
-                Pack.Effector?.PlayEffect(EffectType.Break);
+                if (canPlayBreakFx)
+                {
+                    _lastBreakFxFrame = Time.frameCount;
+                    Pack.Effector?.PlayEffect(EffectType.Break);
+                }
 
                 if (healthComponent != null)
                 {

@@ -13,7 +13,7 @@ public class HitTextFlyEffect : MonoBehaviour
     [SerializeField] private float flyUpDistance = 2f;
     [SerializeField] private float flyUpDuration = 0.25f;
     [SerializeField] private float fallDownDistance = 2.5f;
-    [SerializeField] private float fallDuration = 0.5f;
+    [SerializeField] private float fallDuration = 0.25f;
     [SerializeField] private float horizontalRandomRange = 0f;
     [SerializeField] private float heightOffset = 2f;
     [SerializeField] private float zOffset = 0f;
@@ -150,7 +150,7 @@ public class HitTextFlyEffect : MonoBehaviour
 
         HitTextController controller = controllerPool.Count > 0
             ? controllerPool.Pop()
-            : new HitTextController();
+            : new HitTextController(controllerPool);
 
         float horizontalOffset = horizontalRandomRange > 0f
             ? Random.Range(-horizontalRandomRange, horizontalRandomRange)
@@ -164,8 +164,7 @@ public class HitTextFlyEffect : MonoBehaviour
             flyUpDuration,
             fallDownDistance,
             fallDuration,
-            horizontalOffset,
-            () => controllerPool.Push(controller));
+            horizontalOffset);
 
         if (activated)
         {
@@ -189,7 +188,13 @@ public class HitTextFlyEffect : MonoBehaviour
         private float _fallDuration;
         private float _fadeInDuration;
         private float _elapsed;
-        private Action _onComplete;
+        private readonly Stack<HitTextController> _pool;
+        private bool _isActive;
+
+        public HitTextController(Stack<HitTextController> pool)
+        {
+            _pool = pool;
+        }
 
         public bool Initialize(
             TMP_Text prefab,
@@ -199,10 +204,9 @@ public class HitTextFlyEffect : MonoBehaviour
             float flyUpDuration,
             float fallDownDistance,
             float fallDuration,
-            float horizontalOffset,
-            Action onComplete)
+            float horizontalOffset)
         {
-            Complete();
+            ResetRuntimeState();
 
             if (PoolManager.Instance == null) return false;
 
@@ -218,7 +222,6 @@ public class HitTextFlyEffect : MonoBehaviour
             _fallDuration = Mathf.Max(0.0001f, fallDuration);
             _fadeInDuration = Mathf.Max(0.0001f, _flyUpDuration * 0.3f);
             _elapsed = 0f;
-            _onComplete = onComplete;
 
             if (!_textInstance.gameObject.activeSelf)
             {
@@ -227,6 +230,7 @@ public class HitTextFlyEffect : MonoBehaviour
 
             _textTransform.position = startPos;
             _textInstance.text = damage.ToString();
+            _isActive = true;
 
             Color color = _textInstance.color;
             color.a = 0f;
@@ -289,18 +293,27 @@ public class HitTextFlyEffect : MonoBehaviour
 
         private void Complete()
         {
+            if (!_isActive)
+            {
+                ResetRuntimeState();
+                return;
+            }
+
             if (_textInstance != null && _textInstance.gameObject.activeSelf)
             {
                 _textInstance.gameObject.SetActive(false);
             }
 
+            ResetRuntimeState();
+            _pool?.Push(this);
+        }
+
+        private void ResetRuntimeState()
+        {
             _textInstance = null;
             _textTransform = null;
             _elapsed = 0f;
-
-            var onComplete = _onComplete;
-            _onComplete = null;
-            onComplete?.Invoke();
+            _isActive = false;
         }
 
         private static float EaseOutQuad(float t)
