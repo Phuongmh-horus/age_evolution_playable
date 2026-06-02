@@ -60,8 +60,8 @@ MonoBehaviour:
   colliderOffsets: {x: 0, y: 0, z: 0}
   colliderSize: {x: 1, y: 1, z: 1}
   _components:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5595958327530874920}
+  - {fileID: 4520682546138183122}
   ActiveFlags: 0
   LeftOffset: 0
   RightOffset: 0

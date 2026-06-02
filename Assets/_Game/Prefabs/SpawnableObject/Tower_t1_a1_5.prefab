@@ -199,7 +199,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7430513287629486395}
@@ -212,7 +212,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6341224276844450479}
-  m_Mesh: {fileID: 1869502166001004789, guid: 1d6edf55ea0d27e4ea0eeab9b3094b5b, type: 3}
+  m_Mesh: {fileID: 8077389101048811028, guid: 6750f08c42eb8fa4fb188497223a6e31, type: 3}
 --- !u!23 &2235910112059578993
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -364,7 +364,7 @@ MonoBehaviour:
   hitByWheelSfx: 12
   moneyRoot: {fileID: 6326261627148179680}
   moneyDropImpulse: 1.5
-  moneyGroundY: 0
+  moneyGroundY: 1
   dropMoneyOnWheelDestroy: 1
   scaleUp: 1.08
   scaleUpDuration: 0.08
@@ -406,8 +406,8 @@ MonoBehaviour:
   minBlocks: 5
   maxBlocks: 10
   explosionForce: 5
-  upwardForce: 1
-  lifetime: 1
+  upwardForce: 3
+  lifetime: 2
   blockScaleRange: {x: 0.66, y: 0.88}
   BaseColor: {r: 0.23529412, g: 0.8, b: 0.15686275, a: 1}
 --- !u!114 &4263060515600946823
@@ -431,7 +431,7 @@ MonoBehaviour:
   fallDownDistance: 2.5
   fallDuration: 0.5
   horizontalRandomRange: 0
-  heightOffset: 2
+  heightOffset: 3
   zOffset: 0
   prewarmPoolCount: 12
 --- !u!114 &-7239696538845763034
@@ -449,9 +449,9 @@ MonoBehaviour:
   currencyDropItemPrefab: {fileID: 5291765111413347149, guid: ab145eacd4766f44093bd3b8580e0f58, type: 3}
   minCurrencyItems: 1
   maxCurrencyItems: 1
-  CurrencyValue: {x: 3, y: 3}
+  CurrencyValue: {x: 5, y: 5}
   explosionForce: 5
-  upwardForce: 1
+  upwardForce: 3
   spawnRadius: 1
   flyUp: 1
 --- !u!114 &4692578061521761579

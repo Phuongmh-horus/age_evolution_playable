@@ -12,9 +12,11 @@ namespace WeaponCraft
         {
             public WeaponItem Item;
             public GameObject Instance;
+            public Transform CachedTransform;
+            public RectTransform CachedRectTransform;
 
-            public Transform Transform => Instance != null ? Instance.transform : null;
-            public RectTransform RectTransform => Instance != null ? Instance.GetComponent<RectTransform>() : null;
+            public Transform Transform => CachedTransform;
+            public RectTransform RectTransform => CachedRectTransform;
         }
 
         private sealed class PendingAddEntry
@@ -280,7 +282,9 @@ namespace WeaponCraft
             return new VisualEntry
             {
                 Item = item,
-                Instance = instance
+                Instance = instance,
+                CachedTransform = instance.transform,
+                CachedRectTransform = instance.transform as RectTransform
             };
         }
 

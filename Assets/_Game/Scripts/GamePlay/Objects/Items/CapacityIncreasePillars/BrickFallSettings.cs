@@ -1,17 +1,18 @@
 using System;
 using UnityEngine;
 using GamePlay.ComponentSystems;
+using GamePlay.Items;
 
 [CreateAssetMenu(fileName = "BrickFallSettings", menuName = "Game/Brick Fall Settings")]
 public class BrickFallSettings : ScriptableObject
 {
     [Header("Fall Settings - Fixed Duration")]
     [SerializeField, Tooltip("Thời gian cố định cho phase nảy trên mặt đất")]
-    private float bounceOnGroundDuration = 0.6f;
+    private float bounceOnGroundDuration = 0.2f;
     [SerializeField, Tooltip("Số lần nảy trên đất")]
-    private int bounceCount = 2;
+    private int bounceCount = 1;
     [SerializeField, Tooltip("Độ cao của bounce (sẽ giảm dần)")]
-    private float bounceHeight = 0.5f;
+    private float bounceHeight = 0.25f;
     [SerializeField, Tooltip("Tỷ lệ giảm độ cao mỗi lần nảy")]
     [Range(0.3f, 0.8f)]
     private float bounceDamping = 0.5f;
@@ -20,7 +21,7 @@ public class BrickFallSettings : ScriptableObject
     [SerializeField, Tooltip("Độ cao tối đa của arc khi rơi")]
     private float fallArcHeight = 1.5f;
     [SerializeField] private float groundY = 0f;
-    [SerializeField, Range(0.1f, 2f)] private float launchDistanceMultiplier = 1f;
+    [SerializeField, Range(0.1f, 2f)] private float launchDistanceMultiplier = 0.5f;
 
     [Header("Height-Based Distance Scaling")]
     [SerializeField, Tooltip("Chiều cao tối đa của pillar (dùng để tính tỷ lệ)")]
@@ -38,9 +39,9 @@ public class BrickFallSettings : ScriptableObject
     [SerializeField] private bool randomizeTiltDirection = true;
 
     [Header("Fly to Capacity Bar")]
-    [SerializeField] private float flyDuration = 0.6f;
+    [SerializeField] private float flyDuration = 0.2f;
     [SerializeField] private float flyArcHeight = 2f; // height of the arc curve
-    [SerializeField] private float flyScaleDownDuration = 0.8f; // duration for scale down while flying (slower = longer)
+    [SerializeField] private float flyScaleDownDuration = 0.3f; // duration for scale down while flying (slower = longer)
     [SerializeField, Range(0f, 0.3f), Tooltip("Random time offset range for fly duration (±offset)")]
     private float flyDurationOffset = 0.1f;
 
@@ -81,7 +82,15 @@ public class BrickFallSettings : ScriptableObject
 
     private void OnValidate()
     {
+        if (capacityData == null)
+        {
+            capacityData = new StatModifierCapacityData();
+        }
+
+        // Keep brick reward bound to capacity progression even if StatType enum order changes.
+        capacityData.Type = StatType.EvolutionPoint;
         capacityData.Value = capacityPerBrick;
+        capacityData.Armor = 0;
 
         // Total motion time = max possible fall time + fixed bounce duration + fly duration
         // Max fall time assumes falling from highest arc

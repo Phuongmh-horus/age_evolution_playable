@@ -15,7 +15,7 @@ MonoBehaviour:
   bounceOnGroundDuration: 0.2
   bounceCount: 1
   bounceHeight: 0.2
-  bounceDamping: 0.8
+  bounceDamping: 0.5
   horizontalDistance: 3
   fallArcHeight: 1.5
   groundY: 0
@@ -29,11 +29,11 @@ MonoBehaviour:
   randomizeTiltDirection: 0
   flyDuration: 0.2
   flyArcHeight: 2
-  flyScaleDownDuration: 0.4
+  flyScaleDownDuration: 0.3
   flyDurationOffset: 0.1
   capacityPerBrick: 1
   capacityData:
-    Type: 5
+    Type: 6
     Value: 1
     Armor: 0
   totalMotionDuration: 0.9532833

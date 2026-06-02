@@ -346,6 +346,7 @@ namespace GamePlay.Crushers
         private readonly Queue<CharacterUnit> _activeSpawnedUnits = new Queue<CharacterUnit>();
         private int _cachedTotalCards = 0;
         private List<CardSpawnRequestData> _queuedRequests = new List<CardSpawnRequestData>();
+        private readonly List<CardSpawnRequestData> _singleCardRequestBuffer = new List<CardSpawnRequestData>(1);
         private readonly HashSet<int> _currentEnemyContactIds = new HashSet<int>();
         private readonly HashSet<int> _previousEnemyContactIds = new HashSet<int>();
         private int _lastEnemyHitFrame = -1;
@@ -475,10 +476,9 @@ namespace GamePlay.Crushers
         {
             if (!TryGetPlayerWheelData(out var wheelData)) return;
 
-            AddCards(new List<CardSpawnRequestData>
-            {
-                new CardSpawnRequestData(wheelData.CardLevel, 1, CardType.Character)
-            }, CardSpawnEffectType.Drop);
+            _singleCardRequestBuffer.Clear();
+            _singleCardRequestBuffer.Add(new CardSpawnRequestData(wheelData.CardLevel, 1, CardType.Character));
+            AddCards(_singleCardRequestBuffer, CardSpawnEffectType.Drop);
         }
 
         private void HandleBoostWheelCardLevelUpOnly()

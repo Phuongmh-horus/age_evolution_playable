@@ -2,12 +2,26 @@ using System.Collections.Generic;
 using GamePlay.ComponentSystems;
 using GamePlay.Entities;
 using GamePlay.CollisionSystems; // [FIX] Added missing namespace
+using GamePlay.Effects;
+using PlayerArmy;
 using UnityEngine;
 
 namespace GamePlay.CombatSystems
 {
     public class EnemyProjectileSystem : MonoSingleton<EnemyProjectileSystem>
     {
+        [Header("Explosion Shot (AOE)")]
+        [SerializeField] private GameObject explosionShotVfxPrefab;
+        [SerializeField] private string explosionShotVfxResourcesPath = "VFX_Optimizing/AGE_VFX_Explosion_shot";
+        [SerializeField] private float explosionShotVfxLifetime = 1.2f;
+        [SerializeField, Min(0f)] private float explosionShotVfxHitCooldown = 0.08f;
+        private GameObject _cachedExplosionVfxPrefab;
+        private bool _didTryLoadExplosionVfxFromResources;
+        private readonly Dictionary<int, TimedAutoDisable> _explosionAutoDisableCache = new Dictionary<int, TimedAutoDisable>(16);
+        private readonly Dictionary<int, float> _lastExplosionVfxByTarget = new Dictionary<int, float>(64);
+        private float _lastExplosionVfxTime;
+        private Vector3 _lastExplosionVfxPosition;
+
         [Header("Player Binding (Optional)")]
         [SerializeField] private GamePlay.Crushers.WheelUnit playerWheelRef;
         private static IHitable s_pendingPlayer;
@@ -86,6 +100,7 @@ namespace GamePlay.CombatSystems
         private IHitable _playerHitable;
         private readonly List<IHitable> _extraTargets = new List<IHitable>(32);
         private readonly HashSet<IHitable> _extraTargetSet = new HashSet<IHitable>();
+        private readonly HashSet<IHitable> _aoeAppliedTargets = new HashSet<IHitable>();
         private bool _isGameplayPaused;
         private float _pausedAtTime;
 
@@ -120,6 +135,32 @@ namespace GamePlay.CombatSystems
 
             public float Radius;
             public PoolEntity PoolEntity;
+        }
+
+        private sealed class ExplosionShotAttacker : IAttacker
+        {
+            public event System.Action<IHitable> OnAttackComplete = delegate { };
+            public EntityType EntityType { get; }
+            public Vector2 Size { get; } = Vector2.zero;
+            public int Damage { get; private set; }
+            public uint TargetMask { get; }
+            public Vector3 Position { get; private set; }
+            public Transform Transform => null;
+            public bool IsEnabled => true;
+
+            public ExplosionShotAttacker(int damage, uint targetMask, EntityType entityType, Vector3 position)
+            {
+                Damage = Mathf.Max(1, damage);
+                TargetMask = targetMask;
+                EntityType = entityType;
+                Position = position;
+            }
+
+            public void Initialize() { }
+            public void OnUpdate(float dt) { }
+            public void Dispose() { }
+            public void Setup(int damage) { Damage = Mathf.Max(1, damage); }
+            public void OnAttackSucceed(IHitable target) { OnAttackComplete?.Invoke(target); }
         }
 
         private readonly List<ProjectileEntry> _projectiles = new List<ProjectileEntry>(64);
@@ -330,15 +371,15 @@ namespace GamePlay.CombatSystems
 
                 if (Mathf.Abs(p.RotationSpeed) > 0.001f)
                 {
-                     Vector3 direction = (pos - previousPos).normalized;
-                     
-                     if (direction.sqrMagnitude > 0.001f)
-                     {
-                         Quaternion lookRot = Quaternion.LookRotation(direction);
-                         float spinAngle = (now - p.StartTime) * p.RotationSpeed * Mathf.Rad2Deg;
-                         Quaternion spinRot = Quaternion.AngleAxis(spinAngle, ResolveSpinAxis(p.SpinAxis));
-                         p.Transform.rotation = lookRot * spinRot;
-                     }
+                    Vector3 direction = (pos - previousPos).normalized;
+
+                    if (direction.sqrMagnitude > 0.001f)
+                    {
+                        Quaternion lookRot = Quaternion.LookRotation(direction);
+                        float spinAngle = (now - p.StartTime) * p.RotationSpeed * Mathf.Rad2Deg;
+                        Quaternion spinRot = Quaternion.AngleAxis(spinAngle, ResolveSpinAxis(p.SpinAxis));
+                        p.Transform.rotation = lookRot * spinRot;
+                    }
                 }
 
                 // Collision check with player
@@ -381,6 +422,7 @@ namespace GamePlay.CombatSystems
                         {
                             p.Attacker.OnAttackSucceed(target);
                             target.OnHit(p.Attacker);
+                            ApplyExplosionShotIfAvailable(p, target, pos, collisionSystem);
 
                             DisposeManaged(ref p);
                             TryDespawnProjectile(p.Transform, p.PoolEntity);
@@ -418,6 +460,7 @@ namespace GamePlay.CombatSystems
                         {
                             p.Attacker.OnAttackSucceed(target);
                             target.OnHit(p.Attacker);
+                            ApplyExplosionShotIfAvailable(p, target, pos, collisionSystem);
 
                             DisposeManaged(ref p);
                             TryDespawnProjectile(p.Transform, p.PoolEntity);
@@ -616,5 +659,160 @@ namespace GamePlay.CombatSystems
                 poolEntity.Despawn();
             }
         }
+
+        private void ApplyExplosionShotIfAvailable(ProjectileEntry projectile, IHitable primaryTarget, Vector3 hitPosition, CollisionSystem collisionSystem)
+        {
+            if (projectile.Attacker == null || primaryTarget == null) return;
+
+            var gameplayManager = GameplayManager.Instance;
+            if (gameplayManager == null || !gameplayManager.IsExplosionShotUnlocked) return;
+
+            int percent = gameplayManager.ExplosionShotDamagePercent;
+            float radius = gameplayManager.ExplosionShotRadius;
+            if (percent <= 0 || radius <= 0f) return;
+
+            int splashDamage = Mathf.Max(1, Mathf.CeilToInt(projectile.Attacker.Damage * (percent / 100f)));
+            var splashAttacker = new ExplosionShotAttacker(splashDamage, projectile.Attacker.TargetMask, projectile.Attacker.EntityType, hitPosition);
+            if (ShouldSpawnExplosionShotVfx(primaryTarget, hitPosition))
+            {
+                SpawnExplosionShotVfx(hitPosition);
+            }
+
+            _aoeAppliedTargets.Clear();
+            _aoeAppliedTargets.Add(primaryTarget);
+            float radiusSqr = radius * radius;
+
+            for (int i = _extraTargets.Count - 1; i >= 0; i--)
+            {
+                var target = _extraTargets[i];
+                if (!ShouldApplyAoeToTarget(target, primaryTarget, splashAttacker.TargetMask)) continue;
+                if (!IsInsideRadius(hitPosition, target, radiusSqr, radius)) continue;
+
+                target.OnHit(splashAttacker);
+                _aoeAppliedTargets.Add(target);
+            }
+
+            if (collisionSystem == null) return;
+            int count = collisionSystem.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var target = collisionSystem.GetTargetBySortedIndex(i);
+                if (!ShouldApplyAoeToTarget(target, primaryTarget, splashAttacker.TargetMask)) continue;
+                if (_aoeAppliedTargets.Contains(target)) continue;
+
+                var targetTr = collisionSystem.GetTransform(i);
+                if (targetTr == null) continue;
+                if (!IsInsideRadius(hitPosition, target, radiusSqr, radius, targetTr.position)) continue;
+
+                target.OnHit(splashAttacker);
+                _aoeAppliedTargets.Add(target);
+            }
+        }
+
+        private bool ShouldApplyAoeToTarget(IHitable target, IHitable primaryTarget, uint targetMask)
+        {
+            if (target == null || !target.IsActive) return false;
+            if (ReferenceEquals(target, primaryTarget)) return false;
+            if (ReferenceEquals(target, _playerHitable)) return false;
+            uint bit = 1u << (int)target.EntityType;
+            return (targetMask & bit) != 0;
+        }
+
+        private static bool IsInsideRadius(Vector3 center, IHitable target, float radiusSqr, float radius, Vector3? overridePosition = null)
+        {
+            Vector3 targetPos = overridePosition ?? target.Position;
+            Vector3 delta = targetPos - center;
+            delta.y = 0f;
+            float colliderPadding = Mathf.Max(0f, target.GetColliderData().Size.x);
+            float effectiveRadius = radius + colliderPadding;
+            return delta.sqrMagnitude <= Mathf.Max(radiusSqr, effectiveRadius * effectiveRadius);
+        }
+
+        private bool ShouldSpawnExplosionShotVfx(IHitable primaryTarget, Vector3 hitPosition)
+        {
+            if (primaryTarget != null)
+            {
+                if (primaryTarget.EntityType == EntityType.CapacityGate ||
+                    primaryTarget.EntityType == EntityType.GateNewEra)
+                {
+                    return false;
+                }
+
+                int targetId = (primaryTarget as Object) != null
+                    ? (primaryTarget as Object).GetInstanceID()
+                    : primaryTarget.GetHashCode();
+                float now = Time.time;
+                if (_lastExplosionVfxByTarget.TryGetValue(targetId, out float lastTime))
+                {
+                    if (now - lastTime < explosionShotVfxHitCooldown)
+                        return false;
+                }
+
+                _lastExplosionVfxByTarget[targetId] = now;
+                return true;
+            }
+
+            // Fallback for null target: avoid duplicate bursts at same position in a tiny window.
+            float elapsed = Time.time - _lastExplosionVfxTime;
+            if (elapsed < explosionShotVfxHitCooldown && (hitPosition - _lastExplosionVfxPosition).sqrMagnitude < 0.04f)
+            {
+                return false;
+            }
+
+            _lastExplosionVfxTime = Time.time;
+            _lastExplosionVfxPosition = hitPosition;
+            return true;
+        }
+
+        private void SpawnExplosionShotVfx(Vector3 worldPosition)
+        {
+            var prefab = ResolveExplosionShotVfxPrefab();
+            if (prefab == null) return;
+
+            GameObject vfx = PoolManager.Instance != null ? PoolManager.Instance.Get(prefab) : null;
+            if (vfx == null)
+            {
+                vfx = Instantiate(prefab);
+            }
+
+            vfx.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+            vfx.SetActive(true);
+            EnsureExplosionVfxPlayback(vfx);
+        }
+
+        private GameObject ResolveExplosionShotVfxPrefab()
+        {
+            if (explosionShotVfxPrefab != null) return explosionShotVfxPrefab;
+            if (_cachedExplosionVfxPrefab != null) return _cachedExplosionVfxPrefab;
+            if (_didTryLoadExplosionVfxFromResources) return null;
+
+            _didTryLoadExplosionVfxFromResources = true;
+            if (!string.IsNullOrEmpty(explosionShotVfxResourcesPath))
+            {
+                _cachedExplosionVfxPrefab = Resources.Load<GameObject>(explosionShotVfxResourcesPath);
+            }
+
+            return _cachedExplosionVfxPrefab;
+        }
+
+        private void EnsureExplosionVfxPlayback(GameObject vfx)
+        {
+            if (vfx == null) return;
+            int id = vfx.GetInstanceID();
+            if (!_explosionAutoDisableCache.TryGetValue(id, out TimedAutoDisable autoDisable) || autoDisable == null)
+            {
+                autoDisable = vfx.GetComponent<TimedAutoDisable>();
+                if (autoDisable == null)
+                {
+                    autoDisable = vfx.AddComponent<TimedAutoDisable>();
+                }
+
+                _explosionAutoDisableCache[id] = autoDisable;
+            }
+
+            autoDisable.Play(explosionShotVfxLifetime);
+        }
+
+        // ExplosionShot / splash AOE feature removed for this playable branch.
     }
 }

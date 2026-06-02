@@ -30,17 +30,48 @@ namespace GamePlay.Items
         public StatModifierData StatData => _statData;
         public int LevelCard => m_levelCard;
         public IncreaseElementData ElementData => elementData;
-        public bool IsEligible(int gold) => elementData != null && gold >= elementData.Cost;
+        public bool IsEligible(int gold)
+        {
+            if (elementData == null)
+            {
+                return false;
+            }
+
+            int nextCost = GetNextUpgradeCost();
+            return nextCost != int.MaxValue && gold >= nextCost;
+        }
 
         public int GetNextUpgradeCost()
         {
-            if (elementData == null) return int.MaxValue;
+            return GetUpgradeCostForLevel(m_levelCard);
+        }
 
-            int currentLevel = Mathf.Max(0, m_levelCard);
+        public int GetUpgradeCostForLevel(int level)
+        {
+            if (elementData == null) return int.MaxValue;
+            if (IsLevelMaxed(level)) return int.MaxValue;
+
+            int currentLevel = Mathf.Max(0, level);
             int baseCost = Mathf.Max(0, elementData.Cost);
             int stepCost = Mathf.Max(0, elementData.UpgradeRequire);
 
             return baseCost + (stepCost * currentLevel);
+        }
+
+        public bool IsMaxLevel()
+        {
+            return IsLevelMaxed(m_levelCard);
+        }
+
+        private bool IsLevelMaxed(int level)
+        {
+            if (spriteCardTypeData == null || spriteCardTypeData.spriteCards == null || spriteCardTypeData.spriteCards.Count <= 0)
+            {
+                return false;
+            }
+
+            int maxLevel = spriteCardTypeData.spriteCards.Count - 1;
+            return level >= maxLevel;
         }
 
         private void Awake()

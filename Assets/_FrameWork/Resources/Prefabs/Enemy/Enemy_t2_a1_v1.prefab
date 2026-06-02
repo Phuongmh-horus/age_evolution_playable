@@ -520,6 +520,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7235874035426250644, guid: 24beea9da224c874d8a49677c3f4665a, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7235874035426250644, guid: 24beea9da224c874d8a49677c3f4665a, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4744322717110527289, guid: 24beea9da224c874d8a49677c3f4665a, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4744322717110527289, guid: 24beea9da224c874d8a49677c3f4665a, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 24beea9da224c874d8a49677c3f4665a, type: 3}
       propertyPath: m_Name
       value: clo_enemy_t2_v1

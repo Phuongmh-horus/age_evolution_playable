@@ -81,6 +81,8 @@ namespace GamePlay.Items
         private readonly List<int> _cachedColorPropertyIds = new List<int>(16);
         private MaterialPropertyBlock _colorMpb;
         private bool _warnedMissingHitComponentRuntime;
+        private int _lastShownCurrentHp = int.MinValue;
+        private int _lastShownMaxHp = int.MinValue;
 
 #if UNITY_EDITOR
         protected override void OnValidate()
@@ -212,8 +214,16 @@ namespace GamePlay.Items
 
         private void HandleHealthChanged(int current, int max)
         {
-            if (currentHpText != null) currentHpText.text = TextUtility.ToShortNumberString(current);
-            if (maxHpText != null) maxHpText.text = TextUtility.ToShortNumberString(max);
+            if (current == _lastShownCurrentHp && max == _lastShownMaxHp) return;
+
+            if (current != _lastShownCurrentHp && currentHpText != null)
+                currentHpText.text = TextUtility.ToShortNumberString(current);
+
+            if (max != _lastShownMaxHp && maxHpText != null)
+                maxHpText.text = TextUtility.ToShortNumberString(max);
+
+            _lastShownCurrentHp = current;
+            _lastShownMaxHp = max;
         }
 
         protected override void HandleHealthChange(int current, int max)
@@ -221,10 +231,8 @@ namespace GamePlay.Items
             if (current > 0 || _deathHandled) return;
 
             _deathHandled = true;
-            Debug.Log($"[CashTowerController] Tower destroyed. Current HP: {current}/{max}", this);
             HandleDead();
-            Debug.Log($"[CashTowerController] Calling DespawnInterval after death handling.", this);
-            DespawnInterval();  
+            DespawnInterval();
         }
 
         protected override void HandleNonWheelCollision(IAttacker source)
@@ -236,9 +244,7 @@ namespace GamePlay.Items
             if (!_deathHandled && healthComponent != null && healthComponent.CurrentHealth <= 0)
             {
                 _deathHandled = true;
-                Debug.Log($"[CashTowerController] Tower destroyed. Current HP: Unknow", this);
                 HandleDead();
-                Debug.Log($"[CashTowerController] Calling DespawnInterval after death handling.", this);
                 DespawnInterval();
             }
         }
@@ -461,7 +467,7 @@ namespace GamePlay.Items
         {
             if (towerVisualRoot == null)
                 towerVisualRoot = transform.Find("Tower") ?? transform;
-                
+
             if (towerVisualRoot == null)
                 return;
 

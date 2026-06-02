@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 939367352169408556}
   - component: {fileID: 491275032316800439}
+  - component: {fileID: 4267135335165119438}
   m_Layer: 0
   m_Name: FinishRace
   m_TagString: Untagged
@@ -56,13 +57,32 @@ MonoBehaviour:
   colliderOffsets: {x: 0, y: 0, z: 0}
   colliderSize: {x: 15, y: 1, z: 1}
   _components:
-  - {fileID: 0}
+  - {fileID: 4267135335165119438}
   ActiveFlags: 4
   LeftOffset: 0
   RightOffset: 0
   deathScaleEffect: {fileID: 0}
   _tutElement: {fileID: 0}
   autoAddHitTextFlyEffectAtRuntime: 1
+--- !u!114 &4267135335165119438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617445539479998376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f10e903d7445fdb9cd35cf919687a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CacheTransform: {fileID: 0}
+  poolEntity: {fileID: 0}
+  shapeType: 1
+  colliderSize: {x: 15, y: 1, z: 2}
+  isActive: 1
+  isCustomCaster: 0
+  hitTransform: {fileID: 0}
 --- !u!1 &4485316281971621133
 GameObject:
   m_ObjectHideFlags: 0

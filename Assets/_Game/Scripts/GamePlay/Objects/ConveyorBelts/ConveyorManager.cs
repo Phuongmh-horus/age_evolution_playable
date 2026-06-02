@@ -147,6 +147,8 @@ namespace GamePlay.Managers
             {
                 lanes[i].SetupGates();
             }
+
+            enabled = false;
         }
 
         private void EnsureLaneSetup()
@@ -179,6 +181,11 @@ namespace GamePlay.Managers
             for (int i = 0; i < lanes.Count; i++)
             {
                 ProcessLane(lanes[i], dt, moveStep);
+            }
+
+            if (!HasActiveBeltItems())
+            {
+                enabled = false;
             }
         }
 
@@ -363,6 +370,7 @@ namespace GamePlay.Managers
             LaneData lane = lanes[laneIndex];
             BeltItem lastItemRef = lane.Tail;
             float distDriftDuringJump = beltSpeed * entryJumpDuration;
+            if (!enabled) enabled = true;
 
             for (int i = 0; i < beltUnits.Count; i++)
             {
@@ -598,6 +606,21 @@ namespace GamePlay.Managers
                 lane.Tail = null;
                 lane.Count = 0;
             }
+
+            enabled = false;
+        }
+
+        private bool HasActiveBeltItems()
+        {
+            if (lanes == null) return false;
+            for (int i = 0; i < lanes.Count; i++)
+            {
+                var lane = lanes[i];
+                if (lane != null && lane.Head != null)
+                    return true;
+            }
+
+            return false;
         }
 
         private void RotateYOnly(Transform t, Vector3 currentPos, Vector3 targetPos)

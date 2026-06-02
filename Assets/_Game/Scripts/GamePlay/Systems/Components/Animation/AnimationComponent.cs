@@ -31,7 +31,10 @@ namespace GamePlay.AnimationSystems
         private readonly Dictionary<AnimationType, string> _fallbackStateCache = new Dictionary<AnimationType, string>();
         private readonly Dictionary<AnimationType, int> _stateHashCache = new Dictionary<AnimationType, int>();
         private readonly Dictionary<AnimationType, float> _clipLengthCache = new Dictionary<AnimationType, float>();
+        private readonly Dictionary<float, WaitForSeconds> _waitCache = new Dictionary<float, WaitForSeconds>(8);
         private Coroutine _waitRoutine;
+        private int _lastPlayedStateHash;
+        private int _lastPlayedFrame = -1;
         private static readonly AnimationType[] s_animationTypes = (AnimationType[])Enum.GetValues(typeof(AnimationType));
         private static readonly Dictionary<int, Dictionary<AnimationType, string>> s_controllerFallbackCache =
             new Dictionary<int, Dictionary<AnimationType, string>>(16);
@@ -99,25 +102,26 @@ namespace GamePlay.AnimationSystems
 
         public void PlayAnimation(AnimationType animationType, float waitForAction = 0.5f, Action onComplete = null)
         {
+            int stateHash = 0;
             if (animator != null)
             {
                 if (_cache.TryGetValue(animationType, out var m))
                 {
-                    int stateHash = GetOrCreateStateHash(animationType, m.StateName);
+                    stateHash = GetOrCreateStateHash(animationType, m.StateName);
                     // float crossFadeTime = m.CrossFadeTime > 0f ? m.CrossFadeTime : defaultCrossFadeTime;
                     // if (crossFadeTime > 0f)
                     //     animator.CrossFadeInFixedTime(stateHash, crossFadeTime);
                     // else
-                        animator.Play(stateHash, 0, 0f);
+                    PlayStateIfNeeded(stateHash);
                 }
                 else
                 {
                     string targetState = ResolveFallbackStateName(animationType);
-                    int stateHash = GetOrCreateStateHash(animationType, targetState);
+                    stateHash = GetOrCreateStateHash(animationType, targetState);
                     // if (defaultCrossFadeTime > 0f)
                     //     animator.CrossFadeInFixedTime(stateHash, defaultCrossFadeTime);
                     // else
-                        animator.Play(stateHash, 0, 0f);
+                    PlayStateIfNeeded(stateHash);
                 }
             }
             else
@@ -158,9 +162,30 @@ namespace GamePlay.AnimationSystems
 
         private IEnumerator WaitThen(float t, Action onComplete)
         {
-            if (t > 0f) yield return new WaitForSeconds(t);
+            if (t > 0f) yield return GetWaitInstruction(t);
             onComplete?.Invoke();
             _waitRoutine = null;
+        }
+
+        private WaitForSeconds GetWaitInstruction(float duration)
+        {
+            if (_waitCache.TryGetValue(duration, out var wait))
+                return wait;
+
+            wait = new WaitForSeconds(duration);
+            _waitCache[duration] = wait;
+            return wait;
+        }
+
+        private void PlayStateIfNeeded(int stateHash)
+        {
+            int frame = Time.frameCount;
+            if (_lastPlayedFrame == frame && _lastPlayedStateHash == stateHash)
+                return;
+
+            animator.Play(stateHash, 0, 0f);
+            _lastPlayedStateHash = stateHash;
+            _lastPlayedFrame = frame;
         }
 
         private string ResolveFallbackStateName(AnimationType animationType)

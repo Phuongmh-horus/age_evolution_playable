@@ -5,7 +5,7 @@ namespace PlayerArmy
     [DisallowMultipleComponent]
     public class ArmyUnit : MonoBehaviour
     {
-        private sealed class WeaponPoolTag : MonoBehaviour
+        private sealed class WeaponPoolMarker : MonoBehaviour
         {
             public int PrefabId;
         }
@@ -188,9 +188,9 @@ namespace PlayerArmy
             }
 
             var instance = Instantiate(prefab);
-            var tag = instance.GetComponent<WeaponPoolTag>();
-            if (tag == null) tag = instance.AddComponent<WeaponPoolTag>();
-            tag.PrefabId = prefabId;
+            var marker = instance.GetComponent<WeaponPoolMarker>();
+            if (marker == null) marker = instance.AddComponent<WeaponPoolMarker>();
+            marker.PrefabId = prefabId;
             return instance;
         }
 
@@ -202,10 +202,10 @@ namespace PlayerArmy
             }
 
             int prefabId = fallbackPrefabId;
-            var tag = weapon.GetComponent<WeaponPoolTag>();
-            if (tag != null && tag.PrefabId != 0)
+            var marker = weapon.GetComponent<WeaponPoolMarker>();
+            if (marker != null && marker.PrefabId != 0)
             {
-                prefabId = tag.PrefabId;
+                prefabId = marker.PrefabId;
             }
 
             if (prefabId == 0)

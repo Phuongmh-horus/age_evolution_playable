@@ -40,6 +40,12 @@ namespace GamePlay.Enemies
         private bool _isGameplayPaused;
         private float _pausedAtTime;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            enabled = false;
+        }
+
         private void EnsureInitialized()
         {
             if (enemyVariable != null) return;
@@ -84,6 +90,7 @@ namespace GamePlay.Enemies
             data.WeaponRespawnTime = Time.time + data.ReloadDuration;
 
             _enemies.Add(data);
+            if (!enabled) enabled = true;
         }
 
         public void UnregisterEnemy(EnemyUnit causer)
@@ -177,6 +184,11 @@ namespace GamePlay.Enemies
             if (needsCompact)
             {
                 CompactInactiveEnemies();
+            }
+
+            if (_enemies.Count == 0)
+            {
+                enabled = false;
             }
         }
 
@@ -292,6 +304,7 @@ namespace GamePlay.Enemies
             }
 
             _enemies.Clear();
+            enabled = false;
         }
 
         private void CompactInactiveEnemies()

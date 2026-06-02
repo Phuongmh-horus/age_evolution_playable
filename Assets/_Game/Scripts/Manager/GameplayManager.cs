@@ -15,8 +15,10 @@ using GamePlay.Effects;
 using PlayerArmy;
 using Pools;
 using UnityEngine;
+using UnityEngine.Rendering;
+using System.Reflection;
 
-public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers.IGameplayFlow
+public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
 {
     // Capacity gate/factory coin pool (parity with full project flow).
     public static int StartCoin;
@@ -46,8 +48,12 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     [SerializeField] private bool activeTurnable = true;
     [SerializeField] private bool disableEndGameCameraSwitch = true;
     [SerializeField] private bool useCtaOnlyEndgameMode = false;
-    [SerializeField] private List<GamePlay.Crushers.CardSpawnRequestData> initialCards; // Configurable via Inspectornerator;
+    [SerializeField] private List<CardSpawnRequestData> initialCards; // Configurable via Inspectornerator;
     [SerializeField] private AudioClipName winEndcardSfx = AudioClipName.SFX_Level_Complete;
+    [Header("Explosion Shot Buff")]
+    [SerializeField, Min(0f)] private float explosionShotRadius = 3.25f;
+    [SerializeField, Min(0)] private int explosionShotBasePercent = 90;
+    [SerializeField, Min(0)] private int explosionShotUpgradePercent = 35;
 
     [Header("Refs")]
     [SerializeField] private MapGenerator mapGenerator;
@@ -81,6 +87,17 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     public static bool IsGameStarted;
     private bool _endGameSfxPlayed;
     private WeaponCraft.WeaponItem _mainWeapon;
+
+    // Reflection caches for Luna-compatible render optimization (avoid per-call lookup/alloc).
+    private static readonly PropertyInfo SkinnedQualityProperty =
+        typeof(SkinnedMeshRenderer).GetProperty("quality", BindingFlags.Instance | BindingFlags.Public);
+    private static readonly PropertyInfo SkinnedMotionVectorsProperty =
+        typeof(SkinnedMeshRenderer).GetProperty("skinnedMotionVectors", BindingFlags.Instance | BindingFlags.Public);
+    private static readonly PropertyInfo SkinnedUpdateWhenOffscreenProperty =
+        typeof(SkinnedMeshRenderer).GetProperty("updateWhenOffscreen", BindingFlags.Instance | BindingFlags.Public);
+    private static readonly System.Type LodGroupType = System.Type.GetType("UnityEngine.LODGroup, UnityEngine");
+    private static readonly MethodInfo LodForceLodMethod = LodGroupType?.GetMethod("ForceLOD", BindingFlags.Instance | BindingFlags.Public);
+    private static readonly object[] ForceLodLevel1Args = { 1 };
     private Dictionary<CurrencyType, int> _currencyValues = new Dictionary<CurrencyType, int>();
     public WeaponCraft.WeaponItem MainWeapon => _mainWeapon;
     public UnityAction<WeaponCraft.WeaponItem> OnWeaponChange;
@@ -123,15 +140,25 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
     private Coroutine _startGameRoutine;
     private Coroutine _endGameRoutine;
     private readonly List<CardSpawnRequestData> _singleRequestBuffer = new List<CardSpawnRequestData>(1);
+    private readonly List<CardSpawnRequestData> _cardRequestsBuffer = new List<CardSpawnRequestData>(16);
     private readonly List<IHitable> _collisionHitablesBuffer = new List<IHitable>(128);
     private readonly List<Transform> _collisionTransformsBuffer = new List<Transform>(128);
+    private bool _hasOfferedExplosionShotThisRun;
+    private bool _isExplosionShotUnlocked;
+    private int _explosionShotDamagePercent;
+    private readonly HashSet<StatType> _appliedPrimaryBuffTypes = new HashSet<StatType>();
     private MilestoneOnMap _currentMilestone;
     private bool _hasMilestoneOverride;
     private Vector3 _milestoneWorldPosOverride;
 
     public Transform PlayerTransform => IsArmyMode && ActiveArmy != null ? ActiveArmy.BodyTransform : Turnable != null ? Turnable.Transform : null;
+    public float ExplosionShotRadius => explosionShotRadius;
+    public int ExplosionShotBasePercent => Mathf.Max(0, explosionShotBasePercent);
+    public int ExplosionShotUpgradePercent => Mathf.Max(0, explosionShotUpgradePercent);
+    public int ExplosionShotDamagePercent => Mathf.Max(0, _explosionShotDamagePercent);
+    public bool IsExplosionShotUnlocked => _isExplosionShotUnlocked;
 
-    bool GamePlay.Managers.IGameplayFlow.IsGameStarted => IsGameStarted;
+    bool IGameplayFlow.IsGameStarted => IsGameStarted;
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -278,6 +305,11 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         else
             yield return StartCoroutine(CoSpawnTurnTable(playableEra));
 
+        if (ActiveArmy != null)
+            OptimizeRenderHierarchy(ActiveArmy.transform);
+        if (Turnable != null)
+            OptimizeRenderHierarchy(Turnable.transform);
+
         if (EnemyManager.Instance != null) EnemyManager.Instance.UnregisterAllEnemies(); // Safe check?
         else Debug.LogWarning("[GameplayManager] EnemyManager.Instance is NULL!");
 
@@ -358,7 +390,10 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         {
             var item = items[i];
             if (item != null)
+            {
                 item.Initialize();
+                OptimizeRenderHierarchy(item.transform);
+            }
 
             if ((i + 1) % batchSize == 0)
                 yield return null;
@@ -430,6 +465,10 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
 
     public void StartGame(bool activeTurnable = true)
     {
+        _hasOfferedExplosionShotThisRun = false;
+        _isExplosionShotUnlocked = false;
+        _explosionShotDamagePercent = 0;
+        _appliedPrimaryBuffTypes.Clear();
         gamePlayVariable?.ResetNewGame();
         gamePlayVariable?.ResetEvolutionVariable();
         StartCoin = 0;
@@ -791,6 +830,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         if (statModifierData == null) return;
         if (statModifierData.Type is StatType.None || statModifierData.Armor > 0) return;
 
+        MarkPrimaryBuffAppliedIfNeeded(statModifierData);
+
         switch (statModifierData.Type)
         {
             case StatType.FireRate:
@@ -811,6 +852,25 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
                     if (ActiveArmy != null)
                     {
                         ActiveArmy.ApplyFireRangeModifier(upgradeSteps);
+                    }
+                    break;
+                }
+
+            case StatType.Damage:
+                {
+                    if (statModifierData is not CapacityIncreaseGateData gateDamageData)
+                    {
+                        break;
+                    }
+                    int damageValue = Mathf.Max(0, gateDamageData.Value);
+                    if (damageValue <= 0)
+                    {
+                        break;
+                    }
+
+                    if (ActiveArmy != null)
+                    {
+                        ActiveArmy.ApplyDamageModifier(damageValue);
                     }
                     break;
                 }
@@ -862,7 +922,68 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
             case StatType.EvolutionPoint:
                 gamePlayVariable.ChangeEvolutionPointVariable(statModifierData.Value);
                 break;
+
+            case StatType.ExplosionShot:
+                {
+                    if (statModifierData is not CapacityIncreaseGateData explosionData)
+                    {
+                        break;
+                    }
+
+                    int configuredPercent = Mathf.Max(0, explosionData.Value);
+                    if (configuredPercent <= 0)
+                    {
+                        break;
+                    }
+
+                    _isExplosionShotUnlocked = true;
+                    _explosionShotDamagePercent = Mathf.Max(_explosionShotDamagePercent, configuredPercent);
+                    break;
+                }
         }
+    }
+
+    public bool CanOfferExplosionShotThisRun()
+    {
+        return !_hasOfferedExplosionShotThisRun;
+    }
+
+    public bool HasAppliedPrimaryBuffThisRun(StatType statType)
+    {
+        return _appliedPrimaryBuffTypes.Contains(statType);
+    }
+
+    public void MarkExplosionShotOffered()
+    {
+        _hasOfferedExplosionShotThisRun = true;
+    }
+
+    private void MarkPrimaryBuffAppliedIfNeeded(StatModifierData statModifierData)
+    {
+        if (statModifierData == null)
+        {
+            return;
+        }
+
+        if (!IsPrimaryBuffType(statModifierData.Type))
+        {
+            return;
+        }
+
+        int upgradeSteps = ResolveUpgradeSteps(statModifierData);
+        if (upgradeSteps <= 0)
+        {
+            return;
+        }
+
+        _appliedPrimaryBuffTypes.Add(statModifierData.Type);
+    }
+
+    private static bool IsPrimaryBuffType(StatType statType)
+    {
+        return statType == StatType.FireRate ||
+               statType == StatType.Character ||
+               statType == StatType.Damage;
     }
 
     private static int ResolveUpgradeSteps(StatModifierData statModifierData)
@@ -907,18 +1028,21 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         if (elementDataList == null || elementDataList.Count == 0) return;
 
         bool isArmyMode = IsArmyMode;
-        var cardRequests = new List<CardSpawnRequestData>(elementDataList.Count);
+        _cardRequestsBuffer.Clear();
+        if (_cardRequestsBuffer.Capacity < elementDataList.Count)
+            _cardRequestsBuffer.Capacity = elementDataList.Count;
+
         for (int i = 0; i < elementDataList.Count; i++)
         {
             var data = elementDataList[i];
-            cardRequests.Add(new CardSpawnRequestData
+            _cardRequestsBuffer.Add(new CardSpawnRequestData
             {
                 Amount = data.Value,
                 Level = isArmyMode ? -1 : 1,
                 CardType = CardType.Character
             });
         }
-        AddCardsToPlayer(cardRequests, effect);
+        AddCardsToPlayer(_cardRequestsBuffer, effect);
     }
 
     private void AddCharacterCardsFromGate(CapacityIncreaseGateData gateData, CardSpawnEffectType effect)
@@ -990,6 +1114,77 @@ public class GameplayManager : MonoSingleton<GameplayManager>, GamePlay.Managers
         }
 
         return safeBase + capacity;
+    }
+
+    private static void OptimizeRenderHierarchy(Transform root)
+    {
+        if (root == null) return;
+
+        var renderers = root.GetComponentsInChildren<Renderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            var renderer = renderers[i];
+            if (renderer == null) continue;
+
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            renderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+            renderer.lightProbeUsage = LightProbeUsage.Off;
+            renderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
+
+            if (renderer is SkinnedMeshRenderer skinned)
+            {
+                // Luna compatibility: some runtimes strip SkinnedMeshRenderer members.
+                TrySetSkinnedProperties(skinned);
+            }
+        }
+
+        ForceLodIfAvailable(root);
+    }
+
+    private static void TrySetSkinnedProperties(SkinnedMeshRenderer skinned)
+    {
+        if (skinned == null) return;
+
+        try
+        {
+            if (SkinnedQualityProperty != null && SkinnedQualityProperty.CanWrite)
+                SkinnedQualityProperty.SetValue(skinned, SkinQuality.Bone2, null);
+            if (SkinnedMotionVectorsProperty != null && SkinnedMotionVectorsProperty.CanWrite)
+                SkinnedMotionVectorsProperty.SetValue(skinned, false, null);
+            if (SkinnedUpdateWhenOffscreenProperty != null && SkinnedUpdateWhenOffscreenProperty.CanWrite)
+                SkinnedUpdateWhenOffscreenProperty.SetValue(skinned, false, null);
+        }
+        catch
+        {
+            // Ignore: optimization only.
+        }
+    }
+
+    private static void ForceLodIfAvailable(Transform root)
+    {
+        if (root == null) return;
+
+        try
+        {
+            if (LodGroupType == null) return;
+
+            var components = root.GetComponentsInChildren(LodGroupType, true);
+            if (components == null || components.Length == 0) return;
+
+            if (LodForceLodMethod == null) return;
+
+            for (int i = 0; i < components.Length; i++)
+            {
+                var component = components[i];
+                if (component == null) continue;
+                LodForceLodMethod.Invoke(component, ForceLodLevel1Args);
+            }
+        }
+        catch
+        {
+            // Ignore: optimization only.
+        }
     }
 
 

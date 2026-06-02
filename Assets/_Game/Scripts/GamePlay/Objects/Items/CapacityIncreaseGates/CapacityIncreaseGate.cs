@@ -21,7 +21,7 @@ namespace GamePlay.Items
         [Header("Gold Gate Settings")]
         [SerializeField] private Transform rootAnimTrans;
         [SerializeField] private List<IncreaseElement> increaseElements;
-        [SerializeField] private float goldDrainDuration = 1.5f;
+        [SerializeField] private float goldDrainDuration = 1f;
         [SerializeField] private float phase3Duration = 0.5f;
 
         [Header("Buff Applied Effect")]
@@ -32,6 +32,18 @@ namespace GamePlay.Items
         private int _beltUnitCount;
         private bool _hasCollided = false; // [FIX] Prevent Double Collision
         private readonly List<IncreaseElement> _eligibleElementsBuffer = new List<IncreaseElement>(8);
+        private readonly List<IncreaseElement> _alreadyAppliedBuffElementsBuffer = new List<IncreaseElement>(8);
+        private struct UpgradeResolution
+        {
+            public IncreaseElement Element;
+            public int UpgradeLevels;
+
+            public UpgradeResolution(IncreaseElement element, int upgradeLevels)
+            {
+                Element = element;
+                UpgradeLevels = upgradeLevels;
+            }
+        }
 
 #if UNITY_EDITOR
         protected override void OnValidate()
@@ -49,7 +61,6 @@ namespace GamePlay.Items
 
         private void Awake()
         {
-            // [FIX] Ensure EntityType is CapacityGate at runtime
             if (_entityType == GamePlay.Entities.EntityType.None)
             {
                 _entityType = GamePlay.Entities.EntityType.CapacityGate;
@@ -60,13 +71,12 @@ namespace GamePlay.Items
         public override void Initialize()
         {
             _hasCollided = false; // Reset lock on init
+            EnsureGateSetup();
 
-            // [FIX] Ensure collider size is large enough for Wheel hit (Gate is tall/wide)
             // Only fallback to default if inspector size is invalid/zero.
             if (colliderSize.x <= 0f || colliderSize.y <= 0f || colliderSize.z <= 0f)
                 colliderSize = new Vector3(5f, 5f, 5f);
 
-            // [FIX] Capacity gate TextMesh should respect depth (avoid overlaying front objects).
             ApplyDepthToTexts();
 
             ClearBelts();
@@ -95,11 +105,72 @@ namespace GamePlay.Items
             col.enabled = true;
             */
 
-            // Gọi base của ItemUnit (skip StatModifierItem vì nó sẽ gọi AdjustStatModifierValue không cần thiết)
-            // Chúng ta override hoàn toàn để kiểm soát flow
             base.Initialize();
-
             // keep single base.Initialize() call above; avoid duplicate event/collision registration.
+        }
+
+        private void EnsureGateSetup()
+        {
+            if (increaseElements == null)
+            {
+                increaseElements = new List<IncreaseElement>();
+            }
+
+            if (increaseElements.Count == 0)
+            {
+                var childElements = GetComponentsInChildren<IncreaseElement>(true);
+                if (childElements != null && childElements.Length > 0)
+                {
+                    increaseElements.AddRange(childElements);
+                }
+            }
+
+            if (Data == null)
+            {
+                Data = new CapacityIncreaseGateData();
+            }
+
+            Data.Type = StatType.Character;
+
+            if (Data.ElementDataList == null || Data.ElementDataList.Count == 0)
+            {
+                Data.ElementDataList = BuildDefaultElementDataList();
+            }
+
+        }
+
+        private static List<IncreaseElementData> BuildDefaultElementDataList()
+        {
+            return new List<IncreaseElementData>
+            {
+                new IncreaseElementData
+                {
+                    Type = StatType.FireRange,
+                    Value = 5,
+                    ValueUpgrade = 1,
+                    StartLevel = 0,
+                    Cost = 30,
+                    UpgradeRequire = 40
+                },
+                new IncreaseElementData
+                {
+                    Type = StatType.Character,
+                    Value = 1,
+                    ValueUpgrade = 1,
+                    StartLevel = 0,
+                    Cost = 30,
+                    UpgradeRequire = 50
+                },
+                new IncreaseElementData
+                {
+                    Type = StatType.Damage,
+                    Value = 12,
+                    ValueUpgrade = 5,
+                    StartLevel = 0,
+                    Cost = 30,
+                    UpgradeRequire = 35
+                }
+            };
         }
 
         private void ApplyDepthToTexts()
@@ -207,8 +278,6 @@ namespace GamePlay.Items
                 yield break;
             }
 
-            selected.SetActiveVisual();
-
             // Cache initial distance for Phase 2
             float distanceOffset = 0f;
             if (rootAnimTrans != null)
@@ -219,31 +288,52 @@ namespace GamePlay.Items
             }
 
             // Phase 2: follow player Z + drain gold (logic first, do not update upgrade UI yet)
-            int upgradedLevels = 0;
-            yield return StartCoroutine(Phase2(selected, distanceOffset, delegate (int levels)
+            List<UpgradeResolution> upgradeResolutions = null;
+            yield return StartCoroutine(Phase2(selected, distanceOffset, delegate (List<UpgradeResolution> results)
             {
-                upgradedLevels = levels;
+                upgradeResolutions = results;
             }));
 
-            if (upgradedLevels > 0)
+            if (upgradeResolutions != null)
             {
-                var gateStatData = selected.StatData as CapacityIncreaseGateData;
-                if (gateStatData != null)
+                for (int i = 0; i < upgradeResolutions.Count; i++)
                 {
-                    gateStatData.UpgradeSteps = upgradedLevels;
-                }
+                    var result = upgradeResolutions[i];
+                    if (result.Element == null || result.UpgradeLevels <= 0)
+                    {
+                        continue;
+                    }
 
-                selected.UpdateLevelCard(selected.LevelCard + upgradedLevels);
-                selected.RefreshByLevelCard();
-                GameplayManager.Instance.ChangeStatModifierData(selected.StatData);
-                GameplayManager.Instance.RunUpgradeEffect();
-                WeaponCardSystem.Instance?.PlayCollectAnimation(
-                    selected.ElementData, selected.LevelCard, selected.transform);
-                Pack.Effector?.PlayEffect(
-                    buffAppliedEffectType,
-                    selected.transform.position,
-                    Quaternion.identity,
-                    selected.transform);
+                    if (result.Element.ElementData != null &&
+                        result.Element.ElementData.Type == StatType.ExplosionShot &&
+                        GameplayManager.Instance.CanOfferExplosionShotThisRun())
+                    {
+                        GameplayManager.Instance.MarkExplosionShotOffered();
+                    }
+
+                    // [FIX] Update LevelCard and refresh Value BEFORE casting/applying StatData
+                    // so that StatData.Value reflects the upgraded level, not the base level.
+                    result.Element.UpdateLevelCard(result.Element.LevelCard + result.UpgradeLevels);
+                    result.Element.RefreshByLevelCard();
+
+                    var gateStatData = result.Element.StatData as CapacityIncreaseGateData;
+                    if (gateStatData != null)
+                    {
+                        // [FIX] UpgradeSteps must be set for types that need it (Character, etc.)
+                        // For Damage/ExplosionShot, Value from RefreshByLevelCard is what matters.
+                        gateStatData.UpgradeSteps = result.UpgradeLevels;
+                    }
+
+                    GameplayManager.Instance.ChangeStatModifierData(result.Element.StatData);
+                    GameplayManager.Instance.RunUpgradeEffect();
+                    WeaponCardSystem.Instance?.PlayCollectAnimation(
+                        result.Element.ElementData, result.Element.LevelCard, result.Element.transform);
+                    Pack.Effector?.PlayEffect(
+                        buffAppliedEffectType,
+                        result.Element.transform.position,
+                        Quaternion.identity,
+                        result.Element.transform);
+                }
             }
 
             // Phase 3: tip RootAnimTrans 90° then apply config
@@ -259,28 +349,32 @@ namespace GamePlay.Items
             }
         }
 
-        private IEnumerator Phase2(IncreaseElement element, float distanceOffset, Action<int> onResolved)
+        private IEnumerator Phase2(IncreaseElement selectedElement, float distanceOffset, Action<List<UpgradeResolution>> onResolved)
         {
             int totalGold = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
             if (totalGold <= 0)
             {
-                onResolved?.Invoke(0);
+                onResolved?.Invoke(null);
                 yield break;
             }
 
             Transform playerTrans = GameplayManager.Instance.PlayerTransform;
             int spendPerFrame = Mathf.Max(1, Mathf.CeilToInt(totalGold / (goldDrainDuration * 60f)));
-            int upgradedLevels = 0;
-
-            int nextUpgradeCost = element.GetNextUpgradeCost();
-            if (nextUpgradeCost == int.MaxValue)
-            {
-                onResolved?.Invoke(0);
-                yield break;
-            }
-
+            var upgradeByElement = new Dictionary<IncreaseElement, int>();
+            var exhaustedElements = new HashSet<IncreaseElement>();
+            IncreaseElement activeElement = selectedElement;
             int currentUpgradeSpent = 0;
-            element.InitProgress(nextUpgradeCost);
+            int nextUpgradeCost = 0;
+
+            if (!TryActivateElement(activeElement, out nextUpgradeCost))
+            {
+                activeElement = GetNextEligibleElement(GameplayManager.Instance.GetCurrency(CurrencyType.Gold), exhaustedElements, null);
+                if (!TryActivateElement(activeElement, out nextUpgradeCost))
+                {
+                    onResolved?.Invoke(null);
+                    yield break;
+                }
+            }
 
             while (GameplayManager.Instance.GetCurrency(CurrencyType.Gold) > 0)
             {
@@ -306,20 +400,76 @@ namespace GamePlay.Items
                 while (currentUpgradeSpent >= nextUpgradeCost)
                 {
                     currentUpgradeSpent -= nextUpgradeCost;
-                    upgradedLevels++;
-                    nextUpgradeCost = element.GoldCost + (element.ElementData.UpgradeRequire * (element.LevelCard + upgradedLevels));
-                    if (nextUpgradeCost <= 0)
+                    if (!upgradeByElement.TryGetValue(activeElement, out int upgradedLevels))
                     {
-                        nextUpgradeCost = 1;
+                        upgradedLevels = 0;
+                    }
+                    upgradedLevels++;
+                    upgradeByElement[activeElement] = upgradedLevels;
+
+                    int virtualLevel = activeElement.LevelCard + upgradedLevels;
+                    nextUpgradeCost = activeElement.GetUpgradeCostForLevel(virtualLevel);
+                    if (nextUpgradeCost == int.MaxValue)
+                    {
+                        exhaustedElements.Add(activeElement);
+                        // [FIX] Pass 0 gold — we're mid-drain so gold is nearly spent.
+                        // GetNextEligibleElement already ignores gold check after this fix.
+                        activeElement = GetNextEligibleElement(0, exhaustedElements, activeElement);
+                        if (!TryActivateElement(activeElement, out nextUpgradeCost))
+                        {
+                            currentUpgradeSpent = 0;
+                            break;
+                        }
                     }
                 }
 
-                element.InitProgress(nextUpgradeCost);
-                element.UpdateProgress(currentUpgradeSpent);
+                if (activeElement == null)
+                {
+                    break;
+                }
+
+                activeElement.InitProgress(nextUpgradeCost);
+                activeElement.UpdateProgress(currentUpgradeSpent);
                 yield return null;
             }
 
-            onResolved?.Invoke(upgradedLevels);
+            if (upgradeByElement.Count == 0)
+            {
+                onResolved?.Invoke(null);
+                yield break;
+            }
+
+            var results = new List<UpgradeResolution>(upgradeByElement.Count);
+            foreach (var pair in upgradeByElement)
+            {
+                if (pair.Key != null && pair.Value > 0)
+                {
+                    results.Add(new UpgradeResolution(pair.Key, pair.Value));
+                }
+            }
+            onResolved?.Invoke(results);
+
+            bool TryActivateElement(IncreaseElement element, out int upgradeCost)
+            {
+                upgradeCost = int.MaxValue;
+                if (element == null)
+                {
+                    return false;
+                }
+
+                element.SetActiveVisual();
+                upgradeCost = element.GetNextUpgradeCost();
+                if (upgradeCost == int.MaxValue)
+                {
+                    element.SetNormalVisual();
+                    exhaustedElements.Add(element);
+                    return false;
+                }
+
+                element.InitProgress(upgradeCost);
+                element.UpdateProgress(currentUpgradeSpent);
+                return true;
+            }
         }
         private IEnumerator Phase3()
         {
@@ -342,6 +492,7 @@ namespace GamePlay.Items
         private IncreaseElement GetRandomEligibleElement(int gold)
         {
             _eligibleElementsBuffer.Clear();
+            _alreadyAppliedBuffElementsBuffer.Clear();
 
             if (increaseElements == null || increaseElements.Count == 0)
             {
@@ -355,17 +506,131 @@ namespace GamePlay.Items
                 {
                     continue;
                 }
+                if (IsBlockedExplosionElement(element))
+                {
+                    continue;
+                }
 
-                _eligibleElementsBuffer.Add(element);
+                AddEligibleByBuffPriority(element);
             }
 
-            if (_eligibleElementsBuffer.Count == 0)
+            return PickRandomFromPrioritizedEligible();
+        }
+
+        private IncreaseElement GetNextEligibleElement(int gold, HashSet<IncreaseElement> exhaustedElements, IncreaseElement currentElement)
+        {
+            _eligibleElementsBuffer.Clear();
+            _alreadyAppliedBuffElementsBuffer.Clear();
+            if (increaseElements == null || increaseElements.Count == 0)
             {
                 return null;
             }
 
-            int randomIndex = UnityEngine.Random.Range(0, _eligibleElementsBuffer.Count);
-            return _eligibleElementsBuffer[randomIndex];
+            StatType currentType = currentElement != null && currentElement.ElementData != null
+                ? currentElement.ElementData.Type
+                : StatType.None;
+
+            for (int i = 0; i < increaseElements.Count; i++)
+            {
+                var element = increaseElements[i];
+                if (element == null) continue;
+
+                if (exhaustedElements != null && exhaustedElements.Contains(element))
+                {
+                    continue;
+                }
+
+                if (currentType != StatType.None && element.ElementData != null && element.ElementData.Type == currentType)
+                {
+                    continue;
+                }
+                if (IsBlockedExplosionElement(element))
+                {
+                    continue;
+                }
+
+                // [FIX] Don't gate on current gold here — this is called mid-drain when gold is near 0.
+                // Only check that the element hasn't hit its max level (cost == MaxValue means maxed).
+                if (element.GetNextUpgradeCost() == int.MaxValue)
+                {
+                    continue;
+                }
+
+                AddEligibleByBuffPriority(element);
+            }
+
+            return PickRandomFromPrioritizedEligible();
+        }
+
+        private void AddEligibleByBuffPriority(IncreaseElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            if (IsPrimaryBuffAlreadyApplied(element))
+            {
+                _alreadyAppliedBuffElementsBuffer.Add(element);
+                return;
+            }
+
+            _eligibleElementsBuffer.Add(element);
+        }
+
+        private IncreaseElement PickRandomFromPrioritizedEligible()
+        {
+            List<IncreaseElement> source = _eligibleElementsBuffer.Count > 0
+                ? _eligibleElementsBuffer
+                : _alreadyAppliedBuffElementsBuffer;
+
+            if (source.Count == 0)
+            {
+                return null;
+            }
+
+            int randomIndex = UnityEngine.Random.Range(0, source.Count);
+            return source[randomIndex];
+        }
+
+        private static bool IsPrimaryBuffAlreadyApplied(IncreaseElement element)
+        {
+            if (element == null || element.ElementData == null)
+            {
+                return false;
+            }
+
+            StatType type = element.ElementData.Type;
+            if (!IsPrimaryBuffType(type))
+            {
+                return false;
+            }
+
+            var gameplayManager = GameplayManager.Instance;
+            return gameplayManager != null && gameplayManager.HasAppliedPrimaryBuffThisRun(type);
+        }
+
+        private static bool IsPrimaryBuffType(StatType statType)
+        {
+            return statType == StatType.FireRate ||
+                   statType == StatType.FireRange ||
+                   statType == StatType.Damage;
+        }
+
+        private static bool IsBlockedExplosionElement(IncreaseElement element)
+        {
+            if (element == null || element.ElementData == null)
+            {
+                return false;
+            }
+
+            if (element.ElementData.Type != StatType.ExplosionShot)
+            {
+                return false;
+            }
+
+            var gameplayManager = GameplayManager.Instance;
+            return gameplayManager != null && !gameplayManager.CanOfferExplosionShotThisRun();
         }
 
         protected override void HandleNonWheelCollision(IAttacker source) { }

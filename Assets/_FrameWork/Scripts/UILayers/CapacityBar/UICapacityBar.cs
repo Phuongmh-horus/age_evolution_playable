@@ -56,6 +56,18 @@ public class UICapacityBar : MonoBehaviour
     private bool _warnedMissingVfxSprite;
     private GamePlayVariable _cachedGamePlayVariable;
     private EraDataSO _cachedEraConfig;
+    private readonly System.Collections.Generic.Stack<Image> _vfxImagePool = new System.Collections.Generic.Stack<Image>(16);
+    private readonly System.Collections.Generic.Dictionary<float, WaitForSeconds> _waitCache = new System.Collections.Generic.Dictionary<float, WaitForSeconds>(8);
+    private struct ActiveVfxSprite
+    {
+        public Image Image;
+        public Vector3 StartScale;
+        public Vector3 EndScale;
+        public Color StartColor;
+        public float Duration;
+        public float Elapsed;
+    }
+    private readonly System.Collections.Generic.List<ActiveVfxSprite> _activeVfxSprites = new System.Collections.Generic.List<ActiveVfxSprite>(32);
 
     private void Awake()
     {
@@ -80,6 +92,8 @@ public class UICapacityBar : MonoBehaviour
 
     private void LateUpdate()
     {
+        TickVfxSprites(Time.unscaledDeltaTime);
+
         if (!GameplayManager.IsGameStarted) return;
         if (Time.unscaledTime - _lastFallbackPollTime < FALLBACK_POLL_INTERVAL) return;
         _lastFallbackPollTime = Time.unscaledTime;
@@ -135,7 +149,7 @@ public class UICapacityBar : MonoBehaviour
 
     private IEnumerator DelayedUpdate(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return GetWait(waitTime);
         _updateCoroutine = null;
         UpdateData();
         _lastUpdateTime = Time.time;
@@ -290,6 +304,17 @@ public class UICapacityBar : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+        for (int i = _activeVfxSprites.Count - 1; i >= 0; i--)
+        {
+            var entry = _activeVfxSprites[i];
+            ReturnVfxImage(entry.Image);
+        }
+        _activeVfxSprites.Clear();
+        while (_vfxImagePool.Count > 0)
+        {
+            var img = _vfxImagePool.Pop();
+            if (img != null) Destroy(img.gameObject);
+        }
     }
 
     private void OnDisable()
@@ -329,7 +354,7 @@ public class UICapacityBar : MonoBehaviour
     {
         if (vfxBatchWindow > 0f)
         {
-            yield return new WaitForSeconds(vfxBatchWindow);
+            yield return GetWait(vfxBatchWindow);
         }
 
         int startPoints = _pendingVfxStartPoints;
@@ -388,51 +413,98 @@ public class UICapacityBar : MonoBehaviour
 
             _activeVFXCount++;
 
-            var go = new GameObject("VFX_IncreaseCapacityBar_Sprite", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            var img = go.GetComponent<Image>();
+            var img = RentVfxImage();
             img.sprite = vfxSprite;
             img.color = vfxSpriteColor;
             img.raycastTarget = false;
             img.preserveAspect = true;
             img.maskable = false;
 
-            var rt = go.GetComponent<RectTransform>();
+            var rt = img.rectTransform;
             rt.SetParent(capacityBarTransform, false);
             rt.localPosition = new Vector3(centerX + randomOffsetX, progressY + randomOffsetY, 0);
             float scale = UnityEngine.Random.Range(vfxSpriteScaleRange.x, vfxSpriteScaleRange.y);
             rt.localScale = new Vector3(scale, scale, scale);
+            img.gameObject.SetActive(true);
 
-            StartCoroutine(DespawnVFXSprite(img, vfxLifetime));
+            _activeVfxSprites.Add(new ActiveVfxSprite
+            {
+                Image = img,
+                StartScale = rt.localScale,
+                EndScale = rt.localScale * vfxSpriteScaleUp,
+                StartColor = img.color,
+                Duration = Mathf.Max(0.01f, vfxLifetime),
+                Elapsed = 0f
+            });
 
-            if (i < vfxToSpawn - 1) yield return new WaitForSeconds(delay);
+            if (i < vfxToSpawn - 1) yield return GetWait(delay);
         }
     }
 
-    private IEnumerator DespawnVFXSprite(Image img, float delay)
+    private WaitForSeconds GetWait(float seconds)
     {
-        if (img == null)
+        if (seconds <= 0f) seconds = 0.0001f;
+        if (_waitCache.TryGetValue(seconds, out var wait))
+            return wait;
+
+        wait = new WaitForSeconds(seconds);
+        _waitCache[seconds] = wait;
+        return wait;
+    }
+
+    private void TickVfxSprites(float dt)
+    {
+        if (_activeVfxSprites.Count == 0)
+            return;
+
+        for (int i = _activeVfxSprites.Count - 1; i >= 0; i--)
         {
-            _activeVFXCount = Mathf.Max(0, _activeVFXCount - 1);
-            yield break;
+            var entry = _activeVfxSprites[i];
+            var img = entry.Image;
+            if (img == null)
+            {
+                _activeVfxSprites.RemoveAt(i);
+                _activeVFXCount = Mathf.Max(0, _activeVFXCount - 1);
+                continue;
+            }
+
+            entry.Elapsed += dt;
+            float k = Mathf.Clamp01(entry.Elapsed / entry.Duration);
+            var rt = img.rectTransform;
+            rt.localScale = Vector3.Lerp(entry.StartScale, entry.EndScale, k);
+            img.color = new Color(entry.StartColor.r, entry.StartColor.g, entry.StartColor.b, Mathf.Lerp(entry.StartColor.a, 0f, k));
+
+            if (k >= 1f)
+            {
+                ReturnVfxImage(img);
+                _activeVfxSprites.RemoveAt(i);
+                _activeVFXCount = Mathf.Max(0, _activeVFXCount - 1);
+                continue;
+            }
+
+            _activeVfxSprites[i] = entry;
+        }
+    }
+
+    private Image RentVfxImage()
+    {
+        while (_vfxImagePool.Count > 0)
+        {
+            var pooled = _vfxImagePool.Pop();
+            if (pooled != null)
+                return pooled;
         }
 
-        float t = 0f;
-        RectTransform rt = img.rectTransform;
-        Vector3 startScale = rt.localScale;
-        Vector3 endScale = startScale * vfxSpriteScaleUp;
-        Color startColor = img.color;
+        var go = new GameObject("VFX_IncreaseCapacityBar_Sprite", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        return go.GetComponent<Image>();
+    }
 
-        while (t < delay)
-        {
-            t += Time.unscaledDeltaTime;
-            float k = Mathf.Clamp01(t / delay);
-            rt.localScale = Vector3.Lerp(startScale, endScale, k);
-            img.color = new Color(startColor.r, startColor.g, startColor.b, Mathf.Lerp(startColor.a, 0f, k));
-            yield return null;
-        }
-
-        Destroy(img.gameObject);
-        _activeVFXCount = Mathf.Max(0, _activeVFXCount - 1);
+    private void ReturnVfxImage(Image img)
+    {
+        if (img == null) return;
+        img.gameObject.SetActive(false);
+        img.transform.SetParent(capacityBarTransform, false);
+        _vfxImagePool.Push(img);
     }
 
     private void EnsureVfxSpriteLoaded()

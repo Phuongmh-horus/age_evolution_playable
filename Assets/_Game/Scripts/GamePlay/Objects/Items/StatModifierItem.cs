@@ -13,11 +13,12 @@ namespace GamePlay.Items
 
         FireRate,
         FireRange,
+        Damage,
         Character,
-
         MoveSpeed,
         EvolutionPoint,
         CharacterLevel,
+        ExplosionShot,
     }
 
     [Serializable]

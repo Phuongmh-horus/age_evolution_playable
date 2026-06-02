@@ -92,14 +92,17 @@ namespace PlayerArmy
         private readonly HashSet<int> _previousEnemyContactIds = new HashSet<int>();
         private readonly Queue<CharacterUnit> _activeSpawnedUnits = new Queue<CharacterUnit>();
         private readonly Dictionary<int, float> _nextAttackTimes = new Dictionary<int, float>();
+        private readonly List<CharacterUnit> _unitSnapshotBuffer = new List<CharacterUnit>(64);
         private GameObject _weaponOverridePrefab;
         private int _baseAttackDamage = 1;
         private int _resolvedWeaponDamage;
+        private int _damageBonusPoints;
         private float _baseAttackInterval;
         private float _baseProjectileDuration;
         private int _fireRateBonusPoints;
         private float _baseFireRange;
         private float _fireRangeBonus;
+        private static readonly Dictionary<int, Vector2Int[]> s_honeycombRingCache = new Dictionary<int, Vector2Int[]>(16);
 
         public IReadOnlyList<CharacterUnit> Units => characterUnits;
         public PlayerArmyEffectSystem EffectSystem => effectSystem;
@@ -590,7 +593,7 @@ namespace PlayerArmy
 
         private void RefreshCombatDamage()
         {
-            attackDamage = Mathf.Max(1, _baseAttackDamage + Mathf.Max(0, _resolvedWeaponDamage));
+            attackDamage = Mathf.Max(1, _baseAttackDamage + Mathf.Max(0, _resolvedWeaponDamage) + Mathf.Max(0, _damageBonusPoints));
         }
 
         private void RefreshFireRange()
@@ -667,6 +670,42 @@ namespace PlayerArmy
             }
         }
 
+        public void ApplyDamageModifier(int value)
+        {
+            if (value <= 0)
+            {
+                return;
+            }
+
+            _damageBonusPoints += value;
+            RefreshCombatDamage();
+        }
+
+        public void ApplyExplosionShotModifier(int value)
+        {
+            // ExplosionShot runtime state is managed centrally by GameplayManager.
+        }
+
+        public bool HasExplosionShot => GameplayManager.Instance != null && GameplayManager.Instance.IsExplosionShotUnlocked;
+
+        public float ExplosionRadius => GameplayManager.Instance != null ? Mathf.Max(0f, GameplayManager.Instance.ExplosionShotRadius) : 0f;
+
+        public int ResolveExplosionDamage(int baseDamage)
+        {
+            if (baseDamage <= 0 || GameplayManager.Instance == null || !GameplayManager.Instance.IsExplosionShotUnlocked)
+            {
+                return 0;
+            }
+
+            int percent = Mathf.Max(0, GameplayManager.Instance.ExplosionShotDamagePercent);
+            if (percent <= 0)
+            {
+                return 0;
+            }
+
+            return Mathf.Max(1, Mathf.CeilToInt(baseDamage * (percent / 100f)));
+        }
+
         public void UpgradeAllUnitsToLevel(int levelbonus, bool includeWeapon = true)
         {
             if (levelbonus <= 0 || characterUnits == null || characterUnits.Count == 0)
@@ -687,11 +726,12 @@ namespace PlayerArmy
 
             int targetLevel = Mathf.Max(1, oldLevel + levelbonus);
             fallbackCharacterLevel = targetLevel;
-            var snapshot = new List<CharacterUnit>(characterUnits);
+            _unitSnapshotBuffer.Clear();
+            _unitSnapshotBuffer.AddRange(characterUnits);
 
-            for (int i = 0; i < snapshot.Count; i++)
+            for (int i = 0; i < _unitSnapshotBuffer.Count; i++)
             {
-                var oldUnit = snapshot[i];
+                var oldUnit = _unitSnapshotBuffer[i];
                 if (oldUnit == null)
                 {
                     continue;
@@ -749,11 +789,12 @@ namespace PlayerArmy
 
         public void PlayAnimationForAllUnits(AnimationType animationType, float waitForAction = 0f)
         {
-            var snapshot = new List<CharacterUnit>(characterUnits);
+            _unitSnapshotBuffer.Clear();
+            _unitSnapshotBuffer.AddRange(characterUnits);
 
-            for (int i = 0; i < snapshot.Count; i++)
+            for (int i = 0; i < _unitSnapshotBuffer.Count; i++)
             {
-                var unit = snapshot[i];
+                var unit = _unitSnapshotBuffer[i];
                 if (unit == null)
                 {
                     continue;
@@ -870,49 +911,54 @@ namespace PlayerArmy
         {
             ring = Mathf.Max(1, ring);
             int step = Mathf.Max(0, offsetInRing);
+            var positions = GetOrBuildHoneycombRingPositions(ring);
+            if (positions == null || positions.Length == 0)
+                return Vector2Int.zero;
+            return positions[Mathf.Clamp(step, 0, positions.Length - 1)];
+        }
 
-            var positions = new List<Vector2Int>(ring * 6);
+        private static Vector2Int[] GetOrBuildHoneycombRingPositions(int ring)
+        {
+            if (s_honeycombRingCache.TryGetValue(ring, out var cached) && cached != null && cached.Length > 0)
+                return cached;
+
+            var positions = new Vector2Int[ring * 6];
+            int index = 0;
             Vector2Int axial = Vector2Int.zero;
 
             for (int i = 0; i < ring; i++)
-            {
                 axial += HoneycombDirections[4];
-            }
 
             for (int side = 0; side < 6; side++)
             {
                 for (int i = 0; i < ring; i++)
                 {
-                    positions.Add(axial);
+                    positions[index++] = axial;
                     axial += HoneycombDirections[side];
                 }
             }
 
-            positions.Sort((a, b) =>
-            {
-                float aZ = Mathf.Abs(a.y);
-                float bZ = Mathf.Abs(b.y);
-                if (!Mathf.Approximately(aZ, bZ))
-                {
-                    return aZ.CompareTo(bZ);
-                }
+            Array.Sort(positions, CompareHoneycombPosition);
+            s_honeycombRingCache[ring] = positions;
+            return positions;
+        }
 
-                if (a.y != b.y)
-                {
-                    return a.y.CompareTo(b.y);
-                }
+        private static int CompareHoneycombPosition(Vector2Int a, Vector2Int b)
+        {
+            float aZ = Mathf.Abs(a.y);
+            float bZ = Mathf.Abs(b.y);
+            if (!Mathf.Approximately(aZ, bZ))
+                return aZ.CompareTo(bZ);
 
-                float aX = a.x + a.y * 0.5f;
-                float bX = b.x + b.y * 0.5f;
-                if (!Mathf.Approximately(aX, bX))
-                {
-                    return aX.CompareTo(bX);
-                }
+            if (a.y != b.y)
+                return a.y.CompareTo(b.y);
 
-                return a.x.CompareTo(b.x);
-            });
+            float aX = a.x + a.y * 0.5f;
+            float bX = b.x + b.y * 0.5f;
+            if (!Mathf.Approximately(aX, bX))
+                return aX.CompareTo(bX);
 
-            return positions[Mathf.Clamp(step, 0, positions.Count - 1)];
+            return a.x.CompareTo(b.x);
         }
 
         private void CacheDefaultState()
@@ -925,6 +971,7 @@ namespace PlayerArmy
             _fireRateBonusPoints = 0;
             _baseFireRange = projectileDistance;
             _fireRangeBonus = 0f;
+            _damageBonusPoints = 0;
             RefreshCombatDamage();
             RefreshFireRange();
         }
@@ -1105,7 +1152,6 @@ namespace PlayerArmy
             attackSource.OnAttackSucceed(targetInfo.Target);
             targetInfo.Target.OnHit(attackSource);
             OnAttackComplete?.Invoke(targetInfo.Target);
-
             if (effectSystem != null)
             {
                 effectSystem.PlayEffectAt(EffectType.Attack, targetInfo.Position, Quaternion.identity, unit.transform, null, 0f);
@@ -1127,7 +1173,6 @@ namespace PlayerArmy
             }
 
             unit.ShowWeapon();
-
             unit.PlayAnimation(AnimationType.Attack, 0.4f, () =>
             {
                 if (!GameplayManager.IsGameStarted || unit == null || !unit.IsActive)

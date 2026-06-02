@@ -68,6 +68,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private int _bricksInFlight;
     private int _bricksReachedCapacity;
     private int _pendingCapacityGain;
+    private int _pendingDeliveredEventGain;
     private int _inFlightCapacityGain;
     private bool _ignoreBrickCallbacks;
     private float _nextVisualSpawnTime;
@@ -106,6 +107,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         _bricksInFlight = 0;
         _bricksReachedCapacity = 0;
         _pendingCapacityGain = 0;
+        _pendingDeliveredEventGain = 0;
         _inFlightCapacityGain = 0;
         _ignoreBrickCallbacks = false;
         _nextVisualSpawnTime = 0f;
@@ -167,6 +169,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         _bricksInFlight = 0;
         _bricksReachedCapacity = 0;
         _pendingCapacityGain = 0;
+        _pendingDeliveredEventGain = 0;
         _inFlightCapacityGain = 0;
         _ignoreBrickCallbacks = false;
         _nextVisualSpawnTime = 0f;
@@ -338,7 +341,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (spawnInterval > 0f && Time.time < _nextVisualSpawnTime)
         {
             QueueCapacityGain(logicalCapacity);
-            OnCapacityBrickDelivered?.Invoke(logicalCapacity);
+            QueueDeliveredEvent(logicalCapacity);
             return;
         }
 
@@ -392,7 +395,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if (remainingCapacity > 0)
         {
             QueueCapacityGain(remainingCapacity);
-            OnCapacityBrickDelivered?.Invoke(remainingCapacity);
+            QueueDeliveredEvent(remainingCapacity);
         }
 
         // Safety: if no visual brick was actually spawned, flush immediately so reward is never delayed.
@@ -445,12 +448,14 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
         // Capacity updates are batched once per frame to reduce heavy UI/event churn on Luna.
         FlushQueuedCapacityGain();
+        FlushDeliveredEvent();
     }
 
     private void OnDisable()
     {
         _ignoreBrickCallbacks = false;
         FlushQueuedCapacityGain();
+        FlushDeliveredEvent();
     }
 
     private void OnBrickReachedCapacity(int gained)
@@ -459,8 +464,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         _inFlightCapacityGain = Mathf.Max(0, _inFlightCapacityGain - Mathf.Max(1, gained));
         _bricksReachedCapacity++;
         QueueCapacityGain(gained);
-
-        OnCapacityBrickDelivered?.Invoke(gained);
+        QueueDeliveredEvent(gained);
     }
 
     private void QueueCapacityGain(int gained)
@@ -487,13 +491,36 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         ApplyCapacityGain(gain);
     }
 
+    private void QueueDeliveredEvent(int gained)
+    {
+        _pendingDeliveredEventGain += Mathf.Max(1, gained);
+        if (!isActiveAndEnabled)
+        {
+            FlushDeliveredEvent();
+        }
+    }
+
+    private void FlushDeliveredEvent()
+    {
+        if (_pendingDeliveredEventGain <= 0) return;
+        int gain = _pendingDeliveredEventGain;
+        _pendingDeliveredEventGain = 0;
+        OnCapacityBrickDelivered?.Invoke(gain);
+    }
+
     private void ApplyCapacityGain(int gained)
     {
         if (GameplayManager.Instance == null) return;
 
         if (_brickFallSettings != null && _brickFallSettings.CapacityData != null)
         {
-            _capacityGainData.Type = _brickFallSettings.CapacityData.Type;
+            var rewardType = _brickFallSettings.CapacityData.Type;
+            if (rewardType != StatType.EvolutionPoint)
+            {
+                rewardType = StatType.EvolutionPoint;
+            }
+
+            _capacityGainData.Type = rewardType;
             _capacityGainData.Value = Mathf.Max(1, gained);
             _capacityGainData.Armor = 0;
             GameplayManager.Instance.ChangeStatModifierData(_capacityGainData);

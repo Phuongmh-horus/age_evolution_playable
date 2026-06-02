@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c0faf48a1e4c429c67826b44f3c4cf, type: 3}
   m_Name: Character_MoveVariable
   m_EditorClassIdentifier: 
-  Duration: 1
-  MaxDistance: 15
-  DefaultDuration: 1
-  DefaultMaxDistance: 15
+  Duration: 1.2
+  MaxDistance: 20
+  DefaultDuration: 1.2
+  DefaultMaxDistance: 20

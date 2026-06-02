@@ -219,6 +219,7 @@ namespace GamePlay.Map
             if (sourceData == null || sourceData.SpawnableObjects == null || sourceData.SpawnableObjects.Count == 0)
                 return;
 
+            Vector3 basePosition = Position;
             for (int i = 0; i < sourceData.SpawnableObjects.Count; i++)
             {
                 var spawnable = sourceData.SpawnableObjects[i];
@@ -227,7 +228,7 @@ namespace GamePlay.Map
                 if (spawnable.Prefab.EntityType == EntityType.FinishTower)
                     MilestonePoints.Add(spawnable.PositionOnMap);
 
-                Vector3 spawnPosition = Position + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
+                Vector3 spawnPosition = basePosition + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
                 Quaternion spawnRotation = Quaternion.Euler(spawnable.Rotation);
 
                 // [FIX] SafeSpawnItemUnit avoids Luna pool registry exceptions
@@ -266,6 +267,7 @@ namespace GamePlay.Map
             int safeBatchSize = Mathf.Max(1, batchSize);
             int spawnedThisBatch = 0;
             int totalSpawnables = 0;
+            Vector3 basePosition = Position;
             if (contentData != null && contentData.SpawnableObjects != null)
                 totalSpawnables += contentData.SpawnableObjects.Count;
             if (contentTowerZoneData != null && contentTowerZoneData.SpawnableObjects != null)
@@ -274,22 +276,16 @@ namespace GamePlay.Map
             {
                 generatedObjects.Capacity = totalSpawnables;
             }
-
-            IEnumerable<SpawnableObject> Enumerate(ContentDataSO src)
+            var mainSpawnables = contentData != null ? contentData.SpawnableObjects : null;
+            for (int index = 0; mainSpawnables != null && index < mainSpawnables.Count; index++)
             {
-                if (src == null || src.SpawnableObjects == null) yield break;
-                for (int i = 0; i < src.SpawnableObjects.Count; i++)
-                    yield return src.SpawnableObjects[i];
-            }
-
-            foreach (var spawnable in Enumerate(contentData))
-            {
+                var spawnable = mainSpawnables[index];
                 if (spawnable == null || spawnable.Prefab == null) continue;
 
                 if (spawnable.Prefab.EntityType == EntityType.FinishTower)
                     MilestonePoints.Add(spawnable.PositionOnMap);
 
-                Vector3 spawnPosition = Position + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
+                Vector3 spawnPosition = basePosition + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
                 Quaternion spawnRotation = Quaternion.Euler(spawnable.Rotation);
 
                 // [FIX] SafeSpawnItemUnit
@@ -321,14 +317,16 @@ namespace GamePlay.Map
                 }
             }
 
-            foreach (var spawnable in Enumerate(contentTowerZoneData))
+            var towerSpawnables = contentTowerZoneData != null ? contentTowerZoneData.SpawnableObjects : null;
+            for (int index = 0; towerSpawnables != null && index < towerSpawnables.Count; index++)
             {
+                var spawnable = towerSpawnables[index];
                 if (spawnable == null || spawnable.Prefab == null) continue;
 
                 if (spawnable.Prefab.EntityType == EntityType.FinishTower)
                     MilestonePoints.Add(spawnable.PositionOnMap);
 
-                Vector3 spawnPosition = Position + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
+                Vector3 spawnPosition = basePosition + Vector3.forward * spawnable.PositionOnMap + spawnable.PositionOffset;
                 Quaternion spawnRotation = Quaternion.Euler(spawnable.Rotation);
 
                 // [FIX] SafeSpawnItemUnit
@@ -421,13 +419,14 @@ namespace GamePlay.Map
                 if (contentData.SpawnableObjects != null)
                 {
                     spawnablePrefabs = new List<GameObject>();
+                    var dedupe = new HashSet<GameObject>();
                     for (int i = 0; i < contentData.SpawnableObjects.Count; i++)
                     {
                         var entry = contentData.SpawnableObjects[i];
                         if (entry == null || entry.Prefab == null) continue;
                         GameObject prefabGo = entry.Prefab.gameObject;
                         if (prefabGo == null) continue;
-                        if (!spawnablePrefabs.Contains(prefabGo))
+                        if (dedupe.Add(prefabGo))
                             spawnablePrefabs.Add(prefabGo);
                     }
                 }
