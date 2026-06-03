@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_FrameWork/Scenes/S_GamePlay.unity
     guid: c12afce956e55734197f366f99390e8b
+  - enabled: 1
+    path: Assets/_FrameWork/Scenes/S_GamePlay_TestVFX.unity
+    guid: a96bad2d6e1521c4b9fda0a9c2d9238f
   m_configObjects: {}
