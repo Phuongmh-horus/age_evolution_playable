@@ -626,9 +626,9 @@ MonoBehaviour:
   bricksRoot: {fileID: 8308781305436913712}
   bricksPerDamage: 1
   reduceBricksPerDamage: 0
-  maxVisualBricksPerHit: 40
-  maxBricksInFlight: 40
-  maxVisualBricksPerBurst: 30
+  maxVisualBricksPerHit: 20
+  maxBricksInFlight: 30
+  maxVisualBricksPerBurst: 20
   minVisualSpawnInterval: 0.1
   forceVisualBricksMatchDamage: 0
   batchCapacityGainPerFrame: 1
@@ -652,6 +652,10 @@ MonoBehaviour:
   scaleUp: 1.1
   scaleUpDuration: 0.1
   scaleDownDuration: 0.2
+  ensureDespawnScaleEffect: 1
+  despawnScaleMultiplier: 1.08
+  despawnExpandDuration: 0.06
+  despawnShrinkDuration: 0.12
   hitTextFlyEffect: {fileID: 3495615988848984698}
   hitComponent: {fileID: 1050903430189031241}
   isChainedPillar: 0
@@ -707,7 +711,7 @@ MonoBehaviour:
   healthComponent: {fileID: 3685822354733380185}
   healthTextPrefab: {fileID: 6512158636180351403, guid: efb62b88426edc84bb45da017ef8622a, type: 3}
   autoResolveHealthComponent: 1
-  defaultTextPrefabResourcePath: SpawnableObject/HitDamage
+  defaultTextPrefabResourcePath: Prefab/HitDamage
   flyUpDistance: 2.5
   flyUpDuration: 0.25
   fallDownDistance: 2.5
@@ -732,12 +736,18 @@ MonoBehaviour:
   poolEntity: {fileID: 2151603510769025371}
   effects:
   - Type: 14
-    VfxPrefab: {fileID: 0}
+    VfxPrefab: {fileID: 462670460786600360, guid: 285fb53922afad341b016d11032d75ea, type: 3}
     ParentToTarget: 1
     SfxClip: {fileID: 8300000, guid: 3c0689bc9fdce8643bbb7ff9de0e456f, type: 3}
+    LoopSfx: 0
+    WaitForAction: 0.5
+  - Type: 18
+    VfxPrefab: {fileID: 0}
+    ParentToTarget: 1
+    SfxClip: {fileID: 8300000, guid: 75c45c355dfab1b47942ec7cd7403222, type: 3}
+    LoopSfx: 0
     WaitForAction: 0.5
   audioSource: {fileID: 0}
-  useGlobalSoundManagerFallback: 1
   warnIfNoAudioRouteInEditor: 0
 --- !u!114 &475358875061819522
 MonoBehaviour:

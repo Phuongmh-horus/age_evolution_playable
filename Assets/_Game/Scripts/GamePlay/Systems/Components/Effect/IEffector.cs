@@ -13,5 +13,7 @@ namespace GamePlay.ComponentSystems
             Transform parent = null,
             float waitForAction = 0.5f,
             Action onComplete = null);
+
+        void StopEffect(EffectType effectType);
     }
 }

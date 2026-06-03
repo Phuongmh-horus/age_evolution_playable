@@ -17,6 +17,8 @@ namespace GamePlay.Items
         [SerializeField] private SpriteCardTypeData spriteCardTypeData;
         [SerializeField] private StatsUpgradeIcon statsUpgradeIcon;
         [SerializeField] private BackgroundGradientData bgGradientData;
+        [SerializeField] private GameObject LockImage;
+        [SerializeField] private GameObject UnlockImage;
         
         [SerializeField] private TextMeshProUGUI goldText;
         
@@ -76,7 +78,9 @@ namespace GamePlay.Items
 
         private void Awake()
         {
+            TryAutoResolveLockVisuals();
             SetNormalVisual();
+            RefreshLockVisual();
         }
 
         private void SetGradient(GradientColor gradientColor)
@@ -135,6 +139,8 @@ namespace GamePlay.Items
             m_levelCard = data.StartLevel;
             if (spriteCardTypeData.TryGetSprite(m_levelCard, out var spriteBackground))
                 iconBackground.sprite = spriteBackground.Unknown;
+
+            RefreshLockVisual();
         }
 
         public void UpdateProgress(int remainingGold)
@@ -181,6 +187,66 @@ namespace GamePlay.Items
                     iconBackground.sprite = spriteBackground.Unknown; // spriteBackground.Normal;
                 else iconBackground.enabled = false;
             }
+
+            RefreshLockVisual();
+        }
+
+        public void ShowGoldDrainFeedback()
+        {
+            SetActiveVisual();
+        }
+
+        private void RefreshLockVisual()
+        {
+            bool isUnlocked = m_levelCard > 0;
+
+            if (LockImage != null)
+            {
+                LockImage.SetActive(!isUnlocked);
+            }
+
+            if (UnlockImage != null)
+            {
+                UnlockImage.SetActive(isUnlocked);
+            }
+        }
+
+        private void TryAutoResolveLockVisuals()
+        {
+            if (LockImage == null)
+            {
+                LockImage = FindChildByNameContains("Lock_Image");
+            }
+
+            if (UnlockImage == null)
+            {
+                UnlockImage = FindChildByNameContains("Unlock_Image");
+            }
+        }
+
+        private GameObject FindChildByNameContains(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return null;
+            }
+
+            var transforms = GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < transforms.Length; i++)
+            {
+                var child = transforms[i];
+                if (child == null || child == transform)
+                {
+                    continue;
+                }
+
+                if (child.name.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return child.gameObject;
+                }
+            }
+
+            return null;
         }
     }
 }

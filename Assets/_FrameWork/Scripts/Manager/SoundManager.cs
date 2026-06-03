@@ -181,6 +181,18 @@ public class SoundManager : MonoSingleton<SoundManager>
         PlayOneShot(clipToPlay, volume);
     }
 
+    public bool TryPlayOneShot(AudioClipName clipName)
+    {
+        if (clipName != AudioClipName.None &&
+            TryResolveSfx(clipName, out var primaryClip, out var primaryVolume))
+        {
+            PlayOneShot(primaryClip, primaryVolume);
+            return true;
+        }
+
+        return false;
+    }
+
     public void StopOneShot()
     {
         if (fxMusicSource == null) return;

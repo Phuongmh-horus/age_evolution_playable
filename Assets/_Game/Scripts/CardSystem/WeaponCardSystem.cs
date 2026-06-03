@@ -80,7 +80,7 @@ namespace GamePlay.CardSystem
                 : null;
 
             Vector3 startScreenPos = GetScreenPos(sourceWorldTransform);
-            Vector3 centerScreenPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
+            Vector3 centerScreenPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f + 150f, 0f);
             Vector3 destScreenPos = targetSlot != null
                 ? (Vector3)targetSlot.position
                 : centerScreenPos;

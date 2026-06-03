@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GamePlay.ComponentSystems;
 using UnityEngine;
 
 namespace WeaponCraft
@@ -22,6 +23,8 @@ namespace WeaponCraft
         [Header("Craft Settings")]
         [SerializeField] private WeaponCraftConfigSO config;
         [SerializeField] private WeaponCraftVisualSystem visualSystem;
+        [SerializeField] private EffectComponent upgradeEffectComponent;
+        [SerializeField] private AudioClipName fallbackMergeSfx = AudioClipName.SFX_Merge_Weapon;
 
         private readonly List<WeaponItem> items = new List<WeaponItem>();
         private readonly Queue<IncomingBatch> incomingItems = new Queue<IncomingBatch>();
@@ -174,6 +177,8 @@ namespace WeaponCraft
 
         private void EnsureVisualSystem()
         {
+            ResolveUpgradeEffectComponent();
+
             if (visualSystem == null)
             {
                 visualSystem = GetComponentInChildren<WeaponCraftVisualSystem>(true);
@@ -246,7 +251,58 @@ namespace WeaponCraft
 
         private void HandleMergeVisualCompleted(WeaponItem mergedItem)
         {
+            bool isNewTopTier = false;
+            if (mergedItem != null)
+            {
+                int candidateTier = Mathf.Max(1, mergedItem.Tier);
+                if (candidateTier > _equippedTopTier)
+                {
+                    isNewTopTier = true;
+                }
+            }
+
+            if (isNewTopTier)
+            {
+                if (!PlayLocalUpgradeEffect())
+                {
+                    if (fallbackMergeSfx != AudioClipName.None &&
+                        SoundManager.Instance != null &&
+                        SoundManager.Instance.TryPlayOneShot(fallbackMergeSfx))
+                    {
+                        // Audio fallback is enough when the craft prefab has no local effect component.
+                    }
+
+                    if (GameplayManager.Instance != null)
+                    {
+                        GameplayManager.Instance.RunUpgradeEffectAt(transform.position, transform);
+                    }
+                }
+            }
+
             TryEquipIfHigher(mergedItem);
+        }
+
+        private bool PlayLocalUpgradeEffect()
+        {
+            var effectComponent = ResolveUpgradeEffectComponent();
+            if (effectComponent == null)
+            {
+                return false;
+            }
+
+            effectComponent.PlayEffect(EffectType.Upgrade, transform.position, transform.rotation, transform, 0f);
+            return true;
+        }
+
+        private EffectComponent ResolveUpgradeEffectComponent()
+        {
+            if (upgradeEffectComponent != null)
+            {
+                return upgradeEffectComponent;
+            }
+
+            upgradeEffectComponent = GetComponentInChildren<EffectComponent>(true);
+            return upgradeEffectComponent;
         }
 
         private void TryEquipIfHigher(WeaponItem candidate)

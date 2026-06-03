@@ -7,7 +7,7 @@ public class DeathScaleEffect : MonoBehaviour
     [SerializeField] public Transform Transform;
 
     [Header("Settings")]
-    [SerializeField] private float _targetScaleMultiplier = 1.3f;
+    [SerializeField] private float _targetScaleMultiplier = 1.2f;
     [SerializeField] private float _expandDuration = 0.1f;
     [SerializeField] private float _shrinkDuration = 0.2f;
 
@@ -50,6 +50,16 @@ public class DeathScaleEffect : MonoBehaviour
 
     private void Awake()
     {
+        if (Transform == null) Transform = transform;
+        _originalScale = Transform.localScale;
+    }
+
+    public void Configure(float targetScaleMultiplier, float expandDuration, float shrinkDuration)
+    {
+        _targetScaleMultiplier = Mathf.Max(1f, targetScaleMultiplier);
+        _expandDuration = Mathf.Max(0.01f, expandDuration);
+        _shrinkDuration = Mathf.Max(0.01f, shrinkDuration);
+
         if (Transform == null) Transform = transform;
         _originalScale = Transform.localScale;
     }

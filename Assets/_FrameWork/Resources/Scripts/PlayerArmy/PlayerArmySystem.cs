@@ -551,9 +551,9 @@ namespace PlayerArmy
             effectSystem?.PlayEffect(effectType, anchor != null ? anchor : GetBodyRoot(), onComplete, waitForAction);
         }
 
-        public void PlayEffectAt(EffectType effectType, Vector3 position, Quaternion rotation, Action onComplete = null, float waitForAction = 0f)
+        public void PlayEffectAt(EffectType effectType, Vector3 position, Quaternion rotation, Transform parent = null, Action onComplete = null, float waitForAction = 0f)
         {
-            effectSystem?.PlayEffectAt(effectType, position, rotation, GetBodyRoot(), onComplete, waitForAction);
+            effectSystem?.PlayEffectAt(effectType, position, rotation, parent != null ? parent : GetBodyRoot(), onComplete, waitForAction);
         }
 
         public void OnAttackSucceed(IHitable target)

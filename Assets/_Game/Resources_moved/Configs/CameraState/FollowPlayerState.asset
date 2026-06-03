@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraStateName: 2
   fieldOfView: 70
-  playerTransform: {fileID: 4003252130411642508, guid: 55a1a62cb86aacf40b7570ec31de7f0d, type: 3}
-  offset: {x: 0, y: 14, z: -15.5}
+  playerTransform: {fileID: 0}
+  offset: {x: 0, y: 14, z: -12}
   rotationOffset: {x: 37, y: 0, z: 0}
   followSpeedX: 2
   followSpeed: 5

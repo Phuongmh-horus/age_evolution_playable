@@ -39,7 +39,7 @@ public class BrickFallSettings : ScriptableObject
     [SerializeField] private bool randomizeTiltDirection = true;
 
     [Header("Fly to Capacity Bar")]
-    [SerializeField] private float flyDuration = 0.2f;
+    [SerializeField] private float flyDuration = 0.5f;
     [SerializeField] private float flyArcHeight = 2f; // height of the arc curve
     [SerializeField] private float flyScaleDownDuration = 0.3f; // duration for scale down while flying (slower = longer)
     [SerializeField, Range(0f, 0.3f), Tooltip("Random time offset range for fly duration (±offset)")]

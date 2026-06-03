@@ -1370,7 +1370,7 @@ MonoBehaviour:
     - rid: 7276668532040138754
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 5541669518165071482, guid: 35d172eabd33af345a0ff7a7d93f4a69, type: 3}
+  - Prefab: {fileID: 5541669518165071482, guid: 3cbff6da1ec7cd540b8babd45031e689, type: 3}
     PositionOnMap: 466.1
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}

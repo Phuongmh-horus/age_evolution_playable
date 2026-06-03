@@ -54,6 +54,9 @@ namespace GamePlay.Items
         [SerializeField] private AudioClipName destroySfx;
         [SerializeField] private AudioClipName hitByWheelSfx;
 
+        [Header("Hit Effect")]
+        [SerializeField] private EffectType nonWheelHitEffectType = EffectType.Break;
+
         [Header("Money Drop")]
         [SerializeField] private Transform moneyRoot;
         [SerializeField] private float moneyDropImpulse = 1.5f;
@@ -83,6 +86,7 @@ namespace GamePlay.Items
         private bool _warnedMissingHitComponentRuntime;
         private int _lastShownCurrentHp = int.MinValue;
         private int _lastShownMaxHp = int.MinValue;
+        private int _lastNonWheelHitFxFrame = -1;
 
 #if UNITY_EDITOR
         protected override void OnValidate()
@@ -134,6 +138,7 @@ namespace GamePlay.Items
             }
 
             _deathHandled = false;
+            _lastNonWheelHitFxFrame = -1;
             if (hitTextFlyEffect != null)
                 hitTextFlyEffect.enabled = true;
 
@@ -237,6 +242,7 @@ namespace GamePlay.Items
 
         protected override void HandleNonWheelCollision(IAttacker source)
         {
+            PlayNonWheelHitEffect();
             base.HandleNonWheelCollision(source);
             PlayScalePulse();
 
@@ -247,6 +253,15 @@ namespace GamePlay.Items
                 HandleDead();
                 DespawnInterval();
             }
+        }
+
+        private void PlayNonWheelHitEffect()
+        {
+            if (nonWheelHitEffectType == EffectType.None) return;
+            if (_lastNonWheelHitFxFrame == Time.frameCount) return;
+
+            _lastNonWheelHitFxFrame = Time.frameCount;
+            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position, Quaternion.identity, transform);
         }
 
         private void HandleDead()

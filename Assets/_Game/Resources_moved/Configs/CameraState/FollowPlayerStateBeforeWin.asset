@@ -15,8 +15,8 @@ MonoBehaviour:
   CameraStateName: 4
   fieldOfView: 80
   playerTransform: {fileID: 0}
-  offset: {x: 0, y: 14, z: -17}
+  offset: {x: 0, y: 15, z: -17}
   rotationOffset: {x: 33, y: 0, z: 0}
   followSpeedX: 2
   followSpeed: 5
-  rotationSpeed: 4
+  rotationSpeed: 5

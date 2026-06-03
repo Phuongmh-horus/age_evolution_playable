@@ -6,6 +6,8 @@ namespace GamePlay.Effects
     public class DebrisBlock : MonoBehaviour
     {
         private static readonly int ColorProp = Shader.PropertyToID("_Color");
+        private static readonly System.Collections.Generic.List<DebrisBlock> s_activeBlocks =
+            new System.Collections.Generic.List<DebrisBlock>(64);
 
         public MeshRenderer meshRenderer;
 
@@ -20,9 +22,40 @@ namespace GamePlay.Effects
 
         private MaterialPropertyBlock _propBlock;
         private bool _simulating;
+        private bool _registeredForTick;
         private Vector3 _currentVelocity;
         private Vector3 _currentPosition;
         private float _elapsedTime;
+
+        public static void TickActiveBlocks(float dt)
+        {
+            if (s_activeBlocks.Count == 0) return;
+
+            for (int i = s_activeBlocks.Count - 1; i >= 0; i--)
+            {
+                var block = s_activeBlocks[i];
+                if (block == null || !block._simulating || !block.gameObject.activeInHierarchy)
+                {
+                    if (block != null) block._registeredForTick = false;
+                    RemoveAtSwapBack(i);
+                    continue;
+                }
+
+                if (block.Step(dt))
+                {
+                    continue;
+                }
+
+                block._registeredForTick = false;
+                RemoveAtSwapBack(i);
+            }
+        }
+
+        public static void ClearActiveBlocks()
+        {
+            s_activeBlocks.Clear();
+            s_activeBlocks.TrimExcess();
+        }
 
         public void SetColor(Color color)
         {
@@ -51,7 +84,7 @@ namespace GamePlay.Effects
             _currentVelocity = _initialVelocity;
             _currentPosition = _startPosition;
             _simulating = true;
-            enabled = true;
+            RegisterActiveBlock();
         }
 
         private bool Step(float dt)
@@ -97,16 +130,9 @@ namespace GamePlay.Effects
             return false;
         }
 
-        private void Update()
-        {
-            if (!_simulating) return;
-            Step(Time.unscaledDeltaTime);
-        }
-
         private void StopSimulation()
         {
             _simulating = false;
-            enabled = false;
         }
 
         private void OnDisable()
@@ -117,6 +143,22 @@ namespace GamePlay.Effects
         private void OnDestroy()
         {
             StopSimulation();
+        }
+
+        private void RegisterActiveBlock()
+        {
+            if (_registeredForTick) return;
+            _registeredForTick = true;
+            s_activeBlocks.Add(this);
+        }
+
+        private static void RemoveAtSwapBack(int index)
+        {
+            int last = s_activeBlocks.Count - 1;
+            if (index < 0 || index > last) return;
+
+            s_activeBlocks[index] = s_activeBlocks[last];
+            s_activeBlocks.RemoveAt(last);
         }
     }
 }

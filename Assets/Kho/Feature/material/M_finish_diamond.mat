@@ -8,15 +8,16 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_finish_diamond
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 124e8c1d64ac24c13aa406f05ca2d222, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _SPECULARHIGHLIGHTS_OFF
+  - DIFFUSE
+  - FOG
+  - _LIGHTMAPUV_UV1
   m_InvalidKeywords:
   - AMBIENT
   - ANIME_SOFT
-  - FOG
   - MATCAP_PERSPECTIVE
   - OUTLINE_PASS_DISABLED
   - REFLECTION
@@ -34,7 +35,6 @@ Material:
   - _LAYER2UV_UV1
   - _LAYER3BLEND_ALPHA_BLEND
   - _LAYER3UV_UV1
-  - _LIGHTMAPUV_UV1
   - _MATCAPBLEND_MULTIPLY
   - _NORMALUV2_UV1
   - _NORMALUV_UV1
@@ -110,7 +110,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 2800000, guid: ab19a103b7751814aad28ec0747ef696, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
@@ -166,7 +166,7 @@ Material:
     - _AnimeThreshold1: 0.45
     - _AnimeThreshold2: 0.85
     - _BlendOp: 0
-    - _Brightness: 1.2
+    - _Brightness: 5
     - _BumpScale: 1
     - _CameraFadeEnd: 0
     - _CameraFadeStart: 0
@@ -174,7 +174,7 @@ Material:
     - _CameraFarFadeDistance: 2
     - _CameraNearFadeDistance: 1
     - _ColorMode: 0
-    - _Contrast: 1
+    - _Contrast: 1.05
     - _Cull: 2
     - _Cutoff: 0.5
     - _Cutout: 0
@@ -187,11 +187,11 @@ Material:
     - _DetailNormalMapScale: 1
     - _DetailUV: 0
     - _DetailVertexColors: 0
-    - _Diffuse: 0
-    - _DiffuseBrightness: 1
-    - _DiffuseContrast: 1
+    - _Diffuse: 1
+    - _DiffuseBrightness: 4
+    - _DiffuseContrast: 2
     - _DiffusePerPixel: 0
-    - _DiffuseWrap: 0.5
+    - _DiffuseWrap: 1
     - _DissolveAmount: 0
     - _DissolveBurnSize: 0.1
     - _DissolveEnabled: 0
@@ -278,7 +278,7 @@ Material:
     - _RimBlend: 0
     - _RimContrast: 10
     - _RimInverse: 0
-    - _Saturation: 1
+    - _Saturation: 0.728
     - _ShadowOverlayAnimation: 0
     - _ShadowOverlayBrightness: 1
     - _ShadowOverlaySpeedU: 0.1
@@ -293,7 +293,7 @@ Material:
     - _Specular: 1
     - _SpecularBrightness: 5
     - _SpecularHair: 0
-    - _SpecularHighlights: 0
+    - _SpecularHighlights: 1
     - _SpecularSmoothness: 20
     - _SpecularUV: 0
     - _SrcBlend: 1
@@ -333,7 +333,7 @@ Material:
     - _AnimeColor2: {r: 1.35, g: 1.35, b: 1.35, a: 1}
     - _AnimeColor3: {r: 2, g: 2, b: 2, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1, g: 0, b: 0.8156863, a: 1}
+    - _Color: {r: 0.9433962, g: 0, b: 0.7621162, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveBurnColor: {r: 0.09999997, g: 0.09999997, b: 0.09999997, a: 1}
@@ -345,7 +345,7 @@ Material:
     - _Layer1Color: {r: 1, g: 1, b: 1, a: 1}
     - _Layer2Color: {r: 1, g: 1, b: 1, a: 1}
     - _Layer3Color: {r: 1, g: 1, b: 1, a: 1}
-    - _LightmapColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightmapColor: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
     - _MatCapRot: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}

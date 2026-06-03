@@ -46,9 +46,16 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     [SerializeField] private float scaleUpDuration = 0.1f;
     [SerializeField] private float scaleDownDuration = 0.2f;
 
+    [Header("Despawn Scale FX")]
+    [SerializeField] private bool ensureDespawnScaleEffect = true;
+    [SerializeField, Min(1f)] private float despawnScaleMultiplier = 1.08f;
+    [SerializeField, Min(0.01f)] private float despawnExpandDuration = 0.06f;
+    [SerializeField, Min(0.01f)] private float despawnShrinkDuration = 0.12f;
+
     [Header("Hit Fly Text")]
     [SerializeField] private HitTextFlyEffect hitTextFlyEffect;
     [SerializeField] private HitComponent hitComponent;
+    [SerializeField] private EffectType nonWheelHitEffectType = EffectType.Hit;
 
     [Header("Chain")]
     [SerializeField] private bool isChainedPillar = false;
@@ -73,12 +80,14 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private bool _ignoreBrickCallbacks;
     private float _nextVisualSpawnTime;
     private bool _warnedMissingChain;
-    private int _lastBreakFxFrame = -1;
+    private int _lastHitFxFrame = -1;
     private readonly StatModifierCapacityData _capacityGainData = new StatModifierCapacityData();
     private readonly List<Stack<BrickLayer>> _replacementLayerPools = new List<Stack<BrickLayer>>(8);
 
     private void Awake()
     {
+        EnsureDespawnScaleEffect();
+
         if (_entityType == GamePlay.Entities.EntityType.None || _entityType == GamePlay.Entities.EntityType.Item)
         {
             _entityType = GamePlay.Entities.EntityType.ResourceTower;
@@ -92,7 +101,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     {
         _nextReplacementIndex = 0;
         EnsureReplacementLayerPools();
-        _lastBreakFxFrame = -1;
+        _lastHitFxFrame = -1;
 
         SetupChainFromData();
 
@@ -116,13 +125,13 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private void OnEnable()
     {
         _ignoreBrickCallbacks = false;
-        _lastBreakFxFrame = -1;
+        _lastHitFxFrame = -1;
     }
 
     public override void Initialize()
     {
         _entityType = GamePlay.Entities.EntityType.ResourceTower;
-        _lastBreakFxFrame = -1;
+        _lastHitFxFrame = -1;
 
         var hitComp = hitComponent;
         if (hitComp != null)
@@ -220,6 +229,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
             return;
         }
 
+        PlayNonWheelHitEffect();
         Pack.Healable?.TakeDamage(source);
 
         if (brickLayer == null) return;
@@ -238,7 +248,6 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
             return;
         }
 
-        PlayScalePulse();
         base.HandleWheelCollision();
     }
 
@@ -248,19 +257,31 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
         chain.ApplyDamage();
         hitTextFlyEffect?.OnHit(Mathf.Max(1, shownDamage));
+        PlayNonWheelHitEffect();
         if (Data != null)
             Data.Armor = Mathf.Max(0, chain.RemainingHealth);
 
         if (chain.RemainingHealth < 1)
         {
             chain.PlayBreakAnimation();
-            if (_lastBreakFxFrame != Time.frameCount)
-            {
-                _lastBreakFxFrame = Time.frameCount;
-                Pack.Effector?.PlayEffect(EffectType.Hit);
-            }
             isChainedPillar = false;
         }
+    }
+
+    private void PlayNonWheelHitEffect()
+    {
+        if (nonWheelHitEffectType == EffectType.None)
+        {
+            return;
+        }
+
+        if (_lastHitFxFrame == Time.frameCount)
+        {
+            return;
+        }
+
+        _lastHitFxFrame = Time.frameCount;
+        Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position, Quaternion.identity, transform);
     }
 
     private void SetupChainFromData()
@@ -410,6 +431,17 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         _scaleStage = 1;
         _scaleTimer = 0f;
         _baseScale = transform.localScale;
+    }
+
+    private void StopScalePulse()
+    {
+        _scaleStage = 0;
+        _scaleTimer = 0f;
+
+        if (_originalScale != Vector3.zero)
+        {
+            transform.localScale = _originalScale;
+        }
     }
 
     private void Update()
@@ -632,8 +664,32 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
             hitTextFlyEffect = gameObject.AddComponent<HitTextFlyEffect>();
     }
 
+    private void EnsureDespawnScaleEffect()
+    {
+        if (!ensureDespawnScaleEffect) return;
+
+        if (deathScaleEffect == null)
+        {
+            deathScaleEffect = GetComponent<DeathScaleEffect>();
+        }
+
+        if (deathScaleEffect == null)
+        {
+            deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
+        }
+
+        if (deathScaleEffect.Transform == null)
+        {
+            deathScaleEffect.Transform = transform;
+        }
+
+        deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
+    }
+
     protected override void DespawnInterval()
     {
+        StopScalePulse();
+        EnsureDespawnScaleEffect();
         base.DespawnInterval();
     }
 

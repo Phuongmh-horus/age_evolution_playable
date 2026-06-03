@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using GamePlay.ComponentSystems;
 
 public class UICapacityBar : MonoBehaviour
 {
@@ -29,8 +30,9 @@ public class UICapacityBar : MonoBehaviour
     [SerializeField] private float vfxBatchWindow = 0.06f;
     [SerializeField] private bool enableVfx = false;
 
-    [Header("Sound Effects")]
-    [SerializeField] private AudioClipName levelUpSfx = AudioClipName.None;
+    [Header("Upgrade Feedback")]
+    [SerializeField] private EffectComponent upgradeEffectComponent;
+    [SerializeField] private AudioClipName fallbackUpgradeSfx = AudioClipName.SFX_Ingame_Capacity_LevelUp;
 
     private int _previousLevel = -1;
     private int _previousPoints = -1;
@@ -72,6 +74,7 @@ public class UICapacityBar : MonoBehaviour
     private void Awake()
     {
         if (canvas == null) canvas = GetComponentInParent<Canvas>();
+        ResolveUpgradeEffectComponent();
     }
 
     private void OnEnable()
@@ -240,6 +243,11 @@ public class UICapacityBar : MonoBehaviour
                 currentLevel.text = currentCapacity.ToString();
                 nextLevel.text = nextCapacity.ToString();
 
+                if (!_isFirstSetup && currentCapacity > _previousLevel)
+                {
+                    TriggerUpgradeFeedback();
+                }
+
                 if (_isFirstSetup || currentCapacity != _previousLevel || currentPoints < _previousPoints)
                 {
                     // Level-up or reset: snap instantly to current progress.
@@ -257,6 +265,35 @@ public class UICapacityBar : MonoBehaviour
             }
             _isFirstSetup = false;
         }
+    }
+
+    private void TriggerUpgradeFeedback()
+    {
+        var effectComponent = ResolveUpgradeEffectComponent();
+        if (effectComponent != null)
+        {
+            Transform target = capacityBarTransform != null ? capacityBarTransform : transform;
+            effectComponent.PlayEffect(EffectType.Upgrade, target.position, target.rotation, target, 0f);
+            return;
+        }
+
+        if (fallbackUpgradeSfx != AudioClipName.None &&
+            SoundManager.Instance != null &&
+            SoundManager.Instance.TryPlayOneShot(fallbackUpgradeSfx))
+        {
+            // Keep the legacy gameplay-side visual fallback even when audio is played globally.
+        }
+
+        GameplayManager.Instance?.RunUpgradeEffect();
+    }
+
+    private EffectComponent ResolveUpgradeEffectComponent()
+    {
+        if (upgradeEffectComponent != null)
+            return upgradeEffectComponent;
+
+        upgradeEffectComponent = GetComponentInChildren<EffectComponent>(true);
+        return upgradeEffectComponent;
     }
 
     private GamePlayVariable ResolveGamePlayVariable()

@@ -12,6 +12,7 @@ namespace GamePlay.ComponentSystems
         Attack = 10,
         Die = 12,
         Hit = 14,
-        Break = 16
+        Break = 16,
+        Upgrade = 18,
     }
 }

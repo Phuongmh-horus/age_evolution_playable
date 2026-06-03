@@ -19,6 +19,7 @@ namespace GamePlay.ComponentSystems
 
             [Header("SFX (Optional)")]
             public AudioClip SfxClip;
+            public bool LoopSfx;
 
             [Header("Timing")]
             [Tooltip("If > 0 then onComplete is invoked after this delay.")]
@@ -31,12 +32,14 @@ namespace GamePlay.ComponentSystems
         private readonly Dictionary<EffectType, EffectEntry> _runtime = new Dictionary<EffectType, EffectEntry>();
         private static readonly Dictionary<int, TimedAutoDisable> s_timedAutoDisableCache = new Dictionary<int, TimedAutoDisable>(128);
         private static readonly Dictionary<int, ParticleSystem[]> s_particleSystemsCache = new Dictionary<int, ParticleSystem[]>(128);
+        private static readonly Dictionary<int, bool> s_uiVfxPrefabCache = new Dictionary<int, bool>(64);
         private Coroutine _waitRoutine;
         private bool _cacheBuilt;
+        private EffectType _activeLoopingEffectType = EffectType.None;
+        private AudioClip _activeLoopingClip;
 
         [Header("Audio (Optional)")]
         [SerializeField] private AudioSource audioSource;
-        [SerializeField] private bool useGlobalSoundManagerFallback = true;
 #if UNITY_EDITOR
         [SerializeField] private bool warnIfNoAudioRouteInEditor = false;
         private bool _warnedMissingAudioRoute;
@@ -47,6 +50,11 @@ namespace GamePlay.ComponentSystems
             base.Awake();
             ResolveAudioSource(logIfMissingInEditor: false);
             BuildCache();
+        }
+
+        private void OnDisable()
+        {
+            StopActiveLoopingSfx();
         }
 
 #if UNITY_EDITOR
@@ -75,6 +83,7 @@ namespace GamePlay.ComponentSystems
                 _waitRoutine = null;
             }
 
+            StopActiveLoopingSfx();
             _runtime.Clear();
             _cacheBuilt = false;
         }
@@ -93,12 +102,31 @@ namespace GamePlay.ComponentSystems
             if (!warnIfNoAudioRouteInEditor) return;
             if (_warnedMissingAudioRoute) return;
 
-            if (audioSource == null && !useGlobalSoundManagerFallback)
+            if (audioSource == null)
             {
                 _warnedMissingAudioRoute = true;
-                Debug.LogWarning($"[EffectComponent] {name} has no AudioSource and global fallback is disabled.");
+                Debug.LogWarning($"[EffectComponent] {name} has no AudioSource for SFX playback.");
             }
 #endif
+        }
+
+        private AudioSource ResolveOrCreateAudioSource()
+        {
+            if (audioSource != null)
+            {
+                return audioSource;
+            }
+
+            ResolveAudioSource(logIfMissingInEditor: false);
+            if (audioSource != null)
+            {
+                return audioSource;
+            }
+
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.loop = false;
+            return audioSource;
         }
 
         private void BuildCache()
@@ -133,12 +161,13 @@ namespace GamePlay.ComponentSystems
                 bool hasEntry = _runtime.TryGetValue(effectType, out var entry) && entry != null;
                 if (hasEntry)
                 {
-                    ExecuteEffect(entry, position, rotation, parent);
+                    ExecuteEffect(effectType, entry, position, rotation, parent);
 
                     if (waitForAction <= 0f)
                         waitForAction = entry.WaitForAction;
                 }
-                else if (onComplete == null)
+
+                if (!hasEntry && onComplete == null)
                 {
                     return;
                 }
@@ -189,46 +218,185 @@ namespace GamePlay.ComponentSystems
             }
         }
 
-        private void ExecuteEffect(EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
+        public void StopEffect(EffectType effectType)
         {
-            if (entry.VfxPrefab != null)
+            if (effectType == EffectType.None)
             {
-                Transform targetParent = null;
-                if (entry.ParentToTarget)
-                    targetParent = parent != null ? parent : CacheTransform;
-
-                bool hasParticles = HasParticleSystems(entry.VfxPrefab);
-
-                GameObject vfx = SafePoolGet(entry.VfxPrefab);
-                if (vfx != null)
-                {
-                    vfx.transform.SetParent(targetParent, false);
-                    vfx.transform.position = position;
-                    vfx.transform.rotation = rotation;
-                    vfx.SetActive(true);
-
-                    if (hasParticles && PoolManager.Instance != null)
-                    {
-                        float lifeTime = GetParticleLifetime(vfx);
-                        if (lifeTime > 0f)
-                        {
-                            var autoDisable = GetOrAddTimedAutoDisable(vfx);
-                            autoDisable?.Play(lifeTime);
-                        }
-                    }
-                }
-            }
-
-            if (entry.SfxClip == null) return;
-
-            if (audioSource != null)
-            {
-                audioSource.PlayOneShot(entry.SfxClip);
                 return;
             }
 
-            if (useGlobalSoundManagerFallback && SoundManager.Instance != null)
-                SoundManager.Instance.PlayOneShot(entry.SfxClip);
+            if (_activeLoopingEffectType != effectType)
+            {
+                return;
+            }
+
+            StopActiveLoopingSfx();
+        }
+
+        private void ExecuteEffect(EffectType effectType, EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
+        {
+            PlayVfx(entry, position, rotation, parent);
+
+            if (entry.SfxClip == null) return;
+
+            if (entry.LoopSfx)
+            {
+                var loopAudioSource = ResolveOrCreateAudioSource();
+                if (loopAudioSource == null)
+                {
+                    return;
+                }
+
+                if (_activeLoopingEffectType == effectType &&
+                    _activeLoopingClip == entry.SfxClip &&
+                    loopAudioSource.isPlaying &&
+                    loopAudioSource.loop)
+                {
+                    return;
+                }
+
+                StopActiveLoopingSfx();
+                loopAudioSource.clip = entry.SfxClip;
+                loopAudioSource.loop = true;
+                loopAudioSource.Play();
+                _activeLoopingEffectType = effectType;
+                _activeLoopingClip = entry.SfxClip;
+                return;
+            }
+
+            if (audioSource == null)
+            {
+                SoundManager.Instance?.PlayOneShot(entry.SfxClip);
+                return;
+            }
+
+            audioSource.PlayOneShot(entry.SfxClip);
+        }
+
+        private void PlayVfx(EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
+        {
+            if (entry == null || entry.VfxPrefab == null)
+            {
+                return;
+            }
+
+            try
+            {
+                bool isUiVfx = IsUiVfxPrefab(entry.VfxPrefab);
+                Transform targetParent = ResolveVfxParent(entry, parent, isUiVfx);
+                GameObject vfx = SafePoolGet(entry.VfxPrefab);
+                if (vfx == null)
+                {
+                    return;
+                }
+
+                vfx.transform.SetParent(targetParent, false);
+                vfx.transform.position = position;
+                vfx.transform.rotation = rotation;
+                vfx.SetActive(true);
+
+                var particles = GetCachedParticleSystems(vfx);
+                if (particles == null || particles.Length == 0)
+                {
+                    return;
+                }
+
+                float lifeTime = GetParticleLifetime(vfx);
+                if (lifeTime > 0f)
+                {
+                    var autoDisable = GetOrAddTimedAutoDisable(vfx);
+                    autoDisable?.Play(lifeTime);
+                    return;
+                }
+
+                PlayParticles(particles);
+            }
+            catch
+            {
+                // VFX setup is non-critical; keep SFX/gameplay flow alive.
+            }
+        }
+
+        private Transform ResolveVfxParent(EffectEntry entry, Transform parent, bool isUiVfx)
+        {
+            if (entry.ParentToTarget)
+            {
+                return parent != null ? parent : CacheTransform;
+            }
+
+            if (!isUiVfx)
+            {
+                return null;
+            }
+
+            return ResolveCanvasTransform(parent) ?? ResolveCanvasTransform(CacheTransform);
+        }
+
+        private static Transform ResolveCanvasTransform(Transform source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var canvas = source.GetComponentInParent<Canvas>();
+            return canvas != null ? canvas.transform : null;
+        }
+
+        private static bool IsUiVfxPrefab(GameObject prefab)
+        {
+            if (prefab == null)
+            {
+                return false;
+            }
+
+            int key = prefab.GetInstanceID();
+            if (s_uiVfxPrefabCache.TryGetValue(key, out bool cached))
+            {
+                return cached;
+            }
+
+            cached = prefab.transform is RectTransform ||
+                     prefab.GetComponentInChildren<CanvasRenderer>(true) != null;
+            s_uiVfxPrefabCache[key] = cached;
+            return cached;
+        }
+
+        private static void PlayParticles(ParticleSystem[] particles)
+        {
+            for (int i = 0; i < particles.Length; i++)
+            {
+                var ps = particles[i];
+                if (ps == null) continue;
+                ps.Clear();
+                ps.Play(true);
+            }
+        }
+
+        private void StopActiveLoopingSfx()
+        {
+            if (audioSource != null)
+            {
+                if (_activeLoopingEffectType != EffectType.None &&
+                    audioSource.isPlaying &&
+                    audioSource.loop)
+                {
+                    audioSource.Stop();
+                }
+
+                if (audioSource.loop)
+                {
+                    audioSource.loop = false;
+                }
+
+                if (_activeLoopingClip != null && audioSource.clip == _activeLoopingClip)
+                {
+                    audioSource.clip = null;
+                }
+            }
+
+            _activeLoopingEffectType = EffectType.None;
+            _activeLoopingClip = null;
         }
 
         private static TimedAutoDisable GetOrAddTimedAutoDisable(GameObject vfxObject)

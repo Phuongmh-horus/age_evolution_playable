@@ -245,6 +245,11 @@ public class LunaUIManager : MonoBehaviour
         {
             endcardCanvasGroup = endcardRoot.AddComponent<CanvasGroup>();
         }
+        // Ensure the endcard root is clickable: add EndcardClickHandler if missing
+        if (endcardRoot.GetComponent<EndcardClickHandler>() == null)
+        {
+            endcardRoot.AddComponent<EndcardClickHandler>();
+        }
     }
 
     private IEnumerator FadeInEndcard()

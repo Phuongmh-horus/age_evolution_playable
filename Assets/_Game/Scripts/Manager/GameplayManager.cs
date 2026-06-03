@@ -238,6 +238,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
         DeathScaleEffect.TickActiveEffects(dt);
         BrickFallMotion.TickActiveMotions(dt);
         CurrencyDropItem.TickActiveDrops(dt);
+        DebrisBlock.TickActiveBlocks(dt);
         if (!IsGameStarted) return;
 
         OscillationSystem.Instance?.ManualUpdate();
@@ -246,7 +247,38 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
 
     public void RunUpgradeEffect()
     {
-        ActiveArmy.PlayEffect(EffectType.Land, ActiveArmy.transform);
+        if (ActiveArmy == null)
+        {
+            return;
+        }
+
+        ActiveArmy.PlayEffect(EffectType.Upgrade, ActiveArmy.transform);
+    }
+
+    public void RunUpgradeEffect(Transform anchor)
+    {
+        if (ActiveArmy == null)
+        {
+            return;
+        }
+
+        if (anchor == null)
+        {
+            RunUpgradeEffect();
+            return;
+        }
+
+        ActiveArmy.PlayEffectAt(EffectType.Upgrade, anchor.position, anchor.rotation, anchor);
+    }
+
+    public void RunUpgradeEffectAt(Vector3 position, Transform parent = null)
+    {
+        if (ActiveArmy == null)
+        {
+            return;
+        }
+
+        ActiveArmy.PlayEffectAt(EffectType.Upgrade, position, Quaternion.identity, parent);
     }
 
     // Stub removed to allow generic ChangeStatModifierData to handle EvolutionPoint logic.
@@ -276,6 +308,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
     {
         CurrencyDropItem.ClearActiveDrops();
         DeathScaleEffect.ClearAll();
+        DebrisBlock.ClearActiveBlocks();
     }
 
     private IEnumerator CoLoadPlayableLevel()

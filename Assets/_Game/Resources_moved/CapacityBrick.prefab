@@ -116,8 +116,8 @@ MonoBehaviour:
   scaleDown: 0.9
   scaleStageDuration: 0.08
   brickWidth: 0.8
-  brickLength: 0.5
-  brickHeight: 0.5
+  brickLength: 0.6
+  brickHeight: 0.6
   brickFallMotion: {fileID: 935432575755178556}
   isActivated: 0
 --- !u!114 &935432575755178556

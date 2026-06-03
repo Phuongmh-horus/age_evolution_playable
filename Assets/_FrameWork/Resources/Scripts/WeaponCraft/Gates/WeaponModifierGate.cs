@@ -32,6 +32,7 @@ namespace WeaponCraft
 
         [Header("Effect Component")]
         [SerializeField] private EffectComponent effectComponent;
+        [SerializeField] private EffectType nonWheelHitEffectType = EffectType.Break;
 
         [Header("Health Component")]
         [SerializeField] private HealthComponent healthComponent;
@@ -41,15 +42,23 @@ namespace WeaponCraft
         [SerializeField] private float scaleUpDuration = 0.08f;
         [SerializeField] private float scaleDownDuration = 0.15f;
 
+        [Header("Despawn Scale FX")]
+        [SerializeField] private bool ensureDespawnScaleEffect = true;
+        [SerializeField, Min(1f)] private float despawnScaleMultiplier = 1.08f;
+        [SerializeField, Min(0.01f)] private float despawnExpandDuration = 0.06f;
+        [SerializeField, Min(0.01f)] private float despawnShrinkDuration = 0.12f;
+
         private Vector3 _originalScale;
         private Coroutine _scalePulseRoutine;
         private int _lastScalePulseFrame = -1;
         private bool _awaitingCraftReset;
         private int _lastBreakFxFrame = -1;
+        private int _lastHitFxFrame = -1;
 
         protected void Awake()
         {
             _progressMpb = new MaterialPropertyBlock();
+            EnsureDespawnScaleEffect();
 
             if (_entityType == GamePlay.Entities.EntityType.None)
             {
@@ -121,6 +130,7 @@ namespace WeaponCraft
 
             _awaitingCraftReset = false;
             _lastBreakFxFrame = -1;
+            _lastHitFxFrame = -1;
             _valueCollect = 0;
             _countCollect = 0;
             _originalScale = transform.localScale;
@@ -236,13 +246,13 @@ namespace WeaponCraft
         protected override void HandleWheelCollision()
         {
             CraftStoredReward();
-            PlayScalePulse();
             base.HandleWheelCollision();
             Pack.Effector?.PlayEffect(EffectType.Land, transform.position, Quaternion.identity);
         }
 
         protected override void HandleNonWheelCollision(IAttacker source)
         {
+            PlayNonWheelHitEffect();
             ApplyDamageAcrossProgressCycles(source);
             if (source != null)
             {
@@ -255,7 +265,9 @@ namespace WeaponCraft
         {
             if (current <= 0)
             {
-                bool canPlayBreakFx = !_awaitingCraftReset && _lastBreakFxFrame != Time.frameCount;
+                bool canPlayBreakFx = !_awaitingCraftReset &&
+                                      _lastBreakFxFrame != Time.frameCount &&
+                                      _lastHitFxFrame != Time.frameCount;
                 _awaitingCraftReset = true;
                 if (canPlayBreakFx)
                 {
@@ -386,6 +398,36 @@ namespace WeaponCraft
             _scalePulseRoutine = null;
         }
 
+        private void StopScalePulse()
+        {
+            if (_scalePulseRoutine != null)
+            {
+                StopCoroutine(_scalePulseRoutine);
+                _scalePulseRoutine = null;
+            }
+
+            if (transform != null && _originalScale != Vector3.zero)
+            {
+                transform.localScale = _originalScale;
+            }
+        }
+
+        private void PlayNonWheelHitEffect()
+        {
+            if (nonWheelHitEffectType == EffectType.None)
+            {
+                return;
+            }
+
+            if (_lastHitFxFrame == Time.frameCount)
+            {
+                return;
+            }
+
+            _lastHitFxFrame = Time.frameCount;
+            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position, Quaternion.identity, transform);
+        }
+
         private void CraftStoredReward()
         {
             if (Data == null)
@@ -491,6 +533,35 @@ namespace WeaponCraft
             {
                 hitTextFlyEffect = gameObject.AddComponent<HitTextFlyEffect>();
             }
+        }
+
+        private void EnsureDespawnScaleEffect()
+        {
+            if (!ensureDespawnScaleEffect) return;
+
+            if (deathScaleEffect == null)
+            {
+                deathScaleEffect = GetComponent<DeathScaleEffect>();
+            }
+
+            if (deathScaleEffect == null)
+            {
+                deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
+            }
+
+            if (deathScaleEffect.Transform == null)
+            {
+                deathScaleEffect.Transform = transform;
+            }
+
+            deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
+        }
+
+        protected override void DespawnInterval()
+        {
+            StopScalePulse();
+            EnsureDespawnScaleEffect();
+            base.DespawnInterval();
         }
     }
 }

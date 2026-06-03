@@ -179,11 +179,7 @@ public static class PoolSystem
     {
         if (_root != null) return _root;
 
-        var rootGo = GameObject.Find(RootName);
-        if (rootGo == null)
-        {
-            rootGo = new GameObject(RootName);
-        }
+        var rootGo = new GameObject(RootName);
         _root = rootGo.transform;
         return _root;
     }

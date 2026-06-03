@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5596688023177819721}
   - component: {fileID: 16920303580411128}
   - component: {fileID: 4191607503265218018}
+  - component: {fileID: 6950826998701772421}
   m_Layer: 0
   m_Name: PlayerArmy
   m_TagString: Untagged
@@ -50,7 +51,6 @@ MonoBehaviour:
   poolEntity: {fileID: 0}
   effects: []
   audioSource: {fileID: 0}
-  useGlobalSoundManagerFallback: 1
   warnIfNoAudioRouteInEditor: 0
 --- !u!114 &16920303580411128
 MonoBehaviour:
@@ -87,7 +87,7 @@ MonoBehaviour:
   collisionCheckRangeZ: 25
   collisionSize: {x: 3, y: 3}
   characterList: {fileID: 11400000, guid: a0a4046a522e97b4ca8b615cafd20aa6, type: 2}
-  fallbackCharacterLevel: 4
+  fallbackCharacterLevel: 2
   maxActiveSpawnedUnits: 17
   unitSpacing: 1.3
   attackMode: 2
@@ -100,7 +100,30 @@ MonoBehaviour:
   projectileDuration: 0.55
   projectileRotationSpeed: -600
   unitscalevalue: 1.35
-  weaponProjectilePrefab: {fileID: 1917486832313472047, guid: f30a6f86236169c47a7020f977500093, type: 3}
+  weaponProjectilePrefab: {fileID: 1917486832313472047, guid: 4205ffad0c396b94e97730afa3439b2d, type: 3}
   inputManager: {fileID: 0}
   effectSystem: {fileID: 16920303580411128}
   characterUnits: []
+--- !u!114 &6950826998701772421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2817626840353155447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d25183edf72403999233d1b63044158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CacheTransform: {fileID: 4003252130411642508}
+  poolEntity: {fileID: 0}
+  effects:
+  - Type: 18
+    VfxPrefab: {fileID: 0}
+    ParentToTarget: 0
+    SfxClip: {fileID: 8300000, guid: 75c45c355dfab1b47942ec7cd7403222, type: 3}
+    LoopSfx: 0
+    WaitForAction: 0
+  audioSource: {fileID: 0}
+  warnIfNoAudioRouteInEditor: 0

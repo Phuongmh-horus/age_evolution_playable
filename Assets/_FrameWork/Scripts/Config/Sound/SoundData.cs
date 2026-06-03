@@ -31,4 +31,6 @@ public enum AudioClipName
     SFX_Firework,
     SFX_TowerDestroy,
     SFX_RateUs,
+    SFX_Coin_Skill,
+    SFX_Merge_Weapon,
 }

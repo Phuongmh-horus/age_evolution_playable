@@ -171,7 +171,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2627334442723137350}
-  m_Mesh: {fileID: -1383920744791520859, guid: 6750f08c42eb8fa4fb188497223a6e31, type: 3}
+  m_Mesh: {fileID: -6958246651047926773, guid: a66442b6eb5cbf040a23769bba14e3b0, type: 3}
 --- !u!23 &1386467290307154056
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -408,7 +408,7 @@ MonoBehaviour:
   healthComponent: {fileID: 8145146069618088512}
   healthTextPrefab: {fileID: 6512158636180351403, guid: efb62b88426edc84bb45da017ef8622a, type: 3}
   autoResolveHealthComponent: 1
-  defaultTextPrefabResourcePath: SpawnableObject/HitDamage
+  defaultTextPrefabResourcePath: Prefabs/HitDamage
   flyUpDistance: 2
   flyUpDuration: 0.25
   fallDownDistance: 2.5
@@ -452,13 +452,13 @@ MonoBehaviour:
   CacheTransform: {fileID: 6326261627148179680}
   poolEntity: {fileID: 7105555401399310678}
   effects:
-  - Type: 0
-    VfxPrefab: {fileID: 0}
+  - Type: 16
+    VfxPrefab: {fileID: 462670460786600360, guid: 285fb53922afad341b016d11032d75ea, type: 3}
     ParentToTarget: 1
     SfxClip: {fileID: 0}
+    LoopSfx: 0
     WaitForAction: 0.5
   audioSource: {fileID: 4381953799355293058}
-  useGlobalSoundManagerFallback: 1
   warnIfNoAudioRouteInEditor: 0
 --- !u!1 &8175599326623458713
 GameObject:

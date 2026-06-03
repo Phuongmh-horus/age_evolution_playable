@@ -39,6 +39,12 @@ namespace WeaponCraft
         [SerializeField] private float scaleUpDuration = 0.08f;
         [SerializeField] private float scaleDownDuration = 0.15f;
 
+        [Header("Despawn Scale FX")]
+        [SerializeField] private bool ensureDespawnScaleEffect = true;
+        [SerializeField, Min(1f)] private float despawnScaleMultiplier = 1.08f;
+        [SerializeField, Min(0.01f)] private float despawnExpandDuration = 0.06f;
+        [SerializeField, Min(0.01f)] private float despawnShrinkDuration = 0.12f;
+
         private Vector3 _originalScale;
         private Coroutine _scalePulseRoutine;
         private int _lastScalePulseFrame = -1;
@@ -48,6 +54,7 @@ namespace WeaponCraft
         protected void Awake()
         {
             _progressMpb = new MaterialPropertyBlock();
+            EnsureDespawnScaleEffect();
 
             if (_entityType == GamePlay.Entities.EntityType.None)
             {
@@ -242,7 +249,6 @@ namespace WeaponCraft
 
         protected override void HandleWheelCollision()
         {
-            PlayScalePulse();
             CashOutGold();
             DespawnInterval();
             Pack.Effector?.PlayEffect(EffectType.Land);
@@ -402,6 +408,20 @@ namespace WeaponCraft
             _scalePulseRoutine = null;
         }
 
+        private void StopScalePulse()
+        {
+            if (_scalePulseRoutine != null)
+            {
+                StopCoroutine(_scalePulseRoutine);
+                _scalePulseRoutine = null;
+            }
+
+            if (transform != null && _originalScale != Vector3.zero)
+            {
+                transform.localScale = _originalScale;
+            }
+        }
+
         private void CashOutGold()
         {
             var gameplayManager = GameplayManager.Instance;
@@ -449,6 +469,35 @@ namespace WeaponCraft
             {
                 hitTextFlyEffect = gameObject.AddComponent<HitTextFlyEffect>();
             }
+        }
+
+        private void EnsureDespawnScaleEffect()
+        {
+            if (!ensureDespawnScaleEffect) return;
+
+            if (deathScaleEffect == null)
+            {
+                deathScaleEffect = GetComponent<DeathScaleEffect>();
+            }
+
+            if (deathScaleEffect == null)
+            {
+                deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
+            }
+
+            if (deathScaleEffect.Transform == null)
+            {
+                deathScaleEffect.Transform = transform;
+            }
+
+            deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
+        }
+
+        protected override void DespawnInterval()
+        {
+            StopScalePulse();
+            EnsureDespawnScaleEffect();
+            base.DespawnInterval();
         }
 
         private void ApplyDamageAcrossProgressCycles(IAttacker source)

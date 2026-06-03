@@ -9,7 +9,7 @@ public class HitTextFlyEffect : MonoBehaviour
     [SerializeField] private GamePlay.HealthSystems.HealthComponent healthComponent;
     [SerializeField] private TMP_Text healthTextPrefab;
     [SerializeField] private bool autoResolveHealthComponent = true;
-    [SerializeField] private string defaultTextPrefabResourcePath = "SpawnableObject/HitDamage";
+    [SerializeField] private string defaultTextPrefabResourcePath = "Prefabs/HitDamage";
     [SerializeField] private float flyUpDistance = 2f;
     [SerializeField] private float flyUpDuration = 0.25f;
     [SerializeField] private float fallDownDistance = 2.5f;

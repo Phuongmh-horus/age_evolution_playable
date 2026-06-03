@@ -2,7 +2,7 @@
     "version": "7.0.0",
     "projectId": "63ccf8777b0e90446b06eab6c8eae0c6",
     "applicationID": 38068,
-    "creativeName": "AE_t4_a5_thuasom",
+    "creativeName": "AE_t4_a5_thang",
     "pgServer": "EU",
     "window": {
         "‐⁏": true
@@ -327,7 +327,10 @@
                 "Stubs/AppsFlyer",
                 "Stubs/IronSource",
                 "Stubs/Vungle",
-                "Stubs/MoreMountains.NiceVibrations"
+                "Stubs/MoreMountains.NiceVibrations",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v3.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v1.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v2.prefab"
             ],
             "includes": [
                 "Assets/Kho/Feature/material/M_pluspeople_lock.mat",
@@ -6311,7 +6314,7 @@
             },
             {
                 "name": "UnityEngine.MotionVectorGenerationMode",
-                "excluded": true
+                "excluded": false
             },
             {
                 "name": "UnityEngine.NativeFallbackException",
@@ -9310,7 +9313,35 @@
                 "excluded": true
             },
             {
-                "name": "PlayerArmy.ArmyUnit.WeaponPoolTag",
+                "name": "CartoonFX.CFXR_Effect",
+                "excluded": true
+            },
+            {
+                "name": "CartoonFX.CFXR_Effect.AnimatedLight",
+                "excluded": true
+            },
+            {
+                "name": "CartoonFX.CFXR_Effect.CameraShake",
+                "excluded": true
+            },
+            {
+                "name": "CartoonFX.CFXR_EmissionBySurface",
+                "excluded": true
+            },
+            {
+                "name": "GamePlay.CombatSystems.EnemyProjectileSystem.ExplosionShotAttacker",
+                "excluded": true
+            },
+            {
+                "name": "CartoonFX.CFXR_Effect.CameraShake.ShakeSpace",
+                "excluded": true
+            },
+            {
+                "name": "CartoonFX.CFXR_Effect.ClearBehavior",
+                "excluded": true
+            },
+            {
+                "name": "PlayerArmy.ArmyUnit.WeaponPoolMarker",
                 "excluded": true
             }
         ],
@@ -16971,7 +17002,7 @@
                     },
                     {
                         "name": "position#get",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "position#set",
@@ -22221,7 +22252,7 @@
                     },
                     {
                         "name": "motionVectorGenerationMode#set",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "probeAnchor#get",
@@ -22643,7 +22674,7 @@
                     },
                     {
                         "name": "anchorMax#get",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "anchorMax#set",
@@ -22651,7 +22682,7 @@
                     },
                     {
                         "name": "anchorMin#get",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "anchorMin#set",
@@ -22675,7 +22706,7 @@
                     },
                     {
                         "name": "pivot#set",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "sizeDelta#get",
@@ -22683,7 +22714,7 @@
                     },
                     {
                         "name": "sizeDelta#set",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "SetSizeWithCurrentAnchors",
@@ -34018,15 +34049,27 @@
                         "excluded": true
                     },
                     {
+                        "name": "TickActiveBlocks",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ClearActiveBlocks",
+                        "excluded": false
+                    },
+                    {
+                        "name": "RemoveAtSwapBack",
+                        "excluded": false
+                    },
+                    {
                         "name": "Step",
                         "excluded": false
                     },
                     {
-                        "name": "Update",
+                        "name": "StopSimulation",
                         "excluded": false
                     },
                     {
-                        "name": "StopSimulation",
+                        "name": "RegisterActiveBlock",
                         "excluded": false
                     }
                 ]
@@ -34729,7 +34772,7 @@
                     },
                     {
                         "name": "PlayEffectAt",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "PlayOnUnit",
@@ -35588,6 +35631,34 @@
                     {
                         "name": "ShiftProjectileTimes",
                         "excluded": true
+                    },
+                    {
+                        "name": "IsInsideRadius",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ApplyExplosionShotIfAvailable",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ShouldApplyAoeToTarget",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ShouldSpawnExplosionShotVfx",
+                        "excluded": true
+                    },
+                    {
+                        "name": "SpawnExplosionShotVfx",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ResolveExplosionShotVfxPrefab",
+                        "excluded": true
+                    },
+                    {
+                        "name": "EnsureExplosionVfxPlayback",
+                        "excluded": true
                     }
                 ]
             },
@@ -35691,6 +35762,10 @@
                     },
                     {
                         "name": "CompactInactiveEnemies",
+                        "excluded": false
+                    },
+                    {
+                        "name": "Awake",
                         "excluded": false
                     }
                 ]
@@ -35817,6 +35892,10 @@
                     },
                     {
                         "name": "RotateYOnly",
+                        "excluded": true
+                    },
+                    {
+                        "name": "HasActiveBeltItems",
                         "excluded": true
                     }
                 ]
@@ -36058,6 +36137,66 @@
                     {
                         "name": "ClearRuntimeTickCaches",
                         "excluded": false
+                    },
+                    {
+                        "name": "IsPrimaryBuffType",
+                        "excluded": false
+                    },
+                    {
+                        "name": "OptimizeRenderHierarchy",
+                        "excluded": false
+                    },
+                    {
+                        "name": "TrySetSkinnedProperties",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ForceLodIfAvailable",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ExplosionShotRadius#get",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ExplosionShotBasePercent#get",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ExplosionShotUpgradePercent#get",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ExplosionShotDamagePercent#get",
+                        "excluded": true
+                    },
+                    {
+                        "name": "IsExplosionShotUnlocked#get",
+                        "excluded": false
+                    },
+                    {
+                        "name": "RunUpgradeEffect$1",
+                        "excluded": false
+                    },
+                    {
+                        "name": "RunUpgradeEffectAt",
+                        "excluded": true
+                    },
+                    {
+                        "name": "CanOfferExplosionShotThisRun",
+                        "excluded": true
+                    },
+                    {
+                        "name": "HasAppliedPrimaryBuffThisRun",
+                        "excluded": false
+                    },
+                    {
+                        "name": "MarkExplosionShotOffered",
+                        "excluded": true
+                    },
+                    {
+                        "name": "MarkPrimaryBuffAppliedIfNeeded",
+                        "excluded": false
                     }
                 ]
             },
@@ -36143,6 +36282,10 @@
                     },
                     {
                         "name": "GetFallbackAudioPosition",
+                        "excluded": true
+                    },
+                    {
+                        "name": "TryPlayOneShot",
                         "excluded": true
                     }
                 ]
@@ -36408,6 +36551,14 @@
                     {
                         "name": "TryEquipIfHigher",
                         "excluded": false
+                    },
+                    {
+                        "name": "PlayLocalUpgradeEffect",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ResolveUpgradeEffectComponent",
+                        "excluded": false
                     }
                 ]
             },
@@ -36584,6 +36735,14 @@
                     {
                         "name": "ComputeAnimationClipLength",
                         "excluded": true
+                    },
+                    {
+                        "name": "GetWaitInstruction",
+                        "excluded": false
+                    },
+                    {
+                        "name": "PlayStateIfNeeded",
+                        "excluded": false
                     }
                 ]
             },
@@ -36983,7 +37142,23 @@
                     },
                     {
                         "name": "SafePoolGet",
-                        "excluded": true
+                        "excluded": false
+                    },
+                    {
+                        "name": "OnDisable",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ResolveOrCreateAudioSource",
+                        "excluded": false
+                    },
+                    {
+                        "name": "StopEffect",
+                        "excluded": false
+                    },
+                    {
+                        "name": "StopActiveLoopingSfx",
+                        "excluded": false
                     }
                 ]
             },
@@ -37577,7 +37752,7 @@
                     },
                     {
                         "name": "PlayEffectAt",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "OnAttackSucceed",
@@ -37622,6 +37797,34 @@
                     {
                         "name": "ResolveCurrentArmyLevel",
                         "excluded": false
+                    },
+                    {
+                        "name": "GetOrBuildHoneycombRingPositions",
+                        "excluded": false
+                    },
+                    {
+                        "name": "CompareHoneycombPosition",
+                        "excluded": false
+                    },
+                    {
+                        "name": "HasExplosionShot#get",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ExplosionRadius#get",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ApplyDamageModifier",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ApplyExplosionShotModifier",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ResolveExplosionDamage",
+                        "excluded": true
                     }
                 ]
             },
@@ -38066,6 +38269,38 @@
                     {
                         "name": "GetRandomEligibleElement",
                         "excluded": false
+                    },
+                    {
+                        "name": "BuildDefaultElementDataList",
+                        "excluded": true
+                    },
+                    {
+                        "name": "IsPrimaryBuffAlreadyApplied",
+                        "excluded": false
+                    },
+                    {
+                        "name": "IsPrimaryBuffType",
+                        "excluded": false
+                    },
+                    {
+                        "name": "IsBlockedExplosionElement",
+                        "excluded": false
+                    },
+                    {
+                        "name": "EnsureGateSetup",
+                        "excluded": false
+                    },
+                    {
+                        "name": "GetNextEligibleElement",
+                        "excluded": true
+                    },
+                    {
+                        "name": "AddEligibleByBuffPriority",
+                        "excluded": false
+                    },
+                    {
+                        "name": "PickRandomFromPrioritizedEligible",
+                        "excluded": false
                     }
                 ]
             },
@@ -38266,6 +38501,18 @@
                     {
                         "name": "ApplyDamageAcrossProgressCycles",
                         "excluded": false
+                    },
+                    {
+                        "name": "StopScalePulse",
+                        "excluded": false
+                    },
+                    {
+                        "name": "EnsureDespawnScaleEffect",
+                        "excluded": false
+                    },
+                    {
+                        "name": "DespawnInterval",
+                        "excluded": false
                     }
                 ]
             },
@@ -38363,6 +38610,18 @@
                     },
                     {
                         "name": "EnsureHitTextEffect",
+                        "excluded": false
+                    },
+                    {
+                        "name": "StopScalePulse",
+                        "excluded": false
+                    },
+                    {
+                        "name": "EnsureDespawnScaleEffect",
+                        "excluded": false
+                    },
+                    {
+                        "name": "DespawnInterval",
                         "excluded": false
                     }
                 ]
@@ -38689,15 +38948,15 @@
                     },
                     {
                         "name": "RemoveAtSwapBack",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "EaseInQuad",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "EaseOutBack",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "Reset",
@@ -38705,34 +38964,38 @@
                     },
                     {
                         "name": "Awake",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "PlayDeathEffect",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "Step",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "Complete",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "OnDisable",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "RegisterTick",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "UnregisterTick",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "ClearAll",
+                        "excluded": false
+                    },
+                    {
+                        "name": "Configure",
                         "excluded": false
                     }
                 ]
@@ -39259,7 +39522,7 @@
                     },
                     {
                         "name": "OnDisable",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "OnDidApplyAnimationProperties",
@@ -39802,6 +40065,34 @@
                     {
                         "name": "GetNextUpgradeCost",
                         "excluded": false
+                    },
+                    {
+                        "name": "GetUpgradeCostForLevel",
+                        "excluded": false
+                    },
+                    {
+                        "name": "IsMaxLevel",
+                        "excluded": true
+                    },
+                    {
+                        "name": "IsLevelMaxed",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ShowGoldDrainFeedback",
+                        "excluded": false
+                    },
+                    {
+                        "name": "RefreshLockVisual",
+                        "excluded": false
+                    },
+                    {
+                        "name": "TryAutoResolveLockVisuals",
+                        "excluded": false
+                    },
+                    {
+                        "name": "FindChildByNameContains",
+                        "excluded": true
                     }
                 ]
             },
@@ -39960,16 +40251,36 @@
                         "excluded": true
                     },
                     {
-                        "name": "DespawnVFXSprite",
-                        "excluded": true
-                    },
-                    {
                         "name": "EnsureVfxSpriteLoaded",
                         "excluded": false
                     },
                     {
                         "name": "GetCapacityBarPosition",
                         "excluded": false
+                    },
+                    {
+                        "name": "TriggerUpgradeFeedback",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ResolveUpgradeEffectComponent",
+                        "excluded": false
+                    },
+                    {
+                        "name": "GetWait",
+                        "excluded": false
+                    },
+                    {
+                        "name": "TickVfxSprites",
+                        "excluded": false
+                    },
+                    {
+                        "name": "RentVfxImage",
+                        "excluded": true
+                    },
+                    {
+                        "name": "ReturnVfxImage",
+                        "excluded": true
                     }
                 ]
             },
@@ -40112,6 +40423,18 @@
                         "excluded": false
                     },
                     {
+                        "name": "StopScalePulse",
+                        "excluded": false
+                    },
+                    {
+                        "name": "QueueDeliveredEvent",
+                        "excluded": false
+                    },
+                    {
+                        "name": "FlushDeliveredEvent",
+                        "excluded": false
+                    },
+                    {
                         "name": "EnsureReplacementLayerPools",
                         "excluded": false
                     },
@@ -40122,6 +40445,10 @@
                     {
                         "name": "ReturnLayerToPool",
                         "excluded": true
+                    },
+                    {
+                        "name": "EnsureDespawnScaleEffect",
+                        "excluded": false
                     }
                 ]
             },
@@ -41440,6 +41767,80 @@
                         "excluded": true
                     }
                 ]
+            },
+            {
+                "className": "EndcardClickHandler",
+                "staticMethods": [],
+                "instanceMethods": [
+                    {
+                        "name": "Awake",
+                        "excluded": false
+                    },
+                    {
+                        "name": "OnPointerClick",
+                        "excluded": true
+                    }
+                ]
+            },
+            {
+                "className": "GamePlay.Items.CapacityIncreaseGate.UpgradeResolution",
+                "staticMethods": [],
+                "instanceMethods": [
+                    {
+                        "name": "getDefaultValue",
+                        "excluded": false
+                    },
+                    {
+                        "name": "$ctor1",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ctor",
+                        "excluded": false
+                    },
+                    {
+                        "name": "getHashCode",
+                        "excluded": true
+                    },
+                    {
+                        "name": "equals",
+                        "excluded": true
+                    },
+                    {
+                        "name": "$clone",
+                        "excluded": false
+                    }
+                ]
+            },
+            {
+                "className": "UICapacityBar.ActiveVfxSprite",
+                "staticMethods": [],
+                "instanceMethods": [
+                    {
+                        "name": "getDefaultValue",
+                        "excluded": false
+                    },
+                    {
+                        "name": "init",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ctor",
+                        "excluded": false
+                    },
+                    {
+                        "name": "getHashCode",
+                        "excluded": true
+                    },
+                    {
+                        "name": "equals",
+                        "excluded": true
+                    },
+                    {
+                        "name": "$clone",
+                        "excluded": true
+                    }
+                ]
             }
         ],
         "stubberDataList": [],
@@ -41491,8 +41892,8 @@
                     {
                         "maxWidth": 512,
                         "maxHeight": 512,
-                        "format": "jpeg",
-                        "compression": "quantQuality",
+                        "format": "png32",
+                        "compression": "quantSize",
                         "quality": 65,
                         "script": "",
                         "ext": "",
@@ -42567,16 +42968,6 @@
                         "script": "",
                         "ext": "",
                         "name": "Assets/Kho/Main_charater/texture/T_clo_t4_a5_lv9_w.tga"
-                    },
-                    {
-                        "maxWidth": 512,
-                        "maxHeight": 512,
-                        "format": "jpeg",
-                        "compression": "quantSize",
-                        "quality": 65,
-                        "script": "",
-                        "ext": "",
-                        "name": "Assets/Kho/Assets/texture/T_Gate_t3_a3.tga"
                     }
                 ]
             },
@@ -42670,6 +43061,36 @@
                         "script": "",
                         "ext": "",
                         "name": "Assets/_Game/Sounds/SFX_DropCard.mp3"
+                    },
+                    {
+                        "channels": 1,
+                        "startTime": "00:00.202",
+                        "endTime": "00:02.355",
+                        "lengthInSeconds": 2.1530001163482668,
+                        "bitrate": 64,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/_Game/Sounds/SFX_Coin_Skill.ogg"
+                    },
+                    {
+                        "channels": 1,
+                        "startTime": "00:00.000",
+                        "endTime": "00:00.000",
+                        "lengthInSeconds": 0.0,
+                        "bitrate": 64,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/_Game/Sounds/SFX_TowerDestroy.ogg"
+                    },
+                    {
+                        "channels": 1,
+                        "startTime": "00:00.000",
+                        "endTime": "00:02.355",
+                        "lengthInSeconds": 2.3550000190734865,
+                        "bitrate": 64,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/_Game/Sounds/SFX_Merge_Weapon.ogg"
                     }
                 ]
             },
@@ -42693,7 +43114,7 @@
                 },
                 "overrides": [
                     {
-                        "halfPrecision": true,
+                        "halfPrecision": false,
                         "useSimplification": false,
                         "simplificationPercentage": 30,
                         "linkCloseVertices": true,
@@ -42707,7 +43128,7 @@
                         "name": "Assets/Kho/Feature/mesh/pluspeople.fbx"
                     },
                     {
-                        "halfPrecision": true,
+                        "halfPrecision": false,
                         "useSimplification": false,
                         "simplificationPercentage": 30,
                         "linkCloseVertices": true,
@@ -42728,53 +43149,11 @@
                         "name": "Assets/Kho/Feature/mesh/pillar.fbx"
                     },
                     {
-                        "halfPrecision": true,
+                        "halfPrecision": false,
                         "useSimplification": false,
                         "simplificationPercentage": 30,
                         "linkCloseVertices": true,
                         "name": "Assets/Kho/Main_charater/mesh/clo_enemy_t2_v1.fbx"
-                    },
-                    {
-                        "halfPrecision": true,
-                        "useSimplification": true,
-                        "simplificationPercentage": 40,
-                        "linkCloseVertices": true,
-                        "name": "Assets/Kho/Main_charater/mesh/clo_t3_a4_lv11.fbx"
-                    },
-                    {
-                        "halfPrecision": true,
-                        "useSimplification": false,
-                        "simplificationPercentage": 30,
-                        "linkCloseVertices": true,
-                        "name": "Assets/Kho/Map/t3_a4/assets_t3_a4.fbx"
-                    },
-                    {
-                        "halfPrecision": true,
-                        "useSimplification": true,
-                        "simplificationPercentage": 40,
-                        "linkCloseVertices": true,
-                        "name": "Assets/Kho/Main_charater/mesh/vk_t3_a4.fbx"
-                    },
-                    {
-                        "halfPrecision": true,
-                        "useSimplification": false,
-                        "simplificationPercentage": 30,
-                        "linkCloseVertices": true,
-                        "name": "Assets/Kho/Feature/mesh/End_t3_a4.fbx"
-                    },
-                    {
-                        "halfPrecision": true,
-                        "useSimplification": true,
-                        "simplificationPercentage": 30,
-                        "linkCloseVertices": true,
-                        "name": "Assets/Kho/Assets/mesh/Gate_t3_a4.fbx"
-                    },
-                    {
-                        "halfPrecision": true,
-                        "useSimplification": false,
-                        "simplificationPercentage": 30,
-                        "linkCloseVertices": true,
-                        "name": "Assets/Kho/Map/t4_a5/assets_t4_a5.fbx"
                     }
                 ]
             },

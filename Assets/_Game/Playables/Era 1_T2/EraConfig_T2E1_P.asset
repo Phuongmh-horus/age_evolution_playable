@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c41ba36745491cd42ad4c4ad47beb1cb, type: 3}
   m_Name: EraConfig_T2E1_P
   m_EditorClassIdentifier: 
-  EraIndex: 8
-  EraName: ui_mainmenu_era8
-  BackgroundSprite: {fileID: 21300000, guid: 3cf5ccb7254640d4c8154ee576241734, type: 3}
+  EraIndex: 14
+  EraName: ui_mainmenu_era14
+  BackgroundSprite: {fileID: 21300000, guid: bd38703d92fcbc54a824486857b5f59f, type: 3}
   CashOnStartEra: 170
   MapData: {fileID: 11400000, guid: a62d6f53020796144bd9d218dae14237, type: 2}
   Milestone: {fileID: -5449997642435284869, guid: 97c3b4b5644eb034da2747a11d57758e, type: 3}

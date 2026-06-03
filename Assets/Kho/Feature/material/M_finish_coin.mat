@@ -156,11 +156,11 @@ Material:
     - _AnimeThreshold1: 0.45
     - _AnimeThreshold2: 0.85
     - _BlendOp: 0
-    - _Brightness: 1.05
+    - _Brightness: 3.3
     - _BumpScale: 1
     - _CameraFadeEnd: 0
     - _CameraFadeStart: 0
-    - _Contrast: 1
+    - _Contrast: 1.2
     - _Cull: 2
     - _Cutoff: 0.5
     - _Cutout: 0
@@ -174,10 +174,10 @@ Material:
     - _DetailUV: 0
     - _DetailVertexColors: 0
     - _Diffuse: 1
-    - _DiffuseBrightness: 1
-    - _DiffuseContrast: 1
+    - _DiffuseBrightness: 1.3
+    - _DiffuseContrast: 2
     - _DiffusePerPixel: 0
-    - _DiffuseWrap: 0.524
+    - _DiffuseWrap: 0.6
     - _DstBlend: 0
     - _EmissiveAnimated: 0
     - _EmissiveAnimationIntensity: 1
@@ -250,7 +250,7 @@ Material:
     - _RimBlend: 0
     - _RimContrast: 8.1
     - _RimInverse: 0
-    - _Saturation: 1.2
+    - _Saturation: 1.5
     - _ShadowOverlayAnimation: 0
     - _ShadowOverlayBrightness: 1
     - _ShadowOverlaySpeedU: 0.1

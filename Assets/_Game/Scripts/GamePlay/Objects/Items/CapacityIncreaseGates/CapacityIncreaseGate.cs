@@ -21,11 +21,12 @@ namespace GamePlay.Items
         [Header("Gold Gate Settings")]
         [SerializeField] private Transform rootAnimTrans;
         [SerializeField] private List<IncreaseElement> increaseElements;
-        [SerializeField] private float goldDrainDuration = 1f;
+        [SerializeField] private float goldDrainDuration = 3f;
+        [SerializeField] private float goldDrainEffectInterval = 0.12f;
         [SerializeField] private float phase3Duration = 0.5f;
 
         [Header("Buff Applied Effect")]
-        [SerializeField] private EffectType buffAppliedEffectType = EffectType.Land;
+        [SerializeField] private EffectType buffAppliedEffectType = EffectType.Upgrade;
 
 
         private readonly Dictionary<int, List<CharacterUnit>> _beltUnits = new Dictionary<int, List<CharacterUnit>>();
@@ -33,6 +34,9 @@ namespace GamePlay.Items
         private bool _hasCollided = false; // [FIX] Prevent Double Collision
         private readonly List<IncreaseElement> _eligibleElementsBuffer = new List<IncreaseElement>(8);
         private readonly List<IncreaseElement> _alreadyAppliedBuffElementsBuffer = new List<IncreaseElement>(8);
+        private readonly Dictionary<IncreaseElement, int> _upgradeByElementBuffer = new Dictionary<IncreaseElement, int>(8);
+        private readonly HashSet<IncreaseElement> _exhaustedElementsBuffer = new HashSet<IncreaseElement>();
+        private readonly List<UpgradeResolution> _upgradeResolutionBuffer = new List<UpgradeResolution>(8);
         private struct UpgradeResolution
         {
             public IncreaseElement Element;
@@ -325,7 +329,7 @@ namespace GamePlay.Items
                     }
 
                     GameplayManager.Instance.ChangeStatModifierData(result.Element.StatData);
-                    GameplayManager.Instance.RunUpgradeEffect();
+                    GameplayManager.Instance.RunUpgradeEffect(result.Element.transform);
                     WeaponCardSystem.Instance?.PlayCollectAnimation(
                         result.Element.ElementData, result.Element.LevelCard, result.Element.transform);
                     Pack.Effector?.PlayEffect(
@@ -342,7 +346,7 @@ namespace GamePlay.Items
 
             void EndOfPhase()
             {
-
+                Pack.Effector?.StopEffect(EffectType.Land);
 
                 ClearBelts();
                 // DespawnInterval();
@@ -360,15 +364,17 @@ namespace GamePlay.Items
 
             Transform playerTrans = GameplayManager.Instance.PlayerTransform;
             int spendPerFrame = Mathf.Max(1, Mathf.CeilToInt(totalGold / (goldDrainDuration * 60f)));
-            var upgradeByElement = new Dictionary<IncreaseElement, int>();
-            var exhaustedElements = new HashSet<IncreaseElement>();
+            _upgradeByElementBuffer.Clear();
+            _exhaustedElementsBuffer.Clear();
+            _upgradeResolutionBuffer.Clear();
             IncreaseElement activeElement = selectedElement;
             int currentUpgradeSpent = 0;
             int nextUpgradeCost = 0;
+            float goldDrainFxTimer = 0f;
 
             if (!TryActivateElement(activeElement, out nextUpgradeCost))
             {
-                activeElement = GetNextEligibleElement(GameplayManager.Instance.GetCurrency(CurrencyType.Gold), exhaustedElements, null);
+                activeElement = GetNextEligibleElement(GameplayManager.Instance.GetCurrency(CurrencyType.Gold), _exhaustedElementsBuffer, null);
                 if (!TryActivateElement(activeElement, out nextUpgradeCost))
                 {
                     onResolved?.Invoke(null);
@@ -396,25 +402,35 @@ namespace GamePlay.Items
                 }
 
                 currentUpgradeSpent += spent;
+                goldDrainFxTimer += Time.deltaTime;
+
+                if (goldDrainFxTimer >= goldDrainEffectInterval && activeElement != null)
+                {
+                    goldDrainFxTimer = 0f;
+                    activeElement.ShowGoldDrainFeedback();
+                    Pack.Effector?.PlayEffect(
+                        EffectType.Land,
+                        activeElement.transform.position,
+                        Quaternion.identity,
+                        activeElement.transform);
+                }
 
                 while (currentUpgradeSpent >= nextUpgradeCost)
                 {
                     currentUpgradeSpent -= nextUpgradeCost;
-                    if (!upgradeByElement.TryGetValue(activeElement, out int upgradedLevels))
+                    if (!_upgradeByElementBuffer.TryGetValue(activeElement, out int upgradedLevels))
                     {
                         upgradedLevels = 0;
                     }
                     upgradedLevels++;
-                    upgradeByElement[activeElement] = upgradedLevels;
+                    _upgradeByElementBuffer[activeElement] = upgradedLevels;
 
                     int virtualLevel = activeElement.LevelCard + upgradedLevels;
                     nextUpgradeCost = activeElement.GetUpgradeCostForLevel(virtualLevel);
                     if (nextUpgradeCost == int.MaxValue)
                     {
-                        exhaustedElements.Add(activeElement);
-                        // [FIX] Pass 0 gold — we're mid-drain so gold is nearly spent.
-                        // GetNextEligibleElement already ignores gold check after this fix.
-                        activeElement = GetNextEligibleElement(0, exhaustedElements, activeElement);
+                        _exhaustedElementsBuffer.Add(activeElement);
+                        activeElement = GetNextEligibleElement(0, _exhaustedElementsBuffer, activeElement);
                         if (!TryActivateElement(activeElement, out nextUpgradeCost))
                         {
                             currentUpgradeSpent = 0;
@@ -433,21 +449,20 @@ namespace GamePlay.Items
                 yield return null;
             }
 
-            if (upgradeByElement.Count == 0)
+            if (_upgradeByElementBuffer.Count == 0)
             {
                 onResolved?.Invoke(null);
                 yield break;
             }
 
-            var results = new List<UpgradeResolution>(upgradeByElement.Count);
-            foreach (var pair in upgradeByElement)
+            foreach (var pair in _upgradeByElementBuffer)
             {
                 if (pair.Key != null && pair.Value > 0)
                 {
-                    results.Add(new UpgradeResolution(pair.Key, pair.Value));
+                    _upgradeResolutionBuffer.Add(new UpgradeResolution(pair.Key, pair.Value));
                 }
             }
-            onResolved?.Invoke(results);
+            onResolved?.Invoke(_upgradeResolutionBuffer);
 
             bool TryActivateElement(IncreaseElement element, out int upgradeCost)
             {
@@ -462,7 +477,7 @@ namespace GamePlay.Items
                 if (upgradeCost == int.MaxValue)
                 {
                     element.SetNormalVisual();
-                    exhaustedElements.Add(element);
+                    _exhaustedElementsBuffer.Add(element);
                     return false;
                 }
 
@@ -487,6 +502,7 @@ namespace GamePlay.Items
             }
 
             rootAnimTrans.localRotation = to;
+            SoundManager.Instance?.PlayOneShot(AudioClipName.SFX_Ingame_Hero_Upgrade);
         }
 
         private IncreaseElement GetRandomEligibleElement(int gold)
@@ -612,7 +628,7 @@ namespace GamePlay.Items
 
         private static bool IsPrimaryBuffType(StatType statType)
         {
-            return statType == StatType.FireRate ||
+            return statType == StatType.Character ||
                    statType == StatType.FireRange ||
                    statType == StatType.Damage;
         }
@@ -637,6 +653,7 @@ namespace GamePlay.Items
 
         protected override void DespawnInterval()
         {
+            Pack.Effector?.StopEffect(EffectType.Land);
             ClearBelts();
             base.DespawnInterval();
         }
@@ -685,3 +702,6 @@ namespace GamePlay.Items
         }
     }
 }
+
+
+
