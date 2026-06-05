@@ -69,7 +69,7 @@ namespace WeaponCraft
             {
                 progressSprite = GetComponentInChildren<SpriteRenderer>(true);
             }
-            
+
             if (collectText == null)
             {
                 collectText = GetComponentInChildren<TMP_Text>(true);
@@ -336,7 +336,7 @@ namespace WeaponCraft
             }
 
             float healthPercent = (float)Mathf.Clamp(currentHealth, 0, maxHealth) / maxHealth;
-            float fillAmount    = Mathf.Lerp(progressMinFill, progressMaxFill, Mathf.Clamp01(healthPercent));
+            float fillAmount = Mathf.Lerp(progressMinFill, progressMaxFill, Mathf.Clamp01(healthPercent));
 
             UpdateCollectVirual();
             if (_progressMpb == null) _progressMpb = new MaterialPropertyBlock();
@@ -425,7 +425,7 @@ namespace WeaponCraft
             }
 
             _lastHitFxFrame = Time.frameCount;
-            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position, Quaternion.identity, transform);
+            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2f, Quaternion.identity, transform);
         }
 
         private void CraftStoredReward()

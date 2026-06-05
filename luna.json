@@ -82,7 +82,7 @@
             "externalJSLibraries": [],
             "scriptingDefines": [],
             "msbuildVersion": "17.14",
-            "monoVersion": "9.0.14",
+            "monoVersion": "9.0.16",
             "dotnetVersion": ""
         },
         "assets": {
@@ -330,7 +330,13 @@
                 "Stubs/MoreMountains.NiceVibrations",
                 "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v3.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v1.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v2.prefab"
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v2.prefab",
+                "Assets/Kho/Main_charater/mesh/clo_enemy_t2_v2.fbx",
+                "Assets/Kho/Main_charater/mesh/clo_enemy_t2_v3.fbx",
+                "Assets/Kho/Main_charater/mesh/clo_enemy_t2_v1.fbx",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v1.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v3.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v2.prefab"
             ],
             "includes": [
                 "Assets/Kho/Feature/material/M_pluspeople_lock.mat",
@@ -354,6 +360,95 @@
                 "Assets/_FrameWork/Resources/Animations/Anim_Age_breakers/runner_anim_victory.anim",
                 "Assets/_FrameWork/Resources/Animations/Anim_Age_breakers/runner_anim_walk.anim",
                 "Assets/_FrameWork/Resources/Animations/Anim_Age_breakers/runner_anim_walk_atk.anim",
+                "Assets/_FrameWork/Resources/Prefabs/",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v1.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v2.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v3.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v1.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v2.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v3.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/RoadSegment/",
+                "Assets/_FrameWork/Resources/Prefabs/RoadSegment/FinishRace.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/RoadSegment/HitDamage.prefab",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_blue.png",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_gray.png",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_green.png",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_orange.png",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_purple.png",
+                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/",
+                "Assets/_FrameWork/Resources/Prefabs/PlayerArmy.prefab",
+                "Assets/_FrameWork/Resources/Scripts/",
+                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/",
+                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/ArmyUnit.cs",
+                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/AttackProjectile.cs",
+                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/PlayerArmyEffectSystem.cs",
+                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/PlayerArmySystem.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/GoldModifierGateData.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/WeaponCraftGateData.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/WeaponModifierGateData.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/GoldModifierGate.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/WeaponCraftGate.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/WeaponModifierGate.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftConfigSO.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftOperation.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftSystem.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftVisualSystem.cs",
+                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponItem.cs",
+                "Assets/_FrameWork/Resources/UILayers/",
+                "Assets/_FrameWork/Resources/UILayers/CapacityBar.prefab",
+                "Assets/_FrameWork/Resources/UILayers/CardBar.prefab",
+                "Assets/_FrameWork/Resources/UILayers/CardSystem.prefab",
+                "Assets/_FrameWork/Resources/UILayers/CashIcon.prefab",
+                "Assets/_FrameWork/Resources/UILayers/CoinIcon.prefab",
+                "Assets/_FrameWork/Resources/UILayers/DiamonIcon.prefab",
+                "Assets/_FrameWork/Scenes/",
+                "Assets/_Game/Animations/",
+                "Assets/_Game/Animations/CharacterAnimtor_Enemy.controller",
+                "Assets/_Game/Arts/Vfx/Prefab/VFX_Optimizing/AGE_VFX_Active_collide.prefab",
+                "Assets/_Game/Arts/Vfx/Prefab/VFX_Optimizing/AGE_VFX_Explosion_shot.prefab",
+                "Assets/_Game/Arts/Vfx/Prefab/AGE_VFX_Collect_Card_TakeCard.prefab",
+                "Assets/_Game/Arts/Vfx/Prefab/FlyEffect.prefab",
+                "Assets/_Game/Prefabs/RoadSegment/Road_Era_1.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/Items/CapacityIncreaseGates/Item_CapacityIncreaseGate_t2_a1.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/Items/GoldGate/GoldGate_t1_a1.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/Items/WeaponGate/WeaponGate_t1_a1.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/TowerZone_t1_a1.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_2.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_3.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_4.prefab",
+                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_5.prefab",
+                "Assets/_Game/Resources/Variables/GamePlay/",
+                "Assets/_Game/Resources/Variables/GamePlay/GamePlayVariable.asset",
+                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer1.prefab",
+                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer2.prefab",
+                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer3.prefab",
+                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer4.prefab",
+                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer5.prefab",
+                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer6.prefab",
+                "Assets/_Game/Resources_moved/CapacityIncreasePillar/ITEM_CapacityIncreasePillar.prefab",
+                "Assets/_Game/Resources_moved/CapacityBrick.prefab",
+                "Assets/_Game/Resources_moved/CashDropItem.prefab",
+                "Assets/_Game/Resources_moved/DiamonDropItem.prefab",
+                "Assets/_Game/Scripts/GamePlay/Effects/DebrisBlock.cs",
+                "Assets/_Game/Scripts/Manager/GamePlayVariable.cs",
+                "Assets/_Game/Shaders/",
+                "Assets/_Game/Shaders/Dissolve/",
+                "Assets/_Game/Shaders/Dissolve/MeshDissolve/",
+                "Assets/_Game/Shaders/Dissolve/MeshDissolve/Mat_MeshDissolve.mat",
+                "Assets/_Game/Shaders/Dissolve/Texture/",
+                "Assets/_Game/Shaders/Dissolve/Texture/Substance_graph_T_cell.png",
+                "Assets/_Game/Shaders/FlagWaving.mat",
+                "Assets/_Game/Shaders/FlagWaving.shader",
+                "Assets/_Game/Shaders/SpriteHorizontalFill.shader",
+                "Assets/_Game/Shaders/SpriteHorizontalFill_Left.mat",
                 "Assets/_FrameWork/Resources/Configs/",
                 "Assets/_FrameWork/Resources/Configs/CharacterList_Era 2_T1.asset",
                 "Assets/_FrameWork/Resources/Configs/Content_T2E1_8.asset",
@@ -403,7 +498,6 @@
                 "Assets/_FrameWork/Resources/Models/Weapon/T_clo_t1_a1_lv4.tga",
                 "Assets/_FrameWork/Resources/Models/Weapon/T_clo_t1_a1_lv5.tga",
                 "Assets/_FrameWork/Resources/Models/Weapon/vk_t1_a1.fbx",
-                "Assets/_FrameWork/Resources/Prefabs/",
                 "Assets/_FrameWork/Resources/Prefabs/Characters/CHARACTER_lv1.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Characters/CHARACTER_lv2.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Characters/CHARACTER_lv3.prefab",
@@ -414,7 +508,6 @@
                 "Assets/_FrameWork/Resources/Prefabs/Characters/Weapon_t1_a2_lv3.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Characters/Weapon_t1_a2_lv4.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Characters/Weapon_t1_a2_lv5.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/",
                 "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/",
                 "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/",
                 "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/cir_mat_02.mat",
@@ -430,24 +523,6 @@
                 "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/par_tex.png",
                 "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/upgrate_arrow.png",
                 "Assets/_FrameWork/Resources/Prefabs/Effect/VFX_Factory_Upgrade.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v1.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v2.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v3.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v1.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v2.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Enemy/Enemy_t2_a1_v3.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/RoadSegment/",
-                "Assets/_FrameWork/Resources/Prefabs/RoadSegment/FinishRace.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/RoadSegment/HitDamage.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_blue.png",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_gray.png",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_green.png",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_orange.png",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Bacground/card_purple.png",
-                "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/",
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/Icon_vk_t1_a1_lv1.png",
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/Icon_vk_t1_a1_lv2.png",
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/Icon_vk_t1_a1_lv3.png",
@@ -459,70 +534,6 @@
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Card_t1_i4.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Card_t1_i5.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Item_CapacityIncreaseFactory_t1_a1.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/PlayerArmy.prefab",
-                "Assets/_FrameWork/Resources/Scripts/",
-                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/",
-                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/ArmyUnit.cs",
-                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/AttackProjectile.cs",
-                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/PlayerArmyEffectSystem.cs",
-                "Assets/_FrameWork/Resources/Scripts/PlayerArmy/PlayerArmySystem.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/GoldModifierGateData.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/WeaponCraftGateData.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Data/WeaponModifierGateData.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/GoldModifierGate.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/WeaponCraftGate.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Gates/WeaponModifierGate.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftConfigSO.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftOperation.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftSystem.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponCraftVisualSystem.cs",
-                "Assets/_FrameWork/Resources/Scripts/WeaponCraft/Runtime/WeaponItem.cs",
-                "Assets/_FrameWork/Resources/UILayers/",
-                "Assets/_FrameWork/Resources/UILayers/CapacityBar.prefab",
-                "Assets/_FrameWork/Resources/UILayers/CardBar.prefab",
-                "Assets/_FrameWork/Resources/UILayers/CardSystem.prefab",
-                "Assets/_FrameWork/Resources/UILayers/CashIcon.prefab",
-                "Assets/_FrameWork/Resources/UILayers/CoinIcon.prefab",
-                "Assets/_FrameWork/Resources/UILayers/DiamonIcon.prefab",
-                "Assets/_FrameWork/Scenes/",
-                "Assets/_Game/Animations/",
-                "Assets/_Game/Animations/CharacterAnimtor_Enemy.controller",
-                "Assets/_Game/Arts/Vfx/Prefab/FlyEffect.prefab",
-                "Assets/_Game/Prefabs/RoadSegment/Road_Era_1.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/Items/CapacityIncreaseGates/Item_CapacityIncreaseGate_t2_a1.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/Items/GoldGate/GoldGate_t1_a1.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/Items/WeaponGate/WeaponGate_t1_a1.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/TowerZone_t1_a1.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_2.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_3.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_4.prefab",
-                "Assets/_Game/Prefabs/SpawnableObject/Tower_t1_a1_5.prefab",
-                "Assets/_Game/Resources/Variables/GamePlay/",
-                "Assets/_Game/Resources/Variables/GamePlay/GamePlayVariable.asset",
-                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer1.prefab",
-                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer2.prefab",
-                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer3.prefab",
-                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer4.prefab",
-                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer5.prefab",
-                "Assets/_Game/Resources_moved/CapacityIncreasePillar/BrickLayer6.prefab",
-                "Assets/_Game/Resources_moved/CapacityIncreasePillar/ITEM_CapacityIncreasePillar.prefab",
-                "Assets/_Game/Resources_moved/CapacityBrick.prefab",
-                "Assets/_Game/Resources_moved/CashDropItem.prefab",
-                "Assets/_Game/Resources_moved/DiamonDropItem.prefab",
-                "Assets/_Game/Scripts/GamePlay/Effects/DebrisBlock.cs",
-                "Assets/_Game/Scripts/Manager/GamePlayVariable.cs",
-                "Assets/_Game/Shaders/",
-                "Assets/_Game/Shaders/Dissolve/MeshDissolve/Mat_MeshDissolve.mat",
-                "Assets/_Game/Shaders/Dissolve/Texture/",
-                "Assets/_Game/Shaders/Dissolve/Texture/Substance_graph_T_cell.png",
-                "Assets/_Game/Shaders/FlagWaving.mat",
-                "Assets/_Game/Shaders/FlagWaving.shader",
-                "Assets/_Game/Shaders/SpriteHorizontalFill.shader",
-                "Assets/_Game/Shaders/SpriteHorizontalFill_Left.mat",
                 "Assets/_FrameWork/Resources/Models/v1/",
                 "Assets/_FrameWork/Resources/Models/v1/clo_t1_a1_lv1.fbx",
                 "Assets/_FrameWork/Resources/Models/v1/clo_t1_a2_lv1.fbx",
@@ -710,8 +721,6 @@
                 "Assets/_Game/Scripts/GamePlay/Effects/DebrisBlock.cs",
                 "Assets/_Game/Scripts/Manager/GamePlayVariable.cs",
                 "Assets/_Game/Shaders/",
-                "Assets/_Game/Shaders/Dissolve/",
-                "Assets/_Game/Shaders/Dissolve/MeshDissolve/",
                 "Assets/_Game/Shaders/Dissolve/MeshDissolve/Mat_MeshDissolve.mat",
                 "Assets/_Game/Shaders/Dissolve/Texture/",
                 "Assets/_Game/Shaders/Dissolve/Texture/Substance_graph_T_cell.png",
@@ -9768,7 +9777,7 @@
                     },
                     {
                         "name": "getDefaultValue",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "createInstance",
@@ -20808,7 +20817,7 @@
                     },
                     {
                         "name": "up#get",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "up#set",
@@ -37159,6 +37168,26 @@
                     {
                         "name": "StopActiveLoopingSfx",
                         "excluded": false
+                    },
+                    {
+                        "name": "ResolveCanvasTransform",
+                        "excluded": true
+                    },
+                    {
+                        "name": "IsUiVfxPrefab",
+                        "excluded": false
+                    },
+                    {
+                        "name": "PlayParticles",
+                        "excluded": true
+                    },
+                    {
+                        "name": "PlayVfx",
+                        "excluded": false
+                    },
+                    {
+                        "name": "ResolveVfxParent",
+                        "excluded": false
                     }
                 ]
             },
@@ -37816,7 +37845,7 @@
                     },
                     {
                         "name": "ApplyDamageModifier",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "ApplyExplosionShotModifier",
@@ -38122,6 +38151,10 @@
                     },
                     {
                         "name": "DespawnInterval",
+                        "excluded": false
+                    },
+                    {
+                        "name": "PlayNonWheelHitEffect",
                         "excluded": false
                     }
                 ]
@@ -38622,6 +38655,10 @@
                     },
                     {
                         "name": "DespawnInterval",
+                        "excluded": false
+                    },
+                    {
+                        "name": "PlayNonWheelHitEffect",
                         "excluded": false
                     }
                 ]
@@ -40449,6 +40486,10 @@
                     {
                         "name": "EnsureDespawnScaleEffect",
                         "excluded": false
+                    },
+                    {
+                        "name": "PlayNonWheelHitEffect",
+                        "excluded": false
                     }
                 ]
             },
@@ -41893,7 +41934,7 @@
                         "maxWidth": 512,
                         "maxHeight": 512,
                         "format": "png32",
-                        "compression": "quantSize",
+                        "compression": "quantQuality",
                         "quality": 65,
                         "script": "",
                         "ext": "",
@@ -42032,7 +42073,7 @@
                     {
                         "maxWidth": 512,
                         "maxHeight": 512,
-                        "format": "jpeg",
+                        "format": "png32",
                         "compression": "quantSize",
                         "quality": 65,
                         "script": "",
@@ -42503,16 +42544,6 @@
                         "maxWidth": 512,
                         "maxHeight": 512,
                         "format": "png32",
-                        "compression": "quantQuality",
-                        "quality": 65,
-                        "script": "",
-                        "ext": "",
-                        "name": "Assets/_FrameWork/Sprites/SkillIcon/icon_3.png"
-                    },
-                    {
-                        "maxWidth": 512,
-                        "maxHeight": 512,
-                        "format": "png32",
                         "compression": "quantSize",
                         "quality": 65,
                         "script": "",
@@ -42968,6 +42999,126 @@
                         "script": "",
                         "ext": "",
                         "name": "Assets/Kho/Main_charater/texture/T_clo_t4_a5_lv9_w.tga"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantSize",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Kho/Assets/texture/T_road_patern.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantSize",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/cfxr spikes impact.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantQuality",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/_FrameWork/Sprites/SkillIcon/troop_count.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "jpeg",
+                        "compression": "quantSize",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Kho/Feature/texture/T_finish_diamond.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "jpeg",
+                        "compression": "quantSize",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Scenes/MTD_VFX/Hun0FX/Textures/Tx_Impact_radial_01.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantQuality",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/_FrameWork/Sprites/SkillIcon/explosive shot.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantQuality",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/_FrameWork/Sprites/SkillIcon/damage.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantQuality",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Scenes/MTD_VFX/cfxr explosion smoke dissolve.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantQuality",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/cfxr explosion second color map.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantQuality",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/wave.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantQuality",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/blink.png"
+                    },
+                    {
+                        "maxWidth": 512,
+                        "maxHeight": 512,
+                        "format": "png32",
+                        "compression": "quantSize",
+                        "quality": 65,
+                        "script": "",
+                        "ext": "",
+                        "name": "Assets/_FrameWork/Sprites/Messy/spark01.png"
                     }
                 ]
             },

@@ -100,7 +100,7 @@ MonoBehaviour:
   projectileDuration: 0.55
   projectileRotationSpeed: -600
   unitscalevalue: 1.35
-  weaponProjectilePrefab: {fileID: 1917486832313472047, guid: 4205ffad0c396b94e97730afa3439b2d, type: 3}
+  weaponProjectilePrefab: {fileID: 1917486832313472047, guid: f30a6f86236169c47a7020f977500093, type: 3}
   inputManager: {fileID: 0}
   effectSystem: {fileID: 16920303580411128}
   characterUnits: []

@@ -658,6 +658,7 @@ MonoBehaviour:
   despawnShrinkDuration: 0.12
   hitTextFlyEffect: {fileID: 3495615988848984698}
   hitComponent: {fileID: 1050903430189031241}
+  nonWheelHitEffectType: 14
   isChainedPillar: 0
   chain: {fileID: 0}
   _currentLayerCount: 0

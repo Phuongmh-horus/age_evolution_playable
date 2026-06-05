@@ -281,7 +281,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         }
 
         _lastHitFxFrame = Time.frameCount;
-        Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position, Quaternion.identity, transform);
+        Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2f + transform.forward * -1.4f, Quaternion.identity, transform);
     }
 
     private void SetupChainFromData()

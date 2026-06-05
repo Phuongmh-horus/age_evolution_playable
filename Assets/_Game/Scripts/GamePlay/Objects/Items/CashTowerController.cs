@@ -261,7 +261,7 @@ namespace GamePlay.Items
             if (_lastNonWheelHitFxFrame == Time.frameCount) return;
 
             _lastNonWheelHitFxFrame = Time.frameCount;
-            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position, Quaternion.identity, transform);
+            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2f, Quaternion.identity, transform);
         }
 
         private void HandleDead()

@@ -775,7 +775,7 @@ namespace GamePlay.CombatSystems
                 vfx = Instantiate(prefab);
             }
 
-            vfx.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+            vfx.transform.SetPositionAndRotation(worldPosition + transform.up * 2f, Quaternion.identity);
             vfx.SetActive(true);
             EnsureExplosionVfxPlayback(vfx);
         }

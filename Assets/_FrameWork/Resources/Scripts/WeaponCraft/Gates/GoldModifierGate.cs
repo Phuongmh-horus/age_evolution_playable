@@ -131,7 +131,7 @@ namespace WeaponCraft
 
             _awaitingGoldReset = false;
             _lastBreakFxFrame = -1;
-            _originalScale     = transform.localScale;
+            _originalScale = transform.localScale;
             RegisterCapacityBarEvents();
 
             bool shouldRefreshEvents = false;
@@ -271,7 +271,7 @@ namespace WeaponCraft
                 if (canPlayBreakFx)
                 {
                     _lastBreakFxFrame = Time.frameCount;
-                    Pack.Effector?.PlayEffect(EffectType.Break, transform.position, Quaternion.identity);
+                    Pack.Effector?.PlayEffect(EffectType.Break, transform.position + transform.up * 2f, Quaternion.identity, transform);
                 }
 
                 if (healthComponent != null)

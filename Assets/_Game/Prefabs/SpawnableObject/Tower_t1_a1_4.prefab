@@ -171,7 +171,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2627334442723137350}
-  m_Mesh: {fileID: -6958246651047926773, guid: a66442b6eb5cbf040a23769bba14e3b0, type: 3}
+  m_Mesh: {fileID: -1383920744791520859, guid: 6750f08c42eb8fa4fb188497223a6e31, type: 3}
 --- !u!23 &1386467290307154056
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -302,6 +302,7 @@ MonoBehaviour:
   - _TintColor
   destroySfx: 17
   hitByWheelSfx: 12
+  nonWheelHitEffectType: 16
   moneyRoot: {fileID: 6326261627148179680}
   moneyDropImpulse: 1.5
   moneyGroundY: 1
