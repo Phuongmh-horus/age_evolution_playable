@@ -67,7 +67,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.playworks.upp": {
-      "version": "file:D:/Unity/7.0.0/scripts",
+      "version": "file:E:/7.0.0/scripts",
       "depth": 0,
       "source": "local",
       "dependencies": {}

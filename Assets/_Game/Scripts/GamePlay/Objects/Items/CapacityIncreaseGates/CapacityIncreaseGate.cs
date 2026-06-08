@@ -21,9 +21,10 @@ namespace GamePlay.Items
         [Header("Gold Gate Settings")]
         [SerializeField] private Transform rootAnimTrans;
         [SerializeField] private List<IncreaseElement> increaseElements;
-        [SerializeField] private float goldDrainDuration = 3f;
+        [SerializeField] private float goldDrainDuration = 3.5f;
         [SerializeField] private float goldDrainEffectInterval = 0.12f;
-        [SerializeField] private float phase3Duration = 0.5f;
+        [SerializeField] private float phase3Duration = 0.75f;
+        [SerializeField, Range(0.1f, 1f)] private float goldDrainTimeScale = 0.75f;
 
         [Header("Buff Applied Effect")]
         [SerializeField] private EffectType buffAppliedEffectType = EffectType.Upgrade;
@@ -147,15 +148,6 @@ namespace GamePlay.Items
         {
             return new List<IncreaseElementData>
             {
-                new IncreaseElementData
-                {
-                    Type = StatType.FireRange,
-                    Value = 5,
-                    ValueUpgrade = 1,
-                    StartLevel = 0,
-                    Cost = 30,
-                    UpgradeRequire = 40
-                },
                 new IncreaseElementData
                 {
                     Type = StatType.Character,
@@ -382,6 +374,10 @@ namespace GamePlay.Items
                 }
             }
 
+            // Làm chậm thời gian để người chơi có cảm giác "hồi hộp" khi vàng đang được sử dụng
+            float originalTimeScale = Time.timeScale;
+            Time.timeScale = goldDrainTimeScale;
+
             while (GameplayManager.Instance.GetCurrency(CurrencyType.Gold) > 0)
             {
                 if (rootAnimTrans != null && playerTrans != null)
@@ -448,6 +444,9 @@ namespace GamePlay.Items
                 activeElement.UpdateProgress(currentUpgradeSpent);
                 yield return null;
             }
+
+            // Khôi phục lại tốc độ game
+            Time.timeScale = originalTimeScale;
 
             if (_upgradeByElementBuffer.Count == 0)
             {
@@ -702,6 +701,3 @@ namespace GamePlay.Items
         }
     }
 }
-
-
-

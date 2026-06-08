@@ -84,6 +84,7 @@ MonoBehaviour:
     ParentToTarget: 0
     SfxClip: {fileID: 8300000, guid: db12146efa7b0aa4186a2f6f59f49cf8, type: 3}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0
@@ -999,6 +1000,7 @@ MonoBehaviour:
     ParentToTarget: 1
     SfxClip: {fileID: 0}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0.5
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0
@@ -1917,6 +1919,7 @@ MonoBehaviour:
     ParentToTarget: 0
     SfxClip: {fileID: 8300000, guid: db12146efa7b0aa4186a2f6f59f49cf8, type: 3}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0
@@ -2680,22 +2683,22 @@ MonoBehaviour:
     ElementDataList:
     - Type: 3
       Value: 5
-      ValueUpgrade: 5
+      ValueUpgrade: 3
       StartLevel: 0
       Cost: 20
-      UpgradeRequire: 30
+      UpgradeRequire: 25
     - Type: 4
       Value: 1
       ValueUpgrade: 1
       StartLevel: 0
       Cost: 20
-      UpgradeRequire: 45
+      UpgradeRequire: 50
     - Type: 3
       Value: 8
       ValueUpgrade: 8
       StartLevel: 0
       Cost: 20
-      UpgradeRequire: 35
+      UpgradeRequire: 45
     - Type: 8
       Value: 50
       ValueUpgrade: 10
@@ -2715,7 +2718,8 @@ MonoBehaviour:
   - {fileID: 1672813137585863256}
   goldDrainDuration: 3.5
   goldDrainEffectInterval: 0.12
-  phase3Duration: 1
+  phase3Duration: 0.75
+  goldDrainTimeScale: 0.8
   buffAppliedEffectType: 8
 --- !u!114 &8138363187892157136
 MonoBehaviour:
@@ -2756,12 +2760,14 @@ MonoBehaviour:
     ParentToTarget: 1
     SfxClip: {fileID: 8300000, guid: 95f56e33280291f44a6e2b62ea8c3b9a, type: 3}
     LoopSfx: 1
+    SfxVolume: 1
     WaitForAction: 0.25
   - Type: 18
     VfxPrefab: {fileID: 0}
     ParentToTarget: 1
     SfxClip: {fileID: 8300000, guid: db12146efa7b0aa4186a2f6f59f49cf8, type: 3}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0.25
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0
@@ -3110,6 +3116,7 @@ MonoBehaviour:
     ParentToTarget: 1
     SfxClip: {fileID: 0}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0.5
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0
@@ -3783,6 +3790,7 @@ MonoBehaviour:
     ParentToTarget: 1
     SfxClip: {fileID: 0}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0.5
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0
@@ -3870,6 +3878,7 @@ MonoBehaviour:
     ParentToTarget: 0
     SfxClip: {fileID: 8300000, guid: db12146efa7b0aa4186a2f6f59f49cf8, type: 3}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0

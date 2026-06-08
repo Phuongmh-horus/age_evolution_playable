@@ -29,7 +29,7 @@ MonoBehaviour:
       Material: {fileID: 2100000, guid: e76f48eefc69920488742b570f7ca9bb, type: 2}
       Sprite: {fileID: 21300000, guid: 4a0478687dc121a488fe86d482bfdd6d, type: 3}
     WeaponPrefab: {fileID: 6706172149129167379, guid: 269582e14877ae04c9685db7953dd960, type: 3}
-    UnitDamage: 20
+    UnitDamage: 17
     WeaponDamage: 7
     FireRange: 25
   - characterLevel: 3

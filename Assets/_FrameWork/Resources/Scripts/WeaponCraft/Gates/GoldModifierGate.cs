@@ -271,7 +271,7 @@ namespace WeaponCraft
                 if (canPlayBreakFx)
                 {
                     _lastBreakFxFrame = Time.frameCount;
-                    Pack.Effector?.PlayEffect(EffectType.Break, transform.position + transform.up * 2f, Quaternion.identity, transform);
+                    Pack.Effector?.PlayEffect(EffectType.Break, transform.position + transform.up * 3f + transform.forward * -1f, Quaternion.identity, transform);
                 }
 
                 if (healthComponent != null)

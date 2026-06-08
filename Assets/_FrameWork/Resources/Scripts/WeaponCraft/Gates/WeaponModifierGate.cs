@@ -425,7 +425,7 @@ namespace WeaponCraft
             }
 
             _lastHitFxFrame = Time.frameCount;
-            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2f, Quaternion.identity, transform);
+            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 3f + transform.forward * -1f, Quaternion.identity, transform);
         }
 
         private void CraftStoredReward()

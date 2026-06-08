@@ -82,7 +82,7 @@
             "externalJSLibraries": [],
             "scriptingDefines": [],
             "msbuildVersion": "17.14",
-            "monoVersion": "9.0.16",
+            "monoVersion": "9.0.14",
             "dotnetVersion": ""
         },
         "assets": {
@@ -362,6 +362,21 @@
                 "Assets/_FrameWork/Resources/Animations/Anim_Age_breakers/runner_anim_walk_atk.anim",
                 "Assets/_FrameWork/Resources/Prefabs/",
                 "Assets/_FrameWork/Resources/Prefabs/Effect/",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/cir_mat_02.mat",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/cir_upgrate_02.png",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/flare 1.png",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/flare_mat.mat",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/arrow_mat.mat",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/cir_mat_01.mat",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/cir_mat_02.mat",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/cir_upgrate_01.png",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/par_mat.mat",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/par_tex.png",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/upgrate_arrow.png",
+                "Assets/_FrameWork/Resources/Prefabs/Effect/VFX_Factory_Upgrade.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Enemy/",
                 "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v1.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Enemy/EnemyWeapon_t1_a1_v2.prefab",
@@ -414,7 +429,6 @@
                 "Assets/_Game/Animations/CharacterAnimtor_Enemy.controller",
                 "Assets/_Game/Arts/Vfx/Prefab/VFX_Optimizing/AGE_VFX_Active_collide.prefab",
                 "Assets/_Game/Arts/Vfx/Prefab/VFX_Optimizing/AGE_VFX_Explosion_shot.prefab",
-                "Assets/_Game/Arts/Vfx/Prefab/AGE_VFX_Collect_Card_TakeCard.prefab",
                 "Assets/_Game/Arts/Vfx/Prefab/FlyEffect.prefab",
                 "Assets/_Game/Prefabs/RoadSegment/Road_Era_1.prefab",
                 "Assets/_Game/Prefabs/SpawnableObject/Items/CapacityIncreaseGates/Item_CapacityIncreaseGate_t2_a1.prefab",
@@ -508,21 +522,6 @@
                 "Assets/_FrameWork/Resources/Prefabs/Characters/Weapon_t1_a2_lv3.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Characters/Weapon_t1_a2_lv4.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/Characters/Weapon_t1_a2_lv5.prefab",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/cir_mat_02.mat",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/cir_upgrate_02.png",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/flare 1.png",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_booster_card_02/flare_mat.mat",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/arrow_mat.mat",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/cir_mat_01.mat",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/cir_mat_02.mat",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/cir_upgrate_01.png",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/par_mat.mat",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/par_tex.png",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/booster_upgrate/fx_factory_uplevel/upgrate_arrow.png",
-                "Assets/_FrameWork/Resources/Prefabs/Effect/VFX_Factory_Upgrade.prefab",
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/Icon_vk_t1_a1_lv1.png",
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/Icon_vk_t1_a1_lv2.png",
                 "Assets/_FrameWork/Resources/Prefabs/WeaponItem/Icon/Icon_vk_t1_a1_lv3.png",
@@ -18339,7 +18338,7 @@
                     },
                     {
                         "name": "timeScale#set",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "realtimeSinceStartup#get",
@@ -41819,7 +41818,7 @@
                     },
                     {
                         "name": "OnPointerClick",
-                        "excluded": true
+                        "excluded": false
                     }
                 ]
             },
@@ -43014,16 +43013,6 @@
                         "maxWidth": 512,
                         "maxHeight": 512,
                         "format": "png32",
-                        "compression": "quantSize",
-                        "quality": 65,
-                        "script": "",
-                        "ext": "",
-                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/cfxr spikes impact.png"
-                    },
-                    {
-                        "maxWidth": 512,
-                        "maxHeight": 512,
-                        "format": "png32",
                         "compression": "quantQuality",
                         "quality": 65,
                         "script": "",
@@ -43069,46 +43058,6 @@
                         "script": "",
                         "ext": "",
                         "name": "Assets/_FrameWork/Sprites/SkillIcon/damage.png"
-                    },
-                    {
-                        "maxWidth": 512,
-                        "maxHeight": 512,
-                        "format": "png32",
-                        "compression": "quantQuality",
-                        "quality": 65,
-                        "script": "",
-                        "ext": "",
-                        "name": "Assets/Scenes/MTD_VFX/cfxr explosion smoke dissolve.png"
-                    },
-                    {
-                        "maxWidth": 512,
-                        "maxHeight": 512,
-                        "format": "png32",
-                        "compression": "quantQuality",
-                        "quality": 65,
-                        "script": "",
-                        "ext": "",
-                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/cfxr explosion second color map.png"
-                    },
-                    {
-                        "maxWidth": 512,
-                        "maxHeight": 512,
-                        "format": "png32",
-                        "compression": "quantQuality",
-                        "quality": 65,
-                        "script": "",
-                        "ext": "",
-                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/wave.png"
-                    },
-                    {
-                        "maxWidth": 512,
-                        "maxHeight": 512,
-                        "format": "png32",
-                        "compression": "quantQuality",
-                        "quality": 65,
-                        "script": "",
-                        "ext": "",
-                        "name": "Assets/Scenes/MTD_VFX/Age_evolution/Texture_materials/blink.png"
                     },
                     {
                         "maxWidth": 512,

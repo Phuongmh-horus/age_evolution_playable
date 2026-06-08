@@ -244,12 +244,14 @@ MonoBehaviour:
     ParentToTarget: 1
     SfxClip: {fileID: 8300000, guid: b87dd0b5dd4dd2645aa0c905be5fda3e, type: 3}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0.5
   - Type: 8
     VfxPrefab: {fileID: 0}
     ParentToTarget: 1
     SfxClip: {fileID: 8300000, guid: 9091e30ab02c322468d630ec56e3ce3b, type: 3}
     LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0.5
   audioSource: {fileID: 0}
   warnIfNoAudioRouteInEditor: 0

@@ -1,16 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GamePlay.CollisionSystems;
 using GamePlay.CombatSystems;
 using GamePlay.ComponentSystems;
 using GamePlay.Items;
-using Pools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
@@ -24,7 +21,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     [Header("Brick Fall Trigger")]
     [SerializeField] private Transform bricksRoot;
     [SerializeField] private int bricksPerDamage = 1;
-    [SerializeField, UnityEngine.Serialization.FormerlySerializedAs("halveBricksPerDamage")]
+    [SerializeField, FormerlySerializedAs("halveBricksPerDamage")]
     private bool reduceBricksPerDamage = false;
     [SerializeField] private int maxVisualBricksPerHit = 8;
     [SerializeField] private int maxBricksInFlight = 28;
@@ -281,7 +278,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         }
 
         _lastHitFxFrame = Time.frameCount;
-        Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2f + transform.forward * -1.4f, Quaternion.identity, transform);
+        Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2.7f + transform.forward * -2.5f, Quaternion.identity, transform);
     }
 
     private void SetupChainFromData()

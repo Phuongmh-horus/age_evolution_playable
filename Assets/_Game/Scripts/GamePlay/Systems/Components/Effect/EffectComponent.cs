@@ -20,6 +20,7 @@ namespace GamePlay.ComponentSystems
             [Header("SFX (Optional)")]
             public AudioClip SfxClip;
             public bool LoopSfx;
+            [Range(0f, 1f)] public float SfxVolume = 1f;
 
             [Header("Timing")]
             [Tooltip("If > 0 then onComplete is invoked after this delay.")]
@@ -258,19 +259,21 @@ namespace GamePlay.ComponentSystems
                 StopActiveLoopingSfx();
                 loopAudioSource.clip = entry.SfxClip;
                 loopAudioSource.loop = true;
+                loopAudioSource.volume = Mathf.Clamp01(entry.SfxVolume);
                 loopAudioSource.Play();
                 _activeLoopingEffectType = effectType;
                 _activeLoopingClip = entry.SfxClip;
                 return;
             }
 
+            float sfxVolume = Mathf.Clamp01(entry.SfxVolume);
             if (audioSource == null)
             {
-                SoundManager.Instance?.PlayOneShot(entry.SfxClip);
+                SoundManager.Instance?.PlayOneShot(entry.SfxClip, sfxVolume);
                 return;
             }
 
-            audioSource.PlayOneShot(entry.SfxClip);
+            audioSource.PlayOneShot(entry.SfxClip, sfxVolume);
         }
 
         private void PlayVfx(EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
