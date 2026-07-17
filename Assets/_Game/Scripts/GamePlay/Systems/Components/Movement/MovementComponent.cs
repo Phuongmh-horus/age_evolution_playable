@@ -5,7 +5,9 @@ namespace GamePlay.ComponentSystems
 {
     public class MovementComponent : BaseComponent, IMover
     {
-        public event Action OnMovementComplete = delegate { };
+        private static readonly Action NoMovementComplete = () => { };
+
+        public event Action OnMovementComplete = NoMovementComplete;
 
         [Header("Config")]
         [SerializeField] protected MoveVariable moveVariable;
@@ -17,7 +19,8 @@ namespace GamePlay.ComponentSystems
 
         public override void Initialize()
         {
-            OnMovementComplete = delegate { };
+            base.Initialize();
+            OnMovementComplete = NoMovementComplete;
         }
 
         public void OnMovementFinished()

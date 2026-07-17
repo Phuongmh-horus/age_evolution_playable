@@ -24599,7 +24599,6 @@ GameObject:
   - component: {fileID: 5311419603145931884}
   - component: {fileID: 219821806415333181}
   - component: {fileID: 5442999800015770171}
-  - component: {fileID: 2500353265479055734}
   m_Layer: 0
   m_Name: AGE_VFX_Freeze
   m_TagString: Untagged
@@ -29424,29 +29423,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2500353265479055734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890479463204464334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 5311419603145931884}
-  EntityType: 255
-  VfxTag: 
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 219821806415333181}
-  - {fileID: 3202186126933548318}
-  - {fileID: 5125635979906946832}
-  - {fileID: 5426305781783606012}
-  - {fileID: 2554783058347488211}
-  - {fileID: 3055823205061881744}

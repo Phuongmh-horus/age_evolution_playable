@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GamePlay.CollisionSystems;
@@ -55,34 +56,15 @@ namespace WeaponCraft
         private int _lastBreakFxFrame = -1;
         private int _lastHitFxFrame = -1;
 
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _progressMpb = new MaterialPropertyBlock();
-            EnsureDespawnScaleEffect();
+
 
             if (_entityType == GamePlay.Entities.EntityType.None)
             {
                 _entityType = GamePlay.Entities.EntityType.PowerGate;
-            }
-
-            if (progressSprite == null)
-            {
-                progressSprite = GetComponentInChildren<SpriteRenderer>(true);
-            }
-
-            if (collectText == null)
-            {
-                collectText = GetComponentInChildren<TMP_Text>(true);
-            }
-
-            if (effectComponent == null)
-            {
-                effectComponent = GetComponentInChildren<EffectComponent>(true);
-            }
-
-            if (hitTextFlyEffect == null)
-            {
-                hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
             }
 
             _originalScale = transform.localScale;
@@ -137,27 +119,20 @@ namespace WeaponCraft
 
             bool shouldRefreshEvents = false;
 
-            if (healthComponent == null)
-            {
-                healthComponent = GetComponentInChildren<HealthComponent>(true);
-            }
-
             if (healthComponent != null)
             {
                 shouldRefreshEvents = true;
-                Pack.Healable = healthComponent;
-                ActiveFlags |= CapabilityFlags.Heal;
-                healthComponent.Initialize();
+                if (!ReferenceEquals(Pack.Healable, healthComponent))
+                {
+                    Pack.Healable = healthComponent;
+                    ActiveFlags |= CapabilityFlags.Heal;
+                    healthComponent.Initialize();
+                }
                 healthComponent.SetImmortal(false);
                 healthComponent.SetMaxHealth(healthComponent.MaxHealth, refill: true);
 
                 RegisterHealthVisualEvents();
                 UpdateHealthVisual(healthComponent.CurrentHealth, healthComponent.MaxHealth);
-            }
-
-            if (hitComponent == null)
-            {
-                hitComponent = GetComponentInChildren<HitComponent>(true);
             }
 
             if (hitComponent != null)
@@ -173,11 +148,6 @@ namespace WeaponCraft
                 ActiveFlags |= CapabilityFlags.Hit;
                 hitComponent.Initialize();
                 CollisionSystem.Register(hitComponent, hitComponent.transform);
-            }
-
-            if (effectComponent == null)
-            {
-                effectComponent = GetComponentInChildren<EffectComponent>(true);
             }
 
             if (effectComponent != null)
@@ -206,7 +176,7 @@ namespace WeaponCraft
         {
             if (collectText != null)
             {
-                collectText.text = string.Format(collectFormat, _countCollect + (Data?.Value ?? 0));
+                collectText.text = string.Format(collectFormat, _countCollect + ResolveBaseRewardAmount());
             }
         }
 
@@ -358,22 +328,24 @@ namespace WeaponCraft
             }
 
             _lastScalePulseFrame = Time.frameCount;
+
+            Vector3 currentScale = transform.localScale;
+            if (_originalScale == Vector3.zero)
+            {
+                _originalScale = currentScale;
+            }
+
             if (_scalePulseRoutine != null)
             {
                 StopCoroutine(_scalePulseRoutine);
+                _scalePulseRoutine = null;
             }
 
-            _scalePulseRoutine = StartCoroutine(CoScalePulse());
+            _scalePulseRoutine = StartCoroutine(CoScalePulse(currentScale));
         }
 
-        private IEnumerator CoScalePulse()
+        private IEnumerator CoScalePulse(Vector3 from)
         {
-            if (_originalScale == Vector3.zero)
-            {
-                _originalScale = transform.localScale;
-            }
-
-            Vector3 from = _originalScale;
             Vector3 to = _originalScale * scaleUp;
 
             float t = 0f;
@@ -442,14 +414,37 @@ namespace WeaponCraft
             }
 
             int tier = ResolveCollectTier(system);
-            int amount = Mathf.Max(1, _countCollect + Data.Value);
             Vector3 spawnPosition = Transform != null ? Transform.position : transform.position;
 
-            system.ReceiveItem(tier, spawnPosition, amount);
+            if (!TryCraftConfiguredRewards(system, spawnPosition))
+            {
+                int amount = Mathf.Max(1, _countCollect + ResolveBaseRewardAmount());
+                system.ReceiveItem(tier, spawnPosition, amount);
+            }
 
             _valueCollect = 0;
             _countCollect = 0;
             UpdateCollectVirual();
+        }
+
+        private bool TryCraftConfiguredRewards(WeaponCraftSystem system, Vector3 spawnPosition)
+        {
+            if (Data == null || Data.TierRequestList == null || Data.TierRequestList.Count == 0)
+            {
+                return false;
+            }
+
+            bool craftedAny = false;
+            for (int i = 0; i < Data.TierRequestList.Count; i++)
+            {
+                var request = Data.TierRequestList[i];
+                int tier = ResolveTierByConfig(system, request.Tier);
+                int amount = Mathf.Max(1, _countCollect + request.Amount);
+                system.ReceiveItem(tier, spawnPosition, amount);
+                craftedAny = true;
+            }
+
+            return craftedAny;
         }
 
         private void ApplyDamageAcrossProgressCycles(IAttacker source)
@@ -505,8 +500,70 @@ namespace WeaponCraft
                 return ResolveTierByConfig(system, Data.TierRequestList[0].Tier);
             }
 
+            if (TryResolveRewardFromName(out int nameTier, out _))
+            {
+                return ResolveTierByConfig(system, nameTier);
+            }
+
             int fallbackTier = Mathf.Max(1, Data != null ? Data.Value : 1);
             return ResolveTierByConfig(system, fallbackTier);
+        }
+
+        private int ResolveBaseRewardAmount()
+        {
+            if (Data != null && Data.TierRequestList != null && Data.TierRequestList.Count > 0)
+            {
+                int amount = 0;
+                for (int i = 0; i < Data.TierRequestList.Count; i++)
+                {
+                    amount += Mathf.Max(1, Data.TierRequestList[i].Amount);
+                }
+
+                return Mathf.Max(1, amount);
+            }
+
+            if (Data != null && Data.Value > 0)
+            {
+                return Data.Value;
+            }
+
+            return TryResolveRewardFromName(out _, out int nameAmount) ? nameAmount : 1;
+        }
+
+        private bool TryResolveRewardFromName(out int tier, out int amount)
+        {
+            tier = 1;
+            amount = 1;
+
+            string sourceName = gameObject != null ? gameObject.name : null;
+            if (string.IsNullOrEmpty(sourceName))
+            {
+                return false;
+            }
+
+            bool hasTier = TryReadPositiveIntAfterMarker(sourceName, "_t", out tier);
+            bool hasAmount = TryReadPositiveIntAfterMarker(sourceName, "_a", out amount);
+            return hasTier || hasAmount;
+        }
+
+        private static bool TryReadPositiveIntAfterMarker(string text, string marker, out int value)
+        {
+            value = 0;
+            int markerIndex = text.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+            if (markerIndex < 0)
+            {
+                return false;
+            }
+
+            int index = markerIndex + marker.Length;
+            int start = index;
+            while (index < text.Length && char.IsDigit(text[index]))
+            {
+                value = value * 10 + (text[index] - '0');
+                index++;
+            }
+
+            return index > start && value > 0;
         }
 
         private int ResolveTierByConfig(WeaponCraftSystem system, int tier)
@@ -535,32 +592,10 @@ namespace WeaponCraft
             }
         }
 
-        private void EnsureDespawnScaleEffect()
-        {
-            if (!ensureDespawnScaleEffect) return;
-
-            if (deathScaleEffect == null)
-            {
-                deathScaleEffect = GetComponent<DeathScaleEffect>();
-            }
-
-            if (deathScaleEffect == null)
-            {
-                deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
-            }
-
-            if (deathScaleEffect.Transform == null)
-            {
-                deathScaleEffect.Transform = transform;
-            }
-
-            deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
-        }
-
         protected override void DespawnInterval()
         {
             StopScalePulse();
-            EnsureDespawnScaleEffect();
+
             base.DespawnInterval();
         }
     }

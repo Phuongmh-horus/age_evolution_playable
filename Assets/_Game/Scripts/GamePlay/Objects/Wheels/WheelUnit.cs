@@ -10,7 +10,7 @@ using GamePlay.ComponentSystems; // FIX: Added
 using Pools;
 using UnityEngine;
 using DG.Tweening;
- // Assuming this exists, or use standard Unity
+// Assuming this exists, or use standard Unity
 
 namespace GamePlay.Crushers
 {
@@ -45,7 +45,7 @@ namespace GamePlay.Crushers
             Id = level;
             Level = level;
             Amount = amount;
-            CardType = GamePlay.Crushers.CardType.Character;
+            CardType = CardType.Character;
         }
 
         public CardSpawnRequestData(int level, int amount, CardType cardType)
@@ -109,10 +109,10 @@ namespace GamePlay.Crushers
         }
 
         public event Action<WheelState> OnStateChanged = delegate { };
-        
+
         // IHitable Implementation
         public event Action<GamePlay.ComponentSystems.IAttacker> OnHitComplete;
-        
+
         // IAttacker Implementation
         public event Action<GamePlay.ComponentSystems.IHitable> OnAttackComplete;
         // Wheel is an interaction trigger, not a combat attacker. Characters/projectiles deal damage.
@@ -126,10 +126,10 @@ namespace GamePlay.Crushers
                     var col = hitComponent.GetColliderData();
                     switch (col.Type)
                     {
-                        case GamePlay.ComponentSystems.ShapeType.Box:
+                        case ShapeType.Box:
                             return new Vector2(Mathf.Abs(col.Size.x) * 2f, Mathf.Abs(col.Size.z) * 2f);
-                        case GamePlay.ComponentSystems.ShapeType.Sphere:
-                        case GamePlay.ComponentSystems.ShapeType.Cylinder:
+                        case ShapeType.Sphere:
+                        case ShapeType.Cylinder:
                         default:
                             float r = Mathf.Max(Mathf.Abs(col.Size.x), Mathf.Abs(col.Size.z));
                             return new Vector2(r * 2f, r * 2f);
@@ -151,13 +151,13 @@ namespace GamePlay.Crushers
 
         public void OnAttackSucceed(GamePlay.ComponentSystems.IHitable target)
         {
-             OnAttackComplete?.Invoke(target);
+            OnAttackComplete?.Invoke(target);
         }
 
         public void Setup(int damage) { } // No-op for Wheel
 
-        public bool IsActive => currentState == WheelState.Active || currentState == WheelState.SpawningCard || currentState == WheelState.Idle; 
-        
+        public bool IsActive => currentState == WheelState.Active || currentState == WheelState.SpawningCard || currentState == WheelState.Idle;
+
         // [FIX] Removed shadowing property. Use base _entityType.
         // public new EntityType EntityType => EntityType.Wheel;
 
@@ -168,7 +168,7 @@ namespace GamePlay.Crushers
 
             ResetLogicData();
             EnsureInitialized();
-            
+
             // [FIX] Initialize Components and Register to Projectile System
             InitializeComponents();
         }
@@ -214,11 +214,11 @@ namespace GamePlay.Crushers
 
         private void InitializeComponents()
         {
-             if (hitComponent != null) hitComponent.Initialize();
-             if (attackComponent != null) attackComponent.Initialize();
+            if (hitComponent != null) hitComponent.Initialize();
+            if (attackComponent != null) attackComponent.Initialize();
 
-             // [FIX] Don't register here - Start() already registers 'this' (WheelUnit)
-             // which has GetColliderData() that delegates to hitComponent
+            // [FIX] Don't register here - Start() already registers 'this' (WheelUnit)
+            // which has GetColliderData() that delegates to hitComponent
         }
 
         public void Dispose()
@@ -232,7 +232,7 @@ namespace GamePlay.Crushers
             // Radius 1.2 (reasonable hit area), HalfHeight 2.0 (Total 4m height for arcing weapons)
             return new GamePlay.ComponentSystems.ColliderData
             {
-                Type = GamePlay.ComponentSystems.ShapeType.Cylinder,
+                Type = ShapeType.Cylinder,
                 Size = new Vector3(1.2f, 2.0f, 1.2f),
                 Offset = 0f,
                 CategoryBits = (uint)(1 << (int)EntityType.Wheel)
@@ -241,12 +241,12 @@ namespace GamePlay.Crushers
 
         public void OnHit(GamePlay.ComponentSystems.IAttacker source)
         {
-             // Take Damage Logic?
-             // Usually Wheel has Health component or we just knockback
-             // For now, trigger knockback + card loss
-             ApplyEnemyHit(applyKnockback: true);
-             
-             OnHitComplete?.Invoke(source);
+            // Take Damage Logic?
+            // Usually Wheel has Health component or we just knockback
+            // For now, trigger knockback + card loss
+            ApplyEnemyHit(applyKnockback: true);
+
+            OnHitComplete?.Invoke(source);
         }
 
         [Header("Hierarchy References")]
@@ -265,7 +265,7 @@ namespace GamePlay.Crushers
 
         [Header("Variable")]
         [SerializeField] private WheelVariable variable;
-        
+
         [Header("Config Fallback")]
         [SerializeField] private CharacterListDataSO overrideCharacterList;
 
@@ -298,7 +298,7 @@ namespace GamePlay.Crushers
         [Header("Trigger SFX")]
         [SerializeField] private AudioClipName triggerSfx = AudioClipName.None;
         [SerializeField] private AudioClipName addCardSfx = AudioClipName.SFX_DropCard;
-        
+
         [Header("SFX Fallback (Playable)")]
         [SerializeField] private AudioSource sfxSource;
         private static AudioClip _cachedDropCardClip;
@@ -354,7 +354,7 @@ namespace GamePlay.Crushers
         private bool _outlineSlotsUseFallbackTint;
         private readonly Dictionary<MeshRenderer, SlotOutlineVisualState> _slotOutlineVisualStates = new Dictionary<MeshRenderer, SlotOutlineVisualState>();
         private MaterialPropertyBlock _slotOutlineMpb;
-        
+
         // Movement
         private float _targetX = 0f;
         private Vector3 _lastMousePos;
@@ -364,7 +364,7 @@ namespace GamePlay.Crushers
         private Vector3 _knockbackStartPos;
         private Vector3 _knockbackTargetPos;
         private InputManager _cachedInputManager;
-        
+
         // Formatting
         private float _totalRotation = 0f;
         private int _currentSlotIndex = 0;
@@ -395,50 +395,50 @@ namespace GamePlay.Crushers
 
         private void Start()
         {
-             _entityType = EntityType.Wheel;
-             EnsureInitialized();
-             _cachedInputManager = InputManager.Instance;
-             _currentForwardSpeed = GetForwardSpeed();
-             EnsureWheelAnimatorsResolved();
-             if (currentState == WheelState.Active)
-             {
-                 TriggerWheelActiveAnimation();
-             }
-             EnsureOutlineSlotsResolved();
-             SetupVisualAnchors(); // [FIX] Ensure anchors are hidden by default (Prefab often has them enabled)
-             DisableAllSlotOutlines();
-             if (fullBody) _targetX = fullBody.localPosition.x;
-             RegisterWheelEvents(true);
+            _entityType = EntityType.Wheel;
+            EnsureInitialized();
+            _cachedInputManager = InputManager.Instance;
+            _currentForwardSpeed = GetForwardSpeed();
+            EnsureWheelAnimatorsResolved();
+            if (currentState == WheelState.Active)
+            {
+                TriggerWheelActiveAnimation();
+            }
+            EnsureOutlineSlotsResolved();
+            SetupVisualAnchors(); // [FIX] Ensure anchors are hidden by default (Prefab often has them enabled)
+            DisableAllSlotOutlines();
+            if (fullBody) _targetX = fullBody.localPosition.x;
+            RegisterWheelEvents(true);
 
-             // --- Fix Collision: Force Rigidbody + Collider ---
-             // [FIX] REMOVED Layer 0 override to allow EnemyProjectileSystem to detect Player Layer correctly.
-             // gameObject.layer = 0;
+            // --- Fix Collision: Force Rigidbody + Collider ---
+            // [FIX] REMOVED Layer 0 override to allow EnemyProjectileSystem to detect Player Layer correctly.
+            // gameObject.layer = 0;
 
-             var rb = GetComponent<Rigidbody>();
-             if (rb == null)
-             {
-                 rb = gameObject.AddComponent<Rigidbody>();
-                 rb.isKinematic = true;
-                 rb.useGravity = false;
-             }
+            var rb = GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                rb = gameObject.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
 
-             var col = GetComponent<Collider>();
-             if (col == null)
-             {
-                 var sphere = gameObject.AddComponent<SphereCollider>();
-                 sphere.isTrigger = true;
-                 sphere.radius = 1.5f; // [FIX] Reduced from 6f to 1.5f for fair collision
-                 sphere.center = Vector3.zero;
-             }
-             else if (!col.isTrigger)
-             {
-                  // Ensure it is a trigger if we move manually via Translate
-                  col.isTrigger = true;
-             }
-             // ------------------------------------------------
+            var col = GetComponent<Collider>();
+            if (col == null)
+            {
+                var sphere = gameObject.AddComponent<SphereCollider>();
+                sphere.isTrigger = true;
+                sphere.radius = 1.5f; // [FIX] Reduced from 6f to 1.5f for fair collision
+                sphere.center = Vector3.zero;
+            }
+            else if (!col.isTrigger)
+            {
+                // Ensure it is a trigger if we move manually via Translate
+                col.isTrigger = true;
+            }
+            // ------------------------------------------------
 
-             // Register as Player for Enemy Projectiles (use this, not hitComponent)
-             GamePlay.CombatSystems.EnemyProjectileSystem.RegisterPlayer(this);
+            // Register as Player for Enemy Projectiles (use this, not hitComponent)
+            CombatSystems.EnemyProjectileSystem.RegisterPlayer(this);
         }
 
         private void OnDisable()
@@ -447,9 +447,9 @@ namespace GamePlay.Crushers
             _currentEnemyContactIds.Clear();
             _previousEnemyContactIds.Clear();
             _lastEnemyHitFrame = -1;
-            if (Application.isPlaying && GamePlay.CombatSystems.EnemyProjectileSystem.Instance != null)
+            if (Application.isPlaying && CombatSystems.EnemyProjectileSystem.Instance != null)
             {
-                GamePlay.CombatSystems.EnemyProjectileSystem.UnregisterPlayer();
+                CombatSystems.EnemyProjectileSystem.UnregisterPlayer();
             }
 
             ClearActiveSpawnedUnits();
@@ -519,61 +519,61 @@ namespace GamePlay.Crushers
 
         private void EnsureInitialized()
         {
-             // In Luna/playable builds, the scene may NOT contain ConfigHolder.
-             // Prefer resolving from GameplayManager (playableEra / gamePlayVariable), then fall back to ConfigHolder.
-             if (variable == null)
-             {
-                 if (GameplayManager.Instance != null && GameplayManager.Instance.gamePlayVariable != null)
-                 {
-                     variable = GameplayManager.Instance.gamePlayVariable.WheelVariable;
-                 }
+            // In Luna/playable builds, the scene may NOT contain ConfigHolder.
+            // Prefer resolving from GameplayManager (playableEra / gamePlayVariable), then fall back to ConfigHolder.
+            if (variable == null)
+            {
+                if (GameplayManager.Instance != null && GameplayManager.Instance.gamePlayVariable != null)
+                {
+                    variable = GameplayManager.Instance.gamePlayVariable.WheelVariable;
+                }
 
-                 if (variable == null && ConfigHolder.Instance != null && ConfigHolder.Instance.GamePlayVariable != null)
-                 {
-                     variable = ConfigHolder.Instance.GamePlayVariable.WheelVariable;
-                 }
-             }
+                if (variable == null && ConfigHolder.Instance != null && ConfigHolder.Instance.GamePlayVariable != null)
+                {
+                    variable = ConfigHolder.Instance.GamePlayVariable.WheelVariable;
+                }
+            }
 
-             if (_characterList == null)
-             {
-                 // 1) Playable flow: GameplayManager provides EraDataSO directly (no DataManager/ConfigHolder).
-                 if (GameplayManager.Instance != null && GameplayManager.Instance.PlayableEra != null)
-                 {
-                     _characterList = GameplayManager.Instance.PlayableEra.CharacterList;
-                 }
+            if (_characterList == null)
+            {
+                // 1) Playable flow: GameplayManager provides EraDataSO directly (no DataManager/ConfigHolder).
+                if (GameplayManager.Instance != null && GameplayManager.Instance.PlayableEra != null)
+                {
+                    _characterList = GameplayManager.Instance.PlayableEra.CharacterList;
+                }
 
-                 // 2) Full flow: resolve via ConfigHolder (if present)
-                 if (_characterList == null && ConfigHolder.Instance != null)
-                 {
-                     var era = ConfigHolder.Instance.GetCurrentEraConfig();
-                     if (era != null) _characterList = era.CharacterList;
-                 }
-                 
-                 // Fallback
-                 if (_characterList == null) _characterList = overrideCharacterList;
-             }
+                // 2) Full flow: resolve via ConfigHolder (if present)
+                if (_characterList == null && ConfigHolder.Instance != null)
+                {
+                    var era = ConfigHolder.Instance.GetCurrentEraConfig();
+                    if (era != null) _characterList = era.CharacterList;
+                }
 
-             if ((_slotsMap != null && _slotsMap.Length != TotalSlots) ||
-                 (_visualSlotsMap != null && _visualSlotsMap.Length != TotalSlots))
-             {
-                 // Size changed (e.g. Inspector override toggled)
-                 ResetLogicData(); // This clears _slotsMap
-             }
+                // Fallback
+                if (_characterList == null) _characterList = overrideCharacterList;
+            }
 
-             if (_slotsMap == null || _slotsMap.Length != TotalSlots ||
-                 _visualSlotsMap == null || _visualSlotsMap.Length != TotalSlots)
-             {
-                 int slots = TotalSlots;
-                 _slotsMap = new List<WheelCardRuntimeData>[slots];
-                 _visualSlotsMap = new List<CardUnit>[slots];
-                 for (int i = 0; i < slots; i++)
-                 {
-                     _slotsMap[i] = new List<WheelCardRuntimeData>();
-                     _visualSlotsMap[i] = new List<CardUnit>();
-                 }
-                 _anglePerSlot = 360f / slots;
-                 DisableAllSlotOutlines();
-             }
+            if ((_slotsMap != null && _slotsMap.Length != TotalSlots) ||
+                (_visualSlotsMap != null && _visualSlotsMap.Length != TotalSlots))
+            {
+                // Size changed (e.g. Inspector override toggled)
+                ResetLogicData(); // This clears _slotsMap
+            }
+
+            if (_slotsMap == null || _slotsMap.Length != TotalSlots ||
+                _visualSlotsMap == null || _visualSlotsMap.Length != TotalSlots)
+            {
+                int slots = TotalSlots;
+                _slotsMap = new List<WheelCardRuntimeData>[slots];
+                _visualSlotsMap = new List<CardUnit>[slots];
+                for (int i = 0; i < slots; i++)
+                {
+                    _slotsMap[i] = new List<WheelCardRuntimeData>();
+                    _visualSlotsMap[i] = new List<CardUnit>();
+                }
+                _anglePerSlot = 360f / slots;
+                DisableAllSlotOutlines();
+            }
         }
 
         private void Update()
@@ -586,20 +586,9 @@ namespace GamePlay.Crushers
             // Match reference movement flow:
             // - KnockBack uses timed lerp to a target position.
             // - Active/Spawning use smoothed forward speed and smoothed strafe.
-            if (currentState == WheelState.KnockBack)
-            {
-                _knockbackTimer += dt;
-                float duration = variable != null ? Mathf.Max(variable.KnockbackDuration, 0.01f) : 0.3f;
-                float t = Mathf.Clamp01(_knockbackTimer / duration);
-                transform.position = Vector3.Lerp(_knockbackStartPos, _knockbackTargetPos, t);
+            if (currentState == WheelState.KnockBack) return;
 
-                if (_knockbackTimer >= duration)
-                {
-                    _knockbackTimer = 0f;
-                    SetState(WheelState.Active);
-                }
-            }
-            else
+            if (currentState != WheelState.KnockBack)
             {
                 float targetSpeed = GetForwardSpeed();
                 if (currentState == WheelState.SpawningCard && variable != null)
@@ -621,7 +610,7 @@ namespace GamePlay.Crushers
 
                 Vector3 localPos = fullBody.localPosition;
                 float baseSmoothness = variable != null ? variable.MoveSmoothness : 0.15f;
-                float effectiveSmoothness = Mathf.Clamp01(baseSmoothness * Mathf.Max(1f, strafeFollowMultiplier));
+                float effectiveSmoothness = Mathf.Clamp01(baseSmoothness * Mathf.Max(1f, strafeFollowMultiplier) * (dt * 60f));
                 float newX = Mathf.Lerp(localPos.x, tempTargetX, effectiveSmoothness);
                 fullBody.localPosition = new Vector3(newX, localPos.y, localPos.z);
                 _targetX = tempTargetX;
@@ -650,12 +639,13 @@ namespace GamePlay.Crushers
                 {
                     var target = collisionSystem.GetTargetBySortedIndex(i);
                     if (target == null) continue;
-                    
-                    if (!target.IsActive) {
+
+                    if (!target.IsActive)
+                    {
                         // if (Time.frameCount % 300 == 0) Debug.Log($"[WheelDebug] Target {i} inactive.");
                         continue;
                     }
-                    if (ReferenceEquals(target, this)) continue; 
+                    if (ReferenceEquals(target, this)) continue;
 
                     // 2. AABB Check
                     var targetTr = collisionSystem.GetTransform(i);
@@ -674,12 +664,12 @@ namespace GamePlay.Crushers
 
                     // Target AABB halves (Size is Half-Extents)
                     float tHalfX = Mathf.Abs(colData.Size.x);
-                    float tHalfZ = Mathf.Abs(colData.Size.z); 
+                    float tHalfZ = Mathf.Abs(colData.Size.z);
 
-                    if (colData.Type != GamePlay.ComponentSystems.ShapeType.Box) 
+                    if (colData.Type != ShapeType.Box)
                     {
-                        tHalfZ = Mathf.Max(tHalfX, tHalfZ); 
-                        tHalfX = tHalfZ; 
+                        tHalfZ = Mathf.Max(tHalfX, tHalfZ);
+                        tHalfX = tHalfZ;
                     }
 
                     bool hitX = distX <= (myHalfX + tHalfX);
@@ -687,13 +677,13 @@ namespace GamePlay.Crushers
 
                     if (hitX && hitZ)
                     {
-                         // HIT!
-                         // Visual Debug: Green Line
-                         #if UNITY_EDITOR
-                         Debug.DrawLine(myPos, tPos, Color.green, 1.0f);
-                         #endif
+                        // HIT!
+                        // Visual Debug: Green Line
+#if UNITY_EDITOR
+                        Debug.DrawLine(myPos, tPos, Color.green, 1.0f);
+#endif
 
-                        if (target.EntityType == GamePlay.Entities.EntityType.Enemy)
+                        if (target.EntityType == EntityType.Enemy)
                         {
                             int enemyInstanceId = targetTr.GetInstanceID();
                             _currentEnemyContactIds.Add(enemyInstanceId);
@@ -706,24 +696,24 @@ namespace GamePlay.Crushers
                                 target.OnHit(this);
                             }
                         }
-                        else if (target.EntityType == GamePlay.Entities.EntityType.CapacityFactory || 
-                                 target.EntityType == GamePlay.Entities.EntityType.CapacityGate || 
-                                 target.EntityType == GamePlay.Entities.EntityType.ResourceTower || 
-                                 target.EntityType == GamePlay.Entities.EntityType.PowerGate ||
-                                 target.EntityType == GamePlay.Entities.EntityType.Item ||
-                                 target.EntityType == GamePlay.Entities.EntityType.FinishTrigger ||
-                                 target.EntityType == GamePlay.Entities.EntityType.FinishTower ||
-                                 target.EntityType == GamePlay.Entities.EntityType.GateNewEra)
+                        else if (target.EntityType == EntityType.CapacityFactory ||
+                                 target.EntityType == EntityType.CapacityGate ||
+                                 target.EntityType == EntityType.ResourceTower ||
+                                 target.EntityType == EntityType.PowerGate ||
+                                 target.EntityType == EntityType.Item ||
+                                 target.EntityType == EntityType.FinishTrigger ||
+                                 target.EntityType == EntityType.FinishTower ||
+                                 target.EntityType == EntityType.GateNewEra)
                         {
                             target.OnHit(this);
                         }
                     }
-                    else if (distX < 5f && distZ < 5f) 
+                    else if (distX < 5f && distZ < 5f)
                     {
                         // Near miss: Yellow Line (Only draw if close)
-                        #if UNITY_EDITOR
+#if UNITY_EDITOR
                         Debug.DrawLine(myPos, tPos, Color.yellow, 0.1f);
-                        #endif
+#endif
                     }
                 }
 
@@ -735,7 +725,7 @@ namespace GamePlay.Crushers
                 _previousEnemyContactIds.Clear();
                 _currentEnemyContactIds.Clear();
             }
-            
+
             // Heartbeat (Optional, reduced freq)
             // -----------------------------
         }
@@ -777,55 +767,55 @@ namespace GamePlay.Crushers
                 _targetX = mappedX;
             }
         }
-        
+
         private void HandleRotation(float dt, float currentSpeed)
         {
-             if (visualModel == null) return;
-             
-             // [FIX] Fire Rate / Rotation Scaling
-             // User Request: "Scale with Wheel Rotation Speed, NOT Character Speed"
-             // Interpretation: Implementing Rolling Physics. 
-             // RotationSpeed (Angular) = LinearSpeed / Radius.
-             // This ensures that as the Wheel moves faster, it spins faster, and thus spawns units faster.
-             // We ignore 'TurnDuration' if it causes constant speed.
-             
-             float rotateSpeed = 0f;
-             // [REVERT] Logic Game Gốc: Dùng TurnDuration cố định
-             // User yêu cầu "Check game gốc", và game gốc không có Rolling Physics tính theo Radius.
-             // Nếu cần Scaling, ta sẽ Scale TurnDuration ở GamePlayVariable, không hardcode logic vật lý ở đây.
-             
-             if (TurnDuration > 0)
+            if (visualModel == null) return;
+
+            // [FIX] Fire Rate / Rotation Scaling
+            // User Request: "Scale with Wheel Rotation Speed, NOT Character Speed"
+            // Interpretation: Implementing Rolling Physics. 
+            // RotationSpeed (Angular) = LinearSpeed / Radius.
+            // This ensures that as the Wheel moves faster, it spins faster, and thus spawns units faster.
+            // We ignore 'TurnDuration' if it causes constant speed.
+
+            float rotateSpeed = 0f;
+            // [REVERT] Logic Game Gốc: Dùng TurnDuration cố định
+            // User yêu cầu "Check game gốc", và game gốc không có Rolling Physics tính theo Radius.
+            // Nếu cần Scaling, ta sẽ Scale TurnDuration ở GamePlayVariable, không hardcode logic vật lý ở đây.
+
+            if (TurnDuration > 0)
                 rotateSpeed = 360f / TurnDuration;
-             else
+            else
                 rotateSpeed = currentSpeed * 30f;
 
-             // Rotate logic
-             float deltaAngle = rotateSpeed * dt;
-             _totalRotation += deltaAngle;
-             visualModel.localRotation = Quaternion.Euler(0, _totalRotation, 0);
+            // Rotate logic
+            float deltaAngle = rotateSpeed * dt;
+            _totalRotation += deltaAngle;
+            visualModel.localRotation = Quaternion.Euler(0, _totalRotation, 0);
 
-             // Slot accumulation for firing
-             _angleAccumulator += deltaAngle;
-             float triggerAngle = Mathf.Clamp(_anglePerSlot - Mathf.Abs(spawnLeadAngle), 0.1f, _anglePerSlot);
-             while (_angleAccumulator >= triggerAngle)
-             {
-                 _angleAccumulator -= _anglePerSlot;
+            // Slot accumulation for firing
+            _angleAccumulator += deltaAngle;
+            float triggerAngle = Mathf.Clamp(_anglePerSlot - Mathf.Abs(spawnLeadAngle), 0.1f, _anglePerSlot);
+            while (_angleAccumulator >= triggerAngle)
+            {
+                _angleAccumulator -= _anglePerSlot;
 
-                 // Match original flow: trigger current slot, then advance
-                 SpawnFromSlot(_currentSlotIndex);
+                // Match original flow: trigger current slot, then advance
+                SpawnFromSlot(_currentSlotIndex);
 
-                 _currentSlotIndex++;
-                 int currentSlots = _slotsMap != null ? _slotsMap.Length : TotalSlots;
-                 _currentSlotIndex %= currentSlots;
-             }
+                _currentSlotIndex++;
+                int currentSlots = _slotsMap != null ? _slotsMap.Length : TotalSlots;
+                _currentSlotIndex %= currentSlots;
+            }
         }
-        
+
         // --- Collision Logic (Trigger instead of Jobs) ---
         private void OnTriggerEnter(Collider other)
         {
             // [FIX] Disable Unity Physics Trigger as requested by User to restore Luna functionality.
             // When this was active (filtered or not), it seemingly conflicted with Luna's detection logic.
-            return; 
+            return;
 
             /*
             if (currentState == WheelState.Idle) return;
@@ -863,12 +853,12 @@ namespace GamePlay.Crushers
             }
             */
         }
-            
 
-        
+
+
         private void HandleCollisionWithEnemy()
         {
-             ApplyEnemyHit(applyKnockback: true);
+            ApplyEnemyHit(applyKnockback: true);
         }
 
         private void ApplyEnemyHit(bool applyKnockback)
@@ -879,10 +869,11 @@ namespace GamePlay.Crushers
             if (applyKnockback && currentState != WheelState.KnockBack)
             {
                 SetState(WheelState.KnockBack);
-                _knockbackTimer = 0f;
-                _knockbackStartPos = transform.position;
+                DOTween.Kill(transform);
                 float knockbackDistance = variable != null ? variable.KnockbackDistance : 1f;
-                _knockbackTargetPos = transform.position - transform.forward * knockbackDistance;
+                float knockbackDuration = variable != null ? Mathf.Max(variable.KnockbackDuration, 0.01f) : 0.3f;
+                Vector3 targetPos = transform.position - transform.forward * knockbackDistance;
+                transform.DOMove(targetPos, knockbackDuration).SetEase(Ease.OutQuad).OnComplete(() => SetState(WheelState.Active)).SetId(transform);
             }
 
             // Always remove a card on enemy hit (including projectiles)
@@ -904,13 +895,13 @@ namespace GamePlay.Crushers
             _queuedRequests.AddRange(snapshot);
             StartCoroutine(CoSpawnCards(snapshot, effectType));
         }
-        
+
         private IEnumerator CoSpawnCards(List<CardSpawnRequestData> requests, CardSpawnEffectType effectType)
         {
             bool spawnInstant = effectType == CardSpawnEffectType.DropWithoutAction;
             CardSpawnEffectType spawnEffect = spawnInstant ? CardSpawnEffectType.None : effectType;
 
-            if (effectType == CardSpawnEffectType.Drop) 
+            if (effectType == CardSpawnEffectType.Drop)
                 SetState(WheelState.SpawningCard);
 
             WaitForSeconds delayWait = null;
@@ -936,7 +927,7 @@ namespace GamePlay.Crushers
                 }
             }
 
-            if (effectType == CardSpawnEffectType.Drop) 
+            if (effectType == CardSpawnEffectType.Drop)
                 SetState(WheelState.Active);
 
             _queuedRequests.Clear();
@@ -964,16 +955,16 @@ namespace GamePlay.Crushers
         {
             EnsureInitialized();
 
-            if (_characterList == null || variable == null) 
+            if (_characterList == null || variable == null)
             {
-                Debug.LogError($"[WheelUnit] SpawnSingleCard Failed! _characterList={(_characterList!=null)} variable={(variable!=null)}");
+                Debug.LogError($"[WheelUnit] SpawnSingleCard Failed! _characterList={(_characterList != null)} variable={(variable != null)}");
                 return;
             }
-            
+
             int totalSlots = TotalSlots;
             int slotIdx = _cachedTotalCards % totalSlots;
             Transform slotParent = preBakedSlots.Count > slotIdx ? preBakedSlots[slotIdx] : fullBody; // Fallback
-            
+
             var slotList = _slotsMap[slotIdx];
             var visualSlotList = (_visualSlotsMap != null && slotIdx < _visualSlotsMap.Length) ? _visualSlotsMap[slotIdx] : null;
             int currentLayer = slotList.Count;
@@ -993,28 +984,28 @@ namespace GamePlay.Crushers
 
             // Spawn
             var charData = _characterList.GetCharacterByLevel(level);
-            if (charData == null) 
+            if (charData == null)
             {
                 Debug.LogError($"[WheelUnit] SpawnSingleCard Failed! No CharacterEntry for level {level}");
                 return;
             }
-            
+
             // Use CardPrefab from CharacterEntry or Global config? 
             // Reference: _caceCharacterListDataSO.CardPrefab.Spawn
-            var cardPrefab = _characterList.CardPrefab; 
-            if (cardPrefab == null) 
+            var cardPrefab = _characterList.CardPrefab;
+            if (cardPrefab == null)
             {
                 Debug.LogError($"[WheelUnit] SpawnSingleCard Failed! CardPrefab is null in CharacterList {_characterList.name}");
                 return;
             }
 
-            var cardIns = Instantiate(cardPrefab, slotParent); // Simple Instantiate for now or Pool if available
+            var cardIns = cardPrefab.Spawn(slotParent.position, slotParent.rotation, slotParent);
             // cardIns is CardUnit
             cardIns.Initialize(runtimeCard.CardType, runtimeCard.Id, level, charData.CardData.Material, charData.CardData.Sprite);
-            
+
             // Position Logic
             Vector3 targetLocalPos = new Vector3(0, currentLayer * layerHeight, 0);
-            
+
             // Animation
             if (effectType == CardSpawnEffectType.None)
                 cardIns.Transform.localPosition = targetLocalPos;
@@ -1028,7 +1019,7 @@ namespace GamePlay.Crushers
             slotList.Add(storedCard);
             _runtimeCards.Add(storedCard);
             _cachedTotalCards++;
-            
+
             UpdateAnchorVisibility(slotIdx);
 
             // Match reference feel: spawn SFX should play near the visual landing timing,
@@ -1071,41 +1062,41 @@ namespace GamePlay.Crushers
 
         private IEnumerator CoAnimateCard(Transform cardTrans, Vector3 targetLocal, CardSpawnEffectType type)
         {
-             // Simple Lerp
-             float duration = 0.4f;
-             if (variable != null) duration = variable.DropDuration;
-             
-             Vector3 startLocal = targetLocal + Vector3.up * 5f; // Drop from high
-             if (type == CardSpawnEffectType.FlyIn) startLocal = Vector3.zero; // From center?
-             
-             float t = 0;
-             bool playedLandingSfx = false;
-             while (t < 1f)
-             {
-                 t += Time.deltaTime / duration;
-                 float k = Mathf.Clamp01(t);
-                 cardTrans.localPosition = Vector3.Lerp(startLocal, targetLocal, k);
+            // Simple Lerp
+            float duration = 0.4f;
+            if (variable != null) duration = variable.DropDuration;
 
-                 if (!playedLandingSfx && type != CardSpawnEffectType.None)
-                 {
-                     // Reference wheel plays DropCardSfx when the card is close to landing.
-                     if (k >= 0.7f)
-                     {
-                         playedLandingSfx = true;
-                         PlayAddCardSfx();
-                     }
-                 }
-                 yield return null;
-             }
-             cardTrans.localPosition = targetLocal;
+            Vector3 startLocal = targetLocal + Vector3.up * 5f; // Drop from high
+            if (type == CardSpawnEffectType.FlyIn) startLocal = Vector3.zero; // From center?
 
-             if (!playedLandingSfx && type != CardSpawnEffectType.None)
-             {
-                 PlayAddCardSfx();
-             }
+            float t = 0;
+            bool playedLandingSfx = false;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / duration;
+                float k = Mathf.Clamp01(t);
+                cardTrans.localPosition = Vector3.Lerp(startLocal, targetLocal, k);
+
+                if (!playedLandingSfx && type != CardSpawnEffectType.None)
+                {
+                    // Reference wheel plays DropCardSfx when the card is close to landing.
+                    if (k >= 0.7f)
+                    {
+                        playedLandingSfx = true;
+                        PlayAddCardSfx();
+                    }
+                }
+                yield return null;
+            }
+            cardTrans.localPosition = targetLocal;
+
+            if (!playedLandingSfx && type != CardSpawnEffectType.None)
+            {
+                PlayAddCardSfx();
+            }
         }
 
-        
+
         public void RemoveCard(int amount)
         {
             if (amount <= 0) return;
@@ -1190,14 +1181,14 @@ namespace GamePlay.Crushers
                 float arc = 4 * variable.RemoveJumpHeight * t * (1f - t);
 
                 card.Transform.position = new Vector3(x, linearY + arc, z);
-                
+
                 float rotT = Mathf.SmoothStep(0, 1, t);
                 card.Transform.rotation = Quaternion.Slerp(startRot, landRot, rotT);
             })
             .SetEase(Ease.Linear)
-            .OnComplete(() => 
-            { 
-                if (card != null) PlayCardBounceAnimation(card, landPos, throwDir, landRot); 
+            .OnComplete(() =>
+            {
+                if (card != null) PlayCardBounceAnimation(card, landPos, throwDir, landRot);
             });
         }
 
@@ -1220,9 +1211,9 @@ namespace GamePlay.Crushers
                 card.Transform.rotation = startRot;
             })
             .SetEase(Ease.OutQuad)
-            .OnComplete(() => 
-            { 
-                if (card != null) { Destroy(card.gameObject); } 
+            .OnComplete(() =>
+            {
+                if (card != null) { Destroy(card.gameObject); }
             });
         }
 
@@ -1309,7 +1300,7 @@ namespace GamePlay.Crushers
                 }
             }
         }
-        
+
         // --- Playable Stub ---
         public IReadOnlyList<CardSpawnRequestData> GetQueuedCardRequests() => _queuedRequests;
         public void ClearQueuedRequests() => _queuedRequests.Clear();
@@ -1317,82 +1308,82 @@ namespace GamePlay.Crushers
         // --- Spawn Logic ---
         private void SpawnFromSlot(int slotIndex)
         {
-            if (_slotsMap == null || slotIndex < 0 || slotIndex >= _slotsMap.Length) 
+            if (_slotsMap == null || slotIndex < 0 || slotIndex >= _slotsMap.Length)
             {
-               // Debug.LogWarning($"[WheelUnit] Invalid Slot Index: {slotIndex}");
-               return;
+                // Debug.LogWarning($"[WheelUnit] Invalid Slot Index: {slotIndex}");
+                return;
             }
 
             // Force one active outline only. More robust than previous/current toggling when state drifts.
             DisableAllSlotOutlines();
             SetEnableSlotOutline(slotIndex, true);
-            
+
             List<WheelCardRuntimeData> slotCards = _slotsMap[slotIndex];
             int count = slotCards.Count;
-            
+
             if (count == 0) return;
             PruneInactiveSpawnedUnits();
 
-             if (triggerSfx != AudioClipName.None && SoundManager.Instance != null)
-                 SoundManager.Instance.PlayOneShot(triggerSfx);
+            if (triggerSfx != AudioClipName.None && SoundManager.Instance != null)
+                SoundManager.Instance.PlayOneShot(triggerSfx);
 
             PlayArrowBounceEffect();
-             
-             // Calculate Spawn Position
-             Vector3 spawnDir = transform.forward; 
-             Vector3 centerPos = unitSpawnPoint != null ? unitSpawnPoint.position : fullBody.position;
-             Vector3 rightDir = fullBody.right;
-             
-             float unitSpace = UnitHorizontalSpace;
-             float totalW = (count - 1) * unitSpace;
-             float startX = -(totalW / 2f);
-             
-             Quaternion spawnRotation = Quaternion.LookRotation(spawnDir);
 
-             for (int i = 0; i < count; i++)
-             {
-                 var slotCard = slotCards[i];
-                 if (!slotCard.IsCharacter)
-                 {
-                     if (!_warnedUnsupportedCardType)
-                     {
-                         Debug.LogWarning("[WheelUnit] Hero slot trigger is not supported in playable yet. Skipping hero spawn.");
-                         _warnedUnsupportedCardType = true;
-                     }
-                     continue;
-                 }
+            // Calculate Spawn Position
+            Vector3 spawnDir = transform.forward;
+            Vector3 centerPos = unitSpawnPoint != null ? unitSpawnPoint.position : fullBody.position;
+            Vector3 rightDir = fullBody.right;
 
-                 int level = slotCard.Level;
-                 var characterData = _characterList.GetCharacterByLevel(level);
-                 if (characterData == null) 
-                 {
-                     Debug.LogError($"[WheelUnit] No CharacterEntry for level {level}");
-                     continue;
-                 }
+            float unitSpace = UnitHorizontalSpace;
+            float totalW = (count - 1) * unitSpace;
+            float startX = -(totalW / 2f);
 
-                 float xOffset = startX + (i * unitSpace);
-                 Vector3 pos = centerPos + rightDir * xOffset;
+            Quaternion spawnRotation = Quaternion.LookRotation(spawnDir);
 
-                 if (!TryReserveSpawnSlot())
-                 {
-                     break;
-                 }
-                  
-                 // Spawn CharacterUnit from Pool
-                 // Assumes CharacterPrefab is a PoolEntity or handling basic Instantiate
-                 var unit = characterData.CharacterPrefab.Spawn(pos, spawnRotation);
-                 if (unit != null)
-                 {
-                     unit.Initialize(level);
-                     _activeSpawnedUnits.Enqueue(unit);
-                     // Debug.Log($"[WheelUnit] Spawned Unit Level {level} at {pos}");
-                 }
-                 else
-                 {
-                     Debug.LogError($"[WheelUnit] Failed to spawn unit. Prefab: {(characterData.CharacterPrefab != null ? characterData.CharacterPrefab.name : "NULL")}. Spawn returned null.");
-                 }
-             }
-         }
+            for (int i = 0; i < count; i++)
+            {
+                var slotCard = slotCards[i];
+                if (!slotCard.IsCharacter)
+                {
+                    if (!_warnedUnsupportedCardType)
+                    {
+                        Debug.LogWarning("[WheelUnit] Hero slot trigger is not supported in playable yet. Skipping hero spawn.");
+                        _warnedUnsupportedCardType = true;
+                    }
+                    continue;
+                }
+
+                int level = slotCard.Level;
+                var characterData = _characterList.GetCharacterByLevel(level);
+                if (characterData == null)
+                {
+                    Debug.LogError($"[WheelUnit] No CharacterEntry for level {level}");
+                    continue;
+                }
+
+                float xOffset = startX + (i * unitSpace);
+                Vector3 pos = centerPos + rightDir * xOffset;
+
+                if (!TryReserveSpawnSlot())
+                {
+                    break;
+                }
+
+                // Spawn CharacterUnit from Pool
+                // Assumes CharacterPrefab is a PoolEntity or handling basic Instantiate
+                var unit = characterData.CharacterPrefab.Spawn(pos, spawnRotation);
+                if (unit != null)
+                {
+                    unit.Initialize(level);
+                    _activeSpawnedUnits.Enqueue(unit);
+                    // Debug.Log($"[WheelUnit] Spawned Unit Level {level} at {pos}");
+                }
+                else
+                {
+                    Debug.LogError($"[WheelUnit] Failed to spawn unit. Prefab: {(characterData.CharacterPrefab != null ? characterData.CharacterPrefab.name : "NULL")}. Spawn returned null.");
+                }
+            }
+        }
 
         private void ClearActiveSpawnedUnits()
         {
@@ -1732,7 +1723,7 @@ namespace GamePlay.Crushers
         private void UpdateAnchorVisibility(int slotIndex)
         {
             if (anchorObjects == null || slotIndex < 0 || slotIndex >= anchorObjects.Count) return;
-            
+
             bool hasCards = false;
             // Robust check for cards in slot
             if (_slotsMap != null && slotIndex < _slotsMap.Length)

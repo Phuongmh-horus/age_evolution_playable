@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3763855950959898793}
   - component: {fileID: 4950325548691769525}
   - component: {fileID: 2862298745163538669}
-  - component: {fileID: 8565053366366295334}
   m_Layer: 0
   m_Name: VFX_HeroPunch_slash
   m_TagString: Untagged
@@ -4722,29 +4721,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8565053366366295334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3177516835381773653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 3763855950959898793}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 4950325548691769525}
-  - {fileID: 670312755120189647}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &6391367671710786427
 GameObject:
   m_ObjectHideFlags: 0

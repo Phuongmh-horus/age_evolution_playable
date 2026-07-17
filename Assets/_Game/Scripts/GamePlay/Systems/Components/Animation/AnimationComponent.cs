@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections;
+using DG.Tweening;
 using System.Collections.Generic;
 using GamePlay.ComponentSystems;
 using UnityEngine;
@@ -27,17 +28,28 @@ namespace GamePlay.AnimationSystems
         [SerializeField] private List<AnimationMapping> mappings = new List<AnimationMapping>();
         [SerializeField, Min(0f)] private float defaultCrossFadeTime = 0.08f;
 
-        private readonly Dictionary<AnimationType, AnimationMapping> _cache = new Dictionary<AnimationType, AnimationMapping>();
-        private readonly Dictionary<AnimationType, string> _fallbackStateCache = new Dictionary<AnimationType, string>();
-        private readonly Dictionary<AnimationType, int> _stateHashCache = new Dictionary<AnimationType, int>();
-        private readonly Dictionary<AnimationType, float> _clipLengthCache = new Dictionary<AnimationType, float>();
-        private readonly Dictionary<float, WaitForSeconds> _waitCache = new Dictionary<float, WaitForSeconds>(8);
-        private Coroutine _waitRoutine;
+        [Header("Spawn Priority")]
+        [Tooltip("Animation được play ngay và resolve đồng bộ khi Initialize() chạy, để tránh trượt/T-pose lúc vừa spawn.")]
+        [SerializeField] private AnimationType initialAnimationType = AnimationType.Idle;
+        [Tooltip("Các animation khác cần resolve VÀ evaluate thật sự ngay (vd Move/Run, vì hay dùng ngay sau khi spawn). Idle luôn được ưu tiên mặc định.")]
+        [SerializeField] private List<AnimationType> priorityAnimationTypes = new List<AnimationType> { AnimationType.Move, AnimationType.Attack };
+
+        private AnimationMapping[] _cache;
+
+
+
+
         private int _lastPlayedStateHash;
         private int _lastPlayedFrame = -1;
+
+        private bool _cacheBuilt;
+        private bool _animatorSettingsApplied;
+
         private static readonly AnimationType[] s_animationTypes = (AnimationType[])Enum.GetValues(typeof(AnimationType));
-        private static readonly Dictionary<int, Dictionary<AnimationType, string>> s_controllerFallbackCache =
-            new Dictionary<int, Dictionary<AnimationType, string>>(16);
+        private static readonly Dictionary<int, string[]> s_controllerFallbackCache = new Dictionary<int, string[]>(16);
+        private static readonly Dictionary<int, int[]> s_controllerStateHashCache = new Dictionary<int, int[]>(16);
+        private static readonly Dictionary<int, float[]> s_controllerClipLengthCache = new Dictionary<int, float[]>(16);
+        private static readonly HashSet<int> s_controllerWarmedUp = new HashSet<int>();
 
         private static readonly int HASH_MultiplierSpeed = Animator.StringToHash("AnimMultiplierSpeed");
 
@@ -53,6 +65,7 @@ namespace GamePlay.AnimationSystems
         {
             base.OnValidate();
             ValidateAnimator();
+            _cacheBuilt = false;
             BuildCache();
         }
 #endif
@@ -75,10 +88,11 @@ namespace GamePlay.AnimationSystems
 
         private void BuildCache()
         {
-            _cache.Clear();
-            _fallbackStateCache.Clear();
-            _stateHashCache.Clear();
-            _clipLengthCache.Clear();
+            if (_cacheBuilt)
+                return;
+
+            _cache = new AnimationMapping[32]; // Max enum buffer
+            _cacheBuilt = true;
             if (mappings == null) return;
 
             for (int i = 0; i < mappings.Count; i++)
@@ -86,8 +100,18 @@ namespace GamePlay.AnimationSystems
                 var m = mappings[i];
                 if (string.IsNullOrEmpty(m.StateName)) continue;
 
-                _cache[m.Type] = m;
+                int index = (int)m.Type;
+                if (index >= 0 && index < _cache.Length)
+                {
+                    _cache[index] = m;
+                }
             }
+        }
+
+        public override void Dispose()
+        {
+            DOTween.Kill(this);
+            base.Dispose();
         }
 
         public override void Initialize()
@@ -95,53 +119,51 @@ namespace GamePlay.AnimationSystems
             base.Initialize();
             // Playable Fix: Ensure Animator is assigned in Inspector
             if (animator == null) ValidateAnimator();
+
+            if (animator != null && !_animatorSettingsApplied)
+            {
+                animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                _animatorSettingsApplied = true;
+            }
+
             WarmupControllerFallbackCache();
-            WarmupStateHashCache();
             UpdateMultiplierSpeed(1f);
+            PlayAnimation(initialAnimationType, 0f);
         }
+
+
 
         public void PlayAnimation(AnimationType animationType, float waitForAction = 0.5f, Action onComplete = null)
         {
-            int stateHash = 0;
             if (animator != null)
             {
-                if (_cache.TryGetValue(animationType, out var m))
+                int typeIndex = (int)animationType;
+                int stateHash = 0;
+
+                if (_cache != null && typeIndex >= 0 && typeIndex < _cache.Length && !string.IsNullOrEmpty(_cache[typeIndex].StateName))
                 {
-                    stateHash = GetOrCreateStateHash(animationType, m.StateName);
-                    // float crossFadeTime = m.CrossFadeTime > 0f ? m.CrossFadeTime : defaultCrossFadeTime;
-                    // if (crossFadeTime > 0f)
-                    //     animator.CrossFadeInFixedTime(stateHash, crossFadeTime);
-                    // else
-                    PlayStateIfNeeded(stateHash);
+                    stateHash = GetOrCreateStateHash(animationType, _cache[typeIndex].StateName);
                 }
                 else
                 {
                     string targetState = ResolveFallbackStateName(animationType);
                     stateHash = GetOrCreateStateHash(animationType, targetState);
-                    // if (defaultCrossFadeTime > 0f)
-                    //     animator.CrossFadeInFixedTime(stateHash, defaultCrossFadeTime);
-                    // else
-                    PlayStateIfNeeded(stateHash);
                 }
-            }
-            else
-            {
-                 // Silent fail or warning? Keeping warning for safety.
-                 // Debug.LogWarning($"[AnimationComponent] Failed to play {animationType}: Animator is null.");
+
+                PlayStateIfNeeded(stateHash);
             }
 
             if (onComplete == null)
                 return;
 
-            if (_waitRoutine != null) StopCoroutine(_waitRoutine);
+            DOTween.Kill(this);
             if (waitForAction <= 0f)
             {
                 onComplete.Invoke();
-                _waitRoutine = null;
                 return;
             }
 
-            _waitRoutine = StartCoroutine(WaitThen(waitForAction, onComplete));
+            DOVirtual.DelayedCall(waitForAction, () => { onComplete?.Invoke(); }, false).SetId(this);
         }
 
         public void UpdateMultiplierSpeed(float amount)
@@ -152,30 +174,27 @@ namespace GamePlay.AnimationSystems
 
         public float GetAnimationClipLength(AnimationType animationType)
         {
-            if (_clipLengthCache.TryGetValue(animationType, out float cached))
-                return cached;
+            var controller = animator != null ? animator.runtimeAnimatorController : null;
+            if (controller != null)
+            {
+                int controllerId = controller.GetInstanceID();
+                if (s_controllerClipLengthCache.TryGetValue(controllerId, out var lengths))
+                {
+                    int index = (int)animationType;
+                    if (index >= 0 && index < lengths.Length)
+                    {
+                        if (lengths[index] > 0f) return lengths[index];
 
-            float length = ComputeAnimationClipLength(animationType);
-            _clipLengthCache[animationType] = length;
-            return length;
+                        float length = ComputeAnimationClipLength(animationType);
+                        lengths[index] = length;
+                        return length;
+                    }
+                }
+            }
+            return ComputeAnimationClipLength(animationType);
         }
 
-        private IEnumerator WaitThen(float t, Action onComplete)
-        {
-            if (t > 0f) yield return GetWaitInstruction(t);
-            onComplete?.Invoke();
-            _waitRoutine = null;
-        }
 
-        private WaitForSeconds GetWaitInstruction(float duration)
-        {
-            if (_waitCache.TryGetValue(duration, out var wait))
-                return wait;
-
-            wait = new WaitForSeconds(duration);
-            _waitCache[duration] = wait;
-            return wait;
-        }
 
         private void PlayStateIfNeeded(int stateHash)
         {
@@ -184,69 +203,42 @@ namespace GamePlay.AnimationSystems
                 return;
 
             animator.Play(stateHash, 0, 0f);
+            animator.Update(0f); // Force immediate evaluation to prevent T-pose or sliding on the first frame
             _lastPlayedStateHash = stateHash;
             _lastPlayedFrame = frame;
         }
 
         private string ResolveFallbackStateName(AnimationType animationType)
         {
-            if (_fallbackStateCache.TryGetValue(animationType, out var cachedState) && !string.IsNullOrEmpty(cachedState))
-                return cachedState;
-
-            string enumName = animationType.ToString();
-            string targetState = enumName;
-
             var controller = animator != null ? animator.runtimeAnimatorController : null;
             if (TryResolveFromControllerCache(controller, animationType, out var cachedControllerState) &&
                 !string.IsNullOrEmpty(cachedControllerState))
             {
-                targetState = cachedControllerState;
+                return cachedControllerState;
             }
-            else if (controller != null)
-            {
-                var clips = controller.animationClips;
-                for (int i = 0; i < clips.Length; i++)
-                {
-                    var clip = clips[i];
-                    if (clip == null || string.IsNullOrEmpty(clip.name)) continue;
-
-                    if (clip.name.IndexOf(enumName, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        targetState = clip.name;
-                        break;
-                    }
-                }
-            }
-
-            _fallbackStateCache[animationType] = targetState;
-            return targetState;
-        }
-
-        private void WarmupStateHashCache()
-        {
-            for (int i = 0; i < s_animationTypes.Length; i++)
-            {
-                var type = s_animationTypes[i];
-                if (_cache.TryGetValue(type, out var mapped) && !string.IsNullOrEmpty(mapped.StateName))
-                {
-                    GetOrCreateStateHash(type, mapped.StateName);
-                    continue;
-                }
-
-                string fallback = ResolveFallbackStateName(type);
-                if (!string.IsNullOrEmpty(fallback))
-                    GetOrCreateStateHash(type, fallback);
-            }
+            return animationType.ToString();
         }
 
         private int GetOrCreateStateHash(AnimationType animationType, string stateName)
         {
-            if (_stateHashCache.TryGetValue(animationType, out int cached))
-                return cached;
+            var controller = animator != null ? animator.runtimeAnimatorController : null;
+            if (controller != null)
+            {
+                int controllerId = controller.GetInstanceID();
+                if (s_controllerStateHashCache.TryGetValue(controllerId, out var hashes))
+                {
+                    int index = (int)animationType;
+                    if (index >= 0 && index < hashes.Length)
+                    {
+                        if (hashes[index] != 0) return hashes[index];
 
-            int hash = Animator.StringToHash(stateName);
-            _stateHashCache[animationType] = hash;
-            return hash;
+                        int hash = Animator.StringToHash(stateName);
+                        hashes[index] = hash;
+                        return hash;
+                    }
+                }
+            }
+            return Animator.StringToHash(stateName);
         }
 
         private void WarmupControllerFallbackCache()
@@ -255,31 +247,59 @@ namespace GamePlay.AnimationSystems
             if (controller == null) return;
 
             int controllerId = controller.GetInstanceID();
-            if (s_controllerFallbackCache.ContainsKey(controllerId)) return;
+            if (s_controllerWarmedUp.Contains(controllerId)) return;
 
-            var map = new Dictionary<AnimationType, string>(s_animationTypes.Length);
-            var clips = controller.animationClips;
+            s_controllerWarmedUp.Add(controllerId);
+
+            var map = new string[32];
+            s_controllerStateHashCache[controllerId] = new int[32];
+            s_controllerClipLengthCache[controllerId] = new float[32];
 
             for (int t = 0; t < s_animationTypes.Length; t++)
             {
-                var animType = s_animationTypes[t];
-                string enumName = animType.ToString();
-                string resolved = enumName;
+                int index = (int)s_animationTypes[t];
+                if (index >= 0 && index < map.Length)
+                    map[index] = s_animationTypes[t].ToString();
+            }
 
-                if (clips != null)
+            var clips = controller.animationClips;
+            if (clips != null && clips.Length > 0)
+            {
+                var exactByName = new Dictionary<string, string>(clips.Length, StringComparer.OrdinalIgnoreCase);
+                for (int i = 0; i < clips.Length; i++)
                 {
-                    for (int i = 0; i < clips.Length; i++)
-                    {
-                        var clip = clips[i];
-                        if (clip == null || string.IsNullOrEmpty(clip.name)) continue;
-                        if (clip.name.IndexOf(enumName, StringComparison.OrdinalIgnoreCase) < 0) continue;
-
-                        resolved = clip.name;
-                        break;
-                    }
+                    var clip = clips[i];
+                    if (clip == null || string.IsNullOrEmpty(clip.name)) continue;
+                    if (!exactByName.ContainsKey(clip.name))
+                        exactByName[clip.name] = clip.name;
                 }
 
-                map[animType] = resolved;
+                for (int t = 0; t < s_animationTypes.Length; t++)
+                {
+                    var animType = s_animationTypes[t];
+                    string enumName = animType.ToString();
+                    int index = (int)animType;
+
+                    if (index >= 0 && index < map.Length)
+                    {
+                        if (exactByName.TryGetValue(enumName, out var exactMatch))
+                        {
+                            map[index] = exactMatch;
+                            continue;
+                        }
+
+                        for (int i = 0; i < clips.Length; i++)
+                        {
+                            var clip = clips[i];
+                            if (clip == null || string.IsNullOrEmpty(clip.name)) continue;
+                            if (clip.name.IndexOf(enumName, StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                map[index] = clip.name;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             s_controllerFallbackCache[controllerId] = map;
@@ -297,7 +317,13 @@ namespace GamePlay.AnimationSystems
             if (!s_controllerFallbackCache.TryGetValue(controllerId, out var map) || map == null)
                 return false;
 
-            return map.TryGetValue(animationType, out stateName);
+            int index = (int)animationType;
+            if (index >= 0 && index < map.Length)
+            {
+                stateName = map[index];
+                return true;
+            }
+            return false;
         }
 
         private float ComputeAnimationClipLength(AnimationType animationType)
@@ -306,8 +332,9 @@ namespace GamePlay.AnimationSystems
             if (controller == null) return 0f;
 
             string targetState = null;
-            if (_cache.TryGetValue(animationType, out var mapped) && !string.IsNullOrEmpty(mapped.StateName))
-                targetState = mapped.StateName;
+            int index = (int)animationType;
+            if (_cache != null && index >= 0 && index < _cache.Length && !string.IsNullOrEmpty(_cache[index].StateName))
+                targetState = _cache[index].StateName;
             else
                 targetState = ResolveFallbackStateName(animationType);
 

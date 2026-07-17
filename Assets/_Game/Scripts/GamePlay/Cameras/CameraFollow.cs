@@ -33,7 +33,7 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Transition Settings")]
     [SerializeField] private TransitionMode transitionMode = TransitionMode.Smooth;
-    [SerializeField] private float transitionDuration = 1f;
+    [SerializeField] private float transitionDuration = 1.5f;
 
     [Header("Camera States")]
     [SerializeField] private List<CameraState> cameraStates = new List<CameraState>();
@@ -112,17 +112,6 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         InjectTrackPreviewPoints();
-
-        // Force start in FollowPlayer instead of Waiting (Luna build requirement).
-        if (currentState == null || currentState.CameraStateName == CameraStateName.Waiting)
-        {
-            var followState = GetStateByName(CameraStateName.FollowPlayer);
-            if (followState != null)
-            {
-                currentState = followState;
-                defaultStateName = CameraStateName.FollowPlayer;
-            }
-        }
 
         if (currentState != null)
         {
@@ -339,11 +328,11 @@ public class CameraFollow : MonoBehaviour
 
         Vector3 screenPos = Vector3.zero;
         bool hasUI = GameEventBus.GetCapacityBarPosition != null;
-        
+
         if (hasUI)
         {
             screenPos = GameEventBus.GetCapacityBarPosition.Invoke();
-             // Simple validation: If screenPos is (0,0), it's likely uninitialized. Fallback to center.
+            // Simple validation: If screenPos is (0,0), it's likely uninitialized. Fallback to center.
             if (screenPos == Vector3.zero) hasUI = false;
         }
 
@@ -356,17 +345,17 @@ public class CameraFollow : MonoBehaviour
         float distance = 10f;
         if (GameplayManager.Instance != null && GameplayManager.Instance.Turnable != null)
         {
-             Plane cameraPlane = new Plane(cam.transform.forward, cam.transform.position);
-             distance = cameraPlane.GetDistanceToPoint(GameplayManager.Instance.Turnable.Transform.position);
-             distance = Mathf.Abs(distance); 
+            Plane cameraPlane = new Plane(cam.transform.forward, cam.transform.position);
+            distance = cameraPlane.GetDistanceToPoint(GameplayManager.Instance.Turnable.Transform.position);
+            distance = Mathf.Abs(distance);
         }
 
         // IMPORTANT: We must retain the Screen X/Y from the UI, but inject the Depth Z.
         // ScreenToWorldPoint(x, y, z) -> Z is depth from camera.
-        screenPos.z = Mathf.Max(5f, distance); 
-        
+        screenPos.z = Mathf.Max(5f, distance);
+
         _cachedCapacityBarWorldPos = cam.ScreenToWorldPoint(screenPos);
-        
+
         return _cachedCapacityBarWorldPos;
     }
 

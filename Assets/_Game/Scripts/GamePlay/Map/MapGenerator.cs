@@ -52,24 +52,12 @@ namespace GamePlay.Map
         // Public method to allow MapContentGenerator to access active segments
         public List<RoadSegment> GetActiveSegments()
         {
-            // Populate activeSegments if empty but children exist
-            if (activeSegments.Count == 0 && transform.childCount > 0)
-            {
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    var child = transform.GetChild(i);
-                    var segment = child.GetComponent<RoadSegment>();
-                    if (segment != null) activeSegments.Add(segment);
-                }
-            }
-
             return activeSegments;
         }
-
+        //Get Position
         public Transform GetSpawnPlayerTransform()
         {
             var segments = GetActiveSegments();
-            if (segments.Count == 0) return null;
             return segments[0].EntryPoint;
         }
 
@@ -85,10 +73,10 @@ namespace GamePlay.Map
         {
             _wheelTransform = wheelTransform;
             _lastWheelForwardForCulling = float.NaN;
-            if (_backgroundChunks.Count == 0)
-            {
-                RebuildBackgroundChunks();
-            }
+            // if (_backgroundChunks.Count == 0)
+            // {
+            //     RebuildBackgroundChunks();
+            // }
             UpdateBackgroundVisibility();
             EnsureBackgroundCullRoutine();
         }
@@ -112,7 +100,7 @@ namespace GamePlay.Map
                 _backGroundGO = Instantiate(mapData.BackGround, backGroundParent);
             }
 
-            RebuildBackgroundChunks();
+            //RebuildBackgroundChunks();
             EnsureBackgroundCullRoutine();
         }
 
@@ -149,34 +137,34 @@ namespace GamePlay.Map
             StopBackgroundCullRoutine();
         }
 
-        private void RebuildBackgroundChunks()
-        {
-            ClearBackgroundChunks();
+        // private void RebuildBackgroundChunks()
+        // {
+        //     ClearBackgroundChunks();
 
-            if (!enablePassedBackgroundCulling) return;
+        //     if (!enablePassedBackgroundCulling) return;
 
-            Transform sourceRoot = _backGroundGO != null ? _backGroundGO.transform : backGroundParent;
-            if (sourceRoot == null) return;
+        //     Transform sourceRoot = _backGroundGO != null ? _backGroundGO.transform : backGroundParent;
+        //     if (sourceRoot == null) return;
 
-            var allRenderers = sourceRoot.GetComponentsInChildren<Renderer>(true);
-            if (allRenderers == null || allRenderers.Length == 0)
-            {
-                return;
-            }
+        //     var allRenderers = sourceRoot.GetComponentsInChildren<Renderer>(true);
+        //     if (allRenderers == null || allRenderers.Length == 0)
+        //     {
+        //         return;
+        //     }
 
-            var uniqueRoots = new HashSet<Transform>();
-            for (int i = 0; i < allRenderers.Length; i++)
-            {
-                var renderer = allRenderers[i];
-                if (renderer == null) continue;
+        //     var uniqueRoots = new HashSet<Transform>();
+        //     for (int i = 0; i < allRenderers.Length; i++)
+        //     {
+        //         var renderer = allRenderers[i];
+        //         if (renderer == null) continue;
 
-                Transform chunkRoot = ResolveChunkRoot(renderer.transform, sourceRoot);
-                if (chunkRoot == null) continue;
-                if (!uniqueRoots.Add(chunkRoot)) continue;
+        //         Transform chunkRoot = ResolveChunkRoot(renderer.transform, sourceRoot);
+        //         if (chunkRoot == null) continue;
+        //         if (!uniqueRoots.Add(chunkRoot)) continue;
 
-                TryAddBackgroundChunk(chunkRoot);
-            }
-        }
+        //         TryAddBackgroundChunk(chunkRoot);
+        //     }
+        // }
 
         private void TryAddBackgroundChunk(Transform chunkRoot)
         {

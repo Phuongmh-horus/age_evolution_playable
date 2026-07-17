@@ -1,4 +1,4 @@
-Shader "OmniShade/Standard_Luna"
+Shader "OmniShade/Standard_Luna_GPUInstancing"
 {
     Properties
     {
@@ -78,6 +78,7 @@ Shader "OmniShade/Standard_Luna"
             #pragma exclude_renderers gles
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_instancing
             //#pragma multi_compile_fog
 
             #pragma multi_compile_local _ DIFFUSE
@@ -90,8 +91,11 @@ Shader "OmniShade/Standard_Luna"
             #pragma shader_feature_local CUTOUT
 
             sampler2D _MainTex; float4 _MainTex_ST;
-            half4 _Color;
             half _Brightness, _Contrast, _Saturation, _IgnoreMainTexAlpha;
+
+            UNITY_INSTANCING_BUFFER_START(OmniShadeProps)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+            UNITY_INSTANCING_BUFFER_END(OmniShadeProps)
 
             half _DiffuseWrap, _DiffuseBrightness, _DiffuseContrast;
 
@@ -118,6 +122,7 @@ Shader "OmniShade/Standard_Luna"
             };
 
             struct v2f {
+                UNITY_VERTEX_INPUT_INSTANCE_ID
                 float4 pos: SV_POSITION;
                 float2 uv: TEXCOORD0;
                 float2 uv2: TEXCOORD1;
@@ -130,6 +135,7 @@ Shader "OmniShade/Standard_Luna"
             {
                 v2f o;
                 UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_TRANSFER_INSTANCE_ID(v, o);
                 o.pos = UnityObjectToClipPos(v.vertex);
 
                 #if defined(ZOFFSET)
@@ -152,10 +158,13 @@ Shader "OmniShade/Standard_Luna"
 
             half4 frag(v2f i) : SV_Target
             {
-                // In Linear projects, tex2D(sRGB texture) returns Linear already.
-                half4 col = (half4)tex2D(_MainTex, i.uv) * _Color;
+                UNITY_SETUP_INSTANCE_ID(i);
+                half4 instanceColor = (half4)UNITY_ACCESS_INSTANCED_PROP(OmniShadeProps, _Color);
 
-                if (_IgnoreMainTexAlpha > 0.5h) col.a = _Color.a;
+                // In Linear projects, tex2D(sRGB texture) returns Linear already.
+                half4 col = (half4)tex2D(_MainTex, i.uv) * instanceColor;
+
+                if (_IgnoreMainTexAlpha > 0.5h) col.a = instanceColor.a;
 
                 col.rgb = ((col.rgb - 0.5h) * _Contrast + 0.5h) * _Brightness;
                 col.rgb = ApplySaturation(col.rgb, _Saturation);

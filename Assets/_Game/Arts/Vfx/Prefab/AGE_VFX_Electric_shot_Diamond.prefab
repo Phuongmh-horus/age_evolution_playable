@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5122251996444570829}
   - component: {fileID: 2740123660980235085}
   - component: {fileID: 5011114845497712966}
-  - component: {fileID: 8537209851273976417}
   m_Layer: 0
   m_Name: AGE_VFX_Electric_shot_Diamond
   m_TagString: Untagged
@@ -4832,28 +4831,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8537209851273976417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3087452740755737565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 5122251996444570829}
-  EntityType: 0
-  VfxTag: DiamondSpike
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 2740123660980235085}
-  - {fileID: 0}
 --- !u!1 &3729906270759753490
 GameObject:
   m_ObjectHideFlags: 0
@@ -4865,7 +4842,6 @@ GameObject:
   - component: {fileID: 7954533648958182410}
   - component: {fileID: 6714435860016099559}
   - component: {fileID: 4665134072924231073}
-  - component: {fileID: 4613400700180936657}
   m_Layer: 0
   m_Name: electric_diamond
   m_TagString: Untagged
@@ -9685,26 +9661,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &4613400700180936657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3729906270759753490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 7954533648958182410}
-  EntityType: 0
-  VfxTag: 
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 6714435860016099559}
-  - {fileID: 0}
-  - {fileID: 0}

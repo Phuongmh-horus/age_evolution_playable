@@ -11,8 +11,9 @@ public class NewEraTrigger : ItemUnit
     public bool WaitForTrigger;
     public UnityEvent OnTrigger;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         // [FIX] Ensure EntityType is GateNewEra for collision detection
         if (_entityType == EntityType.None || _entityType == EntityType.Item)
         {

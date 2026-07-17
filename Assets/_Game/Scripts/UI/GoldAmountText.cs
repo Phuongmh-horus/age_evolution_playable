@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class CurrencyAmountText : MonoBehaviour
 {
     [SerializeField] private TMP_Text goldText;
+    [SerializeField] private Image goldIcon;
     [SerializeField] private string format = "{0}";
     [SerializeField] private bool useThousandsSeparator = true;
     [SerializeField] private CurrencyType currencyKind = CurrencyType.Gold;
@@ -37,6 +38,15 @@ public class CurrencyAmountText : MonoBehaviour
         if (goldText == null)
         {
             goldText = GetComponentInChildren<TMP_Text>(true);
+        }
+        if (goldIcon == null)
+        {
+            goldIcon = GetComponent<Image>();
+        }
+
+        if (goldIcon == null)
+        {
+            goldIcon = GetComponentInChildren<Image>(true);
         }
     }
 
@@ -123,6 +133,7 @@ public class CurrencyAmountText : MonoBehaviour
 
         bool canAnimateGain = animateOnGoldGain &&
                               gainIconPrefab != null &&
+                              goldIcon != null &&
                               worldPosition != Vector3.zero &&
                               lastAmount != int.MinValue &&
                               amount > lastAmount;
@@ -181,7 +192,7 @@ public class CurrencyAmountText : MonoBehaviour
             yield break;
         }
 
-        Vector2 endLocal = root.InverseTransformPoint(goldText.rectTransform.position);
+        Vector2 endLocal = root.InverseTransformPoint(goldIcon.rectTransform.position);
         int burstCount = Mathf.Max(1, gainBurstCount);
         var icons = new List<Image>(burstCount);
         for (int i = 0; i < burstCount; i++)

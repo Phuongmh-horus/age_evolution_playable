@@ -37,6 +37,29 @@ namespace GamePlay.CombatSystems
         }
 
         private readonly List<ManagedActorRefs> _actors = new List<ManagedActorRefs>();
+        private readonly Queue<ManagedActorRefs> _actorRefsPool = new Queue<ManagedActorRefs>(64);
+
+        private ManagedActorRefs GetActorRef()
+        {
+            if (_actorRefsPool.Count > 0)
+            {
+                var refs = _actorRefsPool.Dequeue();
+                refs.Mover = null;
+                refs.Attacker = null;
+                refs.Jumper = null;
+                refs.Transform = null;
+                return refs;
+            }
+            return new ManagedActorRefs();
+        }
+
+        private void ReturnActorRef(ManagedActorRefs refs)
+        {
+            if (refs != null)
+            {
+                _actorRefsPool.Enqueue(refs);
+            }
+        }
 
         private void Awake()
         {
@@ -120,10 +143,8 @@ namespace GamePlay.CombatSystems
         {
             if (unitTransform == null) return;
 
-            var refs = new ManagedActorRefs
-            {
-                Transform = unitTransform
-            };
+            var refs = GetActorRef();
+            refs.Transform = unitTransform;
 
             if ((flags & CapabilityFlags.Move) != 0 && pack.Mover != null)
             {
@@ -290,11 +311,16 @@ namespace GamePlay.CombatSystems
 
         private void RemoveAtSwapBack(int index)
         {
-            int last = _actors.Count - 1;
-            if (index < 0 || index > last) return;
+            int lastIndex = _actors.Count - 1;
+            
+            var removedRef = _actors[index];
+            ReturnActorRef(removedRef);
 
-            _actors[index] = _actors[last];
-            _actors.RemoveAt(last);
+            if (index < lastIndex)
+            {
+                _actors[index] = _actors[lastIndex];
+            }
+            _actors.RemoveAt(lastIndex);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using Pools;
 using GamePlay.ComponentSystems;
 
 namespace GamePlay.Effects
@@ -8,6 +9,7 @@ namespace GamePlay.Effects
         [Header("References")]
         [SerializeField] private HitComponent hitComponent;
         [SerializeField] private DebrisBlock debrisPrefab;
+        public DebrisBlock DebrisPrefab => debrisPrefab;
 
         [Header("Spawn Settings")]
         [SerializeField] private int minBlocks = 5;
@@ -22,6 +24,16 @@ namespace GamePlay.Effects
         [SerializeField] private Vector2 blockScaleRange = new Vector2(0.1f, 0.3f);
 
         public Color BaseColor;
+        [SerializeField, Min(0)] private int prewarmPoolCount = 30;
+
+        public void WarmupRuntimeCaches()
+        {
+            if (debrisPrefab != null && prewarmPoolCount > 0)
+            {
+                PoolSystem.Prewarm(debrisPrefab, prewarmPoolCount);
+            }
+        }
+
         public void TriggerDebrisEffect()
         {
             if (hitComponent == null || debrisPrefab == null)
@@ -45,8 +57,8 @@ namespace GamePlay.Effects
             Vector3 randomPos = GetRandomPositionInShape(center);
 
             // Instantiate block
-            var blockObj = PoolManager.Instance.Get(debrisPrefab);
-            blockObj.transform.SetParent(PoolManager.Instance.transform);
+            var blockObj = debrisPrefab.Spawn();
+
             blockObj.transform.SetPositionAndRotation(randomPos, Random.rotation);
             blockObj.gameObject.SetActive(true);
 

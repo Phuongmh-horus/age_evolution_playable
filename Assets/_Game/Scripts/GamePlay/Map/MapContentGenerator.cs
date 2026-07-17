@@ -52,7 +52,7 @@ namespace GamePlay.Map
             catch { }
 
             // Direct Instantiate fallback — always works in Luna
-            return Object.Instantiate(prefab, pos, rot, parent);
+            return Instantiate(prefab, pos, rot, parent);
         }
 
         private static MilestoneOnMap SafeSpawnMilestone(MilestoneOnMap prefab)
@@ -64,7 +64,7 @@ namespace GamePlay.Map
                 if (spawned != null) return spawned;
             }
             catch { }
-            return Object.Instantiate(prefab);
+            return Instantiate(prefab);
         }
 
         public void GenerateContentData(ContentDataSO contentDataSo, bool initializeItems = true)

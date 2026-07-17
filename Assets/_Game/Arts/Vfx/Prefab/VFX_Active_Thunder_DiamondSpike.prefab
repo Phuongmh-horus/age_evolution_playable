@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4358073079745357948}
   - component: {fileID: 9147881686673862056}
   - component: {fileID: 5083804883170796798}
-  - component: {fileID: 5239543094356016764}
   m_Layer: 0
   m_Name: electric_ball_2
   m_TagString: Untagged
@@ -4831,28 +4830,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5239543094356016764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1263833943352436907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 4358073079745357948}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 9147881686673862056}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &1763495310565208978
 GameObject:
   m_ObjectHideFlags: 0
@@ -4864,7 +4841,6 @@ GameObject:
   - component: {fileID: 8701475013826764182}
   - component: {fileID: 7219620404286788470}
   - component: {fileID: 6652298196246211463}
-  - component: {fileID: 2491266674668748880}
   m_Layer: 0
   m_Name: VFX_Active_Thunder_DiamondSpike
   m_TagString: Untagged
@@ -9685,24 +9661,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2491266674668748880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1763495310565208978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 8701475013826764182}
-  EntityType: 6
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 7219620404286788470}
-  - {fileID: 9147881686673862056}

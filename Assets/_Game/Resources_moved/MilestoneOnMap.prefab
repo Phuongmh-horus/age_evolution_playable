@@ -199,9 +199,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7050041167555203597, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7050041167555203597, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7050041167555203597, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 13a720d3a0d9e894c8890f062788495d, type: 2}
+    - target: {fileID: -5808631154760526629, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5808631154760526629, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
       propertyPath: m_Name
       value: finish_flag
@@ -313,9 +329,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7050041167555203597, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7050041167555203597, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7050041167555203597, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 13a720d3a0d9e894c8890f062788495d, type: 2}
+    - target: {fileID: -5808631154760526629, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5808631154760526629, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b4f273cd2f92fa44399fdb5e4ac9e5e7, type: 3}
       propertyPath: m_Name
       value: finish_flag_2

@@ -58,7 +58,7 @@ MonoBehaviour:
   colliderOffsets: {x: 0, y: 0, z: 0}
   colliderSize: {x: 1, y: 1, z: 1}
   _components:
-  - {fileID: 0}
+  - {fileID: 7378730977685070325}
   ActiveFlags: 0
   LeftOffset: 0
   RightOffset: 0
@@ -66,9 +66,10 @@ MonoBehaviour:
   _tutElement: {fileID: 0}
   autoAddHitTextFlyEffectAtRuntime: 1
   Type: 7
-  Amount: 5
+  Amount: 3
   autoClaimOnGround: 1
   randomBonusRange: {x: 0, y: 0}
+  claimDelayOnGround: 0.3
   claimClip: {fileID: 8300000, guid: 73cc3c1de9bdd0f4dab79abc50b71d6d, type: 3}
   claimSfx: 10
   ownAudioSource: {fileID: 4893640322163411761}

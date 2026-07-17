@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1483262720918372235}
   - component: {fileID: 1072282813131466947}
   - component: {fileID: 4000423044837158284}
-  - component: {fileID: 7507806892910188642}
   m_Layer: 0
   m_Name: AGE_VFX_Electric_shot_Cash
   m_TagString: Untagged
@@ -4832,28 +4831,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &7507806892910188642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 513872306597852969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 1483262720918372235}
-  EntityType: 0
-  VfxTag: CashSpike
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 1072282813131466947}
-  - {fileID: 0}
 --- !u!1 &6586957477698369089
 GameObject:
   m_ObjectHideFlags: 0
@@ -4865,7 +4842,6 @@ GameObject:
   - component: {fileID: 2356883862853561886}
   - component: {fileID: 6473277737203446987}
   - component: {fileID: 1180203283890306286}
-  - component: {fileID: 5708439538202133571}
   m_Layer: 0
   m_Name: electric_cash
   m_TagString: Untagged
@@ -9685,26 +9661,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5708439538202133571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6586957477698369089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 2356883862853561886}
-  EntityType: 0
-  VfxTag: 
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 6473277737203446987}
-  - {fileID: 0}
-  - {fileID: 0}

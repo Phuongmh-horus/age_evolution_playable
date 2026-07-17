@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4562986980936159289}
   - component: {fileID: 6622775543309162817}
   - component: {fileID: 3355143085332201068}
-  - component: {fileID: 484977679159947622}
   m_Layer: 0
   m_Name: electric_ball
   m_TagString: Untagged
@@ -4831,29 +4830,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &484977679159947622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4459970007244567258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 4562986980936159289}
-  EntityType: 0
-  VfxTag: 
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 6622775543309162817}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &7512669042666708550
 GameObject:
   m_ObjectHideFlags: 0
@@ -4865,7 +4841,6 @@ GameObject:
   - component: {fileID: 6090722167346085973}
   - component: {fileID: 8115392460070277386}
   - component: {fileID: 1947159415599237233}
-  - component: {fileID: 727444422212366737}
   m_Layer: 0
   m_Name: AGE_VFX_Electric_shot_Pillar
   m_TagString: Untagged
@@ -9686,25 +9661,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &727444422212366737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7512669042666708550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 6090722167346085973}
-  EntityType: 0
-  VfxTag: Pillar
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 8115392460070277386}
-  - {fileID: 6622775543309162817}

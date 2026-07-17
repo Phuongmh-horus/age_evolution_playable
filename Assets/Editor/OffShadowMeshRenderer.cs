@@ -21,6 +21,16 @@ public class ShadowSettingsTool : EditorWindow
     // ── UI state ──────────────────────────────────────────────────────────────
     private bool _disableCastShadow = true;
     private bool _disableReceiveShadow = true;
+
+    private bool _applyLightProbes = false;
+    private LightProbeUsage _lightProbeUsage = LightProbeUsage.Off;
+
+    private bool _applyReflectionProbes = false;
+    private ReflectionProbeUsage _reflectionProbeUsage = ReflectionProbeUsage.Off;
+
+    private bool _applyMotionVectors = false;
+    private MotionVectorGenerationMode _motionVectorMode = MotionVectorGenerationMode.ForceNoMotion;
+
     private bool _includeChildren = true;
     private bool _includeVariants = false;
     private ShadowCastingMode _castMode = ShadowCastingMode.Off;
@@ -84,6 +94,30 @@ public class ShadowSettingsTool : EditorWindow
             new GUIContent("Receive Shadows", "Apply to Receive Shadows setting"),
             _disableReceiveShadow);
 
+        _applyLightProbes = EditorGUILayout.Toggle("Light Probes", _applyLightProbes);
+        if (_applyLightProbes)
+        {
+            EditorGUI.indentLevel++;
+            _lightProbeUsage = (LightProbeUsage)EditorGUILayout.EnumPopup("Mode", _lightProbeUsage);
+            EditorGUI.indentLevel--;
+        }
+
+        _applyReflectionProbes = EditorGUILayout.Toggle("Reflection Probes", _applyReflectionProbes);
+        if (_applyReflectionProbes)
+        {
+            EditorGUI.indentLevel++;
+            _reflectionProbeUsage = (ReflectionProbeUsage)EditorGUILayout.EnumPopup("Mode", _reflectionProbeUsage);
+            EditorGUI.indentLevel--;
+        }
+
+        _applyMotionVectors = EditorGUILayout.Toggle("Motion Vectors", _applyMotionVectors);
+        if (_applyMotionVectors)
+        {
+            EditorGUI.indentLevel++;
+            _motionVectorMode = (MotionVectorGenerationMode)EditorGUILayout.EnumPopup("Mode", _motionVectorMode);
+            EditorGUI.indentLevel--;
+        }
+
         EditorGUILayout.Space(4);
         _includeChildren = EditorGUILayout.Toggle(
             new GUIContent("Include Children", "Process all renderers in hierarchy, not just root"),
@@ -118,7 +152,7 @@ public class ShadowSettingsTool : EditorWindow
     private void DrawActions()
     {
         var prefabs = GetSelectedPrefabPaths();
-        bool canRun = prefabs.Count > 0 && (_disableCastShadow || _disableReceiveShadow);
+        bool canRun = prefabs.Count > 0 && (_disableCastShadow || _disableReceiveShadow || _applyLightProbes || _applyReflectionProbes || _applyMotionVectors);
 
         GUI.enabled = canRun;
         if (GUILayout.Button("Apply to Selected Prefabs", GUILayout.Height(32)))
@@ -249,6 +283,25 @@ public class ShadowSettingsTool : EditorWindow
                         receiveProp.boolValue = false;
                         if (!_disableCastShadow) changed++; // count only once per renderer
                     }
+                }
+
+
+                if (_applyLightProbes)
+                {
+                    var p = so.FindProperty("m_LightProbeUsage");
+                    if (p != null && p.intValue != (int)_lightProbeUsage) { p.intValue = (int)_lightProbeUsage; changed++; }
+                }
+
+                if (_applyReflectionProbes)
+                {
+                    var p = so.FindProperty("m_ReflectionProbeUsage");
+                    if (p != null && p.intValue != (int)_reflectionProbeUsage) { p.intValue = (int)_reflectionProbeUsage; changed++; }
+                }
+
+                if (_applyMotionVectors)
+                {
+                    var p = so.FindProperty("m_MotionVectors");
+                    if (p != null && p.intValue != (int)_motionVectorMode) { p.intValue = (int)_motionVectorMode; changed++; }
                 }
 
                 so.ApplyModifiedPropertiesWithoutUndo();

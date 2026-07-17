@@ -44,9 +44,15 @@ namespace GamePlay.HealthSystems
         /// </summary>
         public void Initialize()
         {
-            maxHealth = Mathf.Max(1, maxHealth);
-            currentHealth = Mathf.Clamp(currentHealth, isImmortal ? 1 : 0, maxHealth);
-            NotifyHealthChanged();
+            int normalizedMax = Mathf.Max(1, maxHealth);
+            int normalizedCurrent = Mathf.Clamp(currentHealth, isImmortal ? 1 : 0, normalizedMax);
+            bool changed = normalizedMax != maxHealth || normalizedCurrent != currentHealth;
+
+            maxHealth = normalizedMax;
+            currentHealth = normalizedCurrent;
+
+            if (changed)
+                NotifyHealthChanged();
         }
 
         public void OnUpdate(float dt)

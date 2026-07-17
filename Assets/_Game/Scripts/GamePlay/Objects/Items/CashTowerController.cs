@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using GamePlay.ComponentSystems;
 using GamePlay.CombatSystems;
@@ -9,6 +8,7 @@ using GamePlay.HealthSystems;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 namespace GamePlay.Managers
 {
@@ -36,19 +36,12 @@ namespace GamePlay.Items
     public class CashTowerController : ItemUnit
     {
         [Header("Refs")]
+        [SerializeField] private HitComponent _hitComponent;
         [SerializeField] private HealthComponent healthComponent;
         [SerializeField] private TMP_Text currentHpText;
         [SerializeField] private TMP_Text maxHpText;
         [SerializeField] private BlockDebrisController blockDebrisController;
         [SerializeField] private HitTextFlyEffect hitTextFlyEffect;
-
-        [Header("Visuals")]
-        [SerializeField] private bool isOverrideVisual = true;
-        [SerializeField] private bool applyBaseColorOnInitialize = false;
-        [SerializeField] private MeshRenderer baseMesh;
-        [SerializeField] private Color baseColor = Color.white;
-        [SerializeField] private Transform towerVisualRoot;
-        [SerializeField] private string[] colorPropertyNames = { "_BaseColor", "_Color", "_TintColor" };
 
         [Header("Sound Effects")]
         [SerializeField] private AudioClipName destroySfx;
@@ -58,7 +51,6 @@ namespace GamePlay.Items
         [SerializeField] private EffectType nonWheelHitEffectType = EffectType.Break;
 
         [Header("Money Drop")]
-        [SerializeField] private Transform moneyRoot;
         [SerializeField] private float moneyDropImpulse = 1.5f;
         [SerializeField] private float moneyGroundY = 0f;
         [SerializeField] private bool dropMoneyOnWheelDestroy = true;
@@ -68,66 +60,78 @@ namespace GamePlay.Items
         [SerializeField] private float scaleUpDuration = 0.08f;
         [SerializeField] private float scaleDownDuration = 0.15f;
 
-        [Header("Events")]
-        [Tooltip("Nếu không tìm được IGameplayFlow trong scene, event này sẽ được gọi khi tower chết.")]
-        [SerializeField] private UnityEvent onTowerDestroyedFallback;
+        // ===== Cached data (NO runtime scan) =====
+        private readonly List<CurrencyDropItem> _moneyItems = new List<CurrencyDropItem>(32);
+        //private readonly List<Rigidbody> _moneyRB = new List<Rigidbody>(32);
+        private readonly List<Collider> _moneyCol = new List<Collider>(32);
+        private readonly List<Transform> _towerVisuals = new List<Transform>(32);
+        private DropCurrencyEffect _dropCurrencyEffect;
 
-        [Header("Flow")]
-        [SerializeField] private MonoBehaviour flowProvider;
-        private GamePlay.Managers.IGameplayFlow _flow;
         private bool _deathHandled;
         private Vector3 _originalScale;
-        private Coroutine _scalePulseRoutine;
-        private bool _registeredCollision;
-        [SerializeField] private HitComponent _hitComponent;
-        private readonly List<MeshRenderer> _cachedColorRenderers = new List<MeshRenderer>(16);
-        private readonly List<int> _cachedColorPropertyIds = new List<int>(16);
-        private MaterialPropertyBlock _colorMpb;
-        private bool _warnedMissingHitComponentRuntime;
+        private float _scaleTimer = -1f;
+        private bool _isScalingUp;
+        private Vector3 _toScale;
+
         private int _lastShownCurrentHp = int.MinValue;
         private int _lastShownMaxHp = int.MinValue;
-        private int _lastNonWheelHitFxFrame = -1;
+        private int _hitFxCountThisFrame;
+        private int _lastHitFxFrame = -1;
 
-#if UNITY_EDITOR
-        protected override void OnValidate()
+        protected override void Awake()
         {
-            base.OnValidate();
+            base.Awake();
+            autoAddHitTextFlyEffectAtRuntime = false;
 
-            if (healthComponent == null)
-                Debug.LogWarning($"[CashTowerController] Missing HealthComponent on {name}. Assign in Inspector.");
+            // Entity type
+            if (_entityType == Entities.EntityType.None || _entityType == Entities.EntityType.Item)
+                _entityType = Entities.EntityType.FinishTower;
 
-            if (baseMesh == null)
-                Debug.LogWarning($"[CashTowerController] Missing Base MeshRenderer on {name}. Assign in Inspector.");
-
-            if (hitTextFlyEffect == null)
-                Debug.LogWarning($"[CashTowerController] Missing HitTextFlyEffect on {name}. Assign in Inspector.");
-
-            if (towerVisualRoot == null)
-                towerVisualRoot = transform.Find("Tower");
-
-            if (moneyRoot == null)
-                moneyRoot = towerVisualRoot != null ? towerVisualRoot : transform;
-
-            CacheMoneyItems();
+            CacheAll(); //  ONLY ONCE
         }
-#endif
 
-        private void Awake()
+        // ===== ONE-TIME CACHE =====
+        private void CacheAll()
         {
-            // Ensure correct EntityType for filtering and flow
-            if (_entityType == GamePlay.Entities.EntityType.None || _entityType == GamePlay.Entities.EntityType.Item)
+            _moneyItems.Clear();
+            // _moneyRB.Clear();
+            _moneyCol.Clear();
+            _towerVisuals.Clear();
+
+            var all = GetComponentsInChildren<Transform>(true);
+
+            for (int i = 0; i < all.Length; i++)
             {
-                _entityType = GamePlay.Entities.EntityType.FinishTower;
+                var t = all[i];
+                if (t == null) continue;
+
+                // Cache money
+                var currency = t.GetComponent<CurrencyDropItem>();
+                if (currency != null)
+                {
+                    _moneyItems.Add(currency);
+                    // _moneyRB.Add(t.GetComponent<Rigidbody>());
+                    _moneyCol.Add(t.GetComponent<Collider>());
+                    continue;
+                }
+
+                // Cache tower visuals
+                string n = t.name;
+                if (n.StartsWith("finish_tower", StringComparison.Ordinal) ||
+                    n.StartsWith("tower_m", StringComparison.Ordinal))
+                {
+                    _towerVisuals.Add(t);
+                }
             }
+
+            _dropCurrencyEffect = GetComponentInChildren<DropCurrencyEffect>(true);
         }
 
         public override void Initialize()
         {
             base.Initialize();
-
             EnsureCollisionRegistration();
 
-            // Ensure Pack.Healable is wired so damage reduces HP and despawns at 0.
             if (healthComponent != null)
             {
                 Pack.Healable = healthComponent;
@@ -138,33 +142,19 @@ namespace GamePlay.Items
             }
 
             _deathHandled = false;
-            _lastNonWheelHitFxFrame = -1;
+            _lastHitFxFrame = -1;
+
             if (hitTextFlyEffect != null)
                 hitTextFlyEffect.enabled = true;
 
-            CacheMoneyItems();
-            BuildColorRendererCache();
-            if (isOverrideVisual && applyBaseColorOnInitialize)
-                ApplyColor(baseColor);
-
             _originalScale = transform.localScale;
-
-            if (healthComponent != null)
-            {
-                HandleHealthChanged(healthComponent.CurrentHealth, healthComponent.MaxHealth);
-            }
         }
 
         private void OnEnable()
         {
-            ResolveFlow();
-            EnsureCollisionRegistration();
-
             if (healthComponent != null)
             {
                 healthComponent.OnHealthChanged += HandleHealthChanged;
-
-                // sync UI ngay khi bật
                 HandleHealthChanged(healthComponent.CurrentHealth, healthComponent.MaxHealth);
             }
         }
@@ -172,59 +162,18 @@ namespace GamePlay.Items
         private void OnDisable()
         {
             if (healthComponent != null)
-            {
                 healthComponent.OnHealthChanged -= HandleHealthChanged;
-            }
-
-            if (_registeredCollision && Pack.Hitable != null)
-            {
-                CollisionSystem.Unregister(Pack.Hitable);
-                _registeredCollision = false;
-            }
-        }
-
-        private void ResolveFlow()
-        {
-            // Prefer explicit assignment to avoid heavy FindObjectsOfType.
-            _flow = flowProvider as GamePlay.Managers.IGameplayFlow;
-        }
-
-        private void EnsureCollisionRegistration()
-        {
-            if (!Application.isPlaying) return;
-            if (_registeredCollision) return;
-
-            if (_hitComponent == null)
-            {
-                if (!_warnedMissingHitComponentRuntime)
-                {
-                    _warnedMissingHitComponentRuntime = true;
-                }
-            }
-
-            if (_hitComponent == null) return;
-
-            _hitComponent.Initialize();
-
-            if (Pack.Hitable != null && !ReferenceEquals(Pack.Hitable, _hitComponent))
-            {
-                CollisionSystem.Unregister(Pack.Hitable);
-            }
-
-            Pack.Hitable = _hitComponent;
-            ActiveFlags |= CapabilityFlags.Hit;
-            CollisionSystem.Register(_hitComponent, transform);
-            _registeredCollision = true;
+            transform.DOKill();
         }
 
         private void HandleHealthChanged(int current, int max)
         {
             if (current == _lastShownCurrentHp && max == _lastShownMaxHp) return;
 
-            if (current != _lastShownCurrentHp && currentHpText != null)
+            if (currentHpText != null)
                 currentHpText.text = TextUtility.ToShortNumberString(current);
 
-            if (max != _lastShownMaxHp && maxHpText != null)
+            if (maxHpText != null)
                 maxHpText.text = TextUtility.ToShortNumberString(max);
 
             _lastShownCurrentHp = current;
@@ -246,7 +195,6 @@ namespace GamePlay.Items
             base.HandleNonWheelCollision(source);
             PlayScalePulse();
 
-            // Fallback: if health events are not wired in Luna, ensure drop on death.
             if (!_deathHandled && healthComponent != null && healthComponent.CurrentHealth <= 0)
             {
                 _deathHandled = true;
@@ -258,10 +206,18 @@ namespace GamePlay.Items
         private void PlayNonWheelHitEffect()
         {
             if (nonWheelHitEffectType == EffectType.None) return;
-            if (_lastNonWheelHitFxFrame == Time.frameCount) return;
 
-            _lastNonWheelHitFxFrame = Time.frameCount;
-            Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2.2f + transform.forward * -1f, Quaternion.identity, transform);
+            if (_lastHitFxFrame != Time.frameCount)
+            {
+                _lastHitFxFrame = Time.frameCount;
+                _hitFxCountThisFrame = 0;
+            }
+
+            if (_hitFxCountThisFrame >= 3) return;
+            _hitFxCountThisFrame++;
+
+            Vector3 pos = transform.position + transform.up * 2f;
+            Pack.Effector?.PlayEffect(nonWheelHitEffectType, pos, Quaternion.identity, transform);
         }
 
         private void HandleDead()
@@ -269,272 +225,89 @@ namespace GamePlay.Items
             BreakTowerVisuals();
             DropMoneyItems();
 
-            if (blockDebrisController != null)
-                blockDebrisController.TriggerDebrisEffect();
+            blockDebrisController?.TriggerDebrisEffect();
 
             if (SoundManager.Instance != null && destroySfx != AudioClipName.None)
                 SoundManager.Instance.PlayOneShot(destroySfx);
 
-            // Fallback: cho designer hook trong inspector.
-            onTowerDestroyedFallback?.Invoke();
         }
 
-        protected override void HandleWheelCollision()
+        private void EnsureCollisionRegistration()
         {
-            if (!GameplayManager.IsGameStarted) return;
-            GameplayManager.IsGameStarted = false;
-            RegisterEvents(false);
+            if (_hitComponent == null) return;
+            _hitComponent.Initialize();
 
-            if (SoundManager.Instance != null && hitByWheelSfx != AudioClipName.None)
-                SoundManager.Instance.PlayOneShot(hitByWheelSfx);
-
-            if (dropMoneyOnWheelDestroy && !_deathHandled)
+            if (Pack.Hitable != null && !ReferenceEquals(Pack.Hitable, _hitComponent))
             {
-                _deathHandled = true;
-                HandleDead();
-                DespawnInterval();
+                CollisionSystem.Unregister(Pack.Hitable);
             }
 
-            GameplayManager.Instance.PauseGame();
-            if (GameplayManager.Instance != null)
-            {
-                GameplayManager.Instance.SetMilestoneOverridePosition(transform.position);
-            }
-            GameplayManager.Instance.EndGame(true);
-        }
-
-        public void ApplyColor(Color color)
-        {
-            baseColor = color;
-
-            ApplyColorToRenderers();
-
-            if (blockDebrisController != null)
-                blockDebrisController.BaseColor = baseColor;
-        }
-
-        private void ApplyColorToRenderers()
-        {
-            if (_cachedColorRenderers.Count == 0 || _cachedColorRenderers.Count != _cachedColorPropertyIds.Count)
-            {
-                BuildColorRendererCache();
-            }
-
-            if (_cachedColorRenderers.Count == 0) return;
-            if (_colorMpb == null) _colorMpb = new MaterialPropertyBlock();
-
-            for (int i = 0; i < _cachedColorRenderers.Count; i++)
-            {
-                var renderer = _cachedColorRenderers[i];
-                if (renderer == null) continue;
-                int propId = _cachedColorPropertyIds[i];
-                if (propId == 0) continue;
-
-                renderer.GetPropertyBlock(_colorMpb);
-                _colorMpb.SetColor(propId, baseColor);
-                renderer.SetPropertyBlock(_colorMpb);
-            }
-        }
-
-        protected override void DespawnInterval()
-        {
-            base.DespawnInterval();
-        }
-
-        private void BuildColorRendererCache()
-        {
-            _cachedColorRenderers.Clear();
-            _cachedColorPropertyIds.Clear();
-
-            var root = towerVisualRoot != null ? towerVisualRoot : transform;
-            if (root == null) return;
-
-            var renderers = root.GetComponentsInChildren<MeshRenderer>(true);
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                var renderer = renderers[i];
-                if (renderer == null) continue;
-                if (IsMoneyRenderer(renderer)) continue;
-
-                var mat = renderer.sharedMaterial;
-                if (mat == null) continue;
-
-                int propId = ResolveColorPropertyId(mat);
-                if (propId == 0) continue;
-
-                _cachedColorRenderers.Add(renderer);
-                _cachedColorPropertyIds.Add(propId);
-            }
-        }
-
-        private int ResolveColorPropertyId(Material mat)
-        {
-            if (mat == null) return 0;
-
-            if (colorPropertyNames != null)
-            {
-                for (int i = 0; i < colorPropertyNames.Length; i++)
-                {
-                    string prop = colorPropertyNames[i];
-                    if (string.IsNullOrEmpty(prop)) continue;
-                    if (!mat.HasProperty(prop)) continue;
-                    return Shader.PropertyToID(prop);
-                }
-            }
-
-            if (mat.HasProperty("_BaseColor")) return Shader.PropertyToID("_BaseColor");
-            if (mat.HasProperty("_Color")) return Shader.PropertyToID("_Color");
-            if (mat.HasProperty("_TintColor")) return Shader.PropertyToID("_TintColor");
-
-            return 0;
-        }
-
-        private bool IsMoneyRenderer(MeshRenderer renderer)
-        {
-            if (renderer == null) return false;
-            if (renderer.name.StartsWith("finish_money", StringComparison.Ordinal)) return true;
-
-            if (moneyRoot != null && moneyRoot != towerVisualRoot && moneyRoot != transform)
-            {
-                if (renderer.transform.IsChildOf(moneyRoot)) return true;
-            }
-
-            return renderer.name.IndexOf("money", StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
-        private void CacheMoneyItems()
-        {
-            if (moneyRoot == null)
-            {
-                moneyRoot = towerVisualRoot != null ? towerVisualRoot : transform;
-            }
+            Pack.Hitable = _hitComponent;
+            ActiveFlags |= CapabilityFlags.Hit;
+            CollisionSystem.Register(_hitComponent, transform);
         }
 
         private void DropMoneyItems()
         {
-            var root = moneyRoot != null ? moneyRoot : transform;
-            if (root == null) return;
-            var children = root.GetComponentsInChildren<Transform>(true);
-            int droppedCount = 0;
+            int dropped = 0;
 
-            for (int i = 0; i < children.Length; i++)
+            for (int i = 0; i < _moneyItems.Count; i++)
             {
-                var t = children[i];
-                if (t == null || t == root) continue;
+                var currency = _moneyItems[i];
+                if (currency == null) continue;
 
-                bool isMoneyName = t.name.StartsWith("finish_money", StringComparison.Ordinal);
-                var existingCurrency = t.GetComponent<CurrencyDropItem>();
-                if (!isMoneyName && existingCurrency == null) continue;
-
+                var t = currency.transform;
                 t.SetParent(null, true);
                 t.gameObject.SetActive(true);
 
-                var rb = t.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.velocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
-                    rb.isKinematic = true;
-                    rb.useGravity = false;
-                }
+                // var rb = _moneyRB[i];
+                // if (rb != null)
+                // {
+                //     rb.velocity = Vector3.zero;
+                //     rb.isKinematic = true;
+                // }
 
-                var col = t.GetComponent<Collider>();
+                var col = _moneyCol[i];
                 if (col != null)
-                {
                     col.enabled = false;
-                }
-
-                var currency = existingCurrency != null ? existingCurrency : t.gameObject.AddComponent<CurrencyDropItem>();
-
-                if (currency == null)
-                    continue;
 
                 currency.Initialize();
-                currency.SetAutoClaimOnGround(false);
+                currency.SetAutoClaimOnGround(true);
                 currency.SetClaimType(CurrencyType.Cash);
                 currency.SetGroundY(moneyGroundY);
 
-                float value = currency.Amount > 0f ? currency.Amount : 1f;
-                var dir = (t.position - Transform.position).normalized;
-                if (dir == Vector3.zero) dir = UnityEngine.Random.onUnitSphere;
-                Vector3 velocity = dir * moneyDropImpulse;
-                currency.Initialize(velocity, value, flyUp: true);
+                Vector3 dir = (t.position - transform.position).normalized;
+                if (dir == Vector3.zero) dir = Vector3.up;
 
-                droppedCount++;
+                currency.Initialize(dir * moneyDropImpulse, currency.Amount > 0 ? currency.Amount : 1f, true);
+
+                dropped++;
             }
 
-            // Fallback for Luna build: if no baked money meshes found, spawn via DropCurrencyEffect.
-            if (droppedCount == 0)
-            {
-                var effect = GetComponentInChildren<DropCurrencyEffect>(true);
-                if (effect != null)
-                {
-                    effect.SpawnCurrency(root.position);
-                }
-                else
-                {
-                    Debug.LogWarning($"[CashTower] No finish_money children and no DropCurrencyEffect on {gameObject.name}.");
-                }
-            }
+            if (dropped == 0 && _dropCurrencyEffect != null)
+                _dropCurrencyEffect.SpawnCurrency(transform.position);
         }
 
         private void BreakTowerVisuals()
         {
-            if (towerVisualRoot == null)
-                towerVisualRoot = transform.Find("Tower") ?? transform;
-
-            if (towerVisualRoot == null)
-                return;
-
-            var children = towerVisualRoot.GetComponentsInChildren<Transform>(true);
-            for (int i = 0; i < children.Length; i++)
+            for (int i = 0; i < _towerVisuals.Count; i++)
             {
-                var t = children[i];
-                if (t == null || string.IsNullOrEmpty(t.name)) continue;
-                if (t.name.StartsWith("finish_money", StringComparison.Ordinal)) continue;
-
-                if (t.name.StartsWith("finish_tower", StringComparison.Ordinal) ||
-                    t.name.StartsWith("tower_m", StringComparison.Ordinal))
-                {
-                    t.gameObject.SetActive(false);
-                }
+                var t = _towerVisuals[i];
+                if (t != null) t.gameObject.SetActive(false);
             }
         }
 
         private void PlayScalePulse()
         {
             if (!isActiveAndEnabled) return;
-            if (_scalePulseRoutine != null) StopCoroutine(_scalePulseRoutine);
-            _scalePulseRoutine = StartCoroutine(CoScalePulse());
-        }
 
-        private IEnumerator CoScalePulse()
-        {
-            if (_originalScale == Vector3.zero) _originalScale = transform.localScale;
-
-            Vector3 from = _originalScale;
-            Vector3 to = _originalScale * scaleUp;
-
-            float t = 0f;
-            while (t < scaleUpDuration)
-            {
-                t += Time.deltaTime;
-                float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, scaleUpDuration));
-                transform.localScale = Vector3.Lerp(from, to, k);
-                yield return null;
-            }
-
-            t = 0f;
-            while (t < scaleDownDuration)
-            {
-                t += Time.deltaTime;
-                float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, scaleDownDuration));
-                transform.localScale = Vector3.Lerp(to, _originalScale, k);
-                yield return null;
-            }
-
+            DOTween.Kill(transform);
             transform.localScale = _originalScale;
-            _scalePulseRoutine = null;
+            Sequence seq = DOTween.Sequence();
+            seq.Append(transform.DOScale(_originalScale * scaleUp, scaleUpDuration).SetEase(Ease.OutQuad));
+            seq.Append(transform.DOScale(_originalScale, scaleDownDuration).SetEase(Ease.InQuad));
+            seq.SetId(transform);
         }
+
     }
 }

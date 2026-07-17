@@ -18,10 +18,9 @@ public class CurrencyDropItem : ItemUnit
     [Tooltip("Giữ nguyên Amount hoặc random thêm (playable dễ tùy biến).")]
     [SerializeField] private Vector2 randomBonusRange = Vector2.zero;
 
-    [Header("Sound Effects")]
-    [SerializeField] private AudioClip claimClip; // [FIX] Direct reference for Luna
-    [SerializeField] private AudioClipName claimSfx;
-    [SerializeField] private AudioSource ownAudioSource;
+    [Tooltip("Thời gian delay (giây) trước khi claim (bay lên panel) sau khi chạm đất.")]
+    [SerializeField] private float claimDelayOnGround = 0.5f;
+
 
     // [FIX] Cache loaded clip for Luna (Resources.Load can be slow/fail on repeated calls)
     private static AudioClip _cachedMoneyClip;
@@ -32,6 +31,8 @@ public class CurrencyDropItem : ItemUnit
     [SerializeField] private float groundY = 0f;
 
     private bool _isSimulating;
+    private bool _isWaitingToClaim;
+    private float _claimTimer;
     private bool _registeredForTick;
     private Vector3 _simVelocity;
     private Vector3 _simPosition;
@@ -79,28 +80,11 @@ public class CurrencyDropItem : ItemUnit
             _entityType = EntityType.Item;
         }
 
-        if ((int)Type == 0)
+        if (Type == 0)
         {
             Type = CurrencyType.Gold;
         }
 
-        // [FIX] Luna Audio Robustness:
-        // AudioSource must be assigned via Inspector to avoid runtime auto-find.
-        if (ownAudioSource == null)
-        {
-            Debug.LogWarning($"[CurrencyDropItem] Missing AudioSource on {name}. Assign in Inspector.");
-        }
-
-        // 2. Aggressively cache the clip
-        if (claimClip == null)
-        {
-            // Try to load cached static first
-            if (_cachedMoneyClip == null)
-            {
-                _cachedMoneyClip = Resources.Load<AudioClip>("Sound/SFX_MoneyCollect");
-            }
-            claimClip = _cachedMoneyClip;
-        }
     }
 
     protected override void HandleWheelCollision()
@@ -134,31 +118,16 @@ public class CurrencyDropItem : ItemUnit
 
     private void PlayClaimSound()
     {
-        var sfx = claimSfx != AudioClipName.None ? claimSfx : AudioClipName.SFX_MoneyCollect;
+
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlayOneShot(sfx);
-            return;
-        }
-
-        AudioClip clipToUse = claimClip;
-        if (clipToUse == null)
-        {
-            if (_cachedMoneyClip == null) _cachedMoneyClip = Resources.Load<AudioClip>("Sound/SFX_MoneyCollect");
-            clipToUse = _cachedMoneyClip;
-        }
-
-        if (clipToUse == null) return;
-
-        if (ownAudioSource != null)
-        {
-            ownAudioSource.PlayOneShot(clipToUse, 1f);
+            SoundManager.Instance.PlayOneShot(AudioClipName.SFX_MoneyCollect);
             return;
         }
 
         var cam = CameraFollow.Instance != null ? CameraFollow.Instance.GetCamera() : null;
         var pos = cam != null ? cam.transform.position : transform.position;
-        AudioSource.PlayClipAtPoint(clipToUse, pos, 1f);
+
     }
 
     /// <summary>
@@ -193,6 +162,7 @@ public class CurrencyDropItem : ItemUnit
         if (flyUp)
         {
             _isSimulating = true;
+            _isWaitingToClaim = false;
             _simVelocity = _initialVelocity;
             _simPosition = transform.position;
             RegisterActiveDrop();
@@ -214,8 +184,19 @@ public class CurrencyDropItem : ItemUnit
         groundY = value;
     }
 
-    private bool StepSimulation(float dt)
+        private bool StepSimulation(float dt)
     {
+        if (_isWaitingToClaim)
+        {
+            _claimTimer -= dt;
+            if (_claimTimer <= 0f)
+            {
+                ClaimReward();
+                return false; // Stop ticking after claim
+            }
+            return true;
+        }
+
         _simVelocity.y -= _gravity * dt;
         _simPosition += _simVelocity * dt;
 
@@ -224,17 +205,31 @@ public class CurrencyDropItem : ItemUnit
             _simPosition.y = groundY;
             transform.position = _simPosition;
             transform.rotation = Quaternion.Euler(Vector3.zero);
-            _isSimulating = false;
-
+            
             if (autoClaimOnGround)
-                ClaimReward();
+            {
+                if (claimDelayOnGround > 0f)
+                {
+                    _isWaitingToClaim = true;
+                    _claimTimer = claimDelayOnGround;
+                    return true;
+                }
+                else
+                {
+                    ClaimReward();
+                    return false;
+                }
+            }
 
+            _isSimulating = false;
             return false;
         }
 
         transform.position = _simPosition;
         return true;
     }
+
+    
 
     private void StopSimulation()
     {
@@ -244,6 +239,7 @@ public class CurrencyDropItem : ItemUnit
     private void OnDisable()
     {
         StopSimulation();
+        _registeredForTick = false;
     }
 
     private void OnDestroy()
@@ -281,3 +277,4 @@ public enum CurrencyType
     Gem = 5,
     Diamond = 7
 }
+

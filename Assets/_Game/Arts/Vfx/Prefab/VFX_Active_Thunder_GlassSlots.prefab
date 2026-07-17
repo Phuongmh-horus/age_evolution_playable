@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7183149043558161478}
   - component: {fileID: 8150098378208854640}
   - component: {fileID: 2544224176593786091}
-  - component: {fileID: 347708823724572285}
   m_Layer: 0
   m_Name: VFX_Active_Thunder_GlassSlots
   m_TagString: Untagged
@@ -4832,27 +4831,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &347708823724572285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4665321328090080597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 7183149043558161478}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 8150098378208854640}
-  - {fileID: 7200679242930877483}
 --- !u!1 &8031856404531548625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4864,7 +4842,6 @@ GameObject:
   - component: {fileID: 8735808458509891086}
   - component: {fileID: 7200679242930877483}
   - component: {fileID: 5182530909087151954}
-  - component: {fileID: 6729028738575283543}
   m_Layer: 0
   m_Name: electric_ball
   m_TagString: Untagged
@@ -9684,25 +9661,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6729028738575283543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8031856404531548625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 8735808458509891086}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 7200679242930877483}
-  - {fileID: 0}
-  - {fileID: 0}

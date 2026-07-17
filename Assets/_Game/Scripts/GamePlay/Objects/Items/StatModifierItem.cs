@@ -10,7 +10,6 @@ namespace GamePlay.Items
     public enum StatType : short
     {
         None = 0,
-
         FireRate,
         FireRange,
         Damage,
@@ -19,6 +18,7 @@ namespace GamePlay.Items
         EvolutionPoint,
         CharacterLevel,
         ExplosionShot,
+        SwordSkill,
     }
 
     [Serializable]

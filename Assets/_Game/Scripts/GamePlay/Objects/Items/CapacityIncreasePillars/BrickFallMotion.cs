@@ -41,6 +41,8 @@ public class BrickFallMotion : MonoBehaviour
 
     public static void TickActiveMotions(float deltaTime)
     {
+        if (activeMotions.Count == 0) return;  // Early exit: no active brick motions
+
         for (int i = activeMotions.Count - 1; i >= 0; i--)
         {
             var motion = activeMotions[i];

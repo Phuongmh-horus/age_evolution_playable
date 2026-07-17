@@ -6,6 +6,7 @@ using GamePlay.ComponentSystems;
 using GamePlay.OscillationSystems;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 namespace GamePlay.Items
 {
@@ -65,29 +66,30 @@ namespace GamePlay.Items
         private Vector3 _originalScale;
         private Quaternion _baseRotation;
         private Coroutine _scalePulseRoutine;
-        private Coroutine _bendRoutine;
+        private Sequence _bendSequence;
         private TMP_Text[] _cachedTexts;
 
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             SetupArmorParts();
             _textDepthMpb = new MaterialPropertyBlock();
             _progressMpb = new MaterialPropertyBlock();
 
             // Ensure EntityType is PowerGate at runtime (for collision masks)
-            if (_entityType == GamePlay.Entities.EntityType.None)
+            if (_entityType == Entities.EntityType.None)
             {
-                _entityType = GamePlay.Entities.EntityType.PowerGate;
+                _entityType = Entities.EntityType.PowerGate;
             }
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
 
             // Auto-set EntityType for safety (FireRate/FireRange gates use PowerGate)
-            _entityType = GamePlay.Entities.EntityType.PowerGate;
+            _entityType = Entities.EntityType.PowerGate;
 
             if (gateRenderer == null)
                 Debug.LogWarning($"[StatModifierGate] Missing gateRenderer on {name}. Assign in Inspector.");
@@ -95,7 +97,7 @@ namespace GamePlay.Items
             if (hpBar == null)
                 Debug.LogWarning($"[StatModifierGate] Missing hpBar on {name}. Assign in Inspector.");
         }
-        #endif
+#endif
 
         private void SetupArmorParts()
         {
@@ -112,7 +114,7 @@ namespace GamePlay.Items
 
             _originalScale = transform.localScale;
             _baseRotation = transform.localRotation;
-            
+
             // Ensure HitComponent is the registered IHitable for accurate collisions.
             var hitComp = hitComponent;
             if (hitComp != null)
@@ -151,16 +153,13 @@ namespace GamePlay.Items
             DisableOscillationIfSide();
 
             // [FIX] Robust Luna Z-Sorting Fix (Delayed)
-            StartCoroutine(FixTextDepthDelayed());
+            DOVirtual.DelayedCall(0.01f, FixTextDepthNow, false);
         }
 
-        private IEnumerator FixTextDepthDelayed()
+        private void FixTextDepthNow()
         {
-            // [FIX] Wait for TMP/Luna initialization
-            yield return null;
-
             CacheTextsIfNeeded();
-            if (_cachedTexts == null || _cachedTexts.Length == 0) yield break;
+            if (_cachedTexts == null || _cachedTexts.Length == 0) return;
 
             foreach (var t in _cachedTexts)
             {
@@ -200,24 +199,18 @@ namespace GamePlay.Items
         private void DisableOscillationIfSide()
         {
             // [FIX] Delay check to ensure World Position is fully resolved.
-            StartCoroutine(CoDisableOscillationDelayed());
-        }
+            DOVirtual.DelayedCall(0.02f, () =>
+            {
+                if (!onlyCenterOscillates) return;
+                if ((ActiveFlags & CapabilityFlags.Oscillate) == 0 || Pack.Oscillator == null) return;
 
-        private IEnumerator CoDisableOscillationDelayed()
-        {
-            if (!onlyCenterOscillates) yield break;
-            
-            // Luna doesn't support WaitForEndOfFrame; wait one frame instead.
-            yield return null;
+                float worldX = Transform.position.x;
+                bool isCenter = Mathf.Abs(worldX) <= 0.5f;
 
-            if ((ActiveFlags & CapabilityFlags.Oscillate) == 0 || Pack.Oscillator == null) yield break;
+                if (isCenter) return;
 
-            float worldX = Transform.position.x;
-            bool isCenter = Mathf.Abs(worldX) <= 0.5f;
-
-            if (isCenter) yield break;
-
-            OscillationSystem.Unregister(Pack.Oscillator);
+                OscillationSystem.Unregister(Pack.Oscillator);
+            }, false);
         }
 
         protected override void AdjustStatModifierValue(int value = 0)
@@ -251,12 +244,18 @@ namespace GamePlay.Items
         private void PlayScalePulse()
         {
             if (!isActiveAndEnabled) return;
-            if (_scalePulseRoutine != null) StopCoroutine(_scalePulseRoutine);
+            if (_scalePulseRoutine != null) return;
+
             _scalePulseRoutine = StartCoroutine(CoScalePulse());
         }
 
         private IEnumerator CoScalePulse()
         {
+            if (_originalScale == Vector3.zero)
+            {
+                _originalScale = transform.localScale;
+            }
+
             Vector3 from = _originalScale;
             Vector3 to = _originalScale * scaleUp;
 
@@ -285,35 +284,44 @@ namespace GamePlay.Items
         private void PlayBend()
         {
             if (!isActiveAndEnabled) return;
-            if (_bendRoutine != null) StopCoroutine(_bendRoutine);
-            _bendRoutine = StartCoroutine(CoBend());
+
+            KillBendSequence();
+            transform.localRotation = _baseRotation;
+            Quaternion toRot = _baseRotation * Quaternion.Euler(-bendAngle, 0f, 0f);
+
+            _bendSequence = DOTween.Sequence();
+            _bendSequence.SetId(this);
+            _bendSequence.Append(transform.DOLocalRotateQuaternion(toRot, bendDuration).SetEase(Ease.OutQuad));
+            _bendSequence.Append(transform.DOLocalRotateQuaternion(_baseRotation, returnDuration).SetEase(Ease.InQuad));
         }
 
-        private IEnumerator CoBend()
+        private void StopScalePulse()
         {
-            Quaternion from = _baseRotation;
-            Quaternion to = _baseRotation * Quaternion.Euler(-bendAngle, 0f, 0f);
-
-            float t = 0f;
-            while (t < bendDuration)
+            if (_scalePulseRoutine != null)
             {
-                t += Time.deltaTime;
-                float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, bendDuration));
-                transform.localRotation = Quaternion.Slerp(from, to, k);
-                yield return null;
+                StopCoroutine(_scalePulseRoutine);
+                _scalePulseRoutine = null;
             }
 
-            t = 0f;
-            while (t < returnDuration)
+            if (transform != null && _originalScale != Vector3.zero)
             {
-                t += Time.deltaTime;
-                float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, returnDuration));
-                transform.localRotation = Quaternion.Slerp(to, _baseRotation, k);
-                yield return null;
+                transform.localScale = _originalScale;
             }
+        }
 
-            transform.localRotation = _baseRotation;
-            _bendRoutine = null;
+        private void KillBendSequence()
+        {
+            if (_bendSequence != null)
+            {
+                _bendSequence.Kill(true);
+                _bendSequence = null;
+            }
+        }
+
+        private void OnDisable()
+        {
+            StopScalePulse();
+            KillBendSequence();
         }
 
         private void HandleArmorVisuals()
@@ -352,10 +360,10 @@ namespace GamePlay.Items
             Quaternion startRot = part.rotation;
             Quaternion landRot = Quaternion.Euler(-90f, Random.Range(0f, 360f), 0f);
 
-            StartCoroutine(ThrowThenBounceRoutine(part, startPos, landPos, startRot, landRot, throwDir, targetGroundY));
+            PlayThrowThenBounce(part, startPos, landPos, startRot, landRot, throwDir, targetGroundY);
         }
 
-        private IEnumerator ThrowThenBounceRoutine(
+        private void PlayThrowThenBounce(
             Transform part,
             Vector3 startPos,
             Vector3 landPos,
@@ -364,36 +372,14 @@ namespace GamePlay.Items
             Vector3 throwDir,
             float groundY)
         {
-            // PHASE 1: THROW
-            yield return Tween01(throwDuration, t =>
-            {
-                float x = Mathf.Lerp(startPos.x, landPos.x, t);
-                float z = Mathf.Lerp(startPos.z, landPos.z, t);
-
-                float linearY = Mathf.Lerp(startPos.y, landPos.y, t);
-                float arc = 4f * throwHeight * t * (1f - t);
-
-                part.position = new Vector3(x, linearY + arc, z);
-                part.rotation = Quaternion.Slerp(startRot, landRot, t);
-            });
-
-            part.rotation = landRot;
-
-            // PHASE 2: BOUNCE
             Vector3 finalRestPos = landPos + (throwDir.normalized * 0.5f);
             finalRestPos.y = groundY;
 
-            yield return Tween01(bounceDuration, t =>
-            {
-                float eased = EaseOutQuad(t);
-
-                float x = Mathf.Lerp(landPos.x, finalRestPos.x, eased);
-                float z = Mathf.Lerp(landPos.z, finalRestPos.z, eased);
-
-                float arc = 4f * bounceHeight * eased * (1f - eased);
-
-                part.position = new Vector3(x, groundY + arc, z);
-            });
+            Sequence seq = DOTween.Sequence();
+            seq.Append(part.DOJump(landPos, throwHeight, 1, throwDuration).SetEase(Ease.Linear));
+            seq.Join(part.DORotateQuaternion(landRot, throwDuration).SetEase(Ease.Linear));
+            seq.Append(part.DOJump(finalRestPos, bounceHeight, 1, bounceDuration).SetEase(Ease.OutQuad));
+            seq.SetId(part);
         }
 
         private void UpdateGateColor()
@@ -482,26 +468,7 @@ namespace GamePlay.Items
             progressSprite.SetPropertyBlock(_progressMpb);
         }
 
-        private static IEnumerator Tween01(float duration, System.Action<float> onUpdate)
-        {
-            if (duration <= 0f)
-            {
-                onUpdate?.Invoke(1f);
-                yield break;
-            }
 
-            float t = 0f;
-            while (t < duration)
-            {
-                t += Time.deltaTime;
-                float v = Mathf.Clamp01(t / duration);
-                onUpdate?.Invoke(v);
-                yield return null;
-            }
-            onUpdate?.Invoke(1f);
-        }
-
-        private static float EaseOutQuad(float t) => 1f - (1f - t) * (1f - t);
 
         private static Transform FindChildContains(Transform root, string contains)
         {

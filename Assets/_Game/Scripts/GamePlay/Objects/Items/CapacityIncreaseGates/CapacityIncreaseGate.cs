@@ -5,6 +5,7 @@ using GamePlay.CardSystem;
 using GamePlay.Characters;
 using GamePlay.ComponentSystems;
 using GamePlay.Effects;
+using DG.Tweening;
 using UnityEngine;
 
 namespace GamePlay.Items
@@ -17,27 +18,27 @@ namespace GamePlay.Items
         [Header("Playable Options")]
         [Tooltip("Nếu gate đã full slot thì có nuốt (despawn) belt không?")]
         [SerializeField] private bool despawnBeltWhenFull = true;
+        [Tooltip("Force gate dau tien uu tien mo Explosion Shot. Cac gate sau chi lay Explosion Shot khi cac buff card khac da het upgrade.")]
+        [SerializeField] private bool forceFirstGateExplosionShot = true;
 
         [Header("Gold Gate Settings")]
         [SerializeField] private Transform rootAnimTrans;
         [SerializeField] private List<IncreaseElement> increaseElements;
-        [SerializeField] private float goldDrainDuration = 3.5f;
+        [SerializeField] private float goldDrainDuration = 2.0f;
         [SerializeField] private float goldDrainEffectInterval = 0.12f;
         [SerializeField] private float phase3Duration = 0.75f;
         [SerializeField, Range(0.1f, 1f)] private float goldDrainTimeScale = 0.75f;
 
         [Header("Buff Applied Effect")]
-        [SerializeField] private EffectType buffAppliedEffectType = EffectType.Upgrade;
-
+        [SerializeField] private EffectType buffAppliedEffectType = EffectType.Land;
 
         private readonly Dictionary<int, List<CharacterUnit>> _beltUnits = new Dictionary<int, List<CharacterUnit>>();
         private int _beltUnitCount;
         private bool _hasCollided = false; // [FIX] Prevent Double Collision
-        private readonly List<IncreaseElement> _eligibleElementsBuffer = new List<IncreaseElement>(8);
-        private readonly List<IncreaseElement> _alreadyAppliedBuffElementsBuffer = new List<IncreaseElement>(8);
         private readonly Dictionary<IncreaseElement, int> _upgradeByElementBuffer = new Dictionary<IncreaseElement, int>(8);
         private readonly HashSet<IncreaseElement> _exhaustedElementsBuffer = new HashSet<IncreaseElement>();
         private readonly List<UpgradeResolution> _upgradeResolutionBuffer = new List<UpgradeResolution>(8);
+        private static bool _hasConsumedForcedExplosionGate;
         private struct UpgradeResolution
         {
             public IncreaseElement Element;
@@ -57,21 +58,13 @@ namespace GamePlay.Items
             Data.Type = StatType.Character;
 
             // [FIX] Auto-set EntityType for Gate
-            if (_entityType == GamePlay.Entities.EntityType.None)
+            if (_entityType == Entities.EntityType.None)
             {
-                _entityType = GamePlay.Entities.EntityType.CapacityGate;
+                _entityType = Entities.EntityType.CapacityGate;
             }
         }
-#endif
 
-        private void Awake()
-        {
-            if (_entityType == GamePlay.Entities.EntityType.None)
-            {
-                _entityType = GamePlay.Entities.EntityType.CapacityGate;
-                Debug.LogWarning($"[CapacityIncreaseGate] {gameObject.name} had EntityType.None! Auto-set to CapacityGate.");
-            }
-        }
+#endif
 
         public override void Initialize()
         {
@@ -123,11 +116,9 @@ namespace GamePlay.Items
 
             if (increaseElements.Count == 0)
             {
-                var childElements = GetComponentsInChildren<IncreaseElement>(true);
-                if (childElements != null && childElements.Length > 0)
-                {
-                    increaseElements.AddRange(childElements);
-                }
+#if UNITY_EDITOR
+                Debug.LogWarning($"[CapacityIncreaseGate] increaseElements is empty on {name}. Please assign in Inspector to avoid runtime search!");
+#endif
             }
 
             if (Data == null)
@@ -141,7 +132,6 @@ namespace GamePlay.Items
             {
                 Data.ElementDataList = BuildDefaultElementDataList();
             }
-
         }
 
         private static List<IncreaseElementData> BuildDefaultElementDataList()
@@ -171,16 +161,13 @@ namespace GamePlay.Items
 
         private void ApplyDepthToTexts()
         {
-            StartCoroutine(FixTextDepthDelayed());
+            FixTextDepthImmediate();
         }
 
-        private IEnumerator FixTextDepthDelayed()
+        private void FixTextDepthImmediate()
         {
-            // [FIX] Wait for TMP/Luna initialization to finish
-            yield return null;
-
             var texts = GetComponentsInChildren<TMPro.TMP_Text>(true);
-            if (texts == null || texts.Length == 0) yield break;
+            if (texts == null || texts.Length == 0) return;
 
             MaterialPropertyBlock mbp = new MaterialPropertyBlock();
 
@@ -189,22 +176,16 @@ namespace GamePlay.Items
                 if (t == null) continue;
 
                 t.isOverlay = false;
-
-                // Force update to ensure renderer is live
                 t.ForceMeshUpdate();
 
                 var renderer = t.GetComponent<Renderer>();
                 if (renderer != null)
                 {
-                    // 1. Force ZTest via Property Block
                     renderer.GetPropertyBlock(mbp);
                     mbp.SetInt("_ZTest", (int)UnityEngine.Rendering.CompareFunction.LessEqual);
                     renderer.SetPropertyBlock(mbp);
-
-                    // 2. Reset Sorting Order
                     renderer.sortingOrder = 0;
 
-                    // Avoid material instancing via renderer.material (memory growth on repeated init).
                     var shared = renderer.sharedMaterial;
                     if (shared != null && shared.renderQueue != 3000)
                     {
@@ -261,15 +242,27 @@ namespace GamePlay.Items
                 }
             }
 
+            bool shouldForceExplosionShot = forceFirstGateExplosionShot && !_hasConsumedForcedExplosionGate;
+            if (shouldForceExplosionShot)
+            {
+                _hasConsumedForcedExplosionGate = true;
+            }
+
             // Phase 1: random an eligible element based on current gold
             int gold = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-            IncreaseElement selected = GetRandomEligibleElement(gold);
+            IncreaseElement selected = shouldForceExplosionShot
+                ? GetEligibleExplosionShotElement(gold)
+                : null;
+
             if (selected == null)
             {
+                selected = GetRandomEligibleElement(gold);
+            }
 
-
+            if (selected == null)
+            {
                 // Phase 3: tip RootAnimTrans 90° then apply config
-                yield return StartCoroutine(Phase3());
+                yield return Phase3();
                 EndOfPhase();
                 yield break;
             }
@@ -284,17 +277,13 @@ namespace GamePlay.Items
             }
 
             // Phase 2: follow player Z + drain gold (logic first, do not update upgrade UI yet)
-            List<UpgradeResolution> upgradeResolutions = null;
-            yield return StartCoroutine(Phase2(selected, distanceOffset, delegate (List<UpgradeResolution> results)
-            {
-                upgradeResolutions = results;
-            }));
+            yield return Phase2(selected, distanceOffset);
 
-            if (upgradeResolutions != null)
+            if (_upgradeResolutionBuffer.Count > 0)
             {
-                for (int i = 0; i < upgradeResolutions.Count; i++)
+                for (int i = 0; i < _upgradeResolutionBuffer.Count; i++)
                 {
-                    var result = upgradeResolutions[i];
+                    var result = _upgradeResolutionBuffer[i];
                     if (result.Element == null || result.UpgradeLevels <= 0)
                     {
                         continue;
@@ -322,8 +311,28 @@ namespace GamePlay.Items
 
                     GameplayManager.Instance.ChangeStatModifierData(result.Element.StatData);
                     GameplayManager.Instance.RunUpgradeEffect(result.Element.transform);
-                    WeaponCardSystem.Instance?.PlayCollectAnimation(
-                        result.Element.ElementData, result.Element.LevelCard, result.Element.transform);
+
+                    if (result.Element.ElementData != null && result.Element.ElementData.BuffDef != null)
+                    {
+                        GameplayManager.Instance.ApplySwordSkillBuff(result.Element.ElementData.BuffDef);
+                        BuffCardSystem.Instance?.PlayCustomCollectAnimation(
+                            result.Element.ElementData.BuffDef.VisualPrefab,
+                            result.Element.ElementData,
+                            result.Element.LevelCard,
+                            result.Element.transform,
+                            i,
+                            _upgradeResolutionBuffer.Count);
+                    }
+                    else
+                    {
+                        BuffCardSystem.Instance?.PlayCollectAnimation(
+                            result.Element.ElementData,
+                            result.Element.LevelCard,
+                            result.Element.transform,
+                            i,
+                            _upgradeResolutionBuffer.Count);
+                    }
+
                     Pack.Effector?.PlayEffect(
                         buffAppliedEffectType,
                         result.Element.transform.position,
@@ -333,7 +342,7 @@ namespace GamePlay.Items
             }
 
             // Phase 3: tip RootAnimTrans 90° then apply config
-            yield return StartCoroutine(Phase3());
+            yield return Phase3();
             EndOfPhase();
 
             void EndOfPhase()
@@ -345,17 +354,16 @@ namespace GamePlay.Items
             }
         }
 
-        private IEnumerator Phase2(IncreaseElement selectedElement, float distanceOffset, Action<List<UpgradeResolution>> onResolved)
+        private IEnumerator Phase2(IncreaseElement selectedElement, float distanceOffset)
         {
             int totalGold = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
             if (totalGold <= 0)
             {
-                onResolved?.Invoke(null);
                 yield break;
             }
 
             Transform playerTrans = GameplayManager.Instance.PlayerTransform;
-            int spendPerFrame = Mathf.Max(1, Mathf.CeilToInt(totalGold / (goldDrainDuration * 60f)));
+            int spendPerFrame = Mathf.Max(1, Mathf.CeilToInt(totalGold / (goldDrainDuration * 30f)));
             _upgradeByElementBuffer.Clear();
             _exhaustedElementsBuffer.Clear();
             _upgradeResolutionBuffer.Clear();
@@ -364,12 +372,11 @@ namespace GamePlay.Items
             int nextUpgradeCost = 0;
             float goldDrainFxTimer = 0f;
 
-            if (!TryActivateElement(activeElement, out nextUpgradeCost))
+            if (!TryActivateElement(activeElement, _exhaustedElementsBuffer, currentUpgradeSpent, out nextUpgradeCost))
             {
                 activeElement = GetNextEligibleElement(GameplayManager.Instance.GetCurrency(CurrencyType.Gold), _exhaustedElementsBuffer, null);
-                if (!TryActivateElement(activeElement, out nextUpgradeCost))
+                if (!TryActivateElement(activeElement, _exhaustedElementsBuffer, currentUpgradeSpent, out nextUpgradeCost))
                 {
-                    onResolved?.Invoke(null);
                     yield break;
                 }
             }
@@ -388,7 +395,7 @@ namespace GamePlay.Items
                 }
 
                 int goldBefore = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
-                GameplayManager.Instance.TrySpendCurrency(CurrencyType.Gold, spendPerFrame);
+                GameplayManager.Instance.TrySpendCurrency(CurrencyType.Gold, Mathf.Min(goldBefore, spendPerFrame));
                 int goldAfter = GameplayManager.Instance.GetCurrency(CurrencyType.Gold);
                 int spent = goldBefore - goldAfter;
 
@@ -426,8 +433,9 @@ namespace GamePlay.Items
                     if (nextUpgradeCost == int.MaxValue)
                     {
                         _exhaustedElementsBuffer.Add(activeElement);
+                        activeElement.SetNormalVisual();
                         activeElement = GetNextEligibleElement(0, _exhaustedElementsBuffer, activeElement);
-                        if (!TryActivateElement(activeElement, out nextUpgradeCost))
+                        if (!TryActivateElement(activeElement, _exhaustedElementsBuffer, currentUpgradeSpent, out nextUpgradeCost))
                         {
                             currentUpgradeSpent = 0;
                             break;
@@ -445,12 +453,16 @@ namespace GamePlay.Items
                 yield return null;
             }
 
+            if (activeElement != null)
+            {
+                activeElement.SetNormalVisual();
+            }
+
             // Khôi phục lại tốc độ game
             Time.timeScale = originalTimeScale;
 
             if (_upgradeByElementBuffer.Count == 0)
             {
-                onResolved?.Invoke(null);
                 yield break;
             }
 
@@ -461,191 +473,132 @@ namespace GamePlay.Items
                     _upgradeResolutionBuffer.Add(new UpgradeResolution(pair.Key, pair.Value));
                 }
             }
-            onResolved?.Invoke(_upgradeResolutionBuffer);
+        }
 
-            bool TryActivateElement(IncreaseElement element, out int upgradeCost)
+        private bool TryActivateElement(IncreaseElement element, HashSet<IncreaseElement> exhaustedElementsBuffer, int currentUpgradeSpent, out int upgradeCost)
+        {
+            upgradeCost = int.MaxValue;
+            if (element == null)
             {
-                upgradeCost = int.MaxValue;
-                if (element == null)
-                {
-                    return false;
-                }
-
-                element.SetActiveVisual();
-                upgradeCost = element.GetNextUpgradeCost();
-                if (upgradeCost == int.MaxValue)
-                {
-                    element.SetNormalVisual();
-                    _exhaustedElementsBuffer.Add(element);
-                    return false;
-                }
-
-                element.InitProgress(upgradeCost);
-                element.UpdateProgress(currentUpgradeSpent);
-                return true;
+                return false;
             }
+
+            element.SetActiveVisual();
+            upgradeCost = element.GetNextUpgradeCost();
+            if (upgradeCost == int.MaxValue)
+            {
+                element.SetNormalVisual();
+                exhaustedElementsBuffer.Add(element);
+                return false;
+            }
+
+            element.InitProgress(upgradeCost);
+            element.UpdateProgress(currentUpgradeSpent);
+            return true;
         }
         private IEnumerator Phase3()
         {
             if (rootAnimTrans == null) yield break;
 
             Quaternion from = rootAnimTrans.localRotation;
-            Quaternion to = from * Quaternion.Euler(90f, 0f, 0f);
-            float elapsed = 0f;
+            Quaternion to = from * Quaternion.Euler(91f, 0f, 0f);
 
-            while (elapsed < phase3Duration)
-            {
-                elapsed += Time.deltaTime;
-                rootAnimTrans.localRotation = Quaternion.Lerp(from, to, elapsed / phase3Duration);
-                yield return null;
-            }
+            yield return rootAnimTrans.DOLocalRotateQuaternion(to, phase3Duration).SetEase(Ease.Linear).WaitForCompletion();
 
-            rootAnimTrans.localRotation = to;
             SoundManager.Instance?.PlayOneShot(AudioClipName.SFX_Ingame_Hero_Upgrade);
         }
 
         private IncreaseElement GetRandomEligibleElement(int gold)
         {
-            _eligibleElementsBuffer.Clear();
-            _alreadyAppliedBuffElementsBuffer.Clear();
+            if (increaseElements == null || increaseElements.Count == 0) return null;
 
-            if (increaseElements == null || increaseElements.Count == 0)
-            {
-                return null;
-            }
-
-            for (int i = 0; i < increaseElements.Count; i++)
-            {
-                var element = increaseElements[i];
-                if (element == null || !element.IsEligible(gold))
-                {
-                    continue;
-                }
-                if (IsBlockedExplosionElement(element))
-                {
-                    continue;
-                }
-
-                AddEligibleByBuffPriority(element);
-            }
-
-            return PickRandomFromPrioritizedEligible();
-        }
-
-        private IncreaseElement GetNextEligibleElement(int gold, HashSet<IncreaseElement> exhaustedElements, IncreaseElement currentElement)
-        {
-            _eligibleElementsBuffer.Clear();
-            _alreadyAppliedBuffElementsBuffer.Clear();
-            if (increaseElements == null || increaseElements.Count == 0)
-            {
-                return null;
-            }
-
-            StatType currentType = currentElement != null && currentElement.ElementData != null
-                ? currentElement.ElementData.Type
-                : StatType.None;
-
+            // Sequential priority based on Inspector order
             for (int i = 0; i < increaseElements.Count; i++)
             {
                 var element = increaseElements[i];
                 if (element == null) continue;
+                if (element.GetNextUpgradeCost() == int.MaxValue) continue;
+                if (!element.IsEligible(gold)) continue;
 
-                if (exhaustedElements != null && exhaustedElements.Contains(element))
-                {
-                    continue;
-                }
+                if (IsBlockedExplosionElement(element)) continue;
+                if (ShouldDeferExplosionShotElement(element)) continue;
 
-                if (currentType != StatType.None && element.ElementData != null && element.ElementData.Type == currentType)
-                {
-                    continue;
-                }
-                if (IsBlockedExplosionElement(element))
-                {
-                    continue;
-                }
-
-                // [FIX] Don't gate on current gold here — this is called mid-drain when gold is near 0.
-                // Only check that the element hasn't hit its max level (cost == MaxValue means maxed).
-                if (element.GetNextUpgradeCost() == int.MaxValue)
-                {
-                    continue;
-                }
-
-                AddEligibleByBuffPriority(element);
+                return element;
             }
 
-            return PickRandomFromPrioritizedEligible();
+            return null;
         }
 
-        private void AddEligibleByBuffPriority(IncreaseElement element)
+        private IncreaseElement GetNextEligibleElement(int gold, HashSet<IncreaseElement> exhaustedElements, IncreaseElement currentElement)
         {
-            if (element == null)
+            if (increaseElements == null || increaseElements.Count == 0) return null;
+
+            // Sequential priority based on Inspector order
+            for (int i = 0; i < increaseElements.Count; i++)
             {
-                return;
+                var element = increaseElements[i];
+                if (element == null) continue;
+                if (exhaustedElements != null && exhaustedElements.Contains(element)) continue;
+                if (element.GetNextUpgradeCost() == int.MaxValue) continue;
+
+                if (IsBlockedExplosionElement(element)) continue;
+                if (ShouldDeferExplosionShotElement(element)) continue;
+
+                return element;
             }
 
-            if (IsPrimaryBuffAlreadyApplied(element))
-            {
-                _alreadyAppliedBuffElementsBuffer.Add(element);
-                return;
-            }
-
-            _eligibleElementsBuffer.Add(element);
+            return null;
         }
 
-        private IncreaseElement PickRandomFromPrioritizedEligible()
+        private IncreaseElement GetEligibleExplosionShotElement(int gold)
         {
-            List<IncreaseElement> source = _eligibleElementsBuffer.Count > 0
-                ? _eligibleElementsBuffer
-                : _alreadyAppliedBuffElementsBuffer;
-
-            if (source.Count == 0)
+            if (increaseElements == null || increaseElements.Count == 0)
             {
                 return null;
             }
 
-            int randomIndex = UnityEngine.Random.Range(0, source.Count);
-            return source[randomIndex];
+            for (int i = 0; i < increaseElements.Count; i++)
+            {
+                var element = increaseElements[i];
+                if (!IsExplosionShotElement(element) || !element.IsEligible(gold))
+                {
+                    continue;
+                }
+
+                return element;
+            }
+
+            return null;
         }
 
-        private static bool IsPrimaryBuffAlreadyApplied(IncreaseElement element)
+        private bool IsBlockedExplosionElement(IncreaseElement element)
         {
-            if (element == null || element.ElementData == null)
+            if (!IsExplosionShotElement(element))
             {
                 return false;
             }
 
-            StatType type = element.ElementData.Type;
-            if (!IsPrimaryBuffType(type))
-            {
-                return false;
-            }
-
-            var gameplayManager = GameplayManager.Instance;
-            return gameplayManager != null && gameplayManager.HasAppliedPrimaryBuffThisRun(type);
-        }
-
-        private static bool IsPrimaryBuffType(StatType statType)
-        {
-            return statType == StatType.Character ||
-                   statType == StatType.FireRange ||
-                   statType == StatType.Damage;
-        }
-
-        private static bool IsBlockedExplosionElement(IncreaseElement element)
-        {
-            if (element == null || element.ElementData == null)
-            {
-                return false;
-            }
-
-            if (element.ElementData.Type != StatType.ExplosionShot)
+            if (forceFirstGateExplosionShot)
             {
                 return false;
             }
 
             var gameplayManager = GameplayManager.Instance;
             return gameplayManager != null && !gameplayManager.CanOfferExplosionShotThisRun();
+        }
+
+        private bool ShouldDeferExplosionShotElement(IncreaseElement element)
+        {
+            return forceFirstGateExplosionShot &&
+                   _hasConsumedForcedExplosionGate &&
+                   IsExplosionShotElement(element);
+        }
+
+        private static bool IsExplosionShotElement(IncreaseElement element)
+        {
+            return element != null &&
+                   element.ElementData != null &&
+                   element.ElementData.Type == StatType.ExplosionShot;
         }
 
         protected override void HandleNonWheelCollision(IAttacker source) { }
@@ -701,3 +654,4 @@ namespace GamePlay.Items
         }
     }
 }
+

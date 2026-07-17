@@ -19062,7 +19062,6 @@ GameObject:
   - component: {fileID: 7524076464287048912}
   - component: {fileID: 1029051734358221029}
   - component: {fileID: 1631167165912774021}
-  - component: {fileID: 8428517494024398546}
   m_Layer: 0
   m_Name: VFX_Active
   m_TagString: Untagged
@@ -23804,31 +23803,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &8428517494024398546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8843955575985446707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 7524076464287048912}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 1631167165912774021}
-  - {fileID: 3283078612322930169}
-  - {fileID: 6563016664819041866}
-  - {fileID: 291400106546280484}
-  - {fileID: 4277443208654543253}
-  - {fileID: 2483436419470466555}
 --- !u!1 &9216362098329079167
 GameObject:
   m_ObjectHideFlags: 0

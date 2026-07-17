@@ -5,6 +5,7 @@ using GamePlay.CollisionSystems; // [FIX] Added missing namespace
 using GamePlay.Effects;
 using PlayerArmy;
 using UnityEngine;
+using Pools;
 
 namespace GamePlay.CombatSystems
 {
@@ -17,7 +18,6 @@ namespace GamePlay.CombatSystems
         [SerializeField, Min(0f)] private float explosionShotVfxHitCooldown = 0.08f;
         private GameObject _cachedExplosionVfxPrefab;
         private bool _didTryLoadExplosionVfxFromResources;
-        private readonly Dictionary<int, TimedAutoDisable> _explosionAutoDisableCache = new Dictionary<int, TimedAutoDisable>(16);
         private readonly Dictionary<int, float> _lastExplosionVfxByTarget = new Dictionary<int, float>(64);
         private float _lastExplosionVfxTime;
         private Vector3 _lastExplosionVfxPosition;
@@ -95,8 +95,6 @@ namespace GamePlay.CombatSystems
                 duration, arcHeight, rotationSpeed, attacker, mover, spinAxis, motionMode);
         }
 
-        private const float DESPAWN_DELAY = 0.25f;
-
         private IHitable _playerHitable;
         private readonly List<IHitable> _extraTargets = new List<IHitable>(32);
         private readonly HashSet<IHitable> _extraTargetSet = new HashSet<IHitable>();
@@ -121,6 +119,7 @@ namespace GamePlay.CombatSystems
 
             public float StartTime;
             public float Duration;
+            public float InvDuration;
             public float Distance;
 
             public float RotationSpeed;
@@ -140,15 +139,17 @@ namespace GamePlay.CombatSystems
         private sealed class ExplosionShotAttacker : IAttacker
         {
             public event System.Action<IHitable> OnAttackComplete = delegate { };
-            public EntityType EntityType { get; }
+            public EntityType EntityType { get; private set; }
             public Vector2 Size { get; } = Vector2.zero;
             public int Damage { get; private set; }
-            public uint TargetMask { get; }
+            public uint TargetMask { get; private set; }
             public Vector3 Position { get; private set; }
             public Transform Transform => null;
             public bool IsEnabled => true;
 
-            public ExplosionShotAttacker(int damage, uint targetMask, EntityType entityType, Vector3 position)
+            public ExplosionShotAttacker() { }
+
+            public void Setup(int damage, uint targetMask, EntityType entityType, Vector3 position)
             {
                 Damage = Mathf.Max(1, damage);
                 TargetMask = targetMask;
@@ -158,9 +159,27 @@ namespace GamePlay.CombatSystems
 
             public void Initialize() { }
             public void OnUpdate(float dt) { }
-            public void Dispose() { }
+            public void Dispose()
+            {
+                Instance?.ReturnExplosionShotAttacker(this);
+            }
             public void Setup(int damage) { Damage = Mathf.Max(1, damage); }
             public void OnAttackSucceed(IHitable target) { OnAttackComplete?.Invoke(target); }
+        }
+
+        private readonly Queue<ExplosionShotAttacker> _explosionShotAttackerPool = new Queue<ExplosionShotAttacker>(32);
+
+        private ExplosionShotAttacker GetExplosionShotAttacker()
+        {
+            return _explosionShotAttackerPool.Count > 0 ? _explosionShotAttackerPool.Dequeue() : new ExplosionShotAttacker();
+        }
+
+        private void ReturnExplosionShotAttacker(ExplosionShotAttacker attacker)
+        {
+            if (attacker != null)
+            {
+                _explosionShotAttackerPool.Enqueue(attacker);
+            }
         }
 
         private readonly List<ProjectileEntry> _projectiles = new List<ProjectileEntry>(64);
@@ -169,6 +188,15 @@ namespace GamePlay.CombatSystems
         {
             base.Awake();
             TryResolvePlayerReference();
+        }
+
+        private void Start()
+        {
+            var prefab = ResolveExplosionShotVfxPrefab();
+            if (prefab != null)
+            {
+                PoolSystem.Prewarm(prefab.transform, 5);
+            }
         }
 
         private void RegisterPlayerInternal(IHitable player)
@@ -272,6 +300,7 @@ namespace GamePlay.CombatSystems
                 Direction = dir,
                 StartTime = Time.time,
                 Duration = Mathf.Max(0.01f, duration),
+                InvDuration = 1f / Mathf.Max(0.01f, duration),
                 Distance = Mathf.Max(0.1f, distance),
                 RotationSpeed = rotationSpeed,
                 SpinAxis = spinAxis,
@@ -362,9 +391,9 @@ namespace GamePlay.CombatSystems
                 }
 
                 // Active movement
-                float t = Mathf.Clamp01((now - p.StartTime) / p.Duration);
+                float t = Mathf.Clamp01((now - p.StartTime) * p.InvDuration);
 
-                float previousT = Mathf.Clamp01((now - Time.deltaTime - p.StartTime) / p.Duration);
+                float previousT = Mathf.Clamp01((now - Time.deltaTime - p.StartTime) * p.InvDuration);
                 Vector3 previousPos = EvaluateProjectilePosition(p, previousT);
                 Vector3 pos = EvaluateProjectilePosition(p, t);
                 p.Transform.position = pos;
@@ -376,9 +405,8 @@ namespace GamePlay.CombatSystems
                     if (direction.sqrMagnitude > 0.001f)
                     {
                         Quaternion lookRot = Quaternion.LookRotation(direction);
-                        float spinAngle = (now - p.StartTime) * p.RotationSpeed * Mathf.Rad2Deg;
-                        Quaternion spinRot = Quaternion.AngleAxis(spinAngle, ResolveSpinAxis(p.SpinAxis));
-                        p.Transform.rotation = lookRot * spinRot;
+                        float spinAngle = (now - p.StartTime) * p.RotationSpeed * 57.29578f; // Mathf.Rad2Deg
+                        p.Transform.rotation = lookRot * Quaternion.AngleAxis(spinAngle, ResolveSpinAxis(p.SpinAxis));
                     }
                 }
 
@@ -488,7 +516,7 @@ namespace GamePlay.CombatSystems
             }
         }
 
-        private static Vector3 EvaluateProjectilePosition(ProjectileEntry projectile, float t)
+        private static Vector3 EvaluateProjectilePosition(in ProjectileEntry projectile, float t)
         {
             return projectile.MotionMode == ProjectileMotionMode.Straight
                 ? projectile.P0 + projectile.Direction * projectile.Distance * t
@@ -672,7 +700,8 @@ namespace GamePlay.CombatSystems
             if (percent <= 0 || radius <= 0f) return;
 
             int splashDamage = Mathf.Max(1, Mathf.CeilToInt(projectile.Attacker.Damage * (percent / 100f)));
-            var splashAttacker = new ExplosionShotAttacker(splashDamage, projectile.Attacker.TargetMask, projectile.Attacker.EntityType, hitPosition);
+            var splashAttacker = GetExplosionShotAttacker();
+            splashAttacker.Setup(splashDamage, projectile.Attacker.TargetMask, projectile.Attacker.EntityType, hitPosition);
             if (ShouldSpawnExplosionShotVfx(primaryTarget, hitPosition))
             {
                 SpawnExplosionShotVfx(hitPosition);
@@ -707,6 +736,7 @@ namespace GamePlay.CombatSystems
                 target.OnHit(splashAttacker);
                 _aoeAppliedTargets.Add(target);
             }
+            splashAttacker.Dispose();
         }
 
         private bool ShouldApplyAoeToTarget(IHitable target, IHitable primaryTarget, uint targetMask)
@@ -769,11 +799,8 @@ namespace GamePlay.CombatSystems
             var prefab = ResolveExplosionShotVfxPrefab();
             if (prefab == null) return;
 
-            GameObject vfx = PoolManager.Instance != null ? PoolManager.Instance.Get(prefab) : null;
-            if (vfx == null)
-            {
-                vfx = Instantiate(prefab);
-            }
+            GameObject vfx = prefab.Spawn();
+            if (vfx == null) { Debug.LogWarning("[EnemyProjectileSystem] Pool exhausted or missing for: " + prefab.name); return; }
 
             vfx.transform.SetPositionAndRotation(worldPosition + transform.up * 2f, Quaternion.identity);
             vfx.SetActive(true);
@@ -799,20 +826,12 @@ namespace GamePlay.CombatSystems
         {
             if (vfx == null) return;
             int id = vfx.GetInstanceID();
-            if (!_explosionAutoDisableCache.TryGetValue(id, out TimedAutoDisable autoDisable) || autoDisable == null)
-            {
-                autoDisable = vfx.GetComponent<TimedAutoDisable>();
-                if (autoDisable == null)
-                {
-                    autoDisable = vfx.AddComponent<TimedAutoDisable>();
-                }
 
-                _explosionAutoDisableCache[id] = autoDisable;
-            }
 
-            autoDisable.Play(explosionShotVfxLifetime);
         }
 
         // ExplosionShot / splash AOE feature removed for this playable branch.
     }
 }
+
+

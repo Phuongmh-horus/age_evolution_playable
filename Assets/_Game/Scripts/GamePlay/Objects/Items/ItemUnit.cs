@@ -33,11 +33,7 @@ namespace GamePlay.Items
         [SerializeField] protected Vector3 colliderOffsets = Vector3.zero;
         [SerializeField] protected Vector3 colliderSize = Vector3.one;
 
-        [Header("Components References")]
-        [SerializeField] private List<MonoBehaviour> _components = new List<MonoBehaviour>();
 
-        [HideInInspector] public CapabilityPack Pack;
-        [HideInInspector] public CapabilityFlags ActiveFlags;
 
         [Header("Offset Properties")]
         public float LeftOffset;
@@ -50,47 +46,47 @@ namespace GamePlay.Items
         [SerializeField] protected GamePlayTutElement _tutElement;
 
         [Header("Runtime Fallbacks")]
-        [SerializeField] private bool autoAddHitTextFlyEffectAtRuntime = true;
+        [SerializeField] protected bool autoAddHitTextFlyEffectAtRuntime = true;
 
         private bool _initDataFirst;
 
         // IAttacker event
         public event Action<IHitable> OnAttackComplete;
-        
+
         // IHitable event
         public event Action<IAttacker> OnHitComplete;
         public bool IsActive => isActiveAndEnabled;
-        
+
         public GamePlay.ComponentSystems.ColliderData GetColliderData()
         {
-             // [FIX] Apply Entity Scale AND Rotation to Collider Size (AABB)
-             Vector3 worldScale = transform.lossyScale;
-             Quaternion rot = transform.rotation;
-             
-             // 1. Calculate Local Scaled Half-Extents
-             Vector3 localHalfExtents = new Vector3(
-                 colliderSize.x * Mathf.Abs(worldScale.x) * 0.5f,
-                 colliderSize.y * Mathf.Abs(worldScale.y) * 0.5f,
-                 colliderSize.z * Mathf.Abs(worldScale.z) * 0.5f
-             );
+            // [FIX] Apply Entity Scale AND Rotation to Collider Size (AABB)
+            Vector3 worldScale = transform.lossyScale;
+            Quaternion rot = transform.rotation;
 
-             // 2. Rotate Local Extents to World Space AABB Extents
-             // For a Box with half-extents (hx, hy, hz) and rotation matrix M:
-             // WorldExtents.x = |Mxx * hx| + |Mxy * hy| + |Mxz * hz|
-             Matrix4x4 m = Matrix4x4.Rotate(rot);
-             Vector3 worldHalfExtents = new Vector3(
-                Mathf.Abs(m.m00 * localHalfExtents.x) + Mathf.Abs(m.m01 * localHalfExtents.y) + Mathf.Abs(m.m02 * localHalfExtents.z),
-                Mathf.Abs(m.m10 * localHalfExtents.x) + Mathf.Abs(m.m11 * localHalfExtents.y) + Mathf.Abs(m.m12 * localHalfExtents.z),
-                Mathf.Abs(m.m20 * localHalfExtents.x) + Mathf.Abs(m.m21 * localHalfExtents.y) + Mathf.Abs(m.m22 * localHalfExtents.z)
-             );
+            // 1. Calculate Local Scaled Half-Extents
+            Vector3 localHalfExtents = new Vector3(
+                colliderSize.x * Mathf.Abs(worldScale.x) * 0.5f,
+                colliderSize.y * Mathf.Abs(worldScale.y) * 0.5f,
+                colliderSize.z * Mathf.Abs(worldScale.z) * 0.5f
+            );
 
-             return new GamePlay.ComponentSystems.ColliderData
-             {
-                 Type = shapeType,
-                 Size = worldHalfExtents, 
-                 Offset = shapeType == ShapeType.Box ? colliderSize.z : colliderSize.x,
-                 CategoryBits = (uint)(1 << (int)EntityType)
-             };
+            // 2. Rotate Local Extents to World Space AABB Extents
+            // For a Box with half-extents (hx, hy, hz) and rotation matrix M:
+            // WorldExtents.x = |Mxx * hx| + |Mxy * hy| + |Mxz * hz|
+            Matrix4x4 m = Matrix4x4.Rotate(rot);
+            Vector3 worldHalfExtents = new Vector3(
+               Mathf.Abs(m.m00 * localHalfExtents.x) + Mathf.Abs(m.m01 * localHalfExtents.y) + Mathf.Abs(m.m02 * localHalfExtents.z),
+               Mathf.Abs(m.m10 * localHalfExtents.x) + Mathf.Abs(m.m11 * localHalfExtents.y) + Mathf.Abs(m.m12 * localHalfExtents.z),
+               Mathf.Abs(m.m20 * localHalfExtents.x) + Mathf.Abs(m.m21 * localHalfExtents.y) + Mathf.Abs(m.m22 * localHalfExtents.z)
+            );
+
+            return new GamePlay.ComponentSystems.ColliderData
+            {
+                Type = shapeType,
+                Size = worldHalfExtents,
+                Offset = shapeType == ShapeType.Box ? colliderSize.z : colliderSize.x,
+                CategoryBits = (uint)(1 << (int)EntityType)
+            };
         }
 
         private void ConfigureCollider()
@@ -103,46 +99,46 @@ namespace GamePlay.Items
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmosSelected()
         {
-             // Visualize the ACTUAL CombatSystem Collider (Cyan)
-             // LOGIC MATCH: Visualize the AABB that GetColliderData returns.
-             Gizmos.color = Color.cyan;
-             Gizmos.matrix = Matrix4x4.identity; // World Space
-             
-             Vector3 worldScale = transform.lossyScale;
-             Quaternion rot = transform.rotation;
+            // Visualize the ACTUAL CombatSystem Collider (Cyan)
+            // LOGIC MATCH: Visualize the AABB that GetColliderData returns.
+            Gizmos.color = Color.cyan;
+            Gizmos.matrix = Matrix4x4.identity; // World Space
 
-             // 1. Local Scaled Half-Extents
-             Vector3 localHalfExtents = new Vector3(
-                 colliderSize.x * Mathf.Abs(worldScale.x) * 0.5f,
-                 colliderSize.y * Mathf.Abs(worldScale.y) * 0.5f,
-                 colliderSize.z * Mathf.Abs(worldScale.z) * 0.5f
-             );
+            Vector3 worldScale = transform.lossyScale;
+            Quaternion rot = transform.rotation;
 
-             // 2. Rotate to World AABB
-             Matrix4x4 m = Matrix4x4.Rotate(rot);
-             Vector3 worldHalfExtents = new Vector3(
-                Mathf.Abs(m.m00 * localHalfExtents.x) + Mathf.Abs(m.m01 * localHalfExtents.y) + Mathf.Abs(m.m02 * localHalfExtents.z),
-                Mathf.Abs(m.m10 * localHalfExtents.x) + Mathf.Abs(m.m11 * localHalfExtents.y) + Mathf.Abs(m.m12 * localHalfExtents.z),
-                Mathf.Abs(m.m20 * localHalfExtents.x) + Mathf.Abs(m.m21 * localHalfExtents.y) + Mathf.Abs(m.m22 * localHalfExtents.z)
-             );
+            // 1. Local Scaled Half-Extents
+            Vector3 localHalfExtents = new Vector3(
+                colliderSize.x * Mathf.Abs(worldScale.x) * 0.5f,
+                colliderSize.y * Mathf.Abs(worldScale.y) * 0.5f,
+                colliderSize.z * Mathf.Abs(worldScale.z) * 0.5f
+            );
 
-             // 3. Draw AABB (Size = Extents * 2)
-             if (shapeType == ShapeType.Box)
-             {
-                 Gizmos.DrawWireCube(transform.position, worldHalfExtents * 2f);
-             }
-             else if (shapeType == ShapeType.Sphere)
-             {
-                 // For Sphere, standard gizmo is fine, or AABB of sphere
-                 Gizmos.DrawWireSphere(transform.position, worldHalfExtents.x); // Radius
-             }
+            // 2. Rotate to World AABB
+            Matrix4x4 m = Matrix4x4.Rotate(rot);
+            Vector3 worldHalfExtents = new Vector3(
+               Mathf.Abs(m.m00 * localHalfExtents.x) + Mathf.Abs(m.m01 * localHalfExtents.y) + Mathf.Abs(m.m02 * localHalfExtents.z),
+               Mathf.Abs(m.m10 * localHalfExtents.x) + Mathf.Abs(m.m11 * localHalfExtents.y) + Mathf.Abs(m.m12 * localHalfExtents.z),
+               Mathf.Abs(m.m20 * localHalfExtents.x) + Mathf.Abs(m.m21 * localHalfExtents.y) + Mathf.Abs(m.m22 * localHalfExtents.z)
+            );
+
+            // 3. Draw AABB (Size = Extents * 2)
+            if (shapeType == ShapeType.Box)
+            {
+                Gizmos.DrawWireCube(transform.position, worldHalfExtents * 2f);
+            }
+            else if (shapeType == ShapeType.Sphere)
+            {
+                // For Sphere, standard gizmo is fine, or AABB of sphere
+                Gizmos.DrawWireSphere(transform.position, worldHalfExtents.x); // Radius
+            }
         }
-#endif 
-        
+#endif
+
         public void OnHit(IAttacker source)
         {
-             HandleHitComplete(source);
-             OnHitComplete?.Invoke(source);
+            HandleHitComplete(source);
+            OnHitComplete?.Invoke(source);
         }
 
         #region IAttacker
@@ -202,13 +198,6 @@ namespace GamePlay.Items
         protected virtual void OnValidate()
         {
             ConfigureCollider(); // Updates Collider in Editor immediately
-
-            if (_components == null) _components = new List<MonoBehaviour>();
-
-            if (_components.Count == 0)
-            {
-                Debug.LogWarning($"[ItemUnit] Components list is empty on {name}. Assign IComponent references in Inspector.");
-            }
         }
 #endif
 
@@ -219,40 +208,14 @@ namespace GamePlay.Items
         protected virtual void InitComponent()
         {
             ConfigureCollider(); // Ensures Runtime setup
+            BuildCapabilityPack();
 
-            if (_initDataFirst) return;
-
-            Pack = default;
-            ActiveFlags = 0;
-
-            if (_components == null) _components = new List<MonoBehaviour>();
-
-            // Auto-detect removed; components must be assigned via Inspector.
-
-            for (int i = 0; i < _components.Count; i++)
-            {
-                var mb = _components[i];
-                if (mb == null) continue;
-
-                if (!(mb is IComponent val)) continue;
-
-                if (val is IHitable hitable) { Pack.Hitable = hitable; ActiveFlags |= CapabilityFlags.Hit; }
-                if (val is IHealable healable) { Pack.Healable = healable; ActiveFlags |= CapabilityFlags.Heal; }
-                if (val is IAnimator animator) { Pack.Animator = animator; ActiveFlags |= CapabilityFlags.Animator; }
-                if (val is IOscillator oscillator) { Pack.Oscillator = oscillator; ActiveFlags |= CapabilityFlags.Oscillate; }
-                if (val is IEffector effector) { Pack.Effector = effector; ActiveFlags |= CapabilityFlags.Effector; }
-            }
-
-            // Auto-detect removed; assign Hit/Oscillator components via Inspector.
-
-            // [FIX] ItemUnit implements IHitable itself. If no separate Hitable component was found, use 'this'.
+            // [FIX] ItemUnit implements IHitable itself. If no separate Hitable component was found, use \'this\'.
             if (Pack.Hitable == null && this is IHitable selfHitable)
             {
                 Pack.Hitable = selfHitable;
                 ActiveFlags |= CapabilityFlags.Hit;
             }
-
-            _initDataFirst = true;
         }
 
         public virtual void Initialize()
@@ -260,29 +223,18 @@ namespace GamePlay.Items
             InitComponent();
 
             if (_tutElement) _tutElement.Initialize();
-            
+
             // FIX: Prevent infinite recursion if Pack.Hitable is 'this' (ItemUnit/Pillar)
-            if ((ActiveFlags & CapabilityFlags.Hit) != 0 && Pack.Hitable != (object)this) 
+            if ((ActiveFlags & CapabilityFlags.Hit) != 0 && Pack.Hitable != (object)this)
                 Pack.Hitable.Initialize();
-            
+
             if ((ActiveFlags & CapabilityFlags.Heal) != 0) Pack.Healable.Initialize();
             if ((ActiveFlags & CapabilityFlags.Animator) != 0) Pack.Animator.Initialize();
-            
+
             Pack.Oscillator?.Initialize();
             if ((ActiveFlags & CapabilityFlags.Effector) != 0) Pack.Effector.Initialize();
 
             bool hasItemOffsets = !Mathf.Approximately(LeftOffset, 0f) || !Mathf.Approximately(RightOffset, 0f);
-            if ((ActiveFlags & CapabilityFlags.Oscillate) != 0 && Pack.Oscillator != null)
-            {
-            }
-            if ((ActiveFlags & CapabilityFlags.Oscillate) != 0 && Pack.Oscillator != null)
-            {
-                // Only override oscillator config if ItemUnit explicitly sets offsets.
-                if (hasItemOffsets)
-            {
-                Pack.Oscillator.Setup(LeftOffset, RightOffset);
-            }
-            }
 
             // Restore factory/pillar oscillation (original game behavior)
             if ((ActiveFlags & CapabilityFlags.Oscillate) != 0 &&
@@ -348,12 +300,6 @@ namespace GamePlay.Items
                 _lastAttacker = source;
             }
 
-            // Playable: Add missing visual feedback from Reference
-            if ((ActiveFlags & CapabilityFlags.Effector) != 0)
-            {
-                Pack.Effector.PlayEffect(EffectType.Hit);
-            }
-
             // Debug.Log($"[ItemUnit] {gameObject.name} HandleHitComplete from {source.EntityType}");
 
             if (source.EntityType == GamePlay.Entities.EntityType.Wheel)
@@ -414,7 +360,7 @@ namespace GamePlay.Items
             {
                 OscillationSystem.Unregister(Pack.Oscillator);
             }
-            
+
             // Ref Restored: Unregister from CollisionSystem
             if ((ActiveFlags & CapabilityFlags.Hit) != 0 && Pack.Hitable != null)
             {
@@ -442,7 +388,9 @@ namespace GamePlay.Items
         private HitTextFlyEffect GetHitTextFlyEffect()
         {
             if (_hitTextFlyEffect != null) return _hitTextFlyEffect;
-            _hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
+            if (!TryGetComponent(out _hitTextFlyEffect))
+                _hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
+
             if (_hitTextFlyEffect == null && autoAddHitTextFlyEffectAtRuntime && Application.isPlaying)
                 _hitTextFlyEffect = gameObject.AddComponent<HitTextFlyEffect>();
             return _hitTextFlyEffect;
@@ -450,10 +398,8 @@ namespace GamePlay.Items
 
         private void WarmupHitTextRuntimeCache()
         {
-            var hitText = GetComponentInChildren<HitTextFlyEffect>(true);
+            var hitText = GetHitTextFlyEffect();
             if (hitText == null) return;
-
-            _hitTextFlyEffect = hitText;
             hitText.WarmupRuntimeCaches();
         }
     }

@@ -6,43 +6,47 @@ using UnityEngine;
 
 namespace WeaponCraft
 {
+    /// <summary>
+    /// Manages weapon item state and craft/merge logic.
+    /// Public API unchanged: ReceiveItem(), EnsureStarterItem(), Prewarm().
+    /// </summary>
     public sealed class WeaponCraftSystem : MonoSingleton<WeaponCraftSystem>
     {
-        private sealed class IncomingBatch
-        {
-            public readonly List<WeaponItem> Items;
-            public readonly Vector3 FlyFromPosition;
-
-            public IncomingBatch(List<WeaponItem> items, Vector3 flyFromPosition)
-            {
-                Items = items;
-                FlyFromPosition = flyFromPosition;
-            }
-        }
-
+        // ── Inspector ─────────────────────────────────────────────────────────────
         [Header("Craft Settings")]
         [SerializeField] private WeaponCraftConfigSO config;
         [SerializeField] private WeaponCraftVisualSystem visualSystem;
         [SerializeField] private EffectComponent upgradeEffectComponent;
         [SerializeField] private AudioClipName fallbackMergeSfx = AudioClipName.SFX_Merge_Weapon;
 
-        private readonly List<WeaponItem> items = new List<WeaponItem>();
-        private readonly Queue<IncomingBatch> incomingItems = new Queue<IncomingBatch>();
-        private readonly Dictionary<WeaponItem, int> sequenceByItem = new Dictionary<WeaponItem, int>();
-        private int nextSequence = 1;
-        private Coroutine processRoutine;
-        private int _equippedTopTier = -1;
+        // ── Runtime state ─────────────────────────────────────────────────────────
+        // Sorted list: index 0 = highest tier = equipped.
+        private readonly List<WeaponItem> _items = new List<WeaponItem>(16);
 
+        // Pending items enqueued via ReceiveItem, drained each process tick.
+        private readonly Queue<PendingItem> _pending = new Queue<PendingItem>(16);
+
+        // Stable-sort sequence (lower = older = appears after newer items of same tier).
+        private readonly Dictionary<WeaponItem, int> _seqMap = new Dictionary<WeaponItem, int>(32);
+        private int _nextSeq;
+
+        private Coroutine _processRoutine;
+        private int _equippedTopTier = -1;
+        private readonly ItemComparer _comparer = new ItemComparer();
+
+        // ── Events / Properties ───────────────────────────────────────────────────
         public event Action<WeaponItem> ItemAdded;
 
-        public List<WeaponItem> Items => items;
-        public bool HasItems => items.Count > 0;
-        public bool IsProcessing => processRoutine != null;
+        public List<WeaponItem> Items => _items;
+        public bool HasItems => _items.Count > 0;
+        public bool IsProcessing => _processRoutine != null;
         public WeaponCraftConfigSO Config => config;
         public WeaponCraftVisualSystem VisualSystem => visualSystem;
 
+        // ── Unity lifecycle ───────────────────────────────────────────────────────
         protected override void Awake()
         {
+            _comparer.Owner = this;
             base.Awake();
             EnsureVisualSystem();
         }
@@ -50,15 +54,17 @@ namespace WeaponCraft
         private void OnEnable()
         {
             EnsureVisualSystem();
+            // Sync UI to current data (handles scene reload / re-enable).
+            visualSystem?.SyncVisuals(_items);
             TryStartProcessing();
         }
 
         private void OnDisable()
         {
-            if (processRoutine != null)
+            if (_processRoutine != null)
             {
-                StopCoroutine(processRoutine);
-                processRoutine = null;
+                StopCoroutine(_processRoutine);
+                _processRoutine = null;
             }
         }
 
@@ -66,515 +72,334 @@ namespace WeaponCraft
         private void OnValidate()
         {
             if (visualSystem == null)
-            {
                 visualSystem = GetComponentInChildren<WeaponCraftVisualSystem>(true);
-            }
         }
 #endif
 
-        public WeaponItem ReceiveItem(WeaponItem item, Vector3 flyFromPosition)
-        {
-            if (item == null)
-            {
-                return null;
-            }
+        // ── Public API ────────────────────────────────────────────────────────────
 
-            var runtimeItem = item.Clone();
-            EnsureSequence(runtimeItem);
-            EnqueueIncomingBatch(new List<WeaponItem>(1) { runtimeItem }, flyFromPosition);
-            ItemAdded?.Invoke(runtimeItem);
-            return runtimeItem;
+        public WeaponItem ReceiveItem(WeaponItem item, Vector3 flyFrom)
+        {
+            if (item == null) return null;
+            var clone = item.Clone();
+            Enqueue(clone, flyFrom);
+            ItemAdded?.Invoke(clone);
+            return clone;
         }
 
         public WeaponItem ReceiveItem(WeaponItem item)
+            => ReceiveItem(item, transform.position);
+
+        public WeaponItem ReceiveItem(int tier, Vector3 flyFrom)
         {
-            return ReceiveItem(item, transform.position);
+            var item = new WeaponItem(Mathf.Clamp(tier, 1, GetMaxTier()));
+            Enqueue(item, flyFrom);
+            ItemAdded?.Invoke(item);
+            return item;
         }
 
-        public WeaponItem ReceiveItem(int tier, Vector3 flyFromPosition)
+        public void ReceiveItem(int tier, Vector3 flyFrom, int count)
         {
-            var spawnedItems = ReceiveItem(tier, flyFromPosition, 1);
-            return spawnedItems.Count > 0 ? spawnedItems[0] : null;
-        }
-
-        public List<WeaponItem> ReceiveItem(int tier, Vector3 flyFromPosition, int count)
-        {
-            count = Mathf.Max(1, count);
             int safeTier = Mathf.Clamp(tier, 1, GetMaxTier());
-
-            var runtimeItems = new List<WeaponItem>(count);
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < Mathf.Max(1, count); i++)
             {
-                var runtimeItem = new WeaponItem(safeTier);
-                EnsureSequence(runtimeItem);
-                runtimeItems.Add(runtimeItem);
-                ItemAdded?.Invoke(runtimeItem);
+                var item = new WeaponItem(safeTier);
+                Enqueue(item, flyFrom);
+                ItemAdded?.Invoke(item);
             }
-
-            EnqueueIncomingBatch(runtimeItems, flyFromPosition);
-            return runtimeItems;
-        }
-
-        private void EnqueueIncomingBatch(List<WeaponItem> runtimeItems, Vector3 flyFromPosition)
-        {
-            if (runtimeItems == null || runtimeItems.Count == 0)
-            {
-                Debug.LogWarning("[WeaponCraftSystem] EnqueueIncomingBatch skipped: runtimeItems is null or empty.");
-                return;
-            }
-
-            incomingItems.Enqueue(new IncomingBatch(runtimeItems, flyFromPosition));
-            TryStartProcessing();
         }
 
         public WeaponItem GetFirstItemOrDefault()
-        {
-            return items.Count > 0 ? items[0] : null;
-        }
+            => _items.Count > 0 ? _items[0] : null;
 
+        /// <summary>Ensures at least one weapon exists. Called by GameplayManager on boot.</summary>
         public WeaponItem EnsureStarterItem()
         {
-            var firstItem = GetFirstItemOrDefault();
-            if (firstItem != null)
-            {
-                return firstItem;
-            }
+            if (_items.Count > 0) return _items[0];
 
-            var starterItem = ReceiveItem(1, transform.position, 1);
-            return starterItem.Count > 0 ? starterItem[0] : null;
+            var starter = new WeaponItem(1);
+            AddSequence(starter);
+            _items.Add(starter);
+            _items.Sort(_comparer);
+            EnsureVisualSystem();
+            visualSystem?.AddInstant(starter, 0);
+            ItemAdded?.Invoke(starter);
+            NotifyTopChanged();
+            return starter;
         }
 
-#if UNITY_EDITOR
-        [ContextMenu("Test Receive 1 Item From Screen Center")]
-        private void TestReceiveOneItemFromScreenCenter()
+        public void Prewarm() => visualSystem?.PrewarmWeapons();
+
+        // ── Internal ──────────────────────────────────────────────────────────────
+
+        private void Enqueue(WeaponItem item, Vector3 flyFrom)
         {
-            ReceiveItem(1, GetScreenCenterWorldPosition());
-        }
-
-        [ContextMenu("Test Receive 3 Items From Screen Center")]
-        private void TestReceiveThreeItemsFromScreenCenter()
-        {
-            ReceiveItem(1, GetScreenCenterWorldPosition(), 3);
-        }
-#endif
-
-        private Vector3 GetScreenCenterWorldPosition()
-        {
-            var cam = Camera.main;
-            if (cam == null)
-            {
-                return transform.position;
-            }
-
-            float depth = Vector3.Dot(transform.position - cam.transform.position, cam.transform.forward);
-            if (depth <= cam.nearClipPlane)
-            {
-                depth = Mathf.Max(1f, cam.nearClipPlane + 1f);
-            }
-
-            return cam.ScreenToWorldPoint(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, depth));
-        }
-
-        private void EnsureVisualSystem()
-        {
-            ResolveUpgradeEffectComponent();
-
-            if (visualSystem == null)
-            {
-                visualSystem = GetComponentInChildren<WeaponCraftVisualSystem>(true);
-            }
-
-            if (visualSystem == null)
-            {
-                var visualRoot = new GameObject("WeaponCraftVisual");
-                visualRoot.transform.SetParent(transform, false);
-                visualSystem = visualRoot.AddComponent<WeaponCraftVisualSystem>();
-            }
-
-            visualSystem.MergeVisualCompleted -= HandleMergeVisualCompleted;
-            visualSystem.MergeVisualCompleted += HandleMergeVisualCompleted;
-            visualSystem.Bind(config);
+            AddSequence(item);
+            _pending.Enqueue(new PendingItem(item, flyFrom));
+            TryStartProcessing();
         }
 
         private void TryStartProcessing()
         {
-            if (!isActiveAndEnabled)
-            {
-                return;
-            }
-
-            if (processRoutine != null || incomingItems.Count == 0)
-            {
-                return;
-            }
-
-            processRoutine = StartCoroutine(ProcessQueue());
+            if (!isActiveAndEnabled || _processRoutine != null || _pending.Count == 0) return;
+            _processRoutine = StartCoroutine(ProcessLoop());
         }
 
-        private IEnumerator ProcessQueue()
+        private IEnumerator ProcessLoop()
         {
-            // try
-            // {
-            while (incomingItems.Count > 0)
+            while (_pending.Count > 0)
             {
-                var incoming = incomingItems.Dequeue();
-                var batch = BuildBatch(incoming);
+                // 1. Drain all pending into _items, build Add ops.
+                var addOps = DrainPendingIntoItems();
 
-                if (visualSystem != null && batch.Count > 0)
+                // 2. Resolve all possible merges, build Merge ops.
+                var mergeOps = ResolveMerges();
+
+                // 3. Animate.
+                EnsureVisualSystem();
+                if (visualSystem != null)
+                    yield return visualSystem.PlayOps(addOps, mergeOps);
+
+                // 4. Safety sync: visual state must match data state.
+                visualSystem?.SyncVisuals(_items);
+
+                NotifyTopChanged();
+            }
+            _processRoutine = null;
+        }
+
+        private List<CraftOp> DrainPendingIntoItems()
+        {
+            // Snapshot pending list.
+            var batch = new List<PendingItem>(_pending.Count);
+            while (_pending.Count > 0) batch.Add(_pending.Dequeue());
+
+            // Add all to _items.
+            for (int i = 0; i < batch.Count; i++) _items.Add(batch[i].Item);
+            _items.Sort(_comparer);
+
+            // Build add ops (slot index = position in sorted _items, clamped to slot count).
+            int slotCount = visualSystem != null ? visualSystem.SlotCount : 6;
+            var ops = new List<CraftOp>(batch.Count);
+            for (int i = 0; i < batch.Count; i++)
+            {
+                int idx = Mathf.Clamp(_items.IndexOf(batch[i].Item), 0, slotCount - 1);
+                ops.Add(new CraftOp(CraftOpType.Add, batch[i].Item, null, idx, batch[i].FlyFrom));
+            }
+            return ops;
+        }
+
+        private List<CraftOp> ResolveMerges()
+        {
+            var ops = new List<CraftOp>(4);
+            int mergeCount = GetMergeCount();
+            int maxTier = GetMaxTier();
+            int slotCount = visualSystem != null ? visualSystem.SlotCount : 6;
+
+            while (true)
+            {
+                int tier = FindLowestMergeable(mergeCount, maxTier);
+                if (tier < 0) break;
+
+                int nextTier = tier + 1;
+                if (nextTier > maxTier) break;
+
+                // Collect sources (oldest first).
+                var sources = new List<WeaponItem>(mergeCount);
+                for (int i = _items.Count - 1; i >= 0 && sources.Count < mergeCount; i--)
+                    if (_items[i].Tier == tier) sources.Add(_items[i]);
+
+                if (sources.Count < mergeCount) break;
+
+                // Remove from live list + sequence map.
+                for (int i = 0; i < sources.Count; i++)
                 {
-                    yield return visualSystem.PlayBatch(batch);
+                    _items.Remove(sources[i]);
+                    _seqMap.Remove(sources[i]);
                 }
 
-                NotifyMainWeaponChanged();
+                // Create result.
+                var result = new WeaponItem(nextTier);
+                AddSequence(result);
+                _items.Add(result);
+                _items.Sort(_comparer);
+
+                int resultSlot = Mathf.Clamp(_items.IndexOf(result), 0, slotCount - 1);
+                ops.Add(new CraftOp(CraftOpType.Merge, result, sources, resultSlot, Vector3.zero));
+
+                Debug.Log($"[WeaponCraftSystem] Merge {sources.Count}x T{tier} → T{nextTier} → slot {resultSlot}");
             }
-            // }
-            // finally
-            // {
-            processRoutine = null;
-            // }
+            return ops;
         }
 
-        /// <summary>
-        /// Called after each craft batch completes. If the top-tier weapon has changed,
-        /// notifies GameplayManager to update its main weapon state.
-        /// </summary>
-        private void NotifyMainWeaponChanged()
+        private int FindLowestMergeable(int mergeCount, int maxTier)
         {
-            if (items.Count == 0)
+            // Count items per tier.
+            var counts = new Dictionary<int, int>(8);
+            for (int i = 0; i < _items.Count; i++)
             {
-                return;
+                int t = _items[i].Tier;
+                counts.TryGetValue(t, out int c);
+                counts[t] = c + 1;
             }
-
-            var topItem = items[0];
-            TryEquipIfHigher(topItem);
+            int lowest = int.MaxValue;
+            foreach (var kv in counts)
+                if (kv.Key < maxTier && kv.Value >= mergeCount && kv.Key < lowest)
+                    lowest = kv.Key;
+            return lowest == int.MaxValue ? -1 : lowest;
         }
 
-        private void HandleMergeVisualCompleted(WeaponItem mergedItem)
-        {
-            bool isNewTopTier = false;
-            if (mergedItem != null)
-            {
-                int candidateTier = Mathf.Max(1, mergedItem.Tier);
-                if (candidateTier > _equippedTopTier)
-                {
-                    isNewTopTier = true;
-                }
-            }
+        // ── Equip / Effects ───────────────────────────────────────────────────────
 
-            if (isNewTopTier)
+        /// <summary>Called by WeaponCraftVisualSystem after each merge animation completes.</summary>
+        public void OnMergeAnimationCompleted(WeaponItem mergedItem)
+        {
+            if (mergedItem == null) return;
+            bool isUpgrade = mergedItem.Tier > _equippedTopTier;
+            if (isUpgrade)
             {
                 if (!PlayLocalUpgradeEffect())
                 {
-                    if (fallbackMergeSfx != AudioClipName.None &&
-                        SoundManager.Instance != null &&
-                        SoundManager.Instance.TryPlayOneShot(fallbackMergeSfx))
-                    {
-                        // Audio fallback is enough when the craft prefab has no local effect component.
-                    }
-
-                    if (GameplayManager.Instance != null)
-                    {
-                        GameplayManager.Instance.RunUpgradeEffectAt(transform.position, transform);
-                    }
+                    if (fallbackMergeSfx != AudioClipName.None)
+                        SoundManager.Instance?.TryPlayOneShot(fallbackMergeSfx);
+                    GameplayManager.Instance?.RunUpgradeEffectAt(transform.position, transform);
                 }
             }
+            TryEquip(mergedItem);
+        }
 
-            TryEquipIfHigher(mergedItem);
+        private void NotifyTopChanged()
+        {
+            if (_items.Count > 0) TryEquip(_items[0]);
+        }
+
+        private void TryEquip(WeaponItem item)
+        {
+            if (item == null) return;
+            int tier = Mathf.Max(1, item.Tier);
+            if (tier <= _equippedTopTier) return;
+            _equippedTopTier = tier;
+            GameplayManager.Instance?.SetMainWeapon(item);
         }
 
         private bool PlayLocalUpgradeEffect()
         {
-            var effectComponent = ResolveUpgradeEffectComponent();
-            if (effectComponent == null)
-            {
-                return false;
-            }
-
-            effectComponent.PlayEffect(EffectType.Upgrade, transform.position, transform.rotation, transform, 0f);
+            if (upgradeEffectComponent == null)
+                upgradeEffectComponent = GetComponentInChildren<EffectComponent>(true);
+            if (upgradeEffectComponent == null) return false;
+            upgradeEffectComponent.PlayEffect(EffectType.Upgrade, transform.position, transform.rotation, transform, 0f);
             return true;
         }
 
-        private EffectComponent ResolveUpgradeEffectComponent()
+        // ── Visual bootstrap ──────────────────────────────────────────────────────
+
+        private void EnsureVisualSystem()
         {
-            if (upgradeEffectComponent != null)
+            if (upgradeEffectComponent == null)
+                upgradeEffectComponent = GetComponentInChildren<EffectComponent>(true);
+
+            if (visualSystem == null)
+                visualSystem = GetComponentInChildren<WeaponCraftVisualSystem>(true);
+
+            if (visualSystem == null)
             {
-                return upgradeEffectComponent;
+                var go = new GameObject("WeaponCraftVisual");
+                go.transform.SetParent(transform, false);
+                visualSystem = go.AddComponent<WeaponCraftVisualSystem>();
             }
 
-            upgradeEffectComponent = GetComponentInChildren<EffectComponent>(true);
-            return upgradeEffectComponent;
+            visualSystem.OnMergeCompleted -= OnMergeAnimationCompleted;
+            visualSystem.OnMergeCompleted += OnMergeAnimationCompleted;
+            visualSystem.Bind(config);
         }
 
-        private void TryEquipIfHigher(WeaponItem candidate)
+        // ── Sequence helpers ──────────────────────────────────────────────────────
+
+        private void AddSequence(WeaponItem item)
         {
-            if (candidate == null)
-            {
-                return;
-            }
-
-            int candidateTier = Mathf.Max(1, candidate.Tier);
-            if (candidateTier <= _equippedTopTier)
-            {
-                return;
-            }
-
-            _equippedTopTier = candidateTier;
-
-            var manager = GameplayManager.Instance;
-            if (manager != null)
-            {
-                manager.SetMainWeapon(candidate);
-            }
+            if (item == null || _seqMap.ContainsKey(item)) return;
+            _seqMap[item] = _nextSeq++;
         }
 
-        private List<WeaponCraftOperation> BuildBatch(IncomingBatch incoming)
-        {
-            var operations = new List<WeaponCraftOperation>(8);
-            if (incoming == null || incoming.Items == null || incoming.Items.Count == 0)
-            {
-                return operations;
-            }
+        internal int GetSequence(WeaponItem item)
+            => item != null && _seqMap.TryGetValue(item, out int s) ? s : int.MaxValue;
 
-            var incomingLookup = new HashSet<WeaponItem>(incoming.Items);
-            for (int i = 0; i < incoming.Items.Count; i++)
-            {
-                var runtimeItem = incoming.Items[i];
-                items.Add(runtimeItem);
-                EnsureSequence(runtimeItem);
-            }
+        // ── Config ────────────────────────────────────────────────────────────────
 
-            SortItems();
-
-            for (int i = 0; i < items.Count; i++)
-            {
-                var runtimeItem = items[i];
-                if (!incomingLookup.Contains(runtimeItem))
-                {
-                    continue;
-                }
-
-                operations.Add(WeaponCraftOperation.CreateAdd(runtimeItem, incoming.FlyFromPosition, i));
-            }
-
-            while (true)
-            {
-                int craftTier = FindLowestCraftableTier();
-                if (craftTier < 0)
-                {
-                    break;
-                }
-
-                var mergeCount = GetMergeCount();
-                var sources = CollectSources(craftTier, mergeCount);
-                if (sources.Count < mergeCount)
-                {
-                    break;
-                }
-
-                var resultTier = craftTier + 1;
-                if (resultTier > GetMaxTier())
-                {
-                    break;
-                }
-
-                for (int i = 0; i < sources.Count; i++)
-                {
-                    var source = sources[i];
-                    items.Remove(source);
-                    sequenceByItem.Remove(source);
-                }
-
-                var resultItem = new WeaponItem(resultTier);
-                EnsureSequence(resultItem);
-                items.Add(resultItem);
-                SortItems();
-                operations.Add(WeaponCraftOperation.CreateMerge(resultItem, sources, items.IndexOf(resultItem)));
-            }
-
-            return operations;
-        }
-
-        private int FindLowestCraftableTier()
-        {
-            if (items.Count < GetMergeCount())
-            {
-                return -1;
-            }
-
-            var counts = new Dictionary<int, int>();
-            for (int i = 0; i < items.Count; i++)
-            {
-                var currentTier = items[i].Tier;
-                if (counts.TryGetValue(currentTier, out int count))
-                {
-                    counts[currentTier] = count + 1;
-                }
-                else
-                {
-                    counts[currentTier] = 1;
-                }
-            }
-
-            int lowestTier = int.MaxValue;
-            foreach (var pair in counts)
-            {
-                if (pair.Key >= GetMaxTier())
-                {
-                    continue;
-                }
-
-                if (pair.Value >= GetMergeCount() && pair.Key < lowestTier)
-                {
-                    lowestTier = pair.Key;
-                }
-            }
-
-            if (lowestTier == int.MaxValue)
-            {
-                return -1;
-            }
-
-            return lowestTier;
-        }
-
-        private bool TryFindLowestCraftableTier(out int tier)
-        {
-            tier = -1;
-            if (items.Count < GetMergeCount())
-            {
-                return false;
-            }
-
-            var counts = new Dictionary<int, int>();
-            for (int i = 0; i < items.Count; i++)
-            {
-                var currentTier = items[i].Tier;
-                if (counts.TryGetValue(currentTier, out int count))
-                {
-                    counts[currentTier] = count + 1;
-                }
-                else
-                {
-                    counts[currentTier] = 1;
-                }
-            }
-
-            int lowestTier = int.MaxValue;
-            foreach (var pair in counts)
-            {
-                if (pair.Key >= GetMaxTier())
-                {
-                    continue;
-                }
-
-                if (pair.Value >= GetMergeCount() && pair.Key < lowestTier)
-                {
-                    lowestTier = pair.Key;
-                }
-            }
-
-            if (lowestTier == int.MaxValue)
-            {
-                return false;
-            }
-
-            tier = lowestTier;
-            return true;
-        }
-
-        private List<WeaponItem> CollectSources(int tier, int count)
-        {
-            var sources = new List<WeaponItem>(count);
-            for (int i = items.Count - 1; i >= 0 && sources.Count < count; i--)
-            {
-                if (items[i].Tier == tier)
-                {
-                    sources.Add(items[i]);
-                }
-            }
-
-            sources.Reverse();
-            return sources;
-        }
-
-        private void SortItems()
-        {
-            items.Sort(CompareItems);
-        }
-
-        private int CompareItems(WeaponItem left, WeaponItem right)
-        {
-            if (ReferenceEquals(left, right))
-            {
-                return 0;
-            }
-
-            int tierCompare = right.Tier.CompareTo(left.Tier);
-            if (tierCompare != 0)
-            {
-                return tierCompare;
-            }
-
-            return GetSequence(left).CompareTo(GetSequence(right));
-        }
-
-        private int GetSequence(WeaponItem item)
-        {
-            if (item == null)
-            {
-                return int.MaxValue;
-            }
-
-            return sequenceByItem.TryGetValue(item, out int sequence) ? sequence : int.MaxValue;
-        }
-
-        private void EnsureSequence(WeaponItem item)
-        {
-            if (item == null || sequenceByItem.ContainsKey(item))
-            {
-                return;
-            }
-
-            sequenceByItem[item] = nextSequence++;
-        }
-
-        private int GetMergeCount()
-        {
-            return config != null ? config.MergeCount : 3;
-        }
+        private int GetMergeCount() => config != null ? config.MergeCount : 3;
 
         private int GetMaxTier()
         {
-            int maxTier = config != null ? config.MaxTier : 1;
-
-            if (config != null && config.TierVisuals != null)
-            {
+            int max = config != null ? config.MaxTier : 1;
+            if (config?.TierVisuals != null)
                 for (int i = 0; i < config.TierVisuals.Count; i++)
-                {
-                    var entry = config.TierVisuals[i];
-                    if (entry == null) continue;
-                    if (entry.Tier > maxTier)
-                    {
-                        maxTier = entry.Tier;
-                    }
-                }
-            }
+                    if (config.TierVisuals[i] != null && config.TierVisuals[i].Tier > max)
+                        max = config.TierVisuals[i].Tier;
 
-            var manager = GameplayManager.Instance;
-            var characterList = manager != null && manager.PlayableEra != null ? manager.PlayableEra.CharacterList : null;
-            var lookup = characterList != null ? characterList.GetCharacterLookup() : null;
+            var lookup = GameplayManager.Instance?.PlayableEra?.CharacterList?.GetCharacterLookup();
             if (lookup != null)
-            {
-                foreach (var level in lookup.Keys)
-                {
-                    if (level > maxTier)
-                    {
-                        maxTier = level;
-                    }
-                }
-            }
+                foreach (var k in lookup.Keys)
+                    if (k > max) max = k;
 
-            return Mathf.Max(1, maxTier);
+            return Mathf.Max(1, max);
         }
+
+        // ── Comparer ──────────────────────────────────────────────────────────────
+
+        private sealed class ItemComparer : IComparer<WeaponItem>
+        {
+            public WeaponCraftSystem Owner;
+            public int Compare(WeaponItem x, WeaponItem y)
+            {
+                if (ReferenceEquals(x, y)) return 0;
+                if (x == null) return 1;
+                if (y == null) return -1;
+                int tc = y.Tier.CompareTo(x.Tier);
+                return tc != 0 ? tc : Owner.GetSequence(x).CompareTo(Owner.GetSequence(y));
+            }
+        }
+
+        // ── Nested types ──────────────────────────────────────────────────────────
+
+        private readonly struct PendingItem
+        {
+            public readonly WeaponItem Item;
+            public readonly Vector3 FlyFrom;
+            public PendingItem(WeaponItem i, Vector3 f) { Item = i; FlyFrom = f; }
+        }
+
+        // ── Editor helpers ────────────────────────────────────────────────────────
+#if UNITY_EDITOR
+        [ContextMenu("Test Receive 1 Item")]
+        private void TestOne() => ReceiveItem(1, GetScreenCenter());
+
+        [ContextMenu("Test Receive 3 Items")]
+        private void TestThree() => ReceiveItem(1, GetScreenCenter(), 3);
+
+        private Vector3 GetScreenCenter()
+        {
+            var cam = Camera.main;
+            if (cam == null) return transform.position;
+            float d = Vector3.Dot(transform.position - cam.transform.position, cam.transform.forward);
+            if (d <= cam.nearClipPlane) d = Mathf.Max(1f, cam.nearClipPlane + 1f);
+            return cam.ScreenToWorldPoint(new Vector3(Screen.width * .5f, Screen.height * .5f, d));
+        }
+#endif
+    }
+
+    // ── Shared op types ───────────────────────────────────────────────────────────
+
+    public enum CraftOpType { Add, Merge }
+
+    public sealed class CraftOp
+    {
+        public readonly CraftOpType Type;
+        public readonly WeaponItem Result;
+        public readonly List<WeaponItem> Sources;   // null for Add ops
+        public readonly int TargetSlot; // clamped to valid slot range
+        public readonly Vector3 FlyFrom;   // world pos, Add only
+
+        public CraftOp(CraftOpType t, WeaponItem r, List<WeaponItem> s, int slot, Vector3 fly)
+        { Type = t; Result = r; Sources = s; TargetSlot = slot; FlyFrom = fly; }
     }
 }

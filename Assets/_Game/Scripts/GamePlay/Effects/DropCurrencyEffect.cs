@@ -70,7 +70,7 @@ namespace GamePlay.Effects
         public void SpawnCurrency(Vector3 center)
         {
             int count = Random.Range(minCurrencyItems, maxCurrencyItems + 1);
-            SpawnCurrency(center, 1);
+            SpawnCurrency(center, count);
         }
 
         private void SpawnCurrencyItem(Vector3 center, float value, bool useRandomPosition = true)

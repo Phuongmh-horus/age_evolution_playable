@@ -9805,7 +9805,6 @@ GameObject:
   - component: {fileID: 3390674596667866648}
   - component: {fileID: 2907330752156978581}
   - component: {fileID: 718242114931130045}
-  - component: {fileID: -1666003111781495583}
   m_Layer: 0
   m_Name: VFX_Wheel_RemoveCard
   m_TagString: Untagged
@@ -14629,30 +14628,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &-1666003111781495583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6495923701797387521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39e1e7a4e8954b8eaaef014d66327de7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 3390674596667866648}
-  EntityType: 0
-  autoDestroy: 1
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 2907330752156978581}
-  - {fileID: 6531513737938836664}
-  - {fileID: 1504187026610444676}
-  - {fileID: 4292738728807447046}
-  - {fileID: 4227430310219064898}
-  targetPropertyName: _Color
 --- !u!1 &6903405320055366245
 GameObject:
   m_ObjectHideFlags: 0

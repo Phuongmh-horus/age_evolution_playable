@@ -30,7 +30,7 @@ ModelImporter:
       name: outfit
     second: {fileID: 2100000, guid: 2514522d391b71c41a24698fcd8ab43c, type: 2}
   materials:
-    materialImportMode: 0
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

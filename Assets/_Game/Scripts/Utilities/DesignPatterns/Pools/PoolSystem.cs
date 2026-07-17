@@ -1,108 +1,161 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// [FIX] Đã xóa: using Unity.VisualScripting;
 
-public static class PoolSystem
+namespace Pools
 {
-    private const string RootName = "[Pools]";
-    private const int DefaultMaxInactivePerPool = 96;
-    private static Transform _root;
-    private class Pool
+    public static class PoolSystem
     {
-        public readonly Stack<IPoolable> Inactive = new Stack<IPoolable>();
-        public readonly List<IPoolable> Active = new List<IPoolable>();
-        public Component PrefabComponent;
-        public Transform Root;
-    }
+        private const string RootName = "[Pools]";
+        private static Transform _root;
 
-    private static readonly Dictionary<int, Pool> Pools = new Dictionary<int, Pool>();
-    private static readonly Dictionary<IPoolable, Pool> PoolByInstance = new Dictionary<IPoolable, Pool>();
-
-    public static void ClearAllPools()
-    {
-        Pools.Clear();
-        PoolByInstance.Clear();
-        if (_root != null)
+        private class Pool
         {
+            public readonly Stack<IPoolable> Inactive = new Stack<IPoolable>();
+            public readonly List<IPoolable> Active = new List<IPoolable>();
+            public Component PrefabComponent;
+            public Transform Root;
+        }
+
+        private static readonly Dictionary<string, Pool> Pools = new Dictionary<string, Pool>();
+        private static readonly Dictionary<IPoolable, Pool> PoolByInstance = new Dictionary<IPoolable, Pool>();
+
+        public static void ClearAllPools()
+        {
+            Pools.Clear();
+            PoolByInstance.Clear();
+            if (_root != null)
+            {
 #if UNITY_EDITOR
-            if (!Application.isPlaying)
-                UnityEngine.Object.DestroyImmediate(_root.gameObject);
-            else
+                if (!Application.isPlaying)
+                    Object.DestroyImmediate(_root.gameObject);
+                else
 #endif
-                UnityEngine.Object.Destroy(_root.gameObject);
-            _root = null;
-        }
-    }
-
-    public static T Spawn<T>(T prefab, Vector3 pos, Quaternion rot, Transform parent = null) where T : Component, IPoolable
-    {
-        if (prefab == null) return null;
-
-        if (!Application.isPlaying)
-        {
-            var go = UnityEngine.Object.Instantiate(prefab.gameObject, parent);
-            var comp = go.GetComponent<T>();
-            var editTr = go.transform;
-            editTr.SetPositionAndRotation(pos, rot);
-            go.SetActive(true);
-            comp?.New();
-            return comp;
+                    Object.Destroy(_root.gameObject);
+                _root = null;
+            }
         }
 
-        var obj = SpawnInternal(prefab, parent) as T;
-        if (obj == null) return null;
-
-        var runtimeTr = obj.transform;
-        runtimeTr.SetParent(parent, false);
-        runtimeTr.SetPositionAndRotation(pos, rot);
-
-        obj.gameObject.SetActive(true);
-        obj.New();
-
-        return obj;
-    }
-
-    // [New] Overload for spawning as child (Zero Local Position)
-    public static T Spawn<T>(T prefab, Transform parent) where T : Component, IPoolable
-    {
-        if (prefab == null) return null;
-
-        if (!Application.isPlaying)
+        // [FIX] Chỉ còn DUY NHẤT 1 method generic, không còn overload GameObject/Component song song
+        public static void Prewarm<T>(T prefab, int count) where T : Component
         {
-            var go = UnityEngine.Object.Instantiate(prefab.gameObject, parent);
-            var comp = go.GetComponent<T>();
-            var editTr = go.transform;
-            editTr.localPosition = Vector3.zero;
-            editTr.localRotation = Quaternion.identity;
-            editTr.localScale = Vector3.one;
-            go.SetActive(true);
-            comp?.New();
-            return comp;
+            if (prefab == null || count <= 0) return;
+            if (!Application.isPlaying) return;
+
+            var pool = GetOrCreatePool(prefab);
+
+            for (int i = 0; i < count; i++)
+            {
+                PrewarmOne(pool);
+            }
         }
 
-        var obj = SpawnInternal(prefab, parent) as T;
-        if (obj == null) return null;
-
-        var runtimeTr = obj.transform;
-        runtimeTr.SetParent(parent, false);
-        runtimeTr.localPosition = Vector3.zero;
-        runtimeTr.localRotation = Quaternion.identity;
-        runtimeTr.localScale = Vector3.one;
-
-        obj.gameObject.SetActive(true);
-        obj.New();
-
-        return obj;
-    }
-
-    private static Component SpawnInternal(Component prefab, Transform parent)
-    {
-        if (prefab == null) return null;
-
-        int key = prefab.GetInstanceID();
-        if (!Pools.TryGetValue(key, out var pool))
+        public static IEnumerator PrewarmAsync<T>(T prefab, int count, int maxPerFrame) where T : Component
         {
+            if (prefab == null || count <= 0) yield break;
+            if (!Application.isPlaying) yield break;
+
+            var pool = GetOrCreatePool(prefab);
+            int batchSize = Mathf.Max(1, maxPerFrame);
+
+            for (int i = 0; i < count; i++)
+            {
+                PrewarmOne(pool);
+
+                if ((i + 1) % batchSize == 0)
+                    yield return null;
+            }
+        }
+
+        public static T Spawn<T>(T prefab, Vector3 pos, Quaternion rot, Transform parent = null) where T : Component
+        {
+            if (prefab == null) return null;
+
+            if (!Application.isPlaying)
+            {
+                var go = Object.Instantiate(prefab.gameObject, parent);
+                var comp = go.GetComponent<T>();
+                var editTr = go.transform;
+                editTr.SetPositionAndRotation(pos, rot);
+                go.SetActive(true);
+                (comp as IPoolable)?.New();
+                return comp;
+            }
+
+            var obj = SpawnInternal(prefab, parent) as T;
+            if (obj == null) return null;
+
+            var runtimeTr = obj.transform;
+            runtimeTr.SetParent(parent, false);
+            runtimeTr.SetPositionAndRotation(pos, rot);
+
+            obj.gameObject.SetActive(true);
+            (obj as IPoolable)?.New();
+
+            return obj;
+        }
+
+        public static T Spawn<T>(T prefab, Transform parent) where T : Component
+        {
+            if (prefab == null) return null;
+
+            if (!Application.isPlaying)
+            {
+                var go = Object.Instantiate(prefab.gameObject, parent);
+                var comp = go.GetComponent<T>();
+                var editTr = go.transform;
+                editTr.localPosition = Vector3.zero;
+                editTr.localRotation = Quaternion.identity;
+                editTr.localScale = Vector3.one;
+                go.SetActive(true);
+                (comp as IPoolable)?.New();
+                return comp;
+            }
+
+            var obj = SpawnInternal(prefab, parent) as T;
+            if (obj == null) return null;
+
+            var runtimeTr = obj.transform;
+            runtimeTr.SetParent(parent, false);
+            runtimeTr.localPosition = Vector3.zero;
+            runtimeTr.localRotation = Quaternion.identity;
+            runtimeTr.localScale = Vector3.one;
+
+            obj.gameObject.SetActive(true);
+            (obj as IPoolable)?.New();
+
+            return obj;
+        }
+
+        private static Component SpawnInternal(Component prefab, Transform parent)
+        {
+            if (prefab == null) return null;
+
+            var pool = GetOrCreatePool(prefab);
+
+            IPoolable instance = null;
+            if (pool.Inactive.Count > 0)
+            {
+                instance = pool.Inactive.Pop();
+            }
+            else
+            {
+                var go = Object.Instantiate(pool.PrefabComponent.gameObject, pool.Root);
+                instance = go.GetComponent<IPoolable>();
+                if (instance == null) instance = go.AddComponent<GenericPoolable>();
+            }
+
+            pool.Active.Add(instance);
+            PoolByInstance[instance] = pool;
+            return ((Component)instance).gameObject.GetComponent(prefab.GetType());
+        }
+
+        private static Pool GetOrCreatePool(Component prefab)
+        {
+            string key = prefab.name + "_" + prefab.GetType().Name;
+            if (Pools.TryGetValue(key, out var pool))
+                return pool;
+
             var root = GetOrCreateRoot();
             var poolName = $"[Pool]_{prefab.name}";
 
@@ -111,76 +164,71 @@ public static class PoolSystem
                 PrefabComponent = prefab,
                 Root = new GameObject(poolName).transform
             };
+
             if (root != null && pool.Root.parent != root)
-            {
                 pool.Root.SetParent(root, false);
-            }
+
             Pools[key] = pool;
+            return pool;
         }
 
-        IPoolable instance = null;
-        if (pool.Inactive.Count > 0)
+        private static void PrewarmOne(Pool pool)
         {
-            instance = pool.Inactive.Pop();
+            var go = Object.Instantiate(pool.PrefabComponent.gameObject, pool.Root);
+            var instance = go.GetComponent<IPoolable>();
+            if (instance == null) instance = go.AddComponent<GenericPoolable>();
+            go.SetActive(false);
+            pool.Inactive.Push(instance);
         }
-        else
+
+        public static void Despawn(Component poolableComp)
         {
-            var go = UnityEngine.Object.Instantiate(pool.PrefabComponent.gameObject, pool.Root);
-            instance = go.GetComponent<IPoolable>();
+            if (poolableComp == null) return;
+
+            IPoolable poolable = poolableComp as IPoolable;
+            if (poolable == null)
+                poolable = poolableComp.GetComponent<IPoolable>();
+
+            if (poolable == null)
+            {
+                if (!Application.isPlaying) Object.DestroyImmediate(poolableComp.gameObject);
+                else Object.Destroy(poolableComp.gameObject);
+                return;
+            }
+
+            if (!Application.isPlaying)
+            {
+                Object.DestroyImmediate(poolableComp.gameObject);
+                return;
+            }
+
+            if (!PoolByInstance.TryGetValue(poolable, out var pool))
+            {
+                Object.Destroy(poolableComp.gameObject);
+                return;
+            }
+
+            poolable.Free();
+
+            poolableComp.gameObject.SetActive(false);
+            poolableComp.transform.SetParent(pool.Root, false);
+
+            pool.Active.Remove(poolable);
+            pool.Inactive.Push(poolable);
         }
 
-        if (instance == null)
+        public static Transform GetRoot()
         {
-            Debug.LogError("[PoolSystem] Spawn failed: prefab does not implement IPoolable.");
-            return null;
+            return GetOrCreateRoot();
         }
 
-        pool.Active.Add(instance);
-        PoolByInstance[instance] = pool;
-        return instance as Component;
-    }
-
-    public static void Despawn(IPoolable poolable)
-    {
-        if (poolable == null) return;
-
-        if (!Application.isPlaying)
+        private static Transform GetOrCreateRoot()
         {
-            var c0 = poolable as Component;
-            if (c0 != null) UnityEngine.Object.DestroyImmediate(c0.gameObject);
-            return;
+            if (_root != null) return _root;
+
+            var rootGo = new GameObject(RootName);
+            _root = rootGo.transform;
+            return _root;
         }
-
-        if (!PoolByInstance.TryGetValue(poolable, out var pool))
-        {
-            var c = poolable as Component;
-            if (c != null) UnityEngine.Object.Destroy(c.gameObject);
-            return;
-        }
-
-        poolable.Free();
-
-        var comp = poolable as Component;
-        if (comp == null)
-        {
-            Debug.LogWarning("[PoolSystem] Despawn skipped: poolable is not a Component.");
-            PoolByInstance.Remove(poolable);
-            return;
-        }
-
-        comp.gameObject.SetActive(false);
-        comp.transform.SetParent(pool.Root, false);
-
-        pool.Active.Remove(poolable);
-        pool.Inactive.Push(poolable);
-    }
-
-    private static Transform GetOrCreateRoot()
-    {
-        if (_root != null) return _root;
-
-        var rootGo = new GameObject(RootName);
-        _root = rootGo.transform;
-        return _root;
     }
 }

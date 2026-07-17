@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1899390814319587085}
   - component: {fileID: 232352797112449095}
   - component: {fileID: 794305466800371255}
-  - component: {fileID: 6910196445609516597}
   m_Layer: 0
   m_Name: electric_ball
   m_TagString: Untagged
@@ -4831,28 +4830,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6910196445609516597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2391266883381412672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 1899390814319587085}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 232352797112449095}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &8547011560697410462
 GameObject:
   m_ObjectHideFlags: 0
@@ -4864,7 +4841,6 @@ GameObject:
   - component: {fileID: 1654535349374089573}
   - component: {fileID: 5290048280078272018}
   - component: {fileID: 2653198937374970958}
-  - component: {fileID: 5578153642927247686}
   m_Layer: 0
   m_Name: VFX_Active_Thunder_Enemy
   m_TagString: Untagged
@@ -9685,24 +9661,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5578153642927247686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8547011560697410462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 1654535349374089573}
-  EntityType: 4
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 5290048280078272018}
-  - {fileID: 232352797112449095}

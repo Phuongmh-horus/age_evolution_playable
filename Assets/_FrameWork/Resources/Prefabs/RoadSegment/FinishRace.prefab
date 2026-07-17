@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transform: {fileID: 0}
   _entityType: 16
+  ActiveFlags: 4
   damage: 0
   targetMask:
     serializedVersion: 2
@@ -56,9 +57,6 @@ MonoBehaviour:
   shapeType: 1
   colliderOffsets: {x: 0, y: 0, z: 0}
   colliderSize: {x: 15, y: 1, z: 1}
-  _components:
-  - {fileID: 4267135335165119438}
-  ActiveFlags: 4
   LeftOffset: 0
   RightOffset: 0
   deathScaleEffect: {fileID: 0}
@@ -76,8 +74,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f10e903d7445fdb9cd35cf919687a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CacheTransform: {fileID: 0}
-  poolEntity: {fileID: 0}
+  CacheTransform: {fileID: 939367352169408556}
+  poolEntity: {fileID: 491275032316800439}
   shapeType: 1
   colliderSize: {x: 15, y: 1, z: 2}
   isActive: 1
@@ -136,9 +134,9 @@ MeshRenderer:
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_MotionVectors: 2
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1

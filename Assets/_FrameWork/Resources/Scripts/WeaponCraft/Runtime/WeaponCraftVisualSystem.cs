@@ -4,646 +4,556 @@ using UnityEngine;
 
 namespace WeaponCraft
 {
+    /// <summary>
+    /// Drives the weapon craft UI panel (Canvas/RectTransform based).
+    ///
+    /// Slot layout (assigned in Inspector):
+    ///   Slot[0] = Equipped (top-tier weapon, always slot 0 in data)
+    ///   Slot[1..N] = Queue slots
+    ///
+    /// Invariant: _slots[i].Instance is always a child of slots[i], EXCEPT during
+    /// animation when it is temporarily lifted to the panel root.
+    /// After every animation, SyncVisuals() re-establishes the invariant.
+    /// </summary>
     public sealed class WeaponCraftVisualSystem : MonoBehaviour
     {
-        public event System.Action<WeaponItem> MergeVisualCompleted;
-
-        private sealed class VisualEntry
-        {
-            public WeaponItem Item;
-            public GameObject Instance;
-            public Transform CachedTransform;
-            public RectTransform CachedRectTransform;
-
-            public Transform Transform => CachedTransform;
-            public RectTransform RectTransform => CachedRectTransform;
-        }
-
-        private sealed class PendingAddEntry
-        {
-            public VisualEntry Entry;
-            public int TargetIndex;
-        }
-
-        [Header("Layout")]
+        // ── Inspector ─────────────────────────────────────────────────────────────
+        [Header("Slots  (0 = Equipped, 1-N = queue)")]
         [SerializeField] private List<RectTransform> slots = new List<RectTransform>();
-        [Header("Speed")]
-        [SerializeField, Min(1f)] private float mergeSpeedMultiplier = 1.5f;
 
-        private WeaponCraftConfigSO config;
+        [Header("Animation")]
+        [SerializeField, Min(0.01f)] private float flyDuration = 0.25f;
+        [SerializeField, Min(0.01f)] private float mergeDuration = 0.18f;
+        [SerializeField, Min(0f)] private float mergeSpawnDelay = 0.05f;
+        [SerializeField, Min(0f)] private float reflowDuration = 0.10f;
 
-        [SerializeField]
-        private RectTransform itemRoot;
-        private readonly List<VisualEntry> entries = new List<VisualEntry>();
+        [Header("Overflow — hides this GO when item count > slot count")]
+        [SerializeField] private GameObject overflowHideTarget;
+
+        // ── Runtime ───────────────────────────────────────────────────────────────
+        private WeaponCraftConfigSO _config;
+
+        // Slot data: exactly one entry per slot (same length as slots list).
+        private SlotEntry[] _slotData;
+
+        // Fast item → slot-index lookup.
+        private readonly Dictionary<WeaponItem, int> _itemToSlot = new Dictionary<WeaponItem, int>(32);
+
+        // Per-tier GO pool (inactive, parented to this transform's root slot).
+        private readonly Dictionary<int, Queue<GameObject>> _pool = new Dictionary<int, Queue<GameObject>>(16);
+
+        // Canvas/camera for world→UI coordinate conversion.
+        private Canvas _canvas;
+        private Camera _uiCam;
+
+        // Guard: prevents DespawnGo from running during scene teardown.
+        private bool _isDestroyed;
+
+        // ── Events ────────────────────────────────────────────────────────────────
+        public event System.Action<WeaponItem> OnMergeCompleted;
+
+        // ── Properties ───────────────────────────────────────────────────────────
+        public int SlotCount => slots.Count;
+
+        // ── Setup ─────────────────────────────────────────────────────────────────
 
         public void Bind(WeaponCraftConfigSO config)
         {
-            this.config = config;
-            EnsureRoot();
+            _config = config;
+            EnsureSlotData();
+            ResolveCanvas();
         }
 
         private void Awake()
         {
-            EnsureRoot();
+            EnsureSlotData();
+            ResolveCanvas();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            ClearEntries();
+            _isDestroyed = true;
+            // Do NOT call DespawnGo here — Unity is tearing down the hierarchy.
+            // Just null out references so GC can collect.
+            if (_slotData != null)
+                for (int i = 0; i < _slotData.Length; i++)
+                    _slotData[i] = null;
+            _itemToSlot.Clear();
         }
 
-        public IEnumerator PlayBatch(List<WeaponCraftOperation> operations)
+        private void EnsureSlotData()
         {
-            if (operations == null || operations.Count == 0)
+            int n = slots.Count;
+            if (_slotData != null && _slotData.Length == n) return;
+            _slotData = new SlotEntry[n];
+            for (int i = 0; i < n; i++) _slotData[i] = new SlotEntry();
+        }
+
+        private void ResolveCanvas()
+        {
+            _canvas = GetComponentInParent<Canvas>();
+            _uiCam = _canvas != null && _canvas.renderMode != RenderMode.ScreenSpaceOverlay
+                    ? (_canvas.worldCamera ?? Camera.main)
+                    : null;
+        }
+
+        // ── Public API ────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Main entry point called by WeaponCraftSystem.ProcessLoop.
+        /// Plays add animations then merge animations, then reflows.
+        /// </summary>
+        public IEnumerator PlayOps(List<CraftOp> addOps, List<CraftOp> mergeOps)
+        {
+            if (addOps != null && addOps.Count > 0)
+                yield return CoPlayAdds(addOps);
+
+            if (mergeOps != null)
+                for (int i = 0; i < mergeOps.Count; i++)
+                    yield return CoPlayMerge(mergeOps[i]);
+
+            yield return CoReflow(reflowDuration);
+        }
+
+        /// <summary>Instant add — no animation. Used for starter item and SyncVisuals.</summary>
+        public void AddInstant(WeaponItem item, int slotIndex)
+        {
+            if (item == null || _slotData == null) return;
+            slotIndex = Mathf.Clamp(slotIndex, 0, _slotData.Length - 1);
+
+            // Clear existing occupant if any.
+            ClearSlot(slotIndex);
+
+            var slot = GetSlotRT(slotIndex);
+            var go = SpawnPrefab(item.Tier, slot != null ? slot : transform as RectTransform);
+            if (go == null) return;
+
+            PlaceInSlot(go, slotIndex, activate: true);
+            _slotData[slotIndex].Item = item;
+            _slotData[slotIndex].Instance = go;
+            _itemToSlot[item] = slotIndex;
+
+            RefreshOverflow();
+        }
+
+        /// <summary>
+        /// Rebuilds all slot visuals from scratch to match item list.
+        /// Called by WeaponCraftSystem as a safety net after every batch.
+        /// </summary>
+        public void SyncVisuals(List<WeaponItem> items)
+        {
+            EnsureSlotData();
+            ClearAllSlots();
+            if (items == null) return;
+
+            int n = Mathf.Min(items.Count, _slotData.Length);
+            for (int i = 0; i < n; i++)
+                AddInstant(items[i], i);
+
+            RefreshOverflow();
+        }
+
+        /// <summary>Pre-instantiates weapon prefabs into the pool. Call once on boot.</summary>
+        public void PrewarmWeapons()
+        {
+            if (_config?.TierVisuals == null) return;
+            var root = slots.Count > 0 ? (Transform)slots[0] : transform;
+
+            for (int i = 0; i < _config.TierVisuals.Count; i++)
             {
-                yield break;
-            }
-
-            EnsureRoot();
-
-            var pendingAdds = new List<WeaponCraftOperation>();
-            for (int i = 0; i < operations.Count; i++)
-            {
-                var operation = operations[i];
-                if (operation == null)
+                var ve = _config.TierVisuals[i];
+                if (ve?.Prefab == null) continue;
+                int tier = ve.Tier;
+                int count = tier <= 1 ? 16 : tier <= 2 ? 12 : 8;
+                if (!_pool.ContainsKey(tier)) _pool[tier] = new Queue<GameObject>(count);
+                for (int j = 0; j < count; j++)
                 {
-                    continue;
+                    var go = Instantiate(ve.Prefab, root);
+                    go.SetActive(false);
+                    EnsureTierTag(go, tier);
+                    _pool[tier].Enqueue(go);
                 }
-
-                if ((int)operation.Type == (int)WeaponCraftOperationType.AddItem)
-                {
-                    pendingAdds.Add(operation);
-                    continue;
-                }
-
-                if (pendingAdds.Count > 0)
-                {
-                    yield return StartCoroutine(PlayAddGroup(pendingAdds));
-                    pendingAdds.Clear();
-                }
-
-                if ((int)operation.Type == (int)WeaponCraftOperationType.Merge)
-                {
-                    yield return StartCoroutine(PlayMergeOperation(operation));
-                }
-            }
-
-            if (pendingAdds.Count > 0)
-            {
-                yield return StartCoroutine(PlayAddGroup(pendingAdds));
             }
         }
 
-        private IEnumerator PlayAddGroup(List<WeaponCraftOperation> operations)
+        // ── Add animation ─────────────────────────────────────────────────────────
+
+        private IEnumerator CoPlayAdds(List<CraftOp> ops)
         {
-            if (operations == null || operations.Count == 0)
-            {
-                yield break;
-            }
+            // Spawn every icon at the fly-from world position, register in slot data.
+            int n = ops.Count;
+            var gos = new GameObject[n];
+            var starts = new Vector2[n];
 
-            var orderedOperations = new List<WeaponCraftOperation>(operations.Count);
-            for (int i = 0; i < operations.Count; i++)
+            for (int i = 0; i < n; i++)
             {
-                var operation = operations[i];
-                if (operation == null || operation.Item == null)
+                var op = ops[i];
+                int si = Mathf.Clamp(op.TargetSlot, 0, _slotData.Length - 1);
+                var slotRT = GetSlotRT(si);
+                var parent = slotRT != null ? (Transform)slotRT : transform;
+
+                // If slot is already occupied by an older item, bump it — SyncVisuals will fix
+                // everything properly at the end of the batch, so we just overwrite here.
+                ClearSlot(si);
+
+                var go = SpawnPrefab(op.Result.Tier, parent);
+                if (go == null) { gos[i] = null; continue; }
+
+                // Position at fly-from (world→slot-local).
+                Vector2 flyLocal = WorldToRootLocal(op.FlyFrom);
+                var rt = GetRT(go);
+                if (rt != null)
                 {
-                    continue;
+                    rt.SetParent(transform as RectTransform, false);
+                    rt.anchoredPosition = flyLocal;
                 }
+                go.SetActive(true);
 
-                orderedOperations.Add(operation);
+                gos[i] = go;
+                starts[i] = flyLocal;
+
+                // Register in slot data.
+                _slotData[si].Item = op.Result;
+                _slotData[si].Instance = go;
+                _itemToSlot[op.Result] = si;
             }
 
-            if (orderedOperations.Count == 0)
+            // Animate all concurrently to slot centres.
+            var targets = new Vector2[n];
+            for (int i = 0; i < n; i++)
             {
-                yield break;
+                int si = Mathf.Clamp(ops[i].TargetSlot, 0, _slotData.Length - 1);
+                targets[i] = SlotCentreInRoot(GetSlotRT(si));
             }
 
-            orderedOperations.Sort((left, right) => left.TargetIndex.CompareTo(right.TargetIndex));
+            yield return CoAnimateMany(gos, starts, targets, flyDuration);
 
-            var pendingAdds = new List<PendingAddEntry>(orderedOperations.Count);
-            var movingEntries = new List<VisualEntry>(orderedOperations.Count);
-            var startPositions = new Vector3[orderedOperations.Count];
-            var targetPositions = new Vector3[orderedOperations.Count];
-
-            for (int i = 0; i < orderedOperations.Count; i++)
+            // Attach each GO to its slot.
+            for (int i = 0; i < n; i++)
             {
-                var operation = orderedOperations[i];
-                var targetIndex = Mathf.Max(0, operation.TargetIndex);
-                var startLocalPosition = ConvertWorldToRootLocalPosition(operation.FlyFromPosition);
-                var entry = CreateEntry(operation.Item, startLocalPosition);
-                var slot = GetSlotTransform(targetIndex);
-
-                if (slot != null)
-                {
-                    SetEntryParent(entry, slot);
-                    SetEntryPosition(entry, startLocalPosition);
-                }
-
-                movingEntries.Add(entry);
-                pendingAdds.Add(new PendingAddEntry { Entry = entry, TargetIndex = targetIndex });
-                startPositions[i] = slot != null ? GetEntryPosition(entry) : startLocalPosition;
-                targetPositions[i] = Vector3.zero;
+                if (gos[i] == null) continue;
+                int si = Mathf.Clamp(ops[i].TargetSlot, 0, _slotData.Length - 1);
+                PlaceInSlot(gos[i], si, activate: false);
             }
-
-            yield return StartCoroutine(AnimateEntries(movingEntries, startPositions, targetPositions, GetAddDuration()));
-
-            CommitAddEntries(pendingAdds);
-            yield return StartCoroutine(ReflowAllEntries(GetReflowDuration()));
         }
 
-        private void CommitAddEntries(List<PendingAddEntry> pendingAdds)
+        // ── Merge animation ───────────────────────────────────────────────────────
+
+        private IEnumerator CoPlayMerge(CraftOp op)
         {
-            if (pendingAdds == null || pendingAdds.Count == 0)
-            {
-                return;
-            }
+            if (op.Result == null) yield break;
 
-            var orderedAdds = new List<PendingAddEntry>(pendingAdds.Count);
-            for (int i = 0; i < pendingAdds.Count; i++)
+            int resultSlot = Mathf.Clamp(op.TargetSlot, 0, _slotData.Length - 1);
+            var resultSlotRT = GetSlotRT(resultSlot);
+
+            // Collect source GOs; lift each to root for free movement.
+            var srcGOs = new List<GameObject>(op.Sources?.Count ?? 0);
+            var srcStarts = new List<Vector2>(srcGOs.Capacity);
+
+            if (op.Sources != null)
             {
-                var pendingAdd = pendingAdds[i];
-                if (pendingAdd == null || pendingAdd.Entry == null)
+                for (int i = 0; i < op.Sources.Count; i++)
                 {
-                    continue;
-                }
+                    var src = op.Sources[i];
+                    if (src == null) continue;
+                    if (!_itemToSlot.TryGetValue(src, out int si)) continue;
+                    var go = _slotData[si].Instance;
+                    if (go == null) continue;
 
-                orderedAdds.Add(pendingAdd);
-            }
-
-            if (orderedAdds.Count == 0)
-            {
-                return;
-            }
-
-            orderedAdds.Sort((left, right) => left.TargetIndex.CompareTo(right.TargetIndex));
-
-            var existingEntries = new List<VisualEntry>(entries);
-            entries.Clear();
-
-            int existingIndex = 0;
-            int addIndex = 0;
-            int totalCount = existingEntries.Count + orderedAdds.Count;
-
-            for (int position = 0; position < totalCount; position++)
-            {
-                if (addIndex < orderedAdds.Count && orderedAdds[addIndex].TargetIndex == position)
-                {
-                    while (addIndex < orderedAdds.Count && orderedAdds[addIndex].TargetIndex == position)
+                    var rt = GetRT(go);
+                    Vector2 startAP = Vector2.zero;
+                    if (rt != null)
                     {
-                        entries.Add(orderedAdds[addIndex].Entry);
-                        addIndex++;
+                        // Lift: convert current world pos → root anchored position.
+                        Vector3[] corners = new Vector3[4];
+                        rt.GetWorldCorners(corners);
+                        Vector3 worldCentre = (corners[0] + corners[2]) * 0.5f;
+                        startAP = WorldToRootLocal(worldCentre);
+                        rt.SetParent(transform as RectTransform, false);
+                        rt.anchoredPosition = startAP;
                     }
 
-                    continue;
+                    srcGOs.Add(go);
+                    srcStarts.Add(startAP);
                 }
+            }
 
-                if (existingIndex < existingEntries.Count)
+            // Fly sources to result slot centre.
+            Vector2 mergeTarget = SlotCentreInRoot(resultSlotRT);
+            if (srcGOs.Count > 0)
+                yield return CoAnimateMany(srcGOs.ToArray(), srcStarts.ToArray(),
+                                           FillArray(mergeTarget, srcGOs.Count), mergeDuration);
+
+            // Small delay before spawning result.
+            if (mergeSpawnDelay > 0f)
+            {
+                float t = 0f;
+                while (t < mergeSpawnDelay) { t += Time.deltaTime; yield return null; }
+            }
+
+            // Despawn source GOs + clear slot data for sources.
+            if (op.Sources != null)
+            {
+                for (int i = 0; i < op.Sources.Count; i++)
                 {
-                    entries.Add(existingEntries[existingIndex]);
-                    existingIndex++;
+                    var src = op.Sources[i];
+                    if (src == null) continue;
+                    if (_itemToSlot.TryGetValue(src, out int si))
+                    {
+                        _slotData[si].Item = null;
+                        _slotData[si].Instance = null;
+                    }
+                    _itemToSlot.Remove(src);
                 }
+                // Despawn GOs after clearing data (safe order).
+                for (int i = 0; i < srcGOs.Count; i++) DespawnGo(srcGOs[i]);
             }
 
-            while (addIndex < orderedAdds.Count)
+            // Clear result slot if it was occupied by something else.
+            ClearSlot(resultSlot);
+
+            // Spawn result prefab.
+            var parent = resultSlotRT != null ? (Transform)resultSlotRT : transform;
+            var resultGo = SpawnPrefab(op.Result.Tier, parent);
+            if (resultGo != null)
             {
-                entries.Add(orderedAdds[addIndex].Entry);
-                addIndex++;
+                PlaceInSlot(resultGo, resultSlot, activate: true);
+                _slotData[resultSlot].Item = op.Result;
+                _slotData[resultSlot].Instance = resultGo;
+                _itemToSlot[op.Result] = resultSlot;
             }
 
-            while (existingIndex < existingEntries.Count)
-            {
-                entries.Add(existingEntries[existingIndex]);
-                existingIndex++;
-            }
+            // Notify WeaponCraftSystem → triggers equip + effect.
+            OnMergeCompleted?.Invoke(op.Result);
+            RefreshOverflow();
         }
 
+        // ── Reflow ────────────────────────────────────────────────────────────────
 
-        private IEnumerator PlayMergeOperation(WeaponCraftOperation operation)
+        /// <summary>Smoothly moves all slot GOs back to their correct slot centres.</summary>
+        private IEnumerator CoReflow(float duration)
         {
-            if (operation.Item == null)
+            int n = _slotData.Length;
+            if (n == 0) yield break;
+
+            var gos = new GameObject[n];
+            var starts = new Vector2[n];
+            var targets = new Vector2[n];
+
+            for (int i = 0; i < n; i++)
             {
+                var go = _slotData[i].Instance;
+                gos[i] = go;
+                if (go == null) continue;
+                var rt = GetRT(go);
+                starts[i] = rt != null ? rt.anchoredPosition : Vector2.zero;
+                targets[i] = SlotCentreInRoot(GetSlotRT(i));
+            }
+
+            if (duration <= 0f)
+            {
+                for (int i = 0; i < n; i++) PlaceInSlot(gos[i], i, activate: false);
                 yield break;
             }
 
-            var sourceEntries = FindEntries(operation.SourceItems);
-            if (sourceEntries.Count == 0)
-            {
-                yield break;
-            }
+            yield return CoAnimateMany(gos, starts, targets, duration);
 
-            int resultIndex = Mathf.Clamp(operation.TargetIndex, 0, Mathf.Max(0, entries.Count - sourceEntries.Count));
-            Vector3 targetPosition = GetSlotLocalPosition(resultIndex);
-            for (int i = 0; i < sourceEntries.Count; i++)
-            {
-                PrepareEntryForMove(sourceEntries[i]);
-            }
-
-            yield return StartCoroutine(AnimateEntries(sourceEntries, targetPosition, GetMergeMoveDuration()));
-
-            float delay = GetMergeSpawnDelay();
-            if (delay > 0f)
-            {
-                yield return new WaitForSeconds(delay);
-            }
-
-            for (int i = 0; i < sourceEntries.Count; i++)
-            {
-                RemoveEntry(sourceEntries[i]);
-            }
-
-            var resultEntry = CreateEntry(operation.Item, targetPosition);
-            entries.Insert(resultIndex, resultEntry);
-            AttachEntryToSlot(resultEntry, resultIndex);
-            MergeVisualCompleted?.Invoke(operation.Item);
-
-            yield return StartCoroutine(ReflowAllEntries(GetReflowDuration()));
+            for (int i = 0; i < n; i++) PlaceInSlot(gos[i], i, activate: false);
         }
 
-        private VisualEntry CreateEntry(WeaponItem item, Vector3 startPosition)
+        // ── Generic animation coroutine ───────────────────────────────────────────
+
+        private IEnumerator CoAnimateMany(GameObject[] gos, Vector2[] starts, Vector2[] targets, float duration)
         {
-            EnsureRoot();
-            var prefab = ResolvePrefab(item.Tier);
-            GameObject instance = prefab != null ? Instantiate(prefab, itemRoot, false) : CreateFallbackInstance(item.Tier);
-            instance.name = $"WeaponItem_T{item.Tier}";
-
-            if (instance.TryGetComponent(out RectTransform rect))
-            {
-                rect.SetParent(itemRoot, false);
-                rect.anchoredPosition3D = startPosition;
-                rect.localScale = Vector3.one;
-            }
-            else
-            {
-                instance.transform.SetParent(itemRoot, false);
-                instance.transform.localPosition = startPosition;
-                instance.transform.localScale = Vector3.one;
-            }
-
-            return new VisualEntry
-            {
-                Item = item,
-                Instance = instance,
-                CachedTransform = instance.transform,
-                CachedRectTransform = instance.transform as RectTransform
-            };
-        }
-
-        private GameObject CreateFallbackInstance(int tier)
-        {
-            var fallback = new GameObject($"WeaponItemFallback_T{tier}", typeof(RectTransform));
-            fallback.transform.SetParent(itemRoot, false);
-            return fallback;
-        }
-
-        private IEnumerator ReflowAllEntries(float duration)
-        {
-            if (entries == null || entries.Count == 0)
-            {
-                yield break;
-            }
-
-            var startPositions = new Vector3[entries.Count];
-            var targetPositions = new Vector3[entries.Count];
-            for (int i = 0; i < entries.Count; i++)
-            {
-                if (entries[i] == null)
-                {
-                    continue;
-                }
-                PrepareEntryForMove(entries[i]);
-                startPositions[i] = GetEntryPosition(entries[i]);
-                targetPositions[i] = GetSlotLocalPosition(i);
-            }
-
-            yield return StartCoroutine(AnimateEntries(entries, startPositions, targetPositions, duration));
-
-            for (int i = 0; i < entries.Count; i++)
-            {
-                if (entries[i] == null)
-                {
-                    continue;
-                }
-                AttachEntryToSlot(entries[i], i);
-            }
-        }
-
-        private IEnumerator AnimateEntries(List<VisualEntry> movingEntries, Vector3 targetPosition, float duration)
-        {
-            var startPositions = new Vector3[movingEntries.Count];
-            var targetPositions = new Vector3[movingEntries.Count];
-            for (int i = 0; i < movingEntries.Count; i++)
-            {
-                startPositions[i] = GetEntryPosition(movingEntries[i]);
-                targetPositions[i] = targetPosition;
-            }
-
-            yield return AnimateEntries(movingEntries, startPositions, targetPositions, duration);
-        }
-
-        private IEnumerator AnimateEntries(List<VisualEntry> movingEntries, Vector3[] startPositions, Vector3[] targetPositions, float duration)
-        {
-            if (movingEntries == null || movingEntries.Count == 0)
-            {
-                yield break;
-            }
-
-            int safeCount = Mathf.Min(movingEntries.Count, Mathf.Min(startPositions.Length, targetPositions.Length));
+            int n = gos.Length;
             duration = Mathf.Max(0.0001f, duration);
             float elapsed = 0f;
             while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / duration);
-                for (int i = 0; i < safeCount; i++)
+                float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
+                for (int i = 0; i < n; i++)
                 {
-                    SetEntryPosition(movingEntries[i], Vector3.Lerp(startPositions[i], targetPositions[i], t));
+                    if (gos[i] == null) continue;
+                    var rt = GetRT(gos[i]);
+                    if (rt != null) rt.anchoredPosition = Vector2.Lerp(starts[i], targets[i], t);
                 }
-
                 yield return null;
             }
-
-            for (int i = 0; i < safeCount; i++)
+            for (int i = 0; i < n; i++)
             {
-                SetEntryPosition(movingEntries[i], targetPositions[i]);
+                if (gos[i] == null) continue;
+                var rt = GetRT(gos[i]);
+                if (rt != null) rt.anchoredPosition = targets[i];
             }
         }
 
-        private List<VisualEntry> FindEntries(List<WeaponItem> sourceItems)
+        // ── Pool helpers ──────────────────────────────────────────────────────────
+
+        private GameObject SpawnPrefab(int tier, Transform parent)
         {
-            var found = new List<VisualEntry>();
-            if (sourceItems == null || sourceItems.Count == 0)
+            if (!_pool.TryGetValue(tier, out var queue))
             {
-                return found;
+                queue = new Queue<GameObject>(8);
+                _pool[tier] = queue;
             }
-
-            for (int i = 0; i < sourceItems.Count; i++)
+            while (queue.Count > 0)
             {
-                var sourceItem = sourceItems[i];
-                if (sourceItem == null)
-                {
-                    continue;
-                }
-
-                for (int j = 0; j < entries.Count; j++)
-                {
-                    if (ReferenceEquals(entries[j].Item, sourceItem))
-                    {
-                        found.Add(entries[j]);
-                        break;
-                    }
-                }
+                var pooled = queue.Dequeue();
+                if (pooled == null) continue;
+                pooled.transform.SetParent(parent, false);
+                pooled.SetActive(false);
+                return pooled;
             }
-
-            return found;
-        }
-
-        private void RemoveEntry(VisualEntry entry)
-        {
-            if (entry == null)
+            // Pool miss → instantiate.
+            var prefab = _config?.GetPrefabForTier(tier);
+            if (prefab == null)
             {
-                return;
-            }
-
-            entries.Remove(entry);
-            if (entry.Instance != null)
-            {
-                Destroy(entry.Instance);
-            }
-        }
-
-
-        private Vector3 GetSlotLocalPosition(int index)
-        {
-            var slot = GetSlotTransform(index);
-            if (slot == null || itemRoot == null)
-            {
-                return Vector3.zero;
-            }
-
-            return itemRoot.InverseTransformPoint(slot.position);
-        }
-
-        private Vector3 ConvertWorldToRootLocalPosition(Vector3 worldPosition)
-        {
-            if (itemRoot == null)
-            {
-                return worldPosition;
-            }
-
-            Canvas canvas = itemRoot.GetComponentInParent<Canvas>();
-            if (canvas != null)
-            {
-                Camera sourceCamera = Camera.main;
-                if (sourceCamera != null)
-                {
-                    Vector3 screenPoint = sourceCamera.WorldToScreenPoint(worldPosition);
-                    Camera eventCamera = null;
-                    if (canvas.renderMode != RenderMode.ScreenSpaceOverlay)
-                    {
-                        eventCamera = canvas.worldCamera != null ? canvas.worldCamera : sourceCamera;
-                    }
-
-                    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(itemRoot, screenPoint, eventCamera, out Vector2 localPoint))
-                    {
-                        return new Vector3(localPoint.x, localPoint.y, 0f);
-                    }
-                }
-            }
-
-            return itemRoot.InverseTransformPoint(worldPosition);
-        }
-
-        private RectTransform GetSlotTransform(int index)
-        {
-            if (slots == null || slots.Count == 0)
-            {
+                Debug.LogWarning($"[WeaponCraftVisualSystem] No prefab for tier {tier}");
                 return null;
             }
-
-            int clampedIndex = Mathf.Clamp(index, 0, slots.Count - 1);
-            return slots[clampedIndex];
+            var go = Instantiate(prefab, parent);
+            go.SetActive(false);
+            EnsureTierTag(go, tier);
+            return go;
         }
 
-        private void PrepareEntryForMove(VisualEntry entry)
+        private void DespawnGo(GameObject go)
         {
-            if (entry == null)
+            if (go == null || _isDestroyed) return;
+            go.SetActive(false);
+            var tag = go.GetComponent<TierTag>();
+            if (tag != null)
             {
-                return;
+                if (!_pool.ContainsKey(tag.Tier)) _pool[tag.Tier] = new Queue<GameObject>(8);
+                // Re-parent to a safe root before pooling so it isn't a dangling child.
+                var rt = GetRT(go);
+                var root = slots.Count > 0 ? (Transform)slots[0] : transform;
+                if (rt != null) rt.SetParent(root, false);
+                else go.transform.SetParent(root, false);
+                _pool[tag.Tier].Enqueue(go);
             }
-
-            if (entry.RectTransform != null)
-            {
-                entry.RectTransform.SetParent(itemRoot, true);
-                return;
-            }
-
-            if (entry.Transform != null)
-            {
-                entry.Transform.SetParent(itemRoot, true);
-            }
+            // If no TierTag: GO stays deactivated wherever it is (no pool return needed).
         }
 
-        private void AttachEntryToSlot(VisualEntry entry, int slotIndex)
+        private static void EnsureTierTag(GameObject go, int tier)
         {
-            if (entry == null)
-            {
-                return;
-            }
-
-            var slot = GetSlotTransform(slotIndex);
-            if (slot == null)
-            {
-                return;
-            }
-
-            var rect = entry.RectTransform;
-            if (rect != null)
-            {
-                rect.SetParent(slot, false);
-                rect.localPosition = Vector3.zero;
-                rect.localRotation = Quaternion.identity;
-                rect.localScale = Vector3.one;
-                return;
-            }
-
-            if (entry.Transform != null)
-            {
-                entry.Transform.SetParent(slot, false);
-                entry.Transform.localPosition = Vector3.zero;
-                entry.Transform.localRotation = Quaternion.identity;
-                entry.Transform.localScale = Vector3.one;
-            }
+            var tag = go.GetComponent<TierTag>();
+            if (tag == null) tag = go.AddComponent<TierTag>();
+            tag.Tier = tier;
         }
 
-        private void SetEntryParent(VisualEntry entry, Transform parent)
+        // ── Slot helpers ──────────────────────────────────────────────────────────
+
+        private RectTransform GetSlotRT(int index)
+            => (index >= 0 && index < slots.Count) ? slots[index] : null;
+
+        /// <summary>
+        /// Attaches go to the correct slot RectTransform and zeros its anchored position.
+        /// If activate=true, also calls SetActive(true).
+        /// </summary>
+        private void PlaceInSlot(GameObject go, int slotIndex, bool activate)
         {
-            if (entry == null || parent == null)
+            if (go == null) return;
+            var slotRT = GetSlotRT(slotIndex);
+            if (slotRT == null) return;
+            var rt = GetRT(go);
+            if (rt != null)
             {
-                return;
+                rt.SetParent(slotRT, false);
+                rt.anchoredPosition = Vector2.zero;
+                rt.localScale = Vector3.one;
             }
-
-            if (entry.RectTransform != null)
+            else
             {
-                entry.RectTransform.SetParent(parent, false);
-                return;
+                go.transform.SetParent(slotRT, false);
+                go.transform.localPosition = Vector3.zero;
             }
-
-            if (entry.Transform != null)
-            {
-                entry.Transform.SetParent(parent, false);
-            }
+            if (activate) go.SetActive(true);
         }
 
-        private Vector3 GetSlotLocalStartPosition(Transform slot, Vector3 worldPosition)
+        private void ClearSlot(int index)
         {
-            if (slot == null)
-            {
-                return Vector3.zero;
-            }
-
-            return slot.InverseTransformPoint(worldPosition);
+            if (_slotData == null || index < 0 || index >= _slotData.Length) return;
+            var entry = _slotData[index];
+            if (entry.Item != null) _itemToSlot.Remove(entry.Item);
+            if (entry.Instance != null) DespawnGo(entry.Instance);
+            entry.Item = null;
+            entry.Instance = null;
         }
 
-        private Vector3 GetEntryPosition(VisualEntry entry)
+        private void ClearAllSlots()
         {
-            if (entry == null)
-            {
-                return Vector3.zero;
-            }
-
-            var rect = entry.RectTransform;
-            if (rect != null)
-            {
-                return rect.anchoredPosition3D;
-            }
-
-            return entry.Transform != null ? entry.Transform.localPosition : Vector3.zero;
+            if (_slotData == null) return;
+            for (int i = 0; i < _slotData.Length; i++) ClearSlot(i);
+            _itemToSlot.Clear();
         }
 
-        private void SetEntryPosition(VisualEntry entry, Vector3 position)
+        // ── Coordinate helpers ────────────────────────────────────────────────────
+
+        /// <summary>Returns slot centre as anchoredPosition in this transform's rect space.</summary>
+        private Vector2 SlotCentreInRoot(RectTransform slotRT)
         {
-            if (entry == null)
-            {
-                return;
-            }
-
-            var rect = entry.RectTransform;
-            if (rect != null)
-            {
-                rect.anchoredPosition3D = position;
-                return;
-            }
-
-            if (entry.Transform != null)
-            {
-                entry.Transform.localPosition = position;
-            }
+            if (slotRT == null) return Vector2.zero;
+            var root = transform as RectTransform;
+            if (root == null) return Vector2.zero;
+            var corners = new Vector3[4];
+            slotRT.GetWorldCorners(corners);
+            return root.InverseTransformPoint((corners[0] + corners[2]) * 0.5f);
         }
 
-        private GameObject ResolvePrefab(int tier)
+        /// <summary>Converts a world position to anchoredPosition in this transform's rect.</summary>
+        private Vector2 WorldToRootLocal(Vector3 worldPos)
         {
-            if (config == null)
+            var root = transform as RectTransform;
+            if (root == null) return Vector2.zero;
+            if (_canvas == null) ResolveCanvas();
+
+            if (_canvas != null)
             {
-                return null;
+                Camera eventCam = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _uiCam;
+                Vector2 screenPt = Camera.main != null
+                    ? (Vector2)Camera.main.WorldToScreenPoint(worldPos)
+                    : new Vector2(Screen.width * .5f, Screen.height * .5f);
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, screenPt, eventCam, out Vector2 local))
+                    return local;
             }
-
-            return config.GetPrefabForTier(tier);
+            return root.InverseTransformPoint(worldPos);
         }
 
-        private float GetAddDuration()
+        private static RectTransform GetRT(GameObject go)
+            => go != null ? go.GetComponent<RectTransform>() : null;
+
+        private static Vector2[] FillArray(Vector2 value, int count)
         {
-            return config != null ? config.AddMoveDuration : 0.25f;
+            var arr = new Vector2[count];
+            for (int i = 0; i < count; i++) arr[i] = value;
+            return arr;
         }
 
-        private float GetMergeMoveDuration()
+        // ── Overflow ──────────────────────────────────────────────────────────────
+
+        private void RefreshOverflow()
         {
-            float baseDuration = config != null ? config.MergeMoveDuration : 0.2f;
-            return Mathf.Max(0.01f, baseDuration / Mathf.Max(1f, mergeSpeedMultiplier));
+            if (overflowHideTarget == null) return;
+            int occupied = 0;
+            if (_slotData != null)
+                for (int i = 0; i < _slotData.Length; i++)
+                    if (_slotData[i].Item != null) occupied++;
+            // Hide when we have MORE items than slots (shouldn't happen often, but just in case).
+            overflowHideTarget.SetActive(occupied <= _slotData.Length);
         }
 
-        private float GetReflowDuration()
+        // ── Nested types ──────────────────────────────────────────────────────────
+
+        private sealed class SlotEntry
         {
-            float baseDuration = config != null ? config.LayoutReflowDuration : 0.15f;
-            return Mathf.Max(0.01f, baseDuration / Mathf.Max(1f, mergeSpeedMultiplier));
-        }
-
-        private float GetMergeSpawnDelay()
-        {
-            float baseDelay = config != null ? config.MergeSpawnDelay : 0.05f;
-            return Mathf.Max(0f, baseDelay / Mathf.Max(1f, mergeSpeedMultiplier));
-        }
-
-        private void EnsureRoot()
-        {
-            if (itemRoot != null)
-            {
-                return;
-            }
-
-            var existing = transform.Find("WeaponCraftItems") as RectTransform;
-            if (existing != null)
-            {
-                itemRoot = existing;
-                return;
-            }
-
-            var root = new GameObject("WeaponCraftItems", typeof(RectTransform));
-            root.transform.SetParent(transform, false);
-            itemRoot = root.GetComponent<RectTransform>();
-        }
-
-        private void ClearEntries()
-        {
-            for (int i = 0; i < entries.Count; i++)
-            {
-                var entry = entries[i];
-                if (entry != null && entry.Instance != null)
-                {
-                    Destroy(entry.Instance);
-                }
-            }
-
-            entries.Clear();
+            public WeaponItem Item;
+            public GameObject Instance;
         }
     }
+
+    /// <summary>Tiny component attached to every weapon icon GO so DespawnGo can pool it correctly.</summary>
+    [DisallowMultipleComponent]
+    public sealed class TierTag : MonoBehaviour { public int Tier; }
 }

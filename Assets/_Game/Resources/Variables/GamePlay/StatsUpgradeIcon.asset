@@ -13,15 +13,9 @@ MonoBehaviour:
   m_Name: StatsUpgradeIcon
   m_EditorClassIdentifier: 
   iconList:
-  - statType: 1
-    sprite: {fileID: 21300000, guid: 030c39188a02c3c4a81ff17521aa05d2, type: 3}
   - statType: 4
     sprite: {fileID: 21300000, guid: 507d2d647209aeb4695d21508ef96374, type: 3}
   - statType: 3
     sprite: {fileID: 21300000, guid: 1c3246700ca6b904aa92c27639a44f3c, type: 3}
-  - statType: 2
-    sprite: {fileID: 21300000, guid: a3c6bbb5b123fad449c25564c66657d5, type: 3}
   - statType: 8
     sprite: {fileID: 21300000, guid: ec3c8bc373f185e4b929467b1e7bf50e, type: 3}
-  - statType: 7
-    sprite: {fileID: 21300000, guid: d7107ba21fbcd5346a9db16b1416767b, type: 3}

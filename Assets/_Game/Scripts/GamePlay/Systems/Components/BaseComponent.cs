@@ -21,21 +21,34 @@ namespace GamePlay.ComponentSystems
         /// </summary>
         public Quaternion CacheRotation => CacheTransform != null ? CacheTransform.rotation : transform.rotation;
 
-        [SerializeField, HideInInspector] protected PoolEntity poolEntity;
+        [SerializeField] protected PoolEntity poolEntity;
 
         /// <summary>
         /// EntityType lấy từ PoolEntity gắn kèm. Trả về None nếu không tìm thấy.
         /// </summary>
-        public EntityType EntityType => poolEntity != null ? poolEntity.EntityType : EntityType.None;
+        public EntityType EntityType
+        {
+            get
+            {
+                if (poolEntity == null)
+                    poolEntity = GetComponentInParent<PoolEntity>();
+
+                return poolEntity != null ? poolEntity.EntityType : EntityType.None;
+            }
+        }
 
         // Implementation of IComponent.Transform
-        public Transform Transform => transform;
+        public Transform Transform => CacheTransform != null ? CacheTransform : transform;
 
         protected virtual void Awake()
         {
-            // Tự động gán tham chiếu nếu chưa được set trong Inspector
             if (CacheTransform == null) CacheTransform = transform;
-            if (poolEntity == null) poolEntity = GetComponentInParent<PoolEntity>();
+        }
+
+        internal void SetPoolEntity(PoolEntity owner)
+        {
+            if (poolEntity == null)
+                poolEntity = owner;
         }
 
 #if UNITY_EDITOR

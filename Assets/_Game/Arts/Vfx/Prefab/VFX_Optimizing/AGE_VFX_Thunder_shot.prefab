@@ -9805,7 +9805,6 @@ GameObject:
   - component: {fileID: 7682617812120654404}
   - component: {fileID: 2396544460303836580}
   - component: {fileID: 2878690460587349872}
-  - component: {fileID: 5055864652725964368}
   m_Layer: 0
   m_Name: AGE_VFX_Thunder_shot
   m_TagString: Untagged
@@ -14692,36 +14691,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5055864652725964368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1130790051918620148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 7682617812120654404}
-  EntityType: 255
-  VfxTag: 
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 2396544460303836580}
-  - {fileID: 7000095700599438006}
-  - {fileID: 91685166440662321}
-  - {fileID: 722631047066609457}
-  - {fileID: 216673611120698291}
-  - {fileID: 5016199126155722011}
-  - {fileID: 2964312931205689059}
-  - {fileID: 1518303372935246273}
-  - {fileID: 4544812997823713550}
-  - {fileID: 4109653289697515208}
 --- !u!1 &1395090159660174638
 GameObject:
   m_ObjectHideFlags: 0

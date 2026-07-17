@@ -43,6 +43,8 @@ namespace GamePlay.CardSystem
             float revealDuration,
             float flyToDestDuration,
             Vector2 targetSize = default,
+            RectTransform targetSlot = null,
+            float scaleAtCenter = 1f,
             Action onComplete = null)
         {
             StartCoroutine(PlayAnimation(
@@ -54,6 +56,8 @@ namespace GamePlay.CardSystem
                 revealDuration,
                 flyToDestDuration,
                 targetSize,
+                targetSlot,
+                scaleAtCenter,
                 onComplete));
         }
 
@@ -66,24 +70,67 @@ namespace GamePlay.CardSystem
             float dur2,
             float dur3,
             Vector2 targetSize,
+            RectTransform targetSlot,
+            float scaleAtCenter,
             Action onComplete)
         {
-            // Khởi tạo: hiện dấu "?" (Unknown sprite), ẩn icon
+            // Khoi too: hien dau "?" (Unknown sprite), an icon
             SetupUnknown(data);
             _rectTransform.position = startScreen;
             _rectTransform.localScale = Vector3.one;
 
             // Phase A: bay ra trung tâm màn hình
-            yield return StartCoroutine(FlyTo(startScreen, centerScreen, dur1));
+            yield return StartCoroutine(FlyTo(startScreen, centerScreen, dur1, scaleAtCenter));
 
-            // Phase B: reveal — đổi sang sprite thực tế + hiện icon
-            yield return StartCoroutine(RevealCard(data, dur2));
+            // Phase B: reveal � doi sang sprite thuc te + hien icon
+            yield return StartCoroutine(RevealCard(data, dur2, scaleAtCenter));
 
-            // Phase C: bay về vị trí đích, đồng thời lerp size về targetSlot
-            if (targetSize != Vector2.zero)
-                yield return StartCoroutine(FlyToWithResize(centerScreen, destScreen, dur3, _rectTransform.sizeDelta, targetSize));
+            // Phase C: bay ve vi tri dich, dong thoi lerp size ve targetSlot
+            if (targetSlot != null)
+            {
+                _rectTransform.SetParent(targetSlot, true);
+                Vector3 startLocalPos = _rectTransform.localPosition;
+                
+                float targetScale = 1f;
+                if (targetSize != Vector2.zero)
+                {
+                    targetScale = targetSize.x / Mathf.Max(_rectTransform.sizeDelta.x, 0.01f);
+                }
+
+                float elapsed = 0f;
+                while (elapsed < dur3)
+                {
+                    elapsed += Time.deltaTime;
+                    float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / dur3));
+                    _rectTransform.localPosition = Vector3.Lerp(startLocalPos, Vector3.zero, t);
+                    _rectTransform.localScale = Vector3.one * Mathf.Lerp(scaleAtCenter, targetScale, t);
+                    yield return null;
+                }
+                
+                _rectTransform.localPosition = Vector3.zero;
+                _rectTransform.localScale = Vector3.one * targetScale;
+            }
             else
-                yield return StartCoroutine(FlyTo(centerScreen, destScreen, dur3));
+            {
+                float targetScale = 1f;
+                if (targetSize != Vector2.zero)
+                {
+                    targetScale = targetSize.x / Mathf.Max(_rectTransform.sizeDelta.x, 0.01f);
+                }
+
+                float elapsed = 0f;
+                while (elapsed < dur3)
+                {
+                    elapsed += Time.deltaTime;
+                    float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / dur3));
+                    _rectTransform.position = Vector3.Lerp(centerScreen, destScreen, t);
+                    _rectTransform.localScale = Vector3.one * Mathf.Lerp(scaleAtCenter, targetScale, t);
+                    yield return null;
+                }
+                
+                _rectTransform.position = destScreen;
+                _rectTransform.localScale = Vector3.one * targetScale;
+            }
 
             onComplete?.Invoke();
         }
@@ -121,7 +168,7 @@ namespace GamePlay.CardSystem
             }
         }
 
-        private IEnumerator RevealCard(CardInfoData data, float duration)
+        private IEnumerator RevealCard(CardInfoData data, float duration, float scaleAtCenter)
         {
             UpdateVisual(data);
 
@@ -133,7 +180,7 @@ namespace GamePlay.CardSystem
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / half);
-                _rectTransform.localScale = Vector3.one * Mathf.Lerp(1f, 1.3f, t);
+                _rectTransform.localScale = Vector3.one * Mathf.Lerp(1f, 1.3f, t) * scaleAtCenter;
                 yield return null;
             }
 
@@ -143,60 +190,33 @@ namespace GamePlay.CardSystem
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / half);
-                _rectTransform.localScale = Vector3.one * Mathf.Lerp(1.3f, 1f, t);
+                _rectTransform.localScale = Vector3.one * Mathf.Lerp(1.3f, 1f, t) * scaleAtCenter;
                 yield return null;
             }
-            
-            yield return new WaitForSeconds(0.5f);
 
-            _rectTransform.localScale = Vector3.one;
-        }
-
-        private IEnumerator FlyTo(Vector3 from, Vector3 to, float duration)
-        {
-            if (duration <= 0f)
+            elapsed = 0f;
+            while (elapsed < 0.5f)
             {
-                _rectTransform.position = to;
-                yield break;
+                elapsed += Time.deltaTime;
+                yield return null;
             }
 
+            _rectTransform.localScale = Vector3.one * scaleAtCenter;
+        }
+
+        private IEnumerator FlyTo(Vector3 start, Vector3 end, float duration, float targetScale = 1f, float startScale = 1f, RectTransform targetSlot = null)
+        {
             float elapsed = 0f;
             while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-                _rectTransform.position = Vector3.Lerp(from, to, t);
+                Vector3 currentEnd = targetSlot != null ? targetSlot.position : end;
+                _rectTransform.position = Vector3.Lerp(start, currentEnd, t);
+                _rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, t);
                 yield return null;
             }
-
-            _rectTransform.position = to;
-        }
-
-        /// <summary>
-        /// Bay về đích đồng thời lerp localScale về tỉ lệ targetSize/fromSize, giữ đúng tỉ lệ.
-        /// </summary>
-        private IEnumerator FlyToWithResize(Vector3 from, Vector3 to, float duration, Vector2 fromSize, Vector2 toSize)
-        {
-            if (duration <= 0f)
-            {
-                _rectTransform.position = to;
-                _rectTransform.localScale = Vector3.one * (toSize.x / Mathf.Max(fromSize.x, 0.01f));
-                yield break;
-            }
-
-            float targetScale = toSize.x / Mathf.Max(fromSize.x, 0.01f);
-
-            float elapsed = 0f;
-            while (elapsed < duration)
-            {
-                elapsed += Time.deltaTime;
-                float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-                _rectTransform.position = Vector3.Lerp(from, to, t);
-                _rectTransform.localScale = Vector3.one * Mathf.Lerp(1f, targetScale, t);
-                yield return null;
-            }
-
-            _rectTransform.position = to;
+            _rectTransform.position = targetSlot != null ? targetSlot.position : end;
             _rectTransform.localScale = Vector3.one * targetScale;
         }
     }

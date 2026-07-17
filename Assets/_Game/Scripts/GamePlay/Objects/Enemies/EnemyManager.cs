@@ -31,7 +31,7 @@ namespace GamePlay.Enemies
 
     public class EnemyManager : MonoSingleton<EnemyManager>
     {
-        private readonly List<EnemyData> _enemies = new List<EnemyData>();
+        private readonly List<EnemyData> _enemies = new List<EnemyData>(64);
 
         [SerializeField] protected EnemyVariable enemyVariable;
 
@@ -39,6 +39,7 @@ namespace GamePlay.Enemies
         private float _currentTime;
         private bool _isGameplayPaused;
         private float _pausedAtTime;
+        private readonly List<AttackComponent> _attackComponentsBuffer = new List<AttackComponent>(8);
 
         protected override void Awake()
         {
@@ -262,11 +263,12 @@ namespace GamePlay.Enemies
             else
             {
                 // Fallback for prefabs with multiple/indirect attack components.
-                var attackComponents = weapon.GetComponentsInChildren<AttackComponent>(true);
-                for (int i = 0; i < attackComponents.Length; i++)
+                _attackComponentsBuffer.Clear();
+                weapon.GetComponentsInChildren<AttackComponent>(true, _attackComponentsBuffer);
+                for (int i = 0; i < _attackComponentsBuffer.Count; i++)
                 {
-                    if (attackComponents[i] == null) continue;
-                    attackComponents[i].SetTargetPreset(AttackComponent.AttackTargetPreset.Enemy);
+                    if (_attackComponentsBuffer[i] == null) continue;
+                    _attackComponentsBuffer[i].SetTargetPreset(AttackComponent.AttackTargetPreset.Enemy);
                 }
             }
 

@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: weapon_spriteatlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: acc7757f321d6374d86ef9a206c9e0f4, type: 3}
+    - {fileID: 102900000, guid: cbf33e47126da684d91ea1884c4284b0, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 3f70d421d11c86244a58d097cd2ea879: 21300000
+    - dd253af11971a424c972967e4585f7d7: 21300000
+    - 8fe99c12ad3651543a51bf5b3fd99183: 21300000
+    - 3276c342081065a4c833316c9eb547d1: 21300000
+    - 16c51713aefccdf42b43bc5e83c3a4ac: 21300000
+    - e26c707426513c34ea69630e8530a987: 21300000
+    - 93e05a96fb75f6b45a01c14fbcb0502d: 21300000
+    - 5aaa85f7ffed20e46badbf5fc530ce1a: 21300000
+    - 1802c1f85c8a1f246b5174b6f52e3865: 21300000
+    - e4c1c00a4eecd70449eadfb3e6e53825: 21300000
+    - 2d704f9e2c305334fba0ffc58455e15c: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 3f70d421d11c86244a58d097cd2ea879, type: 3}
+  - {fileID: 21300000, guid: dd253af11971a424c972967e4585f7d7, type: 3}
+  - {fileID: 21300000, guid: 8fe99c12ad3651543a51bf5b3fd99183, type: 3}
+  - {fileID: 21300000, guid: 3276c342081065a4c833316c9eb547d1, type: 3}
+  - {fileID: 21300000, guid: 16c51713aefccdf42b43bc5e83c3a4ac, type: 3}
+  - {fileID: 21300000, guid: e26c707426513c34ea69630e8530a987, type: 3}
+  - {fileID: 21300000, guid: 93e05a96fb75f6b45a01c14fbcb0502d, type: 3}
+  - {fileID: 21300000, guid: 5aaa85f7ffed20e46badbf5fc530ce1a, type: 3}
+  - {fileID: 21300000, guid: 1802c1f85c8a1f246b5174b6f52e3865, type: 3}
+  - {fileID: 21300000, guid: e4c1c00a4eecd70449eadfb3e6e53825, type: 3}
+  - {fileID: 21300000, guid: 2d704f9e2c305334fba0ffc58455e15c, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - card_blue
+  - Icon_vk_t2_a3_lv3
+  - card_green
+  - Icon_vk_t2_a3_lv5
+  - card_purple
+  - Icon_vk_t2_a3_lv6
+  - icon_vk_t2_a3_lv8
+  - card_yellow
+  - card_orange
+  - card_gray
+  - Icon_vk_t2_a3_lv2
+  m_RenderDataMap: {}
+  m_Tag: weapon_spriteatlas
+  m_IsVariant: 0

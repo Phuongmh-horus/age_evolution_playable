@@ -37,7 +37,7 @@ public static class DataManager
         ResetToDefault();
         IsInitialized = true;
 
-        Debug.Log("[DataManager] Playable data initialized");
+        // Debug.Log("[DataManager] Playable data initialized");
     }
 
     /// <summary>

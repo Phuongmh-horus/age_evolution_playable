@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WeaponCraftConfig
   m_EditorClassIdentifier: Assembly-CSharp:WeaponCraft:WeaponCraftConfigSO
   mergeCount: 3
-  maxTier: 6
+  maxTier: 5
   slotStartLocalPosition: {x: 0, y: 0, z: 0}
   slotSpacing: 0.9
   addMoveDuration: 0.2
@@ -37,6 +37,3 @@ MonoBehaviour:
   - Tier: 5
     TypeId: 
     Prefab: {fileID: 7617573824665440852, guid: 7209472ff3d543e49b586a8c27f1455b, type: 3}
-  - Tier: 6
-    TypeId: 
-    Prefab: {fileID: 7617573824665440852, guid: 49e9a235375ab5b469eda7ea2f583f52, type: 3}

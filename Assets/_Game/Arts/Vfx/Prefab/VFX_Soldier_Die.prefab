@@ -51,7 +51,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4911,8 +4911,6 @@ GameObject:
   - component: {fileID: 2909236724463552014}
   - component: {fileID: 2294944669123424963}
   - component: {fileID: 2573437613241931281}
-  - component: {fileID: 779922784819861098}
-  - component: {fileID: 3025039491529079137}
   m_Layer: 0
   m_Name: VFX_Soldier_Die
   m_TagString: Untagged
@@ -4953,7 +4951,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9733,34 +9731,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &779922784819861098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6069244634948046370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a390247ffba65da40bb17c6e0cff989d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particles:
-  - {fileID: 2294944669123424963}
-  - {fileID: 6554785280593767030}
-  targetPropertyName: _Color
---- !u!114 &3025039491529079137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6069244634948046370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1f53fe14a3d4f93a021c5d6b1de4428, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6913627074192499249
 GameObject:
   m_ObjectHideFlags: 0

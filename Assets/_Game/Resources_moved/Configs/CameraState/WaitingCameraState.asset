@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraStateName: 1
   fieldOfView: 70
-  position: {x: 0, y: 15, z: 0}
-  rotation: {x: 45.5, y: 0, z: 0}
-  useCustomLookAt: 0
+  position: {x: 4.5, y: 8, z: -6}
+  rotation: {x: 30, y: -20, z: 0}
+  useCustomLookAt: 1
   lookAtTarget: {fileID: 0}
   lookAtOffset: {x: 0, y: 0, z: 0}

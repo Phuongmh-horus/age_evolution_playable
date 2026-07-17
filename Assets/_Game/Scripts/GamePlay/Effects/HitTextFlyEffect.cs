@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Pools;
 using Random = UnityEngine.Random;
 
 public class HitTextFlyEffect : MonoBehaviour
@@ -27,6 +28,8 @@ public class HitTextFlyEffect : MonoBehaviour
 
     public static void TickActiveControllers(float deltaTime)
     {
+        if (activeControllers.Count == 0) return;  // Early exit: no active text effects
+
         for (int i = activeControllers.Count - 1; i >= 0; i--)
         {
             var controller = activeControllers[i];
@@ -120,21 +123,13 @@ public class HitTextFlyEffect : MonoBehaviour
     private void WarmupHitTextPoolIfNeeded()
     {
         if (healthTextPrefab == null) return;
-        if (PoolManager.Instance == null) return;
+
 
         int prefabId = healthTextPrefab.GetInstanceID();
         if (!warmedTextPrefabIds.Add(prefabId)) return;
 
         int warmCount = Mathf.Max(0, prewarmPoolCount);
-        for (int i = 0; i < warmCount; i++)
-        {
-            var text = PoolManager.Instance.Get(healthTextPrefab);
-            if (text == null) continue;
-            if (text.gameObject.activeSelf)
-            {
-                text.gameObject.SetActive(false);
-            }
-        }
+        PoolSystem.Prewarm(healthTextPrefab, warmCount);
     }
 
     public void OnHit(int damage)
@@ -208,9 +203,9 @@ public class HitTextFlyEffect : MonoBehaviour
         {
             ResetRuntimeState();
 
-            if (PoolManager.Instance == null) return false;
 
-            _textInstance = PoolManager.Instance.Get(prefab);
+
+            _textInstance = prefab.Spawn();
             if (_textInstance == null) return false;
 
             _textTransform = _textInstance.transform;
@@ -299,9 +294,9 @@ public class HitTextFlyEffect : MonoBehaviour
                 return;
             }
 
-            if (_textInstance != null && _textInstance.gameObject.activeSelf)
+            if (_textInstance != null)
             {
-                _textInstance.gameObject.SetActive(false);
+                _textInstance.Despawn();
             }
 
             ResetRuntimeState();

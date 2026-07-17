@@ -40,13 +40,41 @@ namespace WeaponCraft
 
         public static WeaponCraftOperation CreateAdd(WeaponItem item, Vector3 flyFromPosition, int targetIndex)
         {
-            return new WeaponCraftOperation(WeaponCraftOperationType.AddItem, item, new List<WeaponItem>(), targetIndex, flyFromPosition);
+            var op = _pool.Count > 0 ? _pool.Pop() : new WeaponCraftOperation();
+            op.type = WeaponCraftOperationType.AddItem;
+            op.item = item;
+            if (op.sourceItems == null) op.sourceItems = new List<WeaponItem>();
+            else op.sourceItems.Clear();
+            op.targetIndex = targetIndex;
+            op.flyFromPosition = flyFromPosition;
+            return op;
         }
 
         public static WeaponCraftOperation CreateMerge(WeaponItem resultItem, List<WeaponItem> sourceItems, int targetIndex)
         {
-            var sources = sourceItems == null ? new List<WeaponItem>() : new List<WeaponItem>(sourceItems);
-            return new WeaponCraftOperation(WeaponCraftOperationType.Merge, resultItem, sources, targetIndex, Vector3.zero);
+            var op = _pool.Count > 0 ? _pool.Pop() : new WeaponCraftOperation();
+            op.type = WeaponCraftOperationType.Merge;
+            op.item = resultItem;
+            if (op.sourceItems == null) op.sourceItems = new List<WeaponItem>();
+            else op.sourceItems.Clear();
+            
+            if (sourceItems != null)
+            {
+                op.sourceItems.AddRange(sourceItems);
+            }
+            
+            op.targetIndex = targetIndex;
+            op.flyFromPosition = Vector3.zero;
+            return op;
+        }
+        
+        private static readonly Stack<WeaponCraftOperation> _pool = new Stack<WeaponCraftOperation>(32);
+
+        public void Release()
+        {
+            item = null;
+            sourceItems.Clear();
+            _pool.Push(this);
         }
     }
 }

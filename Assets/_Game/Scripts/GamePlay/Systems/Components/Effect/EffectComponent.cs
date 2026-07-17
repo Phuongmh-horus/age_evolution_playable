@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections;
+using DG.Tweening;
 using System.Collections.Generic;
 using GamePlay.Effects;
 using UnityEngine;
+using Pools;
 
 namespace GamePlay.ComponentSystems
 {
@@ -30,14 +32,13 @@ namespace GamePlay.ComponentSystems
         [Header("Effects List (Serializable, Luna-safe)")]
         [SerializeField] private List<EffectEntry> effects = new List<EffectEntry>();
 
-        private readonly Dictionary<EffectType, EffectEntry> _runtime = new Dictionary<EffectType, EffectEntry>();
-        private static readonly Dictionary<int, TimedAutoDisable> s_timedAutoDisableCache = new Dictionary<int, TimedAutoDisable>(128);
+        private EffectEntry[] _runtime;
         private static readonly Dictionary<int, ParticleSystem[]> s_particleSystemsCache = new Dictionary<int, ParticleSystem[]>(128);
         private static readonly Dictionary<int, bool> s_uiVfxPrefabCache = new Dictionary<int, bool>(64);
-        private Coroutine _waitRoutine;
         private bool _cacheBuilt;
         private EffectType _activeLoopingEffectType = EffectType.None;
         private AudioClip _activeLoopingClip;
+        private readonly Dictionary<EffectType, float> _lastPlayTimes = new Dictionary<EffectType, float>();
 
         [Header("Audio (Optional)")]
         [SerializeField] private AudioSource audioSource;
@@ -63,6 +64,7 @@ namespace GamePlay.ComponentSystems
         {
             base.OnValidate();
             ResolveAudioSource(logIfMissingInEditor: true);
+            _cacheBuilt = false;
             BuildCache();
         }
 #endif
@@ -70,23 +72,20 @@ namespace GamePlay.ComponentSystems
         public override void Initialize()
         {
             base.Initialize();
-            ResolveAudioSource(logIfMissingInEditor: false);
-            BuildCache();
+            if (audioSource == null)
+                ResolveAudioSource(logIfMissingInEditor: false);
+
+            if (!_cacheBuilt)
+                BuildCache();
         }
 
         public override void Dispose()
         {
             base.Dispose();
 
-            if (_waitRoutine != null)
-            {
-                StopCoroutine(_waitRoutine);
-                _waitRoutine = null;
-            }
+            DOVirtual.DelayedCall(0.01f, () => { }).SetId(this).Kill();
 
             StopActiveLoopingSfx();
-            _runtime.Clear();
-            _cacheBuilt = false;
         }
 
         private void ResolveAudioSource(bool logIfMissingInEditor)
@@ -118,6 +117,7 @@ namespace GamePlay.ComponentSystems
                 return audioSource;
             }
 
+            // Fallback: Thử tìm component AudioSource gắn trên object hoặc các child
             ResolveAudioSource(logIfMissingInEditor: false);
             if (audioSource != null)
             {
@@ -132,7 +132,10 @@ namespace GamePlay.ComponentSystems
 
         private void BuildCache()
         {
-            _runtime.Clear();
+            if (_cacheBuilt)
+                return;
+
+            _runtime = new EffectEntry[32]; // Max enum size + buffer
             _cacheBuilt = true;
             if (effects == null) return;
 
@@ -142,7 +145,11 @@ namespace GamePlay.ComponentSystems
                 if (effect == null) continue;
                 if (effect.Type == EffectType.None) continue;
 
-                _runtime[effect.Type] = effect;
+                int index = (int)effect.Type;
+                if (index >= 0 && index < _runtime.Length)
+                {
+                    _runtime[index] = effect;
+                }
             }
         }
 
@@ -159,7 +166,24 @@ namespace GamePlay.ComponentSystems
                 if (!_cacheBuilt)
                     BuildCache();
 
-                bool hasEntry = _runtime.TryGetValue(effectType, out var entry) && entry != null;
+                if (_lastPlayTimes.TryGetValue(effectType, out float lastTime))
+                {
+                    if (Time.time - lastTime < 0.05f)
+                    {
+                        // Rapid fire block
+                        if (onComplete != null)
+                        {
+                            if (waitForAction <= 0f) onComplete.Invoke();
+
+                        }
+                        return;
+                    }
+                }
+                _lastPlayTimes[effectType] = Time.time;
+
+                int typeIndex = (int)effectType;
+                bool hasEntry = _runtime != null && typeIndex >= 0 && typeIndex < _runtime.Length && _runtime[typeIndex] != null;
+                EffectEntry entry = hasEntry ? _runtime[typeIndex] : null;
                 if (hasEntry)
                 {
                     ExecuteEffect(effectType, entry, position, rotation, parent);
@@ -178,19 +202,13 @@ namespace GamePlay.ComponentSystems
                     return;
                 }
 
-                if (_waitRoutine != null)
-                {
-                    StopCoroutine(_waitRoutine);
-                    _waitRoutine = null;
-                }
-
                 if (waitForAction <= 0f)
                 {
                     onComplete?.Invoke();
                     return;
                 }
 
-                _waitRoutine = StartCoroutine(WaitThenCallback(waitForAction, onComplete));
+                DOVirtual.DelayedCall(waitForAction, () => { onComplete?.Invoke(); }, false).SetId(this);
             }
             catch
             {
@@ -198,19 +216,14 @@ namespace GamePlay.ComponentSystems
             }
         }
 
-        private IEnumerator WaitThenCallback(float seconds, Action onComplete)
-        {
-            yield return new WaitForSeconds(seconds);
-            _waitRoutine = null;
-            onComplete?.Invoke();
-        }
+
         private static GameObject SafePoolGet(GameObject prefab)
         {
             if (prefab == null) return null;
-            if (PoolManager.Instance == null) return Instantiate(prefab);
+
             try
             {
-                var obj = PoolManager.Instance.Get(prefab);
+                var obj = prefab.Spawn();
                 return obj != null ? obj : Instantiate(prefab);
             }
             catch
@@ -236,7 +249,7 @@ namespace GamePlay.ComponentSystems
 
         private void ExecuteEffect(EffectType effectType, EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
         {
-            PlayVfx(entry, position, rotation, parent);
+            PlayVfx(effectType, entry, position, rotation, parent);
 
             if (entry.SfxClip == null) return;
 
@@ -267,16 +280,10 @@ namespace GamePlay.ComponentSystems
             }
 
             float sfxVolume = Mathf.Clamp01(entry.SfxVolume);
-            if (audioSource == null)
-            {
-                SoundManager.Instance?.PlayOneShot(entry.SfxClip, sfxVolume);
-                return;
-            }
-
-            audioSource.PlayOneShot(entry.SfxClip, sfxVolume);
+            SoundManager.Instance?.PlayOneShot(entry.SfxClip, sfxVolume);
         }
 
-        private void PlayVfx(EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
+        private void PlayVfx(EffectType effectType, EffectEntry entry, Vector3 position, Quaternion rotation, Transform parent)
         {
             if (entry == null || entry.VfxPrefab == null)
             {
@@ -286,7 +293,7 @@ namespace GamePlay.ComponentSystems
             try
             {
                 bool isUiVfx = IsUiVfxPrefab(entry.VfxPrefab);
-                Transform targetParent = ResolveVfxParent(entry, parent, isUiVfx);
+                Transform targetParent = ResolveVfxParent(effectType, entry, parent, isUiVfx);
                 GameObject vfx = SafePoolGet(entry.VfxPrefab);
                 if (vfx == null)
                 {
@@ -305,14 +312,15 @@ namespace GamePlay.ComponentSystems
                 }
 
                 float lifeTime = GetParticleLifetime(vfx);
+                PlayParticles(particles);
+
                 if (lifeTime > 0f)
                 {
-                    var autoDisable = GetOrAddTimedAutoDisable(vfx);
-                    autoDisable?.Play(lifeTime);
-                    return;
+                    DOVirtual.DelayedCall(Mathf.Max(0.05f, lifeTime), () =>
+                    {
+                        if (vfx != null) vfx.SetActive(false);
+                    }, false).SetId(vfx);
                 }
-
-                PlayParticles(particles);
             }
             catch
             {
@@ -320,10 +328,19 @@ namespace GamePlay.ComponentSystems
             }
         }
 
-        private Transform ResolveVfxParent(EffectEntry entry, Transform parent, bool isUiVfx)
+        private Transform ResolveVfxParent(EffectType effectType, EffectEntry entry, Transform parent, bool isUiVfx)
         {
             if (entry.ParentToTarget)
             {
+                // [FIX] Force Hit, Break, and Die VFX to world space so they don't disappear if target dies.
+                if (effectType == EffectType.Hit || effectType == EffectType.Break || effectType == EffectType.Die)
+                {
+                    if (!isUiVfx)
+                    {
+                        return null; // Force world space
+                    }
+                }
+
                 return parent != null ? parent : CacheTransform;
             }
 
@@ -371,7 +388,7 @@ namespace GamePlay.ComponentSystems
             {
                 var ps = particles[i];
                 if (ps == null) continue;
-                ps.Clear();
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 ps.Play(true);
             }
         }
@@ -400,27 +417,6 @@ namespace GamePlay.ComponentSystems
 
             _activeLoopingEffectType = EffectType.None;
             _activeLoopingClip = null;
-        }
-
-        private static TimedAutoDisable GetOrAddTimedAutoDisable(GameObject vfxObject)
-        {
-            if (vfxObject == null) return null;
-
-            int key = vfxObject.GetInstanceID();
-            if (s_timedAutoDisableCache.TryGetValue(key, out var cached) && cached != null)
-                return cached;
-
-            if (!vfxObject.TryGetComponent(out cached))
-                cached = vfxObject.AddComponent<TimedAutoDisable>();
-
-            s_timedAutoDisableCache[key] = cached;
-            return cached;
-        }
-
-        private static bool HasParticleSystems(GameObject vfxObject)
-        {
-            var particleSystems = GetCachedParticleSystems(vfxObject);
-            return particleSystems != null && particleSystems.Length > 0;
         }
 
         private static ParticleSystem[] GetCachedParticleSystems(GameObject vfxObject)

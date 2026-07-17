@@ -28,9 +28,6 @@ MonoBehaviour:
   - Name: 11
     Clip: {fileID: 8300000, guid: 5c233c835f2b600448f978ba5237fa66, type: 3}
     VolumeDefault: 1
-  - Name: 14
-    Clip: {fileID: 8300000, guid: a5e005e1197d3424498443497d0856db, type: 3}
-    VolumeDefault: 1
   - Name: 17
     Clip: {fileID: 8300000, guid: 9091e30ab02c322468d630ec56e3ce3b, type: 3}
     VolumeDefault: 1

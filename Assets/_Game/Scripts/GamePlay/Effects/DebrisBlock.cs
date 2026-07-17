@@ -1,3 +1,4 @@
+using Pools;
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -126,7 +127,7 @@ namespace GamePlay.Effects
             }
 
             _simulating = false;
-            gameObject.SetActive(false);
+            gameObject.Despawn();
             return false;
         }
 
@@ -138,6 +139,7 @@ namespace GamePlay.Effects
         private void OnDisable()
         {
             StopSimulation();
+            _registeredForTick = false;
         }
 
         private void OnDestroy()

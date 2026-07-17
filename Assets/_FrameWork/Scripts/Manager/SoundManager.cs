@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -13,10 +13,6 @@ public class SoundManager : MonoSingleton<SoundManager>
         public float Volume;
     }
 
-    // PlayerPrefs keys
-    private const string IsPlayMusicKey = "IsPlayMusic";
-    private const string IsPlaySoundKey = "IsPlaySound";
-
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource bgMusicSource;
     [SerializeField] private AudioSource fxMusicSource;
@@ -24,9 +20,11 @@ public class SoundManager : MonoSingleton<SoundManager>
 
     [SerializeField] public SoundDataSO soundDataSO;
     [SerializeField] public List<AudioClip> backgroundMusics;
-    [SerializeField] private AudioClipName[] prewarmSfxClips = { AudioClipName.SFX_CharacterAttack, AudioClipName.SFX_DropCard };
+    [SerializeField] private AudioClipName[] prewarmSfxClips = { AudioClipName.SFX_CharacterAttack };
 
     private readonly Dictionary<AudioClipName, CachedSfxData> _sfxCache = new Dictionary<AudioClipName, CachedSfxData>(32);
+    private readonly Dictionary<AudioClip, float> _lastPlayedSfxTime = new Dictionary<AudioClip, float>(32);
+    private const float SFX_SPAM_THRESHOLD = 0.05f;
     private bool _soundDataCacheWarmed;
 
 #if UNITY_EDITOR
@@ -42,8 +40,8 @@ public class SoundManager : MonoSingleton<SoundManager>
     protected override void Awake()
     {
         base.Awake();
-        GameEventBus.OnChangeSound = OnSoundChange;
         GameEventBus.OnChangeSoundFx = OnSoundFxChange;
+        GameEventBus.OnGameStart += EnableBGM;
 
         if (soundDataSO == null)
         {
@@ -51,92 +49,31 @@ public class SoundManager : MonoSingleton<SoundManager>
         }
 
         WarmupSoundDataCache();
+        if (bgMusicSource != null)
+        {
+            bgMusicSource.gameObject.SetActive(false);
+        }
+    }
 
-        EnsureAudioSources();
+    private void OnDestroy()
+    {
+
+        GameEventBus.OnChangeSoundFx -= OnSoundFxChange;
+        GameEventBus.OnGameStart -= EnableBGM;
+    }
+
+    private void EnableBGM()
+    {
+        if (bgMusicSource != null)
+        {
+            bgMusicSource.gameObject.SetActive(true);
+        }
     }
 
     private void Start()
     {
-        var playMusic = PlayerPrefs.GetInt(IsPlayMusicKey, 1);
-        var playSound = PlayerPrefs.GetInt(IsPlaySoundKey, 1);
-        OnSoundChange(playMusic);
-        OnSoundFxChange(playSound);
-
-        EnsureBgmList();
+        OnSoundFxChange(1);
         PrewarmConfiguredSfx();
-        if (bgMusicSource != null && backgroundMusics != null && backgroundMusics.Count > 0)
-        {
-            PlayBackGroundMusic();
-        }
-    }
-
-    private bool _isLoopRandomBGM;
-    private float _nextBgmCheckTime;
-    private const float BgmPollInterval = 0.2f;
-
-    private void Update()
-    {
-        if (!_isLoopRandomBGM) return;
-        if (backgroundMusics == null || backgroundMusics.Count <= 0)
-        {
-            return;
-        }
-        if (Time.unscaledTime < _nextBgmCheckTime) return;
-        _nextBgmCheckTime = Time.unscaledTime + BgmPollInterval;
-
-        if (_isLoopRandomBGM && !bgMusicSource.isPlaying)
-        {
-            AudioClip clip = RandomBGM();
-            bgMusicSource.clip = clip;
-            bgMusicSource.Play();
-        }
-    }
-
-    public void StopBackGroundMusic()
-    {
-        _isLoopRandomBGM = false;
-        bgMusicSource.Stop();
-    }
-
-    public void PlayBackGroundMusic()
-    {
-        _isLoopRandomBGM = true;
-    }
-
-    private List<AudioClip> _backgroundMusicTemp = new List<AudioClip>();
-
-    private AudioClip RandomBGM()
-    {
-        if (_backgroundMusicTemp.Count == 0)
-        {
-            _backgroundMusicTemp.AddRange(backgroundMusics);
-        }
-        var result = _backgroundMusicTemp[Random.Range(0, _backgroundMusicTemp.Count)];
-        _backgroundMusicTemp.Remove(result);
-        return result;
-    }
-
-    private void EnsureBgmList()
-    {
-        if (backgroundMusics == null) backgroundMusics = new List<AudioClip>();
-        if (backgroundMusics.Count > 0) return;
-
-        // Fallback: load default BGM from Resources/Sound/BGM
-        var clip = Resources.Load<AudioClip>("Sound/BGM");
-        if (clip != null) backgroundMusics.Add(clip);
-    }
-
-    private void OnSoundChange(float currentValue)
-    {
-        if (audioMixer == null) return;
-
-        // Remap 0-1 to dB scale
-        float maxRangeDesign = 1f;
-        currentValue = Remap(currentValue, 0, 1, 0, maxRangeDesign);
-        var soundValue = currentValue == 0 ? -80f : Mathf.Log10(currentValue) * 20;
-
-        var parameterName = Enum.GetName(typeof(SoundMixerGroup), SoundMixerGroup.BGMusic);
-        audioMixer.SetFloat(parameterName, soundValue);
     }
 
     private void OnSoundFxChange(float currentValue)
@@ -157,11 +94,11 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         if (clip == null) return;
 
-        // [FIX] Ensure AudioSource exists for Luna
-        if (fxMusicSource == null)
+        if (_lastPlayedSfxTime.TryGetValue(clip, out float lastTime))
         {
-            EnsureAudioSources();
+            if (Time.time - lastTime < SFX_SPAM_THRESHOLD) return;
         }
+        _lastPlayedSfxTime[clip] = Time.time;
 
         if (fxMusicSource == null)
         {
@@ -197,23 +134,6 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         if (fxMusicSource == null) return;
         fxMusicSource.Stop();
-    }
-
-    private void EnsureAudioSources()
-    {
-        if (bgMusicSource == null)
-        {
-            bgMusicSource = gameObject.AddComponent<AudioSource>();
-            bgMusicSource.playOnAwake = false;
-            bgMusicSource.loop = false;
-        }
-
-        if (fxMusicSource == null)
-        {
-            fxMusicSource = gameObject.AddComponent<AudioSource>();
-            fxMusicSource.playOnAwake = false;
-            fxMusicSource.loop = false;
-        }
     }
 
     private void WarmupSoundDataCache()
@@ -320,3 +240,4 @@ public enum SoundMixerGroup
     BGMusic,
     SoundFx,
 }
+

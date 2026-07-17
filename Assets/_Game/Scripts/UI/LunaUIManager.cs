@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using DG.Tweening;
 
 // Luna playable UI manager.
 // [FIX] Removed ConvertLegacyTextToTmp() which called FontEngine.LoadFontFace(Font, int)
@@ -81,6 +81,7 @@ public class LunaUIManager : MonoBehaviour
 
         if (tutorialTMPText == null && tutorialLayer != null)
         {
+            tutorialLayer.SetActive(false);
             tutorialTMPText = tutorialLayer.GetComponentInChildren<TMP_Text>(true);
         }
     }
@@ -93,10 +94,6 @@ public class LunaUIManager : MonoBehaviour
     private void Start()
     {
         EnsureEventSystem();
-        if (tutorialLayer != null)
-        {
-            ShowTutorial(true);
-        }
 
         if (endcardRoot != null)
         {
@@ -119,6 +116,68 @@ public class LunaUIManager : MonoBehaviour
         }
     }
 
+    private CanvasGroup _mainCanvasGroup;
+    private Coroutine _introAnimRoutine;
+
+    private CanvasGroup MainCanvasGroup
+    {
+        get
+        {
+            if (_mainCanvasGroup == null)
+            {
+                _mainCanvasGroup = GetComponent<CanvasGroup>();
+                if (_mainCanvasGroup == null)
+                    _mainCanvasGroup = gameObject.AddComponent<CanvasGroup>();
+            }
+            return _mainCanvasGroup;
+        }
+    }
+
+    public void SetUIVisibility(bool visible)
+    {
+        if (visible)
+        {
+            MainCanvasGroup.alpha = 1f;
+            transform.localScale = Vector3.one;
+        }
+        else
+        {
+            MainCanvasGroup.alpha = 0f;
+            transform.localScale = new Vector3(1.15f, 1.15f, 1.15f); // Scale down from 1.15
+        }
+    }
+
+    public void AnimateUIIntro(System.Action onComplete)
+    {
+        if (_introAnimRoutine != null) StopCoroutine(_introAnimRoutine);
+        _introAnimRoutine = StartCoroutine(CoAnimateUIIntro(onComplete));
+    }
+
+    private IEnumerator CoAnimateUIIntro(System.Action onComplete)
+    {
+        float duration = 0.5f;
+        float elapsed = 0f;
+        Vector3 startScale = new Vector3(1.15f, 1.15f, 1.15f);
+        Vector3 endScale = Vector3.one;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            // Ease out cubic
+            float easeT = 1f - Mathf.Pow(1f - t, 3f);
+
+            MainCanvasGroup.alpha = easeT;
+            transform.localScale = Vector3.Lerp(startScale, endScale, easeT);
+
+            yield return null;
+        }
+
+        MainCanvasGroup.alpha = 1f;
+        transform.localScale = endScale;
+        onComplete?.Invoke();
+    }
+
     private void Update()
     {
         if (tutorialLayer != null && tutorialLayer.activeSelf)
@@ -136,7 +195,7 @@ public class LunaUIManager : MonoBehaviour
         }
     }
 
-    private void ShowTutorial(bool show)
+    public void ShowTutorial(bool show)
     {
         if (tutorialLayer != null) tutorialLayer.SetActive(show);
         if (show) _tutorialPauseApplied = false;
@@ -159,7 +218,7 @@ public class LunaUIManager : MonoBehaviour
 
         if (GameplayManager.Instance != null)
         {
-            GameplayManager.IsGameStarted = true;
+            GameplayManager.Instance.StartGame();
             GameplayManager.Instance.ContinueGame();
         }
 
@@ -333,19 +392,34 @@ public class LunaUIManager : MonoBehaviour
         Luna.Unity.Playable.InstallFullGame();
     }
 
+    private Tween _handTween;
+
     private void StartHandAnimation()
     {
         if (tutorialHand == null) return;
-        if (_handRoutine != null) StopCoroutine(_handRoutine);
-        _handRoutine = StartCoroutine(HandMoveRoutine());
+        StopHandAnimation();
+
+        var basePos = GetTrackAnchoredPosition() + handOffset;
+        tutorialHand.anchoredPosition = basePos + new Vector2(-handMoveDistance, 0f);
+        float duration = Mathf.Max(0.1f, handMoveDuration);
+
+        Vector2 targetPos = basePos + new Vector2(handMoveDistance, 0f);
+        _handTween = DOTween.To(
+                () => tutorialHand.anchoredPosition,
+                value => tutorialHand.anchoredPosition = value,
+                targetPos,
+                duration)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetUpdate(true);
     }
 
     private void StopHandAnimation()
     {
-        if (_handRoutine != null)
+        if (_handTween != null)
         {
-            StopCoroutine(_handRoutine);
-            _handRoutine = null;
+            _handTween.Kill();
+            _handTween = null;
         }
 
         if (tutorialHand != null)
@@ -354,19 +428,28 @@ public class LunaUIManager : MonoBehaviour
         }
     }
 
+    private Tween _textTween;
+
     private void StartTextPulse()
     {
         if (tutorialTMPText == null) return;
-        if (_textRoutine != null) StopCoroutine(_textRoutine);
-        _textRoutine = StartCoroutine(TextPulseRoutine());
+        StopTextPulse();
+
+        var to = _textBaseScale * textScaleUp;
+        float duration = Mathf.Max(0.05f, textScaleDuration);
+
+        _textTween = tutorialTMPText.rectTransform.DOScale(to, duration)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetUpdate(true);
     }
 
     private void StopTextPulse()
     {
-        if (_textRoutine != null)
+        if (_textTween != null)
         {
-            StopCoroutine(_textRoutine);
-            _textRoutine = null;
+            _textTween.Kill();
+            _textTween = null;
         }
 
         if (tutorialTMPText != null)
@@ -375,18 +458,45 @@ public class LunaUIManager : MonoBehaviour
         }
     }
 
+    private Sequence _buttonPulseSequence;
+
     private void StartButtonPulse()
     {
-        if (_buttonPulseRoutine != null) StopCoroutine(_buttonPulseRoutine);
-        _buttonPulseRoutine = StartCoroutine(ButtonImpactThenPulseRoutine());
+        StopButtonPulse();
+
+        if (ctaButtons == null || ctaButtons.Count == 0) return;
+
+        float impactDuration = Mathf.Max(0.05f, ctaImpactDuration);
+        float duration = Mathf.Max(0.05f, buttonPulseDuration);
+
+        _buttonPulseSequence = DOTween.Sequence().SetUpdate(true);
+
+        for (int i = 0; i < ctaButtons.Count; i++)
+        {
+            var btn = ctaButtons[i];
+            if (btn == null) continue;
+
+            var rt = btn.transform as RectTransform;
+            if (rt != null)
+            {
+                rt.localScale = new Vector3(ctaImpactStartScale, ctaImpactStartScale, ctaImpactStartScale);
+                rt.localRotation = Quaternion.Euler(0f, 0f, ctaImpactStartAngle);
+
+                _buttonPulseSequence.Insert(0, rt.DOScale(1f, impactDuration).SetEase(Ease.OutBack));
+                _buttonPulseSequence.Insert(0, rt.DORotate(Vector3.zero, impactDuration).SetEase(Ease.OutBack));
+
+                float targetScale = _useCtaOnlyPulse ? ctaOnlyPulseScale : buttonPulseScale;
+                _buttonPulseSequence.Insert(impactDuration, rt.DOScale(targetScale, duration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo));
+            }
+        }
     }
 
     private void StopButtonPulse()
     {
-        if (_buttonPulseRoutine != null)
+        if (_buttonPulseSequence != null)
         {
-            StopCoroutine(_buttonPulseRoutine);
-            _buttonPulseRoutine = null;
+            _buttonPulseSequence.Kill();
+            _buttonPulseSequence = null;
         }
 
         if (ctaButtons == null) return;
@@ -395,72 +505,9 @@ public class LunaUIManager : MonoBehaviour
             if (ctaButtons[i] != null)
             {
                 ctaButtons[i].transform.localScale = Vector3.one;
+                ctaButtons[i].transform.localRotation = Quaternion.identity;
             }
         }
-    }
-
-    private IEnumerator ButtonImpactThenPulseRoutine()
-    {
-        float impactDuration = Mathf.Max(0.05f, ctaImpactDuration);
-        float impactT = 0f;
-        while (impactT < impactDuration)
-        {
-            impactT += Time.unscaledDeltaTime;
-            float k = Mathf.Clamp01(impactT / impactDuration);
-            float scale = Mathf.Lerp(ctaImpactStartScale, 1f, k);
-            float angle = Mathf.Lerp(ctaImpactStartAngle, 0f, k);
-
-            for (int i = 0; i < ctaButtons.Count; i++)
-            {
-                var btn = ctaButtons[i];
-                if (btn == null || !btn.gameObject.activeInHierarchy) continue;
-                var rt = btn.transform as RectTransform;
-                if (rt != null)
-                {
-                    rt.localScale = new Vector3(scale, scale, scale);
-                    rt.localRotation = Quaternion.Euler(0f, 0f, angle);
-                }
-                else
-                {
-                    btn.transform.localScale = new Vector3(scale, scale, scale);
-                    btn.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
-                }
-            }
-
-            yield return null;
-        }
-
-        for (int i = 0; i < ctaButtons.Count; i++)
-        {
-            var btn = ctaButtons[i];
-            if (btn == null) continue;
-            btn.transform.localRotation = Quaternion.identity;
-        }
-
-        float duration = Mathf.Max(0.05f, buttonPulseDuration);
-        while (ctaButtons != null && ctaButtons.Count > 0)
-        {
-            float t = Mathf.PingPong(Time.unscaledTime / duration, 1f);
-            float scale;
-            if (_useCtaOnlyPulse)
-            {
-                scale = Mathf.Lerp(ctaOnlyStartScale, ctaOnlyPulseScale, t);
-            }
-            else
-            {
-                float targetScale = buttonPulseScale;
-                scale = Mathf.Lerp(1f, targetScale, t);
-            }
-            for (int i = 0; i < ctaButtons.Count; i++)
-            {
-                var btn = ctaButtons[i];
-                if (btn == null || !btn.gameObject.activeInHierarchy) continue;
-                btn.transform.localScale = new Vector3(scale, scale, scale);
-            }
-            yield return null;
-        }
-
-        _buttonPulseRoutine = null;
     }
 
     private void WireCTAButtons()
@@ -483,44 +530,9 @@ public class LunaUIManager : MonoBehaviour
         go.AddComponent<StandaloneInputModule>();
     }
 
-    private IEnumerator TextPulseRoutine()
-    {
-        if (tutorialTMPText == null) yield break;
 
-        var rect = tutorialTMPText.rectTransform;
-        var from = _textBaseScale;
-        var to = _textBaseScale * textScaleUp;
-        float duration = Mathf.Max(0.05f, textScaleDuration);
 
-        while (tutorialLayer != null && tutorialLayer.activeSelf)
-        {
-            float t = Mathf.PingPong(Time.unscaledTime / duration, 1f);
-            rect.localScale = Vector3.Lerp(from, to, t);
-            yield return null;
-        }
 
-        rect.localScale = _textBaseScale;
-        _textRoutine = null;
-    }
-
-    private IEnumerator HandMoveRoutine()
-    {
-        if (tutorialHand == null) yield break;
-
-        var basePos = GetTrackAnchoredPosition() + handOffset;
-
-        float duration = Mathf.Max(0.1f, handMoveDuration);
-        while (tutorialLayer != null && tutorialLayer.activeSelf)
-        {
-            float t = Mathf.PingPong(Time.unscaledTime / duration, 1f);
-            float x = Mathf.Lerp(-handMoveDistance, handMoveDistance, t);
-            tutorialHand.anchoredPosition = basePos + new Vector2(x, 0f);
-            yield return null;
-        }
-
-        tutorialHand.anchoredPosition = basePos;
-        _handRoutine = null;
-    }
 
     private Vector2 GetTrackAnchoredPosition()
     {

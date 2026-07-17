@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 using UnityEngine.Serialization;
 
 public class LockChain : MonoBehaviour
@@ -47,29 +48,18 @@ public class LockChain : MonoBehaviour
             Debug.LogWarning($"[LockChain] Missing chainAnimator on {name}. Assign in Inspector.");
     }
 
-    private Coroutine _breakRoutine;
-
     public void PlayBreakAnimation()
     {
-        if (_breakRoutine != null)
-        {
-            StopCoroutine(_breakRoutine);
-            _breakRoutine = null;
-        }
-
-        _breakRoutine = StartCoroutine(BreakRoutine());
-    }
-
-    private IEnumerator BreakRoutine()
-    {
+        DOTween.Kill(this, "Break");
         if (chainAnimator != null)
         {
             chainAnimator.SetTrigger("Break");
-            yield return new WaitForSeconds(1f);
+            DOVirtual.DelayedCall(1f, () => gameObject.SetActive(false), false).SetId(this).SetId("Break");
         }
-
-        gameObject.SetActive(false);
-        _breakRoutine = null;
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
 

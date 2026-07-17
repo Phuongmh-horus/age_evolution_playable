@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4358073079745357948}
   - component: {fileID: 9147881686673862056}
   - component: {fileID: 5083804883170796798}
-  - component: {fileID: 5239543094356016764}
   m_Layer: 0
   m_Name: electric_ball_2
   m_TagString: Untagged
@@ -4831,28 +4830,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5239543094356016764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1263833943352436907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 4358073079745357948}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 9147881686673862056}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &1763495310565208978
 GameObject:
   m_ObjectHideFlags: 0
@@ -4864,7 +4841,6 @@ GameObject:
   - component: {fileID: 8701475013826764182}
   - component: {fileID: 7219620404286788470}
   - component: {fileID: 6652298196246211463}
-  - component: {fileID: 2491266674668748880}
   m_Layer: 0
   m_Name: VFX_Active_Thunder_Pillar
   m_TagString: Untagged
@@ -9687,29 +9663,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2491266674668748880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1763495310565208978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 8701475013826764182}
-  EntityType: 6
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 7219620404286788470}
-  - {fileID: 8793978872515855130}
-  - {fileID: 6799929869799439765}
-  - {fileID: 9147881686673862056}
 --- !u!1 &4451563094822602472
 GameObject:
   m_ObjectHideFlags: 0
@@ -9721,7 +9674,6 @@ GameObject:
   - component: {fileID: 4958489768503914815}
   - component: {fileID: 6799929869799439765}
   - component: {fileID: 2784307175576045885}
-  - component: {fileID: 9086109555700877507}
   m_Layer: 0
   m_Name: electric_ball_1
   m_TagString: Untagged
@@ -14541,28 +14493,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &9086109555700877507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4451563094822602472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 4958489768503914815}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 6799929869799439765}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &8210267454414615256
 GameObject:
   m_ObjectHideFlags: 0
@@ -14574,7 +14504,6 @@ GameObject:
   - component: {fileID: 5239057397743033095}
   - component: {fileID: 8793978872515855130}
   - component: {fileID: 4914566240571339607}
-  - component: {fileID: 4299714849128641123}
   m_Layer: 0
   m_Name: electric_ball
   m_TagString: Untagged
@@ -19394,25 +19323,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &4299714849128641123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8210267454414615256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 5239057397743033095}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 8793978872515855130}
-  - {fileID: 0}
-  - {fileID: 0}

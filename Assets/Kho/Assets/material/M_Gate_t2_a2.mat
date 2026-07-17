@@ -12,9 +12,12 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - DIFFUSE
+  - FOG
+  - _LIGHTMAPUV_UV1
+  m_InvalidKeywords:
   - AMBIENT
   - ANIME_SOFT
-  - FOG
   - MATCAP_PERSPECTIVE
   - OUTLINE_PASS_DISABLED
   - OUTLINE_WIDTH_INDEPENDENT
@@ -28,7 +31,6 @@ Material:
   - _LAYER2UV_UV1
   - _LAYER3BLEND_ALPHA_BLEND
   - _LAYER3UV_UV1
-  - _LIGHTMAPUV_UV1
   - _MATCAPBLEND_MULTIPLY
   - _NORMALUV2_UV1
   - _NORMALUV_UV1
@@ -37,7 +39,6 @@ Material:
   - _SHADOWOVERLAYANIMATION_SCROLL
   - _SPECULARUV_UV1
   - _TWOHALFCOLORSMODE_REPLACE
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -98,7 +99,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: dd0ad66c9b8e571469b9d0ff3f7c3abc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 859f2ab2747123d418224b3df8e72135, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
@@ -170,7 +171,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DetailUV: 0
     - _DetailVertexColors: 0
-    - _Diffuse: 0
+    - _Diffuse: 1
     - _DiffuseBrightness: 1
     - _DiffuseContrast: 1
     - _DiffusePerPixel: 0

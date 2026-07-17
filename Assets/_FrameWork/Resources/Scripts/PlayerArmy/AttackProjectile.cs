@@ -18,6 +18,8 @@ namespace PlayerArmy
 
         [HideInInspector] public CapabilityPack Pack;
         [HideInInspector] public CapabilityFlags ActiveFlags;
+        private bool _capabilityPackBuilt;
+        private readonly List<MonoBehaviour> _monoBuffer = new List<MonoBehaviour>(8);
 
         protected override void Awake()
         {
@@ -98,8 +100,11 @@ namespace PlayerArmy
             Despawn();
         }
 
-        private void BuildCapabilityPack()
+        private void BuildCapabilityPack(bool forceRebuild = false)
         {
+            if (_capabilityPackBuilt && !forceRebuild)
+                return;
+
             Pack = default;
             ActiveFlags = CapabilityFlags.None;
 
@@ -121,10 +126,10 @@ namespace PlayerArmy
             if (!hasValid)
             {
                 components.Clear();
-                var monos = GetComponentsInChildren<MonoBehaviour>(true);
-                for (int i = 0; i < monos.Length; i++)
+                GetComponentsInChildren(true, _monoBuffer);
+                for (int i = 0; i < _monoBuffer.Count; i++)
                 {
-                    var mb = monos[i];
+                    var mb = _monoBuffer[i];
                     if (mb == null || mb == this)
                     {
                         continue;
@@ -135,6 +140,7 @@ namespace PlayerArmy
                         components.Add(mb);
                     }
                 }
+                _monoBuffer.Clear();
             }
 
             for (int i = 0; i < components.Count; i++)
@@ -160,10 +166,10 @@ namespace PlayerArmy
 
             if (Pack.Attacker == null || Pack.Mover == null)
             {
-                var monos = GetComponentsInChildren<MonoBehaviour>(true);
-                for (int i = 0; i < monos.Length; i++)
+                GetComponentsInChildren(true, _monoBuffer);
+                for (int i = 0; i < _monoBuffer.Count; i++)
                 {
-                    var mb = monos[i];
+                    var mb = _monoBuffer[i];
                     if (mb == null || mb == this)
                     {
                         continue;
@@ -186,7 +192,10 @@ namespace PlayerArmy
                         break;
                     }
                 }
+                _monoBuffer.Clear();
             }
+
+            _capabilityPackBuilt = true;
         }
     }
 }

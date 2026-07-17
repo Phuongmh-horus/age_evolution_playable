@@ -173,8 +173,8 @@ Material:
     - _DetailUV: 0
     - _DetailVertexColors: 0
     - _Diffuse: 1
-    - _DiffuseBrightness: 1
-    - _DiffuseContrast: 1
+    - _DiffuseBrightness: 1.1
+    - _DiffuseContrast: 0.8
     - _DiffusePerPixel: 0
     - _DiffuseWrap: 0.1
     - _DstBlend: 0
@@ -259,10 +259,10 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SourceBlend: 1
     - _Specular: 1
-    - _SpecularBrightness: 0.3
+    - _SpecularBrightness: 0.1
     - _SpecularHair: 0
     - _SpecularHighlights: 1
-    - _SpecularSmoothness: 20
+    - _SpecularSmoothness: 3
     - _SpecularUV: 0
     - _SrcBlend: 1
     - _TransparencyMaskAmount: 1

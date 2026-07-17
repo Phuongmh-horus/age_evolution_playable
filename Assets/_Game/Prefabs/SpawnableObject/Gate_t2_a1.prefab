@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5541669518165071482}
   - component: {fileID: 5595958327530874920}
   - component: {fileID: -3752198547901870006}
+  - component: {fileID: 6361041238071146981}
   m_Layer: 0
   m_Name: Gate_t2_a1
   m_TagString: Untagged
@@ -49,18 +50,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transform: {fileID: 0}
   _entityType: 20
+  ActiveFlags: 0
   damage: 0
   targetMask:
     serializedVersion: 2
     m_Bits: 4294967295
   size: {x: 1, y: 1}
   shapeType: 1
-  colliderOffsets: {x: 0, y: 0, z: 0}
-  colliderSize: {x: 1, y: 1, z: 1}
-  _components:
-  - {fileID: 0}
-  - {fileID: 0}
-  ActiveFlags: 0
+  colliderOffsets: {x: 0, y: 5, z: 0}
+  colliderSize: {x: 25, y: 10, z: 5}
   LeftOffset: 0
   RightOffset: 0
   deathScaleEffect: {fileID: 0}
@@ -87,7 +85,7 @@ MonoBehaviour:
   CacheTransform: {fileID: 7674971524874775015}
   poolEntity: {fileID: 5541669518165071482}
   shapeType: 1
-  colliderSize: {x: 17, y: 10, z: 2}
+  colliderSize: {x: 25, y: 10, z: 5}
   isActive: 1
   isCustomCaster: 0
   hitTransform: {fileID: 0}
@@ -110,10 +108,35 @@ MonoBehaviour:
     VfxPrefab: {fileID: 0}
     ParentToTarget: 1
     SfxClip: {fileID: 0}
+    LoopSfx: 0
+    SfxVolume: 1
     WaitForAction: 0.5
   audioSource: {fileID: 0}
-  useGlobalSoundManagerFallback: 1
   warnIfNoAudioRouteInEditor: 0
+--- !u!205 &6361041238071146981
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5145062523385656456}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.6
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.3
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.1
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &8164151978442417578
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +223,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5696416027117915398, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5696416027117915398, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5696416027117915398, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5696416027117915398, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3953282325438550896, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
@@ -208,7 +243,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3953282325438550896, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3953282325438550896, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3953282325438550896, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3953282325438550896, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
@@ -220,7 +267,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1390719562645063805, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390719562645063805, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390719562645063805, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390719562645063805, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6022234341931539814, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
@@ -228,7 +287,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6022234341931539814, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6022234341931539814, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6022234341931539814, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6022234341931539814, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6915429683651096512, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
@@ -236,7 +307,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6915429683651096512, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915429683651096512, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915429683651096512, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915429683651096512, guid: 3a5c23a87b9ea2c4fba2821b8556ab94, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7391886814110878636, guid: e068cea96457d6248a90662b2d73ec56, type: 3}
@@ -391,7 +474,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -9220922156555266414, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -9220922156555266414, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9220922156555266414, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -9220922156555266414, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8789125321480638831, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -399,7 +494,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8789125321480638831, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8789125321480638831, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8789125321480638831, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8789125321480638831, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -447,7 +554,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8613000618207484203, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8613000618207484203, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8613000618207484203, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8613000618207484203, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7683462545324651740, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -455,7 +574,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7683462545324651740, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7683462545324651740, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7683462545324651740, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7683462545324651740, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6635508433304907313, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -463,7 +594,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6635508433304907313, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -6635508433304907313, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6635508433304907313, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6635508433304907313, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5821172088817642582, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -475,7 +618,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5821172088817642582, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5821172088817642582, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5821172088817642582, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5821172088817642582, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5719469634814334823, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -483,7 +638,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5719469634814334823, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5719469634814334823, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5719469634814334823, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5719469634814334823, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5080601376132847529, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -491,7 +658,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5080601376132847529, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5080601376132847529, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5080601376132847529, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5080601376132847529, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4031901924626372911, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -499,7 +678,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4031901924626372911, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4031901924626372911, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4031901924626372911, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4031901924626372911, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3720204477407259258, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -511,7 +702,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3523320213735155939, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3523320213735155939, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3523320213735155939, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3523320213735155939, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3133424165714122456, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -519,7 +722,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3133424165714122456, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3133424165714122456, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3133424165714122456, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3133424165714122456, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1034331377130639732, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -527,7 +742,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1034331377130639732, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1034331377130639732, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1034331377130639732, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1034331377130639732, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -785537716257320044, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -535,7 +762,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -785537716257320044, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -785537716257320044, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -785537716257320044, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -785537716257320044, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -143548600355272670, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -543,7 +782,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -143548600355272670, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -143548600355272670, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -143548600355272670, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -143548600355272670, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 271985815751311099, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -551,7 +802,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 271985815751311099, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 271985815751311099, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 271985815751311099, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 271985815751311099, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 559963017834186197, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -559,7 +822,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 559963017834186197, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 559963017834186197, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 559963017834186197, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 559963017834186197, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -575,7 +850,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1216986030586048482, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1216986030586048482, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1216986030586048482, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1216986030586048482, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2544258533930066455, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -583,7 +870,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2544258533930066455, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544258533930066455, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544258533930066455, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544258533930066455, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3676695763843942697, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -591,7 +890,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3676695763843942697, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3676695763843942697, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3676695763843942697, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3676695763843942697, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4012138649334654381, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -599,7 +910,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4012138649334654381, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012138649334654381, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012138649334654381, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012138649334654381, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5090024954625995105, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -607,7 +930,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5090024954625995105, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5090024954625995105, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5090024954625995105, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5090024954625995105, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5220663331955354693, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -615,7 +950,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5220663331955354693, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5220663331955354693, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5220663331955354693, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5220663331955354693, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5400136935752178259, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -623,7 +970,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5400136935752178259, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400136935752178259, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400136935752178259, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400136935752178259, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5854364239799071384, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -631,7 +990,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5854364239799071384, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5854364239799071384, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5854364239799071384, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5854364239799071384, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7796649769382141435, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -639,7 +1010,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7796649769382141435, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796649769382141435, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796649769382141435, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796649769382141435, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7872243340400617079, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -647,7 +1030,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7872243340400617079, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872243340400617079, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872243340400617079, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872243340400617079, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8820395101844391462, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
@@ -655,7 +1050,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8820395101844391462, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8820395101844391462, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
       propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8820395101844391462, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8820395101844391462, guid: 05d69ecf2f3671b4bb7b7969c2bab553, type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

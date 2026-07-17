@@ -51,39 +51,20 @@ namespace WeaponCraft
         private bool _awaitingGoldReset;
         private int _lastBreakFxFrame = -1;
 
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _progressMpb = new MaterialPropertyBlock();
-            EnsureDespawnScaleEffect();
+
 
             if (_entityType == GamePlay.Entities.EntityType.None)
             {
                 _entityType = GamePlay.Entities.EntityType.PowerGate;
             }
 
-            if (progressSprite == null)
-            {
-                progressSprite = GetComponentInChildren<SpriteRenderer>(true);
-            }
-
-            if (collectText == null)
-            {
-                collectText = GetComponentInChildren<TMP_Text>(true);
-            }
-
             if (bonusCollectText != null)
             {
-                bonusCollectText.text = string.Format(bonusCollectFormat, Data != null ? Data.Value : 1);
-            }
-
-            if (effectComponent == null)
-            {
-                effectComponent = GetComponentInChildren<EffectComponent>(true);
-            }
-
-            if (hitTextFlyEffect == null)
-            {
-                hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
+                bonusCollectText.text = string.Format(bonusCollectFormat, Data != null ? Data.Value : 0);
             }
 
             _originalScale = transform.localScale;
@@ -136,27 +117,21 @@ namespace WeaponCraft
 
             bool shouldRefreshEvents = false;
 
-            if (healthComponent == null)
-            {
-                healthComponent = GetComponentInChildren<HealthComponent>(true);
-            }
 
             if (healthComponent != null)
             {
                 shouldRefreshEvents = true;
-                Pack.Healable = healthComponent;
-                ActiveFlags |= CapabilityFlags.Heal;
-                healthComponent.Initialize();
+                if (!ReferenceEquals(Pack.Healable, healthComponent))
+                {
+                    Pack.Healable = healthComponent;
+                    ActiveFlags |= CapabilityFlags.Heal;
+                    healthComponent.Initialize();
+                }
                 healthComponent.SetImmortal(false);
                 healthComponent.SetMaxHealth(healthComponent.MaxHealth, refill: true);
 
                 RegisterHealthVisualEvents();
                 UpdateHealthVisual(healthComponent.CurrentHealth, healthComponent.MaxHealth);
-            }
-
-            if (hitComponent == null)
-            {
-                hitComponent = GetComponentInChildren<HitComponent>(true);
             }
 
             if (hitComponent != null)
@@ -172,11 +147,6 @@ namespace WeaponCraft
                 ActiveFlags |= CapabilityFlags.Hit;
                 hitComponent.Initialize();
                 CollisionSystem.Register(hitComponent, hitComponent.transform);
-            }
-
-            if (effectComponent == null)
-            {
-                effectComponent = GetComponentInChildren<EffectComponent>(true);
             }
 
             if (effectComponent != null)
@@ -203,7 +173,7 @@ namespace WeaponCraft
 
         private int GetBaseGoldValue()
         {
-            return Mathf.Max(1, Data != null ? Data.Value : 1);
+            return Mathf.Max(0, Data != null ? Data.Value : 0);
         }
 
         private void UpdateCollectVisual()
@@ -368,22 +338,23 @@ namespace WeaponCraft
 
             _lastScalePulseFrame = Time.frameCount;
 
+            Vector3 currentScale = transform.localScale;
+            if (_originalScale == Vector3.zero)
+            {
+                _originalScale = currentScale;
+            }
+
             if (_scalePulseRoutine != null)
             {
                 StopCoroutine(_scalePulseRoutine);
+                _scalePulseRoutine = null;
             }
 
-            _scalePulseRoutine = StartCoroutine(CoScalePulse());
+            _scalePulseRoutine = StartCoroutine(CoScalePulse(currentScale));
         }
 
-        private IEnumerator CoScalePulse()
+        private IEnumerator CoScalePulse(Vector3 from)
         {
-            if (_originalScale == Vector3.zero)
-            {
-                _originalScale = transform.localScale;
-            }
-
-            Vector3 from = _originalScale;
             Vector3 to = _originalScale * scaleUp;
 
             float t = 0f;
@@ -475,28 +446,28 @@ namespace WeaponCraft
         {
             if (!ensureDespawnScaleEffect) return;
 
-            if (deathScaleEffect == null)
-            {
-                deathScaleEffect = GetComponent<DeathScaleEffect>();
-            }
+            // if (deathScaleEffect == null)
+            // {
+            //     deathScaleEffect = GetComponent<DeathScaleEffect>();
+            // }
 
-            if (deathScaleEffect == null)
-            {
-                deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
-            }
+            // if (deathScaleEffect == null)
+            // {
+            //     deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
+            // }
 
-            if (deathScaleEffect.Transform == null)
-            {
-                deathScaleEffect.Transform = transform;
-            }
+            // if (deathScaleEffect.Transform == null)
+            // {
+            //     deathScaleEffect.Transform = transform;
+            // }
 
-            deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
+            // deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
         }
 
         protected override void DespawnInterval()
         {
             StopScalePulse();
-            EnsureDespawnScaleEffect();
+
             base.DespawnInterval();
         }
 

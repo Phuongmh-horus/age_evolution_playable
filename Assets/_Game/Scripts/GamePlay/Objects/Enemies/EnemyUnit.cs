@@ -7,13 +7,16 @@ using GamePlay.Weapons;
 using GamePlay.HealthSystems;
 using GamePlay.ComponentSystems;
 using GamePlay.Effects;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
+using Pools;
 
 namespace GamePlay.Enemies
 {
     public class EnemyUnit : ItemUnit
     {
+        private static readonly System.Collections.Generic.List<UnityEngine.MonoBehaviour> s_enemyBuffer = new System.Collections.Generic.List<UnityEngine.MonoBehaviour>(64);
         public WeaponUnit WeaponPrefab;
         public Transform HandTransform;
 
@@ -31,7 +34,6 @@ namespace GamePlay.Enemies
         private Renderer _mainRenderer;
         private static int s_lastDeathVfxFrame = -1;
         private static int s_deathVfxCountInFrame = 0;
-        private static readonly Dictionary<int, TimedAutoDisable> s_timedAutoDisableCache = new Dictionary<int, TimedAutoDisable>(128);
 
         private WeaponUnit _currentWeapon;
         private bool _despawnHandled;
@@ -60,8 +62,9 @@ namespace GamePlay.Enemies
         }
 #endif
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             // [FIX] Ensure EntityType is Enemy at runtime
             if (_entityType == EntityType.None)
             {
@@ -104,9 +107,7 @@ namespace GamePlay.Enemies
             if (EnemyManager.Instance != null)
                 EnemyManager.Instance.RegisterEnemy(this);
 
-            EnsureAnimatorComponent();
             _healthComponent = Pack.Healable as HealthComponent;
-            EnsureHealthComponent();
             EnsureHitTextEffect(false);
             _despawnHandled = false;
 
@@ -116,17 +117,17 @@ namespace GamePlay.Enemies
             if (hpBarRenderer != null)
             {
                 hpBarRenderer.gameObject.SetActive(true);
-                hpBarRenderer.enabled = true; 
-                hpBarRenderer.sortingOrder = 50; 
+                hpBarRenderer.enabled = true;
+                hpBarRenderer.sortingOrder = 50;
 
                 // Cache Scale FIRST
                 _originalBarScale = hpBarRenderer.transform.localScale;
-                
+
                 // Initialize Visuals
                 if (_healthComponent != null)
                     UpdateImage(_healthComponent.CurrentHealth, _healthComponent.MaxHealth);
                 else
-                    UpdateImage(defaultMaxHealth, defaultMaxHealth); 
+                    UpdateImage(defaultMaxHealth, defaultMaxHealth);
             }
         }
 
@@ -195,9 +196,9 @@ namespace GamePlay.Enemies
 
             // [FIX] Simple Transform Scaling with Pivot Correction
             float healthPercent = maxHealth > 0 ? (float)currentHealth / maxHealth : 0f;
-            
+
             // Capture original state
-            if (_originalBarScale == Vector3.zero) 
+            if (_originalBarScale == Vector3.zero)
             {
                 _originalBarScale = hpBarRenderer.transform.localScale;
                 _originalLocalPos = hpBarRenderer.transform.localPosition;
@@ -205,7 +206,7 @@ namespace GamePlay.Enemies
 
             Vector3 targetScale = _originalBarScale;
             targetScale.x *= healthPercent;
-            
+
             hpBarRenderer.transform.localScale = targetScale;
 
             // [FIX] Compensate for Center Pivot (Sprite shrinks from both sides)
@@ -216,33 +217,11 @@ namespace GamePlay.Enemies
                 float spriteWidth = hpBarRenderer.sprite.bounds.size.x;
                 float scaleDiff = targetScale.x - _originalBarScale.x; // Negative when shrinking
                 float shift = scaleDiff * spriteWidth * 0.5f;
-                
+
                 // [FIX] Inverted direction per user request ("Đảo lại đi")
                 // Current: Move Right (shift is negative, so -shift is positive).
                 hpBarRenderer.transform.localPosition = _originalLocalPos - new Vector3(shift, 0, 0);
             }
-        }
-
-        private void EnsureHealthComponent()
-        {
-            if (Pack.Healable != null) return;
-
-            _healthComponent = GetComponentInChildren<HealthComponent>(true);
-            if (_healthComponent == null)
-            {
-                _healthComponent = gameObject.AddComponent<HealthComponent>();
-            }
-
-            if (defaultMaxHealth > 0 && !_healthOverriddenFromContent)
-            {
-                _healthComponent.SetMaxHealth(defaultMaxHealth, refill: true);
-            }
-
-            Pack.Healable = _healthComponent;
-            ActiveFlags |= CapabilityFlags.Heal;
-
-            _healthComponent.Initialize();
-            _healthComponent.OnHealthChange += HandleHealthChange;
         }
 
         public void MarkHealthOverriddenFromContent()
@@ -250,57 +229,26 @@ namespace GamePlay.Enemies
             _healthOverriddenFromContent = true;
         }
 
-        private void EnsureAnimatorComponent()
-        {
-            if (Pack.Animator != null) return;
-            var monos = GetComponentsInChildren<MonoBehaviour>(true);
-            for (int i = 0; i < monos.Length; i++)
-            {
-                if (monos[i] is IAnimator animator)
-                {
-                    Pack.Animator = animator;
-                    ActiveFlags |= CapabilityFlags.Animator;
-                    animator.Initialize();
-                    break;
-                }
-            }
-        }
-
         private void PlayDeathVfx()
         {
             if (dieVfxPrefab == null)
-                 return;
+                return;
             if (!CanSpawnDeathVfxThisFrame())
                 return;
 
             Vector3 spawnPos = transform.position + dieVfxOffset;
-            GameObject vfx = PoolManager.Instance != null ? PoolManager.Instance.Get(dieVfxPrefab) : Instantiate(dieVfxPrefab);
+            GameObject vfx = dieVfxPrefab.Spawn();
             if (vfx == null) return;
 
             vfx.transform.position = spawnPos;
             vfx.transform.rotation = Quaternion.identity;
             vfx.SetActive(true);
 
-            var autoDisable = GetOrAddTimedAutoDisable(vfx);
-            if (autoDisable == null) return;
-            autoDisable.Play(Mathf.Max(0.05f, dieVfxLifetime));
+            DOVirtual.DelayedCall(Mathf.Max(0.05f, dieVfxLifetime), () =>
+            {
+                if (vfx != null) vfx.SetActive(false);
+            }, false).SetId(vfx);
         }
-
-        private static TimedAutoDisable GetOrAddTimedAutoDisable(GameObject vfxObject)
-        {
-            if (vfxObject == null) return null;
-
-            int key = vfxObject.GetInstanceID();
-            if (s_timedAutoDisableCache.TryGetValue(key, out var cached) && cached != null)
-                return cached;
-
-            if (!vfxObject.TryGetComponent(out cached))
-                cached = vfxObject.AddComponent<TimedAutoDisable>();
-
-            s_timedAutoDisableCache[key] = cached;
-            return cached;
-        }
-
         private bool CanSpawnDeathVfxThisFrame()
         {
             if (Time.frameCount != s_lastDeathVfxFrame)
@@ -326,3 +274,4 @@ namespace GamePlay.Enemies
         }
     }
 }
+

@@ -9822,7 +9822,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2857130510455983675}
   - component: {fileID: 6883008202403203799}
-  - component: {fileID: 441508667834897784}
   - component: {fileID: 3017692780797878872}
   m_Layer: 0
   m_Name: VFX_Active_Thunder_LightningBeam
@@ -14573,28 +14572,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &441508667834897784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5602036717874428961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e15ef299bf164d6aa15c957db8fa5961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 2857130510455983675}
-  EntityType: 0
-  autoPlay: 0
-  autoDestroy: 1
-  waitForDestroy: 0.5
-  particleEffect: 0
-  particles: []
-  speed: 50
-  thickness: 1
-  meshBaseLength: 6
 --- !u!199 &3017692780797878872
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -14680,7 +14657,6 @@ GameObject:
   - component: {fileID: 3703742918533657206}
   - component: {fileID: 991404143225053276}
   - component: {fileID: 5193852986555227187}
-  - component: {fileID: 8899614962804085444}
   m_Layer: 0
   m_Name: electric_ball_4
   m_TagString: Untagged
@@ -19500,28 +19476,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8899614962804085444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5615076719705885816}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 3703742918533657206}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 991404143225053276}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &8029630156513464926
 GameObject:
   m_ObjectHideFlags: 0
@@ -19533,7 +19487,6 @@ GameObject:
   - component: {fileID: 5534038563292392399}
   - component: {fileID: 3061833959010393072}
   - component: {fileID: 6501533111951837232}
-  - component: {fileID: 8458732140749710359}
   m_Layer: 0
   m_Name: electric_ball_3
   m_TagString: Untagged
@@ -24353,25 +24306,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8458732140749710359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8029630156513464926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 5534038563292392399}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 3061833959010393072}
-  - {fileID: 0}
-  - {fileID: 0}

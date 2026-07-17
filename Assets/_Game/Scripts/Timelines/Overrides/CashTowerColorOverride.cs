@@ -15,7 +15,7 @@ public class CashTowerColorOverride : ItemUnitPropertyOverride
         var tower = itemUnit as CashTowerController;
         if (tower != null)
         {
-            tower.ApplyColor(Color);
+            // tower.ApplyColor(Color);
         }
     }
 }

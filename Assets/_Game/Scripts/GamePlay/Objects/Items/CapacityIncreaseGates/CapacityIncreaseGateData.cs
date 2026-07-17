@@ -13,6 +13,8 @@ namespace GamePlay.Items
         public int StartLevel;
         public int Cost;
         public int UpgradeRequire;
+        [Tooltip("Sử dụng cho các loại buff đặc biệt như SwordSkill")]
+        public global::CardSystem.Data.BuffDefinition BuffDef;
     }
 
     [Serializable]

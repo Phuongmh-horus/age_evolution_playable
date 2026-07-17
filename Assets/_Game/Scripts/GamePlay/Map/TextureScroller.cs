@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using System.Collections.Generic;
 
 namespace GamePlay.Roads
 {
@@ -7,6 +8,8 @@ namespace GamePlay.Roads
     /// </summary>
     public class TextureScroller : MonoBehaviour
     {
+        private static readonly List<TextureScroller> _activeScrollers = new List<TextureScroller>(4);
+
         [Header("References")]
         [Tooltip("Mesh Renderer chứa material cần scroll")]
         public MeshRenderer targetRenderer;
@@ -41,13 +44,29 @@ namespace GamePlay.Roads
             SetupMaterial();
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            if (!GameplayManager.IsGameStarted) return;
-
-            if (_isScrolling)
+            if (!_activeScrollers.Contains(this))
             {
-                ScrollTexture();
+                _activeScrollers.Add(this);
+            }
+        }
+
+        private void OnDisable()
+        {
+            _activeScrollers.Remove(this);
+        }
+
+        public static void TickActiveScrollers(float dt)
+        {
+            if (_activeScrollers.Count == 0) return;
+            for (int i = 0; i < _activeScrollers.Count; i++)
+            {
+                var scroller = _activeScrollers[i];
+                if (scroller != null && scroller._isScrolling)
+                {
+                    scroller.ScrollTexture(dt);
+                }
             }
         }
 
@@ -136,11 +155,9 @@ namespace GamePlay.Roads
 
         #region Private Methods
 
-        private void ScrollTexture()
+        private void ScrollTexture(float dt)
         {
             if (_material == null) return;
-
-            float dt = Time.deltaTime;
 
             // Cộng dồn offset
             _currentOffset += _scrollVector * scrollSpeed * dt;

@@ -44,14 +44,6 @@ namespace GamePlay.ComponentSystems
             isActive = true;
         }
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            // Ensure isActive matches enabled state usually, or just default on
-            if (!isActive) isActive = true; 
-        }
-#endif
-
         public override void Dispose()
         {
             base.Dispose();
@@ -71,7 +63,7 @@ namespace GamePlay.ComponentSystems
 
             // Step 1: Calculate Local Scaled Extents (Half Size)
             Vector3 localHalfExtents = Vector3.zero;
-            
+
             if (shapeType == ShapeType.Sphere)
             {
                 // Sphere rotation doesn't matter for AABB size (if uniform), but let's be safe
@@ -93,14 +85,14 @@ namespace GamePlay.ComponentSystems
             }
             else if (shapeType == ShapeType.Cylinder)
             {
-                 // Cylinder is Axis-Aligned in Local Space (Y-up for Unity Cylinder)
-                 float r = (colliderSize.x * Mathf.Abs(worldScale.x)) * 0.5f;
-                 float h = (colliderSize.y * Mathf.Abs(worldScale.y)) * 0.5f;
-                 localHalfExtents = new Vector3(r, h, r);
+                // Cylinder is Axis-Aligned in Local Space (Y-up for Unity Cylinder)
+                float r = (colliderSize.x * Mathf.Abs(worldScale.x)) * 0.5f;
+                float h = (colliderSize.y * Mathf.Abs(worldScale.y)) * 0.5f;
+                localHalfExtents = new Vector3(r, h, r);
 
-                 // [FIX] Size.z MUST be radius (r) for AABB checks to work!
-                 // Cylinder is circular on XZ plane, so extentX = extentZ = radius
-                 return new ColliderData
+                // [FIX] Size.z MUST be radius (r) for AABB checks to work!
+                // Cylinder is circular on XZ plane, so extentX = extentZ = radius
+                return new ColliderData
                 {
                     Type = ShapeType.Cylinder,
                     Size = new Vector3(r, h, r),  // [FIX] Z = r, not 0!
@@ -111,8 +103,8 @@ namespace GamePlay.ComponentSystems
             else // BOX
             {
                 localHalfExtents = new Vector3(
-                    (colliderSize.x * Mathf.Abs(worldScale.x)) * 0.5f, 
-                    (colliderSize.y * Mathf.Abs(worldScale.y)) * 0.5f, 
+                    (colliderSize.x * Mathf.Abs(worldScale.x)) * 0.5f,
+                    (colliderSize.y * Mathf.Abs(worldScale.y)) * 0.5f,
                     (colliderSize.z * Mathf.Abs(worldScale.z)) * 0.5f);
             }
 
@@ -120,7 +112,7 @@ namespace GamePlay.ComponentSystems
             // For a Box with half-extents (hx, hy, hz) and rotation matrix M:
             // WorldExtents.x = |Mxx * hx| + |Mxy * hy| + |Mxz * hz|
             // ...
-            
+
             Matrix4x4 m = Matrix4x4.Rotate(rot);
             Vector3 worldHalfExtents = new Vector3(
                 Mathf.Abs(m.m00 * localHalfExtents.x) + Mathf.Abs(m.m01 * localHalfExtents.y) + Mathf.Abs(m.m02 * localHalfExtents.z),
@@ -156,7 +148,7 @@ namespace GamePlay.ComponentSystems
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.cyan;
-            
+
             // Use Matrix to automatically handle Position, Rotation, and SCALE
             Matrix4x4 oldMatrix = Gizmos.matrix;
             Gizmos.matrix = transform.localToWorldMatrix;
@@ -182,42 +174,42 @@ namespace GamePlay.ComponentSystems
                 // Unity Cylinder Primitive: Radius 0.5, Height 2, Center (0,0,0)
                 // We want: Radius = colliderSize.x/2, Height = colliderSize.y
                 // Center Y = colliderSize.y / 2
-                
+
                 Vector3 localCenter = new Vector3(0, colliderSize.y * 0.5f, 0);
-                
+
                 // Scale needed for primitive:
                 // Radius 0.5 -> colliderSize.x/2 => Scale X/Z = colliderSize.x
                 // Height 2 -> colliderSize.y => Scale Y = colliderSize.y / 2
-                
+
                 // Since we are already inside localToWorldMatrix (which applies Object Scale),
                 // we ONLY apply the Shape dimensions here relative to unit 1.
-                
+
                 // Wait, DrawWireMesh doesn't use the current Gizmos.matrix scale correctly if we supply ANOTHER matrix?
                 // Actually Gizmos.DrawWireMesh takes position/rotation/scale arguments which override?
                 // No, DrawWireMesh(mesh, position, rotation, scale).
                 // Let's rely on DrawMesh with a custom matrix combined with current?
                 // Simpler: Just reconstruct the matrix for Cylinder specifically.
-                
+
                 Gizmos.matrix = oldMatrix; // Reset first
-                
+
                 Vector3 worldScale = transform.lossyScale;
-                
+
                 // Re-calculate visual parameters in World Space
                 float radius = (colliderSize.x * Mathf.Abs(worldScale.x)) * 0.5f;
                 float height = (colliderSize.y * Mathf.Abs(worldScale.y));
-                
+
                 Vector3 feetPos = Position;
                 Vector3 center = feetPos + transform.up * (height * 0.5f);
-                
+
                 // Mesh Scale:
                 // Unity Cylinder: r=0.5, h=2.
                 // Target: r=radius, h=height.
                 // ScaleX = radius / 0.5 = 2*radius
                 // ScaleY = height / 2
                 // ScaleZ = 2*radius
-                
+
                 Vector3 meshScale = new Vector3(radius * 2f, height * 0.5f, radius * 2f);
-                
+
                 Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, meshScale);
                 Gizmos.DrawWireMesh(GetCylinderMesh());
             }

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_t3_a1_godray
+  m_Name: M_t3_a1_Godray
   m_Shader: {fileID: 4800000, guid: 30c2da7238b75c0459992487fa558549, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

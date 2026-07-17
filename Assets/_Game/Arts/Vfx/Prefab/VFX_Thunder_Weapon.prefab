@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1760047357694565374}
   - component: {fileID: 669233903416306757}
   - component: {fileID: 240955137917567189}
-  - component: {fileID: 2281160286696586309}
   m_Layer: 0
   m_Name: VFX_Thunder_Weapon
   m_TagString: Untagged
@@ -4834,27 +4833,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2281160286696586309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226780554438121299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1a56191c0a481d9989a4e7debaea66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 1760047357694565374}
-  EntityType: 0
-  autoPlay: 1
-  autoDestroy: 0
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 669233903416306757}
-  - {fileID: 6875932285483712021}
 --- !u!1 &1267762215109611237
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GamePlay.CollisionSystems;
 using GamePlay.CombatSystems;
@@ -6,6 +7,7 @@ using GamePlay.ComponentSystems;
 using GamePlay.Items;
 using UnityEngine;
 using UnityEngine.Serialization;
+using DG.Tweening;
 
 #if UNITY_EDITOR
 #endif
@@ -30,11 +32,11 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     [SerializeField] private bool forceVisualBricksMatchDamage = true;
     [SerializeField] private bool batchCapacityGainPerFrame = true;
     [SerializeField] private BrickLayer brickLayer;
+    public BrickLayer BrickLayerPrefab => brickLayer;
     [SerializeField] private BrickFallSettings _brickFallSettings;
 
-    [Header("Replacement Layers (pooled)")]
-    [SerializeField] private List<BrickLayer> replacementLayerPrefabs = new List<BrickLayer>();
-    [SerializeField] private float layerReturnDelay = 1.5f;
+    [Header("Pre-placed Layers")]
+    [SerializeField] private List<BrickLayer> preplacedLayers = new List<BrickLayer>();
     [SerializeField] private List<Material> brickMats = new List<Material>();
     [SerializeField] private MeshRenderer insideLayerRenderer;
 
@@ -54,16 +56,13 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     [SerializeField] private HitComponent hitComponent;
     [SerializeField] private EffectType nonWheelHitEffectType = EffectType.Hit;
 
-    [Header("Chain")]
-    [SerializeField] private bool isChainedPillar = false;
-    [SerializeField] private LockChain chain;
-
     // state
     private int _scaleStage;
     private float _scaleTimer;
     private Vector3 _baseScale;
     private Vector3 _originalScale;
     private int _nextReplacementIndex;
+    private Coroutine _scalePulseRoutine;
 
     [SerializeField] private int _currentLayerCount;
     [SerializeField] private int _currentBrickIndex;
@@ -76,31 +75,32 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private int _inFlightCapacityGain;
     private bool _ignoreBrickCallbacks;
     private float _nextVisualSpawnTime;
-    private bool _warnedMissingChain;
     private int _lastHitFxFrame = -1;
     private readonly StatModifierCapacityData _capacityGainData = new StatModifierCapacityData();
-    private readonly List<Stack<BrickLayer>> _replacementLayerPools = new List<Stack<BrickLayer>>(8);
 
-    private void Awake()
+    protected override void Awake()
     {
-        EnsureDespawnScaleEffect();
+        base.Awake();
+
+
+        if (bricksRoot != null)
+        {
+            preplacedLayers.Clear();
+            preplacedLayers.AddRange(bricksRoot.GetComponentsInChildren<BrickLayer>(true));
+        }
 
         if (_entityType == GamePlay.Entities.EntityType.None || _entityType == GamePlay.Entities.EntityType.Item)
         {
             _entityType = GamePlay.Entities.EntityType.ResourceTower;
         }
 
-        ResolveChain();
         EnsureHitTextEffect(true);
     }
 
     private void Start()
     {
         _nextReplacementIndex = 0;
-        EnsureReplacementLayerPools();
         _lastHitFxFrame = -1;
-
-        SetupChainFromData();
 
         _currentLayerCount = 0;
         _currentBrickIndex = (brickLayer != null && brickLayer.bricks != null && brickLayer.bricks.Count > 0)
@@ -148,9 +148,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         if ((ActiveFlags & CapabilityFlags.Hit) != 0 && Pack.Hitable != (object)this)
             Pack.Hitable.Initialize();
         if ((ActiveFlags & CapabilityFlags.Heal) != 0) Pack.Healable.Initialize();
-        if (_tutElement) _tutElement.Initialize();
-
-        SetupChainFromData();
+        // if (_tutElement) _tutElement.Initialize();
 
         // Strip existing Unity Physics if any
         if (TryGetComponent<Rigidbody>(out var rb)) Destroy(rb);
@@ -191,26 +189,28 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     private void PrepareInitialBrickLayer()
     {
         _nextReplacementIndex = 0;
-        EnsureReplacementLayerPools();
 
-        if (brickLayer != null)
+        for (int i = 0; i < preplacedLayers.Count; i++)
         {
-            brickLayer.ResetLayer(forceResetFlying: true);
-            ReturnLayerToPool(brickLayer, 0);
-            brickLayer = null;
+            var layer = preplacedLayers[i];
+            if (layer == null) continue;
+
+            layer.ResetLayer(forceResetFlying: true);
+            if (i == 0)
+            {
+                layer.isActivated = true;
+                layer.isCached = false;
+                layer.gameObject.SetActive(true);
+            }
+            else
+            {
+                layer.isActivated = false;
+                layer.isCached = true;
+                layer.gameObject.SetActive(false);
+            }
         }
 
-        if (replacementLayerPrefabs != null && replacementLayerPrefabs.Count > 0
-        && replacementLayerPrefabs[0] != null)
-        {
-            brickLayer = GetLayerFromPool(0);
-            brickLayer.transform.localPosition = Vector3.zero;
-            brickLayer.transform.localRotation = Quaternion.identity;
-            brickLayer.transform.localScale = Vector3.one;
-            brickLayer.isActivated = true;
-            brickLayer.isCached = false;
-        }
-
+        brickLayer = preplacedLayers.Count > 0 ? preplacedLayers[0] : null;
         _currentLayerCount = 0;
         _currentBrickIndex = (brickLayer != null && brickLayer.bricks != null && brickLayer.bricks.Count > 0)
             ? brickLayer.bricks.Count - 1
@@ -220,11 +220,6 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     protected override void HandleNonWheelCollision(IAttacker source)
     {
         int shownDamage = source != null ? Mathf.Max(1, source.Damage) : 1;
-        if (isChainedPillar && chain)
-        {
-            HandleChainHit(shownDamage);
-            return;
-        }
 
         PlayNonWheelHitEffect();
         Pack.Healable?.TakeDamage(source);
@@ -239,30 +234,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
     protected override void HandleWheelCollision()
     {
-        if (isChainedPillar && chain)
-        {
-            HandleChainHit(1);
-            return;
-        }
-
         base.HandleWheelCollision();
-    }
-
-    private void HandleChainHit(int shownDamage)
-    {
-        if (chain == null) return;
-
-        chain.ApplyDamage();
-        hitTextFlyEffect?.OnHit(Mathf.Max(1, shownDamage));
-        PlayNonWheelHitEffect();
-        if (Data != null)
-            Data.Armor = Mathf.Max(0, chain.RemainingHealth);
-
-        if (chain.RemainingHealth < 1)
-        {
-            chain.PlayBreakAnimation();
-            isChainedPillar = false;
-        }
     }
 
     private void PlayNonWheelHitEffect()
@@ -279,34 +251,6 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
         _lastHitFxFrame = Time.frameCount;
         Pack.Effector?.PlayEffect(nonWheelHitEffectType, transform.position + transform.up * 2.7f + transform.forward * -2.5f, Quaternion.identity, transform);
-    }
-
-    private void SetupChainFromData()
-    {
-        int armor = Data != null ? Data.Armor : 0;
-        isChainedPillar = armor > 0;
-        ResolveChain();
-
-        if (chain != null)
-        {
-            chain.AutoBind();
-            chain.Initialize(armor);
-            if (!isChainedPillar)
-                chain.gameObject.SetActive(false);
-        }
-    }
-
-    private void ResolveChain()
-    {
-        if (chain != null) return;
-        if (_warnedMissingChain) return;
-        if (!isChainedPillar) return;
-
-        _warnedMissingChain = true;
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-            Debug.LogWarning($"[Pillar] Missing LockChain on {name}. Assign in Inspector.");
-#endif
     }
 
     private void TriggerBrickFall(Vector3 attackerWorldPos, int damage)
@@ -328,7 +272,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
             // Performance mode: reduce only visual bricks, keep total capacity reward equivalent.
             if (reduceBricksPerDamage)
             {
-                visualBrickCount = Mathf.Max(1, Mathf.CeilToInt(logicalBrickCount * 0.2f));
+                visualBrickCount = Mathf.Max(1, Mathf.CeilToInt(logicalBrickCount * 0.8f));
             }
 
             if (maxVisualBricksPerHit > 0)
@@ -355,6 +299,7 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         }
 
         int logicalCapacity = logicalBrickCount * capacityUnit;
+
         float spawnInterval = forceVisualBricksMatchDamage ? 0f : Mathf.Max(0f, minVisualSpawnInterval);
         if (spawnInterval > 0f && Time.time < _nextVisualSpawnTime)
         {
@@ -362,7 +307,6 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
             QueueDeliveredEvent(logicalCapacity);
             return;
         }
-
         _nextVisualSpawnTime = Time.time + spawnInterval;
 
         int remainingCapacity = logicalCapacity;
@@ -425,15 +369,56 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
     private void PlayScalePulse()
     {
-        _scaleStage = 1;
-        _scaleTimer = 0f;
-        _baseScale = transform.localScale;
+        if (!isActiveAndEnabled) return;
+
+        Vector3 currentScale = transform.localScale;
+        if (_originalScale == Vector3.zero)
+        {
+            _originalScale = currentScale;
+        }
+
+        if (_scalePulseRoutine != null)
+        {
+            StopCoroutine(_scalePulseRoutine);
+            _scalePulseRoutine = null;
+        }
+
+        _scalePulseRoutine = StartCoroutine(CoScalePulse(currentScale));
+    }
+
+    private System.Collections.IEnumerator CoScalePulse(Vector3 from)
+    {
+        Vector3 to = _originalScale * scaleUp;
+
+        float t = 0f;
+        while (t < scaleUpDuration)
+        {
+            t += Time.deltaTime;
+            float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, scaleUpDuration));
+            transform.localScale = Vector3.Lerp(from, to, k);
+            yield return null;
+        }
+
+        t = 0f;
+        while (t < scaleDownDuration)
+        {
+            t += Time.deltaTime;
+            float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, scaleDownDuration));
+            transform.localScale = Vector3.Lerp(to, _originalScale, k);
+            yield return null;
+        }
+
+        transform.localScale = _originalScale;
+        _scalePulseRoutine = null;
     }
 
     private void StopScalePulse()
     {
-        _scaleStage = 0;
-        _scaleTimer = 0f;
+        if (_scalePulseRoutine != null)
+        {
+            StopCoroutine(_scalePulseRoutine);
+            _scalePulseRoutine = null;
+        }
 
         if (_originalScale != Vector3.zero)
         {
@@ -441,47 +426,9 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         }
     }
 
-    private void Update()
-    {
-        if (_scaleStage == 0 && _pendingCapacityGain <= 0)
-        {
-            return;
-        }
-
-        if (_scaleStage != 0)
-        {
-            _scaleTimer += Time.deltaTime;
-
-            if (_scaleStage == 1)
-            {
-                float t = Mathf.Clamp01(_scaleTimer / Mathf.Max(0.0001f, scaleUpDuration));
-                transform.localScale = Vector3.Lerp(_baseScale, _originalScale * scaleUp, t);
-                if (t >= 1f)
-                {
-                    _scaleStage = 2;
-                    _scaleTimer = 0f;
-                }
-            }
-            else if (_scaleStage == 2)
-            {
-                float t = Mathf.Clamp01(_scaleTimer / Mathf.Max(0.0001f, scaleDownDuration));
-                transform.localScale = Vector3.Lerp(_originalScale * scaleUp, _originalScale, t);
-                if (t >= 1f)
-                {
-                    transform.localScale = _originalScale;
-                    _scaleStage = 0;
-                    _scaleTimer = 0f;
-                }
-            }
-        }
-
-        // Capacity updates are batched once per frame to reduce heavy UI/event churn on Luna.
-        FlushQueuedCapacityGain();
-        FlushDeliveredEvent();
-    }
-
     private void OnDisable()
     {
+        StopScalePulse();
         _ignoreBrickCallbacks = false;
         FlushQueuedCapacityGain();
         FlushDeliveredEvent();
@@ -500,15 +447,18 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
     {
         int safeGain = Mathf.Max(1, gained);
 
-        // Pillar can be disabled/despawned while spawned bricks are still flying to the capacity bar.
-        // In that case Update() won't run to flush batched gain, so apply immediately to keep UI/gameplay in sync.
         if (!batchCapacityGainPerFrame || !isActiveAndEnabled)
         {
             ApplyCapacityGain(safeGain);
             return;
         }
 
+        bool wasEmpty = _pendingCapacityGain == 0;
         _pendingCapacityGain += safeGain;
+        if (wasEmpty)
+        {
+            DOVirtual.DelayedCall(0.02f, FlushQueuedCapacityGain, false).SetId(this);
+        }
     }
 
     private void FlushQueuedCapacityGain()
@@ -522,10 +472,15 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
     private void QueueDeliveredEvent(int gained)
     {
+        bool wasEmpty = _pendingDeliveredEventGain == 0;
         _pendingDeliveredEventGain += Mathf.Max(1, gained);
         if (!isActiveAndEnabled)
         {
             FlushDeliveredEvent();
+        }
+        else if (wasEmpty)
+        {
+            DOVirtual.DelayedCall(0.02f, FlushDeliveredEvent, false).SetId(this);
         }
     }
 
@@ -569,129 +524,76 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         {
             finishedLayer.isActivated = true;
             finishedLayer.isCached = true;
-            ReturnLayerToPool(finishedLayer, layerIndex);
+            // Kept active so flying bricks don't disappear abruptly
         }
 
-        if (replacementLayerPrefabs == null || replacementLayerPrefabs.Count == 0) return;
+        if (preplacedLayers == null || preplacedLayers.Count == 0) return;
 
         _nextReplacementIndex++;
-        if (_nextReplacementIndex >= replacementLayerPrefabs.Count)
-            _nextReplacementIndex = replacementLayerPrefabs.Count - 1;
+        if (_nextReplacementIndex >= preplacedLayers.Count)
+        {
+            _nextReplacementIndex = 0; // Loop back to reuse existing layers
+        }
 
-        var newLayer = GetLayerFromPool(_nextReplacementIndex);
-        newLayer.transform.localPosition = Vector3.zero;
-        newLayer.transform.localRotation = Quaternion.identity;
-        newLayer.transform.localScale = bricksRoot.localScale;
-        newLayer.isActivated = true;
-
-        brickLayer = newLayer;
+        var newLayer = preplacedLayers[_nextReplacementIndex];
+        if (newLayer != null)
+        {
+            newLayer.ResetLayer(forceResetFlying: false);
+            newLayer.gameObject.SetActive(true);
+            newLayer.isActivated = true;
+            newLayer.isCached = false;
+            brickLayer = newLayer;
+        }
 
         if (insideLayerRenderer != null && brickMats != null && brickMats.Count > 0)
         {
             int matIndex = Mathf.Clamp(_nextReplacementIndex, 0, brickMats.Count - 1);
-            // Avoid per-renderer material instancing that causes RAM growth over time.
             insideLayerRenderer.sharedMaterial = brickMats[matIndex];
         }
 
         _currentLayerCount++;
-        _currentBrickIndex = newLayer.bricks != null ? newLayer.bricks.Count - 1 : 0;
-    }
-
-    private void EnsureReplacementLayerPools()
-    {
-        int targetCount = replacementLayerPrefabs != null ? replacementLayerPrefabs.Count : 0;
-        while (_replacementLayerPools.Count < targetCount)
-        {
-            _replacementLayerPools.Add(new Stack<BrickLayer>(2));
-        }
-    }
-
-    private BrickLayer GetLayerFromPool(int prefabIndex)
-    {
-        EnsureReplacementLayerPools();
-        if (replacementLayerPrefabs == null || prefabIndex < 0 || prefabIndex >= replacementLayerPrefabs.Count)
-            return null;
-
-        var stack = _replacementLayerPools[prefabIndex];
-        BrickLayer layer = null;
-        while (stack.Count > 0 && layer == null)
-        {
-            layer = stack.Pop();
-        }
-
-        if (layer == null)
-        {
-            var prefab = replacementLayerPrefabs[prefabIndex];
-            if (prefab == null) return null;
-            layer = Instantiate(prefab, bricksRoot);
-        }
-        else
-        {
-            layer.transform.SetParent(bricksRoot, false);
-            layer.gameObject.SetActive(true);
-        }
-
-        layer.ResetLayer();
-        layer.isCached = false;
-        layer.isActivated = true;
-        return layer;
-    }
-
-    private void ReturnLayerToPool(BrickLayer layer, int poolIndexHint)
-    {
-        if (layer == null)
-            return;
-
-        layer.ResetLayer(forceResetFlying: false);
-        layer.isActivated = false;
-        layer.isCached = true;
-        layer.gameObject.SetActive(false);
-        layer.transform.SetParent(bricksRoot, false);
-
-        EnsureReplacementLayerPools();
-        int safeIndex = Mathf.Clamp(poolIndexHint, 0, Mathf.Max(0, _replacementLayerPools.Count - 1));
-        _replacementLayerPools[safeIndex].Push(layer);
+        _currentBrickIndex = (brickLayer != null && brickLayer.bricks != null) ? brickLayer.bricks.Count - 1 : 0;
     }
 
     private void EnsureHitTextEffect(bool allowAddRuntime)
     {
         if (hitTextFlyEffect != null) return;
-        hitTextFlyEffect = GetComponentInChildren<HitTextFlyEffect>(true);
-        if (hitTextFlyEffect == null && allowAddRuntime)
-            hitTextFlyEffect = gameObject.AddComponent<HitTextFlyEffect>();
+#if UNITY_EDITOR
+        Debug.LogWarning($"[CapacityIncreasePillar] hitTextFlyEffect missing on {name}. Please assign in Inspector.");
+#endif
     }
 
     private void EnsureDespawnScaleEffect()
     {
         if (!ensureDespawnScaleEffect) return;
 
-        if (deathScaleEffect == null)
-        {
-            deathScaleEffect = GetComponent<DeathScaleEffect>();
-        }
+        // if (deathScaleEffect == null)
+        // {
+        //     deathScaleEffect = GetComponent<DeathScaleEffect>();
+        // }
 
-        if (deathScaleEffect == null)
-        {
-            deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
-        }
+        // if (deathScaleEffect == null)
+        // {
+        //     deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
+        // }
 
-        if (deathScaleEffect.Transform == null)
-        {
-            deathScaleEffect.Transform = transform;
-        }
+        // if (deathScaleEffect.Transform == null)
+        // {
+        //     deathScaleEffect.Transform = transform;
+        // }
 
-        deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
+        // deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
     }
 
     protected override void DespawnInterval()
     {
         StopScalePulse();
-        EnsureDespawnScaleEffect();
+
         base.DespawnInterval();
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    private new void OnDrawGizmosSelected()
     {
         if (bricksRoot == null) return;
         Gizmos.color = Color.yellow;

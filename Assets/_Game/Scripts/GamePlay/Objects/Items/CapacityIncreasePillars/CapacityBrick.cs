@@ -49,7 +49,7 @@ public class CapacityBrick : MonoBehaviour
         {
             Debug.LogWarning("Brick Mesh Renderer is not assigned or has zero size.");
         }
-    }
+    } 
 
     public void ActivateBrickEffect()
     {

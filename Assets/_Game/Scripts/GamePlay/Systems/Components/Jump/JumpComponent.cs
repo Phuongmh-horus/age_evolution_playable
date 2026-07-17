@@ -9,7 +9,9 @@ namespace GamePlay.ComponentSystems
 {
     public class JumpComponent : BaseComponent, IJumper
     {
-        public event Action<IHitable> OnJumperComplete = delegate { };
+        private static readonly Action<IHitable> NoJumperComplete = _ => { };
+
+        public event Action<IHitable> OnJumperComplete = NoJumperComplete;
 
         [Header("Jump Config (Active Check)")]
         [SerializeField] protected EntityType jumpTarget;
@@ -31,13 +33,14 @@ namespace GamePlay.ComponentSystems
         public override void Initialize()
         {
             base.Initialize(); // BaseComponent usually has empty Initialize but good practice
-            OnJumperComplete = delegate { };
+            OnJumperComplete = NoJumperComplete;
+            targetMask = GetTarget();
         }
         
         public override void Dispose()
         {
              base.Dispose();
-             OnJumperComplete = null;
+             OnJumperComplete = NoJumperComplete;
         }
 
         public void OnJumpSucceed(IHitable target)

@@ -14729,7 +14729,6 @@ GameObject:
   - component: {fileID: 1746557288873654090}
   - component: {fileID: 5177026549037140657}
   - component: {fileID: 8890341774273368018}
-  - component: {fileID: 3826609487297063394}
   m_Layer: 0
   m_Name: AGE_VFX_DroneGhostVector_ElectricExlosion
   m_TagString: Untagged
@@ -19634,30 +19633,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &3826609487297063394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4715937082390065952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39e1e7a4e8954b8eaaef014d66327de7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 1746557288873654090}
-  EntityType: 0
-  VfxTag: 
-  autoPlay: 1
-  autoDestroy: 1
-  waitForDestroy: 1
-  particleEffect: 1
-  particles:
-  - {fileID: 2294944669123424963, guid: ac7538e53b41618498c868ccb1d1f210, type: 3}
-  - {fileID: 6554785280593767030, guid: ac7538e53b41618498c868ccb1d1f210, type: 3}
-  - {fileID: 1618848475944783543, guid: ac7538e53b41618498c868ccb1d1f210, type: 3}
-  targetPropertyName: _Color
 --- !u!1 &7704562750734689214
 GameObject:
   m_ObjectHideFlags: 0

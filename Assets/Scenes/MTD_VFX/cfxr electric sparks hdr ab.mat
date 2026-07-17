@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: cfxr electric sparks hdr ab
-  m_Shader: {fileID: -6465566751694194690, guid: c650f5c581a1f2a4282156121cda6aba, type: 3}
+  m_Shader: {fileID: 4800000, guid: 73ee4b5b9c5c16940967757f0f2449e4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -16,6 +16,7 @@ Material:
   - _FADING_ON
   m_InvalidKeywords:
   - _
+  - _BLENDINGTYPE_ALPHABLEND
   - _CFXR_DITHERED_SHADOWS_OFF
   - _CFXR_HDR_BOOST
   - _CFXR_OVERLAYBLEND_RGBA

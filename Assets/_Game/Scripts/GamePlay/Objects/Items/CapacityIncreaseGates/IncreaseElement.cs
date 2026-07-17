@@ -13,21 +13,22 @@ namespace GamePlay.Items
         [SerializeField] private Slider slider;
         [SerializeField] private Image icon;
         [SerializeField] private Image iconBackground;
-        
+
         [SerializeField] private SpriteCardTypeData spriteCardTypeData;
         [SerializeField] private StatsUpgradeIcon statsUpgradeIcon;
         [SerializeField] private BackgroundGradientData bgGradientData;
         [SerializeField] private GameObject LockImage;
         [SerializeField] private GameObject UnlockImage;
-        
+
         [SerializeField] private TextMeshProUGUI goldText;
-        
+
         private StatModifierData _statData;
         private IncreaseElementData elementData;
 
         public int GoldCost => elementData != null ? elementData.Cost : 0;
 
         private int m_levelCard;
+        private bool _isActiveVisual;
 
         public StatModifierData StatData => _statData;
         public int LevelCard => m_levelCard;
@@ -80,7 +81,6 @@ namespace GamePlay.Items
         {
             TryAutoResolveLockVisuals();
             SetNormalVisual();
-            RefreshLockVisual();
         }
 
         private void SetGradient(GradientColor gradientColor)
@@ -88,17 +88,28 @@ namespace GamePlay.Items
             gradient?.Set(gradientColor.from, gradientColor.to);
         }
 
+        private void ApplyVisualState()
+        {
+            if (bgGradientData != null)
+            {
+                var targetGradient = _isActiveVisual ? bgGradientData.Active : bgGradientData.Normal;
+                SetGradient(targetGradient);
+            }
+
+            RefreshLockVisual();
+        }
+
         public void SetActiveVisual()
         {
-            if (bgGradientData == null) return;
-            SetGradient(bgGradientData.Active);
+            _isActiveVisual = true;
+            ApplyVisualState();
         }
 
         [ContextMenu("Set InActive Visual")]
         public void SetNormalVisual()
         {
-            if (bgGradientData == null) return;
-            SetGradient(bgGradientData.Normal);
+            _isActiveVisual = false;
+            ApplyVisualState();
         }
 
         public void InitProgress(int maxGold)
@@ -124,23 +135,23 @@ namespace GamePlay.Items
         {
             elementData = data;
             if (elementData == null) return;
-            
+
             if (goldText != null)
                 goldText.text = data.Cost.ToString();
-            
+
             _statData = new CapacityIncreaseGateData()
             {
                 Type = elementData.Type,
                 Value = elementData.Value,
-                
+
                 ElementDataList = new List<IncreaseElementData>() { elementData },
             };
 
             m_levelCard = data.StartLevel;
-            if (spriteCardTypeData.TryGetSprite(m_levelCard, out var spriteBackground))
+            if (spriteCardTypeData != null && spriteCardTypeData.TryGetSprite(m_levelCard, out var spriteBackground))
                 iconBackground.sprite = spriteBackground.Unknown;
 
-            RefreshLockVisual();
+            ApplyVisualState();
         }
 
         public void UpdateProgress(int remainingGold)
@@ -183,12 +194,12 @@ namespace GamePlay.Items
 
             if (iconBackground != null)
             {
-                if (spriteCardTypeData.TryGetSprite(level, out var spriteBackground))
+                if (spriteCardTypeData != null && spriteCardTypeData.TryGetSprite(level, out var spriteBackground))
                     iconBackground.sprite = spriteBackground.Unknown; // spriteBackground.Normal;
                 else iconBackground.enabled = false;
             }
 
-            RefreshLockVisual();
+            ApplyVisualState();
         }
 
         public void ShowGoldDrainFeedback()
@@ -198,7 +209,7 @@ namespace GamePlay.Items
 
         private void RefreshLockVisual()
         {
-            bool isUnlocked = m_levelCard > 0;
+            bool isUnlocked = m_levelCard > 0 || _isActiveVisual;
 
             if (LockImage != null)
             {

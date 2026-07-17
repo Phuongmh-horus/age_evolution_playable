@@ -278,7 +278,7 @@ MonoBehaviour:
     - rid: 1509584417693106217
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 344.40002
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -306,7 +306,7 @@ MonoBehaviour:
     - rid: 1509584417693106223
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 348.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -376,7 +376,7 @@ MonoBehaviour:
     - rid: 1509584417693106319
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 355.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -412,7 +412,7 @@ MonoBehaviour:
     - rid: 1509584417693106232
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 359.40002
     PositionOffset: {x: 5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -426,7 +426,7 @@ MonoBehaviour:
     - rid: 1509584417693106235
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 359.40002
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -454,7 +454,7 @@ MonoBehaviour:
     - rid: 1509584417693106241
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 363.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -510,7 +510,7 @@ MonoBehaviour:
     - rid: 1509584417693106253
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 370.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -524,7 +524,7 @@ MonoBehaviour:
     - rid: 1509584417693106256
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 370.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -546,7 +546,7 @@ MonoBehaviour:
     propertyOverrides: []
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 374.40002
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -560,7 +560,7 @@ MonoBehaviour:
     - rid: 1509584417693106262
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 374.40002
     PositionOffset: {x: 5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -574,7 +574,7 @@ MonoBehaviour:
     - rid: 1509584417693106265
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 374.40002
     PositionOffset: {x: -5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -588,7 +588,7 @@ MonoBehaviour:
     - rid: 1509584417693106268
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 378.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -658,7 +658,7 @@ MonoBehaviour:
     - rid: 1509584417693106283
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 385.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -672,7 +672,7 @@ MonoBehaviour:
     - rid: 1509584417693106286
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 385.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -787,9 +787,9 @@ MonoBehaviour:
     - rid: 5658998658205483778
     - rid: 5658998658205483779
     - rid: 5658998658205483780
-    - rid: 5658998658205483475
-    - rid: 5658998658205483476
-    - rid: 5658998658205483477
+    - rid: 2986439768717918208
+    - rid: 2986439768717918209
+    - rid: 2986439768717918210
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
@@ -801,12 +801,12 @@ MonoBehaviour:
     - rid: 5658998658205483784
     - rid: 5658998658205483785
     - rid: 5658998658205483786
-    - rid: 5658998658205483481
-    - rid: 5658998658205483482
-    - rid: 5658998658205483483
+    - rid: 2986439768717918211
+    - rid: 2986439768717918212
+    - rid: 2986439768717918213
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 400.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -815,12 +815,12 @@ MonoBehaviour:
     - rid: 5658998658205483790
     - rid: 5658998658205483791
     - rid: 5658998658205483792
-    - rid: 5658998658205483487
-    - rid: 5658998658205483488
-    - rid: 5658998658205483489
+    - rid: 2986439768717918214
+    - rid: 2986439768717918215
+    - rid: 2986439768717918216
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 400.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -829,9 +829,9 @@ MonoBehaviour:
     - rid: 5658998658205483796
     - rid: 5658998658205483797
     - rid: 5658998658205483798
-    - rid: 5658998658205483493
-    - rid: 5658998658205483494
-    - rid: 5658998658205483495
+    - rid: 2986439768717918217
+    - rid: 2986439768717918218
+    - rid: 2986439768717918219
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
@@ -851,9 +851,9 @@ MonoBehaviour:
     - rid: 5658998658205483814
     - rid: 5658998658205483815
     - rid: 5658998658205483816
-    - rid: 5658998658205483499
-    - rid: 5658998658205483500
-    - rid: 5658998658205483501
+    - rid: 2986439768717918220
+    - rid: 2986439768717918221
+    - rid: 2986439768717918222
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
@@ -865,9 +865,9 @@ MonoBehaviour:
     - rid: 5658998658205483802
     - rid: 5658998658205483803
     - rid: 5658998658205483804
-    - rid: 5658998658205483505
-    - rid: 5658998658205483506
-    - rid: 5658998658205483507
+    - rid: 2986439768717918223
+    - rid: 2986439768717918224
+    - rid: 2986439768717918225
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
@@ -879,9 +879,9 @@ MonoBehaviour:
     - rid: 5658998658205483808
     - rid: 5658998658205483809
     - rid: 5658998658205483810
-    - rid: 5658998658205483511
-    - rid: 5658998658205483512
-    - rid: 5658998658205483513
+    - rid: 2986439768717918226
+    - rid: 2986439768717918227
+    - rid: 2986439768717918228
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
@@ -893,12 +893,12 @@ MonoBehaviour:
     - rid: 5658998658205483826
     - rid: 5658998658205483827
     - rid: 5658998658205483828
-    - rid: 5658998658205483517
-    - rid: 5658998658205483518
-    - rid: 5658998658205483519
+    - rid: 2986439768717918229
+    - rid: 2986439768717918230
+    - rid: 2986439768717918231
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 408.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -907,12 +907,12 @@ MonoBehaviour:
     - rid: 5658998658205483820
     - rid: 5658998658205483821
     - rid: 5658998658205483822
-    - rid: 5658998658205483529
-    - rid: 5658998658205483530
-    - rid: 5658998658205483531
+    - rid: 2986439768717918232
+    - rid: 2986439768717918233
+    - rid: 2986439768717918234
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 412
     PositionOffset: {x: -5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -921,12 +921,12 @@ MonoBehaviour:
     - rid: 5658998658205483832
     - rid: 5658998658205483833
     - rid: 5658998658205483834
-    - rid: 5658998658205483523
-    - rid: 5658998658205483524
-    - rid: 5658998658205483525
+    - rid: 2986439768717918235
+    - rid: 2986439768717918236
+    - rid: 2986439768717918237
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 412
     PositionOffset: {x: 5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -935,12 +935,12 @@ MonoBehaviour:
     - rid: 5658998658205483838
     - rid: 5658998658205483839
     - rid: 5658998658205483840
-    - rid: 5658998658205483535
-    - rid: 5658998658205483536
-    - rid: 5658998658205483537
+    - rid: 2986439768717918238
+    - rid: 2986439768717918239
+    - rid: 2986439768717918240
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 412
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -949,9 +949,9 @@ MonoBehaviour:
     - rid: 5658998658205483844
     - rid: 5658998658205483845
     - rid: 5658998658205483846
-    - rid: 5658998658205483541
-    - rid: 5658998658205483542
-    - rid: 5658998658205483543
+    - rid: 2986439768717918241
+    - rid: 2986439768717918242
+    - rid: 2986439768717918243
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
@@ -963,9 +963,9 @@ MonoBehaviour:
     - rid: 5658998658205483850
     - rid: 5658998658205483851
     - rid: 5658998658205483852
-    - rid: 5658998658205483547
-    - rid: 5658998658205483548
-    - rid: 5658998658205483549
+    - rid: 2986439768717918244
+    - rid: 2986439768717918245
+    - rid: 2986439768717918246
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
@@ -977,9 +977,9 @@ MonoBehaviour:
     - rid: 5658998658205483856
     - rid: 5658998658205483857
     - rid: 5658998658205483858
-    - rid: 5658998658205483553
-    - rid: 5658998658205483554
-    - rid: 5658998658205483555
+    - rid: 2986439768717918247
+    - rid: 2986439768717918248
+    - rid: 2986439768717918249
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
@@ -999,9 +999,9 @@ MonoBehaviour:
     - rid: 5658998658205483862
     - rid: 5658998658205483863
     - rid: 5658998658205483864
-    - rid: 5658998658205483559
-    - rid: 5658998658205483560
-    - rid: 5658998658205483561
+    - rid: 2986439768717918250
+    - rid: 2986439768717918251
+    - rid: 2986439768717918252
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
@@ -1013,12 +1013,12 @@ MonoBehaviour:
     - rid: 5658998658205483868
     - rid: 5658998658205483869
     - rid: 5658998658205483870
-    - rid: 5658998658205483565
-    - rid: 5658998658205483566
-    - rid: 5658998658205483567
+    - rid: 2986439768717918253
+    - rid: 2986439768717918254
+    - rid: 2986439768717918255
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
     PositionOnMap: 419.40002
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1027,12 +1027,12 @@ MonoBehaviour:
     - rid: 5658998658205483874
     - rid: 5658998658205483875
     - rid: 5658998658205483876
-    - rid: 5658998658205483571
-    - rid: 5658998658205483572
-    - rid: 5658998658205483573
+    - rid: 2986439768717918256
+    - rid: 2986439768717918257
+    - rid: 2986439768717918258
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 423.05002
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1041,9 +1041,9 @@ MonoBehaviour:
     - rid: 5658998658205483886
     - rid: 5658998658205483887
     - rid: 5658998658205483888
-    - rid: 5658998658205483577
-    - rid: 5658998658205483578
-    - rid: 5658998658205483579
+    - rid: 2986439768717918259
+    - rid: 2986439768717918260
+    - rid: 2986439768717918261
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
@@ -1055,12 +1055,12 @@ MonoBehaviour:
     - rid: 5658998658205483880
     - rid: 5658998658205483881
     - rid: 5658998658205483882
-    - rid: 5658998658205483589
-    - rid: 5658998658205483590
-    - rid: 5658998658205483591
+    - rid: 2986439768717918262
+    - rid: 2986439768717918263
+    - rid: 2986439768717918264
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 427
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1069,12 +1069,12 @@ MonoBehaviour:
     - rid: 5658998658205483892
     - rid: 5658998658205483893
     - rid: 5658998658205483894
-    - rid: 5658998658205483583
-    - rid: 5658998658205483584
-    - rid: 5658998658205483585
+    - rid: 2986439768717918265
+    - rid: 2986439768717918266
+    - rid: 2986439768717918267
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 427
     PositionOffset: {x: -5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1083,12 +1083,12 @@ MonoBehaviour:
     - rid: 5658998658205483898
     - rid: 5658998658205483899
     - rid: 5658998658205483900
-    - rid: 5658998658205483595
-    - rid: 5658998658205483596
-    - rid: 5658998658205483597
+    - rid: 2986439768717918289
+    - rid: 2986439768717918290
+    - rid: 2986439768717918291
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: d8d39bbc3caafde44be7e5184adc0467, type: 3}
     PositionOnMap: 427
     PositionOffset: {x: 5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1097,12 +1097,12 @@ MonoBehaviour:
     - rid: 5658998658205483904
     - rid: 5658998658205483905
     - rid: 5658998658205483906
-    - rid: 5658998658205483601
-    - rid: 5658998658205483602
-    - rid: 5658998658205483603
+    - rid: 2986439768717918292
+    - rid: 2986439768717918293
+    - rid: 2986439768717918294
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 430.64
     PositionOffset: {x: 2.63, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1111,12 +1111,12 @@ MonoBehaviour:
     - rid: 5658998658205483910
     - rid: 5658998658205483911
     - rid: 5658998658205483912
-    - rid: 5658998658205483607
-    - rid: 5658998658205483608
-    - rid: 5658998658205483609
+    - rid: 2986439768717918286
+    - rid: 2986439768717918287
+    - rid: 2986439768717918288
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 220bec4937cd7104ca210924c9c62dc6, type: 3}
     PositionOnMap: 430.64
     PositionOffset: {x: -2.54, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1125,9 +1125,9 @@ MonoBehaviour:
     - rid: 5658998658205483916
     - rid: 5658998658205483917
     - rid: 5658998658205483918
-    - rid: 5658998658205483613
-    - rid: 5658998658205483614
-    - rid: 5658998658205483615
+    - rid: 2986439768717918283
+    - rid: 2986439768717918284
+    - rid: 2986439768717918285
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
@@ -1138,7 +1138,7 @@ MonoBehaviour:
     propertyOverrides: []
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
+  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
     PositionOnMap: 434.40002
     PositionOffset: {x: -5, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
@@ -1147,9 +1147,9 @@ MonoBehaviour:
     - rid: 5658998658205483922
     - rid: 5658998658205483923
     - rid: 5658998658205483924
-    - rid: 5658998658205483619
-    - rid: 5658998658205483620
-    - rid: 5658998658205483621
+    - rid: 2986439768717918295
+    - rid: 2986439768717918296
+    - rid: 2986439768717918297
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
@@ -1161,9 +1161,9 @@ MonoBehaviour:
     - rid: 5658998658205483928
     - rid: 5658998658205483929
     - rid: 5658998658205483930
-    - rid: 5658998658205483625
-    - rid: 5658998658205483626
-    - rid: 5658998658205483627
+    - rid: 2986439768717918280
+    - rid: 2986439768717918281
+    - rid: 2986439768717918282
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
@@ -1175,9 +1175,9 @@ MonoBehaviour:
     - rid: 5658998658205483934
     - rid: 5658998658205483935
     - rid: 5658998658205483936
-    - rid: 5658998658205483631
-    - rid: 5658998658205483632
-    - rid: 5658998658205483633
+    - rid: 2986439768717918277
+    - rid: 2986439768717918278
+    - rid: 2986439768717918279
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
@@ -1189,9 +1189,9 @@ MonoBehaviour:
     - rid: 5658998658205483946
     - rid: 5658998658205483947
     - rid: 5658998658205483948
-    - rid: 5658998658205483637
-    - rid: 5658998658205483638
-    - rid: 5658998658205483639
+    - rid: 2986439768717918274
+    - rid: 2986439768717918275
+    - rid: 2986439768717918276
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 7105555401399310678, guid: 458e934c34cb90e4f802407a50d9c9d2, type: 3}
@@ -1203,175 +1203,13 @@ MonoBehaviour:
     - rid: 5658998658205483940
     - rid: 5658998658205483941
     - rid: 5658998658205483942
-    - rid: 5658998658205483649
-    - rid: 5658998658205483650
-    - rid: 5658998658205483651
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 442
-    PositionOffset: {x: 5, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483952
-    - rid: 5658998658205483953
-    - rid: 5658998658205483954
-    - rid: 5658998658205483643
-    - rid: 5658998658205483644
-    - rid: 5658998658205483645
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 442
-    PositionOffset: {x: -5, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483958
-    - rid: 5658998658205483959
-    - rid: 5658998658205483960
-    - rid: 5658998658205483655
-    - rid: 5658998658205483656
-    - rid: 5658998658205483657
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 442
-    PositionOffset: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483964
-    - rid: 5658998658205483965
-    - rid: 5658998658205483966
-    - rid: 5658998658205483661
-    - rid: 5658998658205483662
-    - rid: 5658998658205483663
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 445.64
-    PositionOffset: {x: 2.63, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483970
-    - rid: 5658998658205483971
-    - rid: 5658998658205483972
-    - rid: 5658998658205483667
-    - rid: 5658998658205483668
-    - rid: 5658998658205483669
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 445.64
-    PositionOffset: {x: -2.54, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483976
-    - rid: 5658998658205483977
-    - rid: 5658998658205483978
-    - rid: 5658998658205483673
-    - rid: 5658998658205483674
-    - rid: 5658998658205483675
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 6366132878052682648, guid: 239f3b489beee4d409d72acc7fd374c7, type: 3}
-    PositionOnMap: 447.51
-    PositionOffset: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides: []
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 449.40002
-    PositionOffset: {x: 5, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483982
-    - rid: 5658998658205483983
-    - rid: 5658998658205483984
-    - rid: 5658998658205483679
-    - rid: 5658998658205483680
-    - rid: 5658998658205483681
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 449.40002
-    PositionOffset: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483988
-    - rid: 5658998658205483989
-    - rid: 5658998658205483990
-    - rid: 5658998658205483697
-    - rid: 5658998658205483698
-    - rid: 5658998658205483699
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 449.40002
-    PositionOffset: {x: -5, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205483994
-    - rid: 5658998658205483995
-    - rid: 5658998658205483996
-    - rid: 5658998658205483685
-    - rid: 5658998658205483686
-    - rid: 5658998658205483687
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 453.05
-    PositionOffset: {x: -5, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205484012
-    - rid: 5658998658205484013
-    - rid: 5658998658205484014
-    - rid: 5658998658205483691
-    - rid: 5658998658205483692
-    - rid: 5658998658205483693
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 453.05
-    PositionOffset: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205484018
-    - rid: 5658998658205484019
-    - rid: 5658998658205484020
-    - rid: 5658998658205483709
-    - rid: 5658998658205483710
-    - rid: 5658998658205483711
-    overrideMaxHp: 0
-    maxHp: 10
-  - Prefab: {fileID: 7105555401399310678, guid: 431879584e6c5e048a4a9a2fa6485d6c, type: 3}
-    PositionOnMap: 453.05
-    PositionOffset: {x: 5, y: 0, z: 0}
-    Rotation: {x: -0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
-    propertyOverrides:
-    - rid: 5658998658205484024
-    - rid: 5658998658205484025
-    - rid: 5658998658205484026
-    - rid: 7276668532040138752
-    - rid: 7276668532040138753
-    - rid: 7276668532040138754
+    - rid: 2986439768717918271
+    - rid: 2986439768717918272
+    - rid: 2986439768717918273
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 5541669518165071482, guid: 35d172eabd33af345a0ff7a7d93f4a69, type: 3}
-    PositionOnMap: 466.1
+    PositionOnMap: 450
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -1381,8 +1219,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1509584417693106176
       type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
       data: 
@@ -1815,6 +1651,267 @@ MonoBehaviour:
     - rid: 1509584417693106319
       type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 2986439768717918208
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918209
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918210
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918211
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918212
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918213
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918214
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918215
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918216
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918217
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918218
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918219
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918220
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918221
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918222
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918223
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918224
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918225
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918226
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918227
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918228
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918229
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918230
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918231
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918232
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918233
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918234
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918235
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918236
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918237
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918238
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918239
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918240
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918241
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918242
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918243
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918244
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918245
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918246
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918247
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918248
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918249
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918250
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918251
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918252
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918253
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918254
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918255
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918256
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918257
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918258
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918259
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918260
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918261
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918262
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918263
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918264
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918265
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918266
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918267
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918271
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918272
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918273
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918274
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918275
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918276
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918277
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918278
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918279
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918280
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918281
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918282
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918283
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918284
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918285
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918286
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918287
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918288
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918289
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918290
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918291
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918292
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918293
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918294
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918295
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918296
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2986439768717918297
+      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
+      data: 
     - rid: 5658998658205483472
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -1830,18 +1927,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483475
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483476
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483477
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483478
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -1857,18 +1942,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483481
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483482
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483483
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483484
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -1884,18 +1957,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483487
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483488
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483489
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483490
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -1911,18 +1972,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483493
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483494
-      type: {class: DropGemOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 10, y: 10}
-    - rid: 5658998658205483495
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483496
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -1938,18 +1987,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483499
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483500
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483501
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483502
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -1965,18 +2002,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483505
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483506
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483507
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483508
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -1992,18 +2017,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483511
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483512
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483513
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483514
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2019,18 +2032,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483517
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483518
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483519
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483520
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2046,18 +2047,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483523
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483524
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483525
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483526
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2073,23 +2062,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483529
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1006
-    - rid: 5658998658205483530
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483531
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483532
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 36
+        maxHp: 72
     - rid: 5658998658205483533
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2100,23 +2077,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483535
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483536
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483537
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483538
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 36
+        maxHp: 72
     - rid: 5658998658205483539
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2127,23 +2092,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483541
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483542
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483543
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483544
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 36
+        maxHp: 72
     - rid: 5658998658205483545
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2154,23 +2107,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483547
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483548
-      type: {class: DropGemOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 10, y: 10}
-    - rid: 5658998658205483549
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483550
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 36
+        maxHp: 72
     - rid: 5658998658205483551
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2181,23 +2122,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483553
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483554
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483555
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483556
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 36
+        maxHp: 72
     - rid: 5658998658205483557
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2208,18 +2137,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483559
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483560
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483561
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483562
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2235,18 +2152,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483565
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483566
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483567
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483568
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2262,18 +2167,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483571
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483572
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483573
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483574
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2289,18 +2182,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483577
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483578
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483579
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483580
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2316,18 +2197,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483583
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483584
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483585
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483586
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2343,23 +2212,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483589
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1017
-    - rid: 5658998658205483590
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483591
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483592
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 72
+        maxHp: 108
     - rid: 5658998658205483593
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2370,23 +2227,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483595
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483596
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483597
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483598
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 72
+        maxHp: 108
     - rid: 5658998658205483599
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2397,23 +2242,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483601
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483602
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483603
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483604
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 72
+        maxHp: 108
     - rid: 5658998658205483605
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2424,23 +2257,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483607
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483608
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483609
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483610
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 72
+        maxHp: 108
     - rid: 5658998658205483611
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2451,23 +2272,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483613
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483614
-      type: {class: DropGemOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 10, y: 10}
-    - rid: 5658998658205483615
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483616
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 72
+        maxHp: 108
     - rid: 5658998658205483617
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2478,18 +2287,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483619
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483620
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483621
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483622
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2505,18 +2302,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483625
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483626
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483627
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483628
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2532,18 +2317,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483631
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483632
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483633
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483634
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2559,23 +2332,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483637
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483638
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483639
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483640
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 108
+        maxHp: 144
     - rid: 5658998658205483641
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2586,23 +2347,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483643
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483644
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483645
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483646
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 108
+        maxHp: 144
     - rid: 5658998658205483647
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2613,23 +2362,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483649
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1028
-    - rid: 5658998658205483650
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483651
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483652
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 108
+        maxHp: 144
     - rid: 5658998658205483653
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2640,23 +2377,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483655
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483656
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483657
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483658
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 108
+        maxHp: 144
     - rid: 5658998658205483659
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2667,23 +2392,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483661
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483662
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483663
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483664
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 108
+        maxHp: 144
     - rid: 5658998658205483665
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2694,18 +2407,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483667
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483668
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483669
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483670
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2721,18 +2422,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483673
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483674
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483675
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483676
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2748,18 +2437,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483679
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483680
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483681
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483682
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2775,18 +2452,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483685
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483686
-      type: {class: DropGemOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 10, y: 10}
-    - rid: 5658998658205483687
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483688
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2802,18 +2467,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483691
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483692
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483693
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483694
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2829,18 +2482,6 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483697
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483698
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483699
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483700
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2871,23 +2512,11 @@ MonoBehaviour:
       data:
         overrideCurrencyValue: 0
         CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483709
-      type: {class: CashTowerTowerZoneDataIndexOverride, ns: , asm: Assembly-CSharp}
-      data:
-        TowerZoneDataIndex: -1039
-    - rid: 5658998658205483710
-      type: {class: DropDiamondComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
-    - rid: 5658998658205483711
-      type: {class: DropRebornPointOverride, ns: , asm: Assembly-CSharp}
-      data:
-        CurrencyValue: {x: 1, y: 1}
     - rid: 5658998658205483712
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 144
+        maxHp: 192
     - rid: 5658998658205483713
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2902,7 +2531,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 144
+        maxHp: 192
     - rid: 5658998658205483719
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2917,7 +2546,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 144
+        maxHp: 192
     - rid: 5658998658205483725
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2932,7 +2561,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 144
+        maxHp: 192
     - rid: 5658998658205483731
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2947,7 +2576,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 144
+        maxHp: 192
     - rid: 5658998658205483737
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2962,7 +2591,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 192
     - rid: 5658998658205483743
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2977,7 +2606,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 192
     - rid: 5658998658205483749
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -2992,7 +2621,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 144
+        maxHp: 192
     - rid: 5658998658205483755
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3007,7 +2636,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 208
     - rid: 5658998658205483761
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3022,7 +2651,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 208
     - rid: 5658998658205483767
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3037,7 +2666,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 208
     - rid: 5658998658205483773
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3052,7 +2681,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 208
     - rid: 5658998658205483779
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3067,7 +2696,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 208
     - rid: 5658998658205483785
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3082,7 +2711,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 208
     - rid: 5658998658205483791
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3097,7 +2726,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 208
     - rid: 5658998658205483797
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3112,7 +2741,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 270
     - rid: 5658998658205483803
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3127,7 +2756,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 270
     - rid: 5658998658205483809
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3142,7 +2771,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 270
     - rid: 5658998658205483815
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3157,7 +2786,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 270
     - rid: 5658998658205483821
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3172,7 +2801,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 203
+        maxHp: 270
     - rid: 5658998658205483827
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3232,7 +2861,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 270
+        maxHp: 338
     - rid: 5658998658205483851
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3247,7 +2876,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 270
+        maxHp: 338
     - rid: 5658998658205483857
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3262,7 +2891,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 270
+        maxHp: 338
     - rid: 5658998658205483863
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3277,7 +2906,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 270
+        maxHp: 338
     - rid: 5658998658205483869
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3292,7 +2921,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 270
+        maxHp: 338
     - rid: 5658998658205483875
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3307,7 +2936,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 270
+        maxHp: 338
     - rid: 5658998658205483881
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3322,7 +2951,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 270
+        maxHp: 456
     - rid: 5658998658205483887
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3337,7 +2966,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 456
     - rid: 5658998658205483893
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3352,7 +2981,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 456
     - rid: 5658998658205483899
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3367,7 +2996,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 456
     - rid: 5658998658205483905
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3382,7 +3011,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 456
     - rid: 5658998658205483911
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3397,7 +3026,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 456
     - rid: 5658998658205483917
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3412,7 +3041,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 608
     - rid: 5658998658205483923
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3427,7 +3056,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 608
     - rid: 5658998658205483929
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3442,7 +3071,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 608
     - rid: 5658998658205483935
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3457,7 +3086,7 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 608
     - rid: 5658998658205483941
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
@@ -3472,178 +3101,13 @@ MonoBehaviour:
       type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideMaxHp: 1
-        maxHp: 338
+        maxHp: 608
     - rid: 5658998658205483947
       type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideColor: 0
         Color: {r: 0, g: 0.5176471, b: 1, a: 1}
     - rid: 5658998658205483948
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483952
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483953
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483954
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483958
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483959
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483960
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483964
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483965
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483966
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483970
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483971
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483972
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483976
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483977
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483978
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483982
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483983
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483984
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483988
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483989
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483990
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205483994
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 450
-    - rid: 5658998658205483995
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205483996
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205484012
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 608
-    - rid: 5658998658205484013
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205484014
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205484018
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 608
-    - rid: 5658998658205484019
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205484020
-      type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideCurrencyValue: 0
-        CurrencyValue: {x: 25, y: 25}
-    - rid: 5658998658205484024
-      type: {class: HealthComponentOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideMaxHp: 1
-        maxHp: 608
-    - rid: 5658998658205484025
-      type: {class: CashTowerColorOverride, ns: , asm: Assembly-CSharp}
-      data:
-        overrideColor: 0
-        Color: {r: 0, g: 0.5176471, b: 1, a: 1}
-    - rid: 5658998658205484026
       type: {class: DropCurrencyEffectOverride, ns: , asm: Assembly-CSharp}
       data:
         overrideCurrencyValue: 0
@@ -3673,14 +3137,5 @@ MonoBehaviour:
       type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 7276668440326176776
-      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 7276668532040138752
-      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 7276668532040138753
-      type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 7276668532040138754
       type: {class: ItemUnitPropertyOverride, ns: , asm: Assembly-CSharp}
       data: 

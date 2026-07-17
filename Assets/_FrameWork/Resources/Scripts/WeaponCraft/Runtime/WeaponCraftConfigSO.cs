@@ -51,20 +51,26 @@ using UnityEngine;
 
         public GameObject GetPrefabForTier(int tier)
         {
+            int safeTier = Mathf.Max(1, tier);
+
+            // Use ONLY hard-reference tierVisuals — Resources.Load is unreliable on Luna/WebGL
             if (tierVisuals != null)
             {
+                // First pass: exact tier match
                 for (int i = 0; i < tierVisuals.Count; i++)
                 {
                     var entry = tierVisuals[i];
-                    if (entry != null && entry.Tier == tier && entry.Prefab != null)
+                    if (entry != null && entry.Tier == safeTier && entry.Prefab != null)
                     {
                         return entry.Prefab;
                     }
                 }
 
-                for (int i = 0; i < tierVisuals.Count; i++)
+                // Second pass: ordered index fallback (tier 1 = index 0, etc.)
+                int orderedIndex = safeTier - 1;
+                if (orderedIndex >= 0 && orderedIndex < tierVisuals.Count)
                 {
-                    var entry = tierVisuals[i];
+                    var entry = tierVisuals[orderedIndex];
                     if (entry != null && entry.Prefab != null)
                     {
                         return entry.Prefab;

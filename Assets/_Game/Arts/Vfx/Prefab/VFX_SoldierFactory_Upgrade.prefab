@@ -29366,7 +29366,6 @@ GameObject:
   - component: {fileID: 3418928247642188902}
   - component: {fileID: 6160501992611224173}
   - component: {fileID: 1669249147823039006}
-  - component: {fileID: 6749384563846896483}
   m_Layer: 0
   m_Name: VFX_SoldierFactory_Upgrade
   m_TagString: Untagged
@@ -34270,34 +34269,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6749384563846896483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7347099190708544108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39e1e7a4e8954b8eaaef014d66327de7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Transform: {fileID: 3418928247642188902}
-  EntityType: 0
-  autoDestroy: 1
-  waitForDestroy: 0.5
-  particleEffect: 1
-  particles:
-  - {fileID: 6160501992611224173}
-  - {fileID: 4597593993467284027}
-  - {fileID: 8946221137222174071}
-  - {fileID: 3085264088828325443}
-  - {fileID: 9045394100192776133}
-  - {fileID: 6820764140426241703}
-  - {fileID: 3938213873205834767}
-  - {fileID: 1301022229972811774}
-  - {fileID: 6412840936091503147}
-  targetPropertyName: _TintColor
 --- !u!1 &8082976671224519641
 GameObject:
   m_ObjectHideFlags: 0

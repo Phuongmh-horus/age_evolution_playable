@@ -36,6 +36,11 @@ namespace GamePlay.Inputs
             if (!GameplayManager.IsGameStarted)
             {
                 _moveFactorX = 0f;
+                // Track finger constantly before start to prevent sudden delta jump
+                if (Input.GetMouseButton(0))
+                {
+                    _lastFrameX = Input.mousePosition.x;
+                }
                 return;
             }
 
