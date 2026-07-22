@@ -318,7 +318,7 @@ namespace GamePlay.ComponentSystems
                 {
                     DOVirtual.DelayedCall(Mathf.Max(0.05f, lifeTime), () =>
                     {
-                        if (vfx != null) vfx.SetActive(false);
+                        if (vfx != null) vfx.Despawn();
                     }, false).SetId(vfx);
                 }
             }

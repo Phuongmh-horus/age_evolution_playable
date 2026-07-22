@@ -24,13 +24,25 @@ namespace GamePlay.Effects
         [SerializeField] private Vector2 blockScaleRange = new Vector2(0.1f, 0.3f);
 
         public Color BaseColor;
-        [SerializeField, Min(0)] private int prewarmPoolCount = 30;
+        [SerializeField, Min(0)] private int prewarmPoolCount = 40;
+
+        private static readonly System.Collections.Generic.HashSet<int> s_prewarmedPrefabs = new System.Collections.Generic.HashSet<int>();
+
+        private void Start()
+        {
+            WarmupRuntimeCaches();
+        }
 
         public void WarmupRuntimeCaches()
         {
             if (debrisPrefab != null && prewarmPoolCount > 0)
             {
-                PoolSystem.Prewarm(debrisPrefab, prewarmPoolCount);
+                int prefabId = debrisPrefab.GetInstanceID();
+                if (!s_prewarmedPrefabs.Contains(prefabId))
+                {
+                    s_prewarmedPrefabs.Add(prefabId);
+                    PoolSystem.Prewarm(debrisPrefab, prewarmPoolCount);
+                }
             }
         }
 

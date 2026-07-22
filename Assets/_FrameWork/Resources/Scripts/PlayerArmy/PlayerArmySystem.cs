@@ -87,7 +87,15 @@ namespace PlayerArmy
         private int _fireRateBonusPoints;
         private float _baseFireRange;
         private float _fireRangeBonus;
-        // private static readonly Dictionary<int, Vector2Int[]> s_honeycombRingCache = new Dictionary<int, Vector2Int[]>(16);
+        private static readonly Dictionary<int, Vector2Int[]> s_honeycombRingCache = new Dictionary<int, Vector2Int[]>(16);
+
+        private const int HardMaxActiveSpawnedUnits = 40;
+        private const float HoneycombForwardStepFactor = 0.8660254f;
+        private static readonly Vector2Int[] HoneycombDirections = new Vector2Int[6]
+        {
+            new Vector2Int(1, 0), new Vector2Int(0, 1), new Vector2Int(-1, 1),
+            new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, -1)
+        };
 
         private readonly HashSet<int> _finishTowerHitIdsThisFrame = new HashSet<int>();
         private int _finishTowerLastHitFrame = -1;
@@ -170,7 +178,13 @@ namespace PlayerArmy
                 var prefab = _prewarmPrefabBuffer[i];
                 if (prefab == null) continue;
 
-                int count = characterUnits.Count > 0 ? characterUnits.Count * 2 : maxActiveSpawnedUnits; var poolable = prefab.GetComponent<IPoolable>();
+                int count = 10; // default to 15 for weapons/projectiles
+                if (prefab.GetComponent<CharacterUnit>() != null)
+                {
+                    count = 7; // prewarm 7 for character units
+                }
+
+                var poolable = prefab.GetComponent<IPoolable>();
                 if (poolable is Component comp)
                 {
                     yield return PoolSystem.PrewarmAsync(comp, count, batchSize);
@@ -193,9 +207,16 @@ namespace PlayerArmy
                 for (int i = 0; i < list.Characters.Count; i++)
                 {
                     var entry = list.Characters[i];
-                    if (entry != null && entry.WeaponPrefab != null)
+                    if (entry != null)
                     {
-                        buffer.Add(entry.WeaponPrefab);
+                        if (entry.WeaponPrefab != null)
+                        {
+                            buffer.Add(entry.WeaponPrefab);
+                        }
+                        if (entry.CharacterPrefab != null)
+                        {
+                            buffer.Add(entry.CharacterPrefab.gameObject);
+                        }
                     }
                 }
             }
@@ -430,51 +451,51 @@ namespace PlayerArmy
             _nextAttackTimes.Clear();
         }
 
-        // public CharacterUnit SpawnCharacterUnit(int level, Vector3 position, Quaternion rotation, float? nextAttackTime = null, bool playMoveAnimation = false)
-        // {
-        //     if (!TryReserveSpawnSlot())
-        //     {
-        //         return null;
-        //     }
+        public CharacterUnit SpawnCharacterUnit(int level, Vector3 position, Quaternion rotation, float? nextAttackTime = null, bool playMoveAnimation = false)
+        {
+            if (!TryReserveSpawnSlot())
+            {
+                return null;
+            }
 
-        //     var unit = CreateRuntimeCharacterUnit(level, position, rotation, nextAttackTime, playMoveAnimation);
-        //     if (unit == null)
-        //     {
-        //         return null;
-        //     }
+            var unit = CreateRuntimeCharacterUnit(level, position, rotation, nextAttackTime, playMoveAnimation);
+            if (unit == null)
+            {
+                return null;
+            }
 
-        //     if (!characterUnits.Contains(unit))
-        //     {
-        //         characterUnits.Add(unit);
-        //     }
+            if (!characterUnits.Contains(unit))
+            {
+                characterUnits.Add(unit);
+            }
 
-        //     return unit;
-        // }
+            return unit;
+        }
 
-        // private CharacterUnit CreateRuntimeCharacterUnit(int level, Vector3 position, Quaternion rotation, float? nextAttackTime = null, bool playMoveAnimation = false)
-        // {
-        //     int resolvedLevel = ResolveSpawnLevel(level);
-        //     var list = ResolveCharacterList();
-        //     if (list == null)
-        //     {
-        //         return null;
-        //     }
+        private CharacterUnit CreateRuntimeCharacterUnit(int level, Vector3 position, Quaternion rotation, float? nextAttackTime = null, bool playMoveAnimation = false)
+        {
+            int resolvedLevel = ResolveSpawnLevel(level);
+            var list = ResolveCharacterList();
+            if (list == null)
+            {
+                return null;
+            }
 
-        //     var entry = list.GetCharacterByLevel(resolvedLevel);
-        //     if (entry == null || entry.CharacterPrefab == null)
-        //     {
-        //         return null;
-        //     }
+            var entry = list.GetCharacterByLevel(resolvedLevel);
+            if (entry == null || entry.CharacterPrefab == null)
+            {
+                return null;
+            }
 
-        //     var unit = entry.CharacterPrefab.Spawn(position, rotation, GetBodyRoot());
-        //     if (unit == null)
-        //     {
-        //         return null;
-        //     }
+            var unit = entry.CharacterPrefab.Spawn(position, rotation, GetBodyRoot());
+            if (unit == null)
+            {
+                return null;
+            }
 
-        //     InitializeRuntimeUnit(unit, resolvedLevel, nextAttackTime, playMoveAnimation);
-        //     return unit;
-        // }
+            InitializeRuntimeUnit(unit, resolvedLevel, nextAttackTime, playMoveAnimation);
+            return unit;
+        }
 
         private int ResolveSpawnLevel(int requestedLevel)
         {
@@ -580,7 +601,8 @@ namespace PlayerArmy
         {
             if (this == null || !IsActive || unit == null || weaponPrefab == null || samuraiConfig == null) return;
 
-            float duration = Mathf.Max(0.55f, projectileDuration);
+            float speed = samuraiConfig.ProjectileSpeed > 0 ? samuraiConfig.ProjectileSpeed : 60f;
+            float duration = distance / speed;
             var swordProjectile = weaponPrefab.Spawn(startPoint, rotation, null);
             if (swordProjectile != null)
             {
@@ -602,61 +624,61 @@ namespace PlayerArmy
             }
         }
 
-        // private void SpawnUnits(int level, int amount, float? nextAttackTime = null, bool playMoveAnimation = false)
-        // {
-        //     int spawnCount = Mathf.Max(0, amount);
-        //     if (spawnCount <= 0)
-        //     {
-        //         return;
-        //     }
+        private void SpawnUnits(int level, int amount, float? nextAttackTime = null, bool playMoveAnimation = false)
+        {
+            int spawnCount = Mathf.Max(0, amount);
+            if (spawnCount <= 0)
+            {
+                return;
+            }
 
-        //     int resolvedLevel = ResolveSpawnLevel(level);
-        //     Transform root = GetBodyRoot();
-        //     Quaternion rotation = root.rotation;
-        //     int startIndex = characterUnits.Count;
-        //     int totalCount = startIndex + spawnCount;
+            int resolvedLevel = ResolveSpawnLevel(level);
+            Transform root = GetBodyRoot();
+            Quaternion rotation = root.rotation;
+            int startIndex = characterUnits.Count;
+            int totalCount = startIndex + spawnCount;
 
-        //     for (int i = 0; i < spawnCount; i++)
-        //     {
-        //         int index = startIndex + i;
-        //         Vector3 spawnPosition = GetHoneycombSpawnPosition(root, index, totalCount);
-        //         SpawnCharacterUnit(resolvedLevel, spawnPosition, rotation, nextAttackTime, playMoveAnimation);
-        //     }
+            for (int i = 0; i < spawnCount; i++)
+            {
+                int index = startIndex + i;
+                Vector3 spawnPosition = GetHoneycombSpawnPosition(root, index, totalCount);
+                SpawnCharacterUnit(resolvedLevel, spawnPosition, rotation, nextAttackTime, playMoveAnimation);
+            }
 
-        //     if (_weaponOverridePrefab != null)
-        //     {
-        //         ApplyWeaponOverrideToAllUnits(_weaponOverridePrefab);
-        //     }
-        // }
+            if (_weaponOverridePrefab != null)
+            {
+                ApplyWeaponOverrideToAllUnits(_weaponOverridePrefab);
+            }
+        }
 
-        // private float ResolveSharedNextAttackTimeForSpawn()
-        // {
-        //     float nextAttackTime = Time.time + attackInterval;
-        //     bool hasNextAttackTime = false;
+        private float ResolveSharedNextAttackTimeForSpawn()
+        {
+            float nextAttackTime = Time.time + attackInterval;
+            bool hasNextAttackTime = false;
 
-        //     for (int i = 0; i < characterUnits.Count; i++)
-        //     {
-        //         var unit = characterUnits[i];
-        //         if (unit == null || !unit.IsActive)
-        //         {
-        //             continue;
-        //         }
+            for (int i = 0; i < characterUnits.Count; i++)
+            {
+                var unit = characterUnits[i];
+                if (unit == null || !unit.IsActive)
+                {
+                    continue;
+                }
 
-        //         int id = unit.GetInstanceID();
-        //         if (!_nextAttackTimes.TryGetValue(id, out float unitNextAttackTime))
-        //         {
-        //             continue;
-        //         }
+                int id = unit.GetInstanceID();
+                if (!_nextAttackTimes.TryGetValue(id, out float unitNextAttackTime))
+                {
+                    continue;
+                }
 
-        //         if (!hasNextAttackTime || unitNextAttackTime < nextAttackTime)
-        //         {
-        //             nextAttackTime = unitNextAttackTime;
-        //             hasNextAttackTime = true;
-        //         }
-        //     }
+                if (!hasNextAttackTime || unitNextAttackTime < nextAttackTime)
+                {
+                    nextAttackTime = unitNextAttackTime;
+                    hasNextAttackTime = true;
+                }
+            }
 
-        //     return nextAttackTime;
-        // }
+            return nextAttackTime;
+        }
 
         public void PlayEffect(EffectType effectType, Transform anchor = null, Action onComplete = null, float waitForAction = 0f)
         {
@@ -718,10 +740,6 @@ namespace PlayerArmy
             return Mathf.Max(1, attackDamage);
         }
 
-        public void OnUpdate(float dt)
-        {
-        }
-
         public void Dispose()
         {
             ClearUnits(true);
@@ -749,7 +767,7 @@ namespace PlayerArmy
                     if (characterUnits[i] != null)
                     {
                         characterUnits[i].ShowWeapon();
-                        characterUnits[i].PlayAnimation(AnimationType.Attack, 0f, null);
+                        characterUnits[i].PlayAnimation(AnimationType.Idle, 0f, null);
                         _nextAttackTimes[characterUnits[i].GetInstanceID()] = Time.time;
                     }
                 }
@@ -770,7 +788,7 @@ namespace PlayerArmy
 
         public void AddCards(List<CardSpawnRequestData> requests, CardSpawnEffectType effectType)
         {
-            if (useSceneUnitsOnly && characterUnits.Count > 0)
+            if (useSceneUnitsOnly && effectType == CardSpawnEffectType.DropWithoutAction && characterUnits.Count > 0)
             {
                 int targetLevel = fallbackCharacterLevel;
                 if (requests != null && requests.Count > 0 && requests[0].Level > 0)
@@ -797,16 +815,16 @@ namespace PlayerArmy
                 return;
             }
 
-            // float syncNextAttackTime = ResolveSharedNextAttackTimeForSpawn();
-            // bool playMoveAnimation = effectType != CardSpawnEffectType.DropWithoutAction;
+            float syncNextAttackTime = ResolveSharedNextAttackTimeForSpawn();
+            bool playMoveAnimation = effectType != CardSpawnEffectType.DropWithoutAction;
 
-            // for (int i = 0; i < requests.Count; i++)
-            // {
-            //     var req = requests[i];
-            //     int level = req.Level > 0 ? req.Level : ResolveCurrentArmyLevel();
-            //     int amount = Mathf.Max(1, req.Amount);
-            //      SpawnUnits(level, amount, syncNextAttackTime, playMoveAnimation);
-            // }
+            for (int i = 0; i < requests.Count; i++)
+            {
+                var req = requests[i];
+                int level = req.Level > 0 ? req.Level : ResolveCurrentArmyLevel();
+                int amount = Mathf.Max(1, req.Amount);
+                SpawnUnits(level, amount, syncNextAttackTime, playMoveAnimation);
+            }
         }
 
         public void ApplyFireRateModifier(int value)
@@ -1028,76 +1046,76 @@ namespace PlayerArmy
             _nextAttackTimes.Clear();
         }
 
-        // private Vector3 GetHoneycombSpawnPosition(Transform root, int index, int totalCount)
-        // {
-        //     int cappedTotal = Mathf.Max(1, Mathf.Min(totalCount, Mathf.Min(maxActiveSpawnedUnits, HardMaxActiveSpawnedUnits)));
-        //     int safeIndex = Mathf.Clamp(index, 0, cappedTotal - 1);
-        //     if (safeIndex == 0)
-        //     {
-        //         return root.position;
-        //     }
+        private Vector3 GetHoneycombSpawnPosition(Transform root, int index, int totalCount)
+        {
+            int cappedTotal = Mathf.Max(1, Mathf.Min(totalCount, Mathf.Min(maxActiveSpawnedUnits, HardMaxActiveSpawnedUnits)));
+            int safeIndex = Mathf.Clamp(index, 0, cappedTotal - 1);
+            if (safeIndex == 0)
+            {
+                return root.position;
+            }
 
-        //     int ring = 1;
-        //     int remaining = safeIndex - 1;
-        //     while (remaining >= 6 * ring)
-        //     {
-        //         remaining -= 6 * ring;
-        //         ring++;
-        //     }
+            int ring = 1;
+            int remaining = safeIndex - 1;
+            while (remaining >= 6 * ring)
+            {
+                remaining -= 6 * ring;
+                ring++;
+            }
 
-        //     Vector2Int axial = GetHoneycombRingAxialPosition(ring, remaining);
-        //     float spacing = Mathf.Max(0.01f, unitSpacing);
-        //     float xStep = spacing;
-        //     float zStep = spacing * HoneycombForwardStepFactor;
+            Vector2Int axial = GetHoneycombRingAxialPosition(ring, remaining);
+            float spacing = Mathf.Max(0.01f, unitSpacing);
+            float xStep = spacing;
+            float zStep = spacing * HoneycombForwardStepFactor;
 
-        //     Vector3 position = root.position;
-        //     position += root.right * ((axial.x + axial.y * 0.5f) * xStep);
-        //     position += root.forward * (axial.y * zStep);
+            Vector3 position = root.position;
+            position += root.right * ((axial.x + axial.y * 0.5f) * xStep);
+            position += root.forward * (axial.y * zStep);
 
-        //     float jitterSeed = safeIndex * 0.61803398875f;
-        //     float jitterX = (Mathf.PerlinNoise(jitterSeed, cappedTotal * 0.13f) - 0.5f) * spacing * 0.18f;
-        //     float jitterZ = (Mathf.PerlinNoise(cappedTotal * 0.17f, jitterSeed) - 0.5f) * zStep * 0.18f;
-        //     position += root.right * jitterX;
-        //     position += root.forward * jitterZ;
+            float jitterSeed = safeIndex * 0.61803398875f;
+            float jitterX = (Mathf.PerlinNoise(jitterSeed, cappedTotal * 0.13f) - 0.5f) * spacing * 0.18f;
+            float jitterZ = (Mathf.PerlinNoise(cappedTotal * 0.17f, jitterSeed) - 0.5f) * zStep * 0.18f;
+            position += root.right * jitterX;
+            position += root.forward * jitterZ;
 
-        //     return position;
-        // }
+            return position;
+        }
 
-        // private static Vector2Int GetHoneycombRingAxialPosition(int ring, int offsetInRing)
-        // {
-        //     ring = Mathf.Max(1, ring);
-        //     int step = Mathf.Max(0, offsetInRing);
-        //     var positions = GetOrBuildHoneycombRingPositions(ring);
-        //     if (positions == null || positions.Length == 0)
-        //         return Vector2Int.zero;
-        //     return positions[Mathf.Clamp(step, 0, positions.Length - 1)];
-        // }
+        private static Vector2Int GetHoneycombRingAxialPosition(int ring, int offsetInRing)
+        {
+            ring = Mathf.Max(1, ring);
+            int step = Mathf.Max(0, offsetInRing);
+            var positions = GetOrBuildHoneycombRingPositions(ring);
+            if (positions == null || positions.Length == 0)
+                return Vector2Int.zero;
+            return positions[Mathf.Clamp(step, 0, positions.Length - 1)];
+        }
 
-        // private static Vector2Int[] GetOrBuildHoneycombRingPositions(int ring)
-        // {
-        //     if (s_honeycombRingCache.TryGetValue(ring, out var cached) && cached != null && cached.Length > 0)
-        //         return cached;
+        private static Vector2Int[] GetOrBuildHoneycombRingPositions(int ring)
+        {
+            if (s_honeycombRingCache.TryGetValue(ring, out var cached) && cached != null && cached.Length > 0)
+                return cached;
 
-        //     var positions = new Vector2Int[ring * 6];
-        //     int index = 0;
-        //     Vector2Int axial = Vector2Int.zero;
+            var positions = new Vector2Int[ring * 6];
+            int index = 0;
+            Vector2Int axial = Vector2Int.zero;
 
-        //     for (int i = 0; i < ring; i++)
-        //         axial += HoneycombDirections[4];
+            for (int i = 0; i < ring; i++)
+                axial += HoneycombDirections[4];
 
-        //     for (int side = 0; side < 6; side++)
-        //     {
-        //         for (int i = 0; i < ring; i++)
-        //         {
-        //             positions[index++] = axial;
-        //             axial += HoneycombDirections[side];
-        //         }
-        //     }
+            for (int side = 0; side < 6; side++)
+            {
+                for (int i = 0; i < ring; i++)
+                {
+                    positions[index++] = axial;
+                    axial += HoneycombDirections[side];
+                }
+            }
 
-        //     Array.Sort(positions, CompareHoneycombPosition);
-        //     s_honeycombRingCache[ring] = positions;
-        //     return positions;
-        // }
+            Array.Sort(positions, CompareHoneycombPosition);
+            s_honeycombRingCache[ring] = positions;
+            return positions;
+        }
 
         private static int CompareHoneycombPosition(Vector2Int a, Vector2Int b)
         {
@@ -1435,7 +1453,7 @@ namespace PlayerArmy
                                     Rotation = rotation,
                                     Distance = distance,
                                     Damage = damage * 2,
-                                    RemainingDelay = 0.15f + (i * 0.15f)
+                                    RemainingDelay = 0.2f + (i * 0.15f)
                                 });
                             }
                             _samuraiAttackCounters[buffId] = count;
@@ -1738,7 +1756,10 @@ namespace PlayerArmy
                 hitUnits[i].RecycleImmediate(true);
             }
 
-            // Nếu đây là unit cuối cùng chạm vào tháp
+            // Đảm bảo tháp nhận sát thương / sự kiện va chạm từ army
+            towerTarget.OnHit(this);
+
+            // Nếu đây là unit cuối cùng chạm vào tháp, gọi EndGame
             if (activeCount - unitsToKill <= 1)
             {
                 int towerId = towerTarget.GetHashCode();
@@ -1751,19 +1772,9 @@ namespace PlayerArmy
 
                 if (_finishTowerHitIdsThisFrame.Add(towerId))
                 {
-                    // Kill the final unit too
-                    if (unitsToKill < hitUnits.Count)
-                    {
-                        hitUnits[unitsToKill].RecycleImmediate(true);
-                    }
-
                     if (GameplayManager.Instance != null)
                     {
                         GameplayManager.Instance.EndGame(true);
-                    }
-                    else
-                    {
-                        towerTarget.OnHit(this);
                     }
                 }
             }

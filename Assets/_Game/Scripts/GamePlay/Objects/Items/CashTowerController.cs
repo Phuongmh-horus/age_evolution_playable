@@ -143,9 +143,15 @@ namespace GamePlay.Items
 
             _deathHandled = false;
             _lastHitFxFrame = -1;
+            _lastDamageFrame = -1;
+            _tookDirectDamageThisFrame = false;
+            _tookAoeDamageThisFrame = false;
 
             if (hitTextFlyEffect != null)
+            {
                 hitTextFlyEffect.enabled = true;
+                hitTextFlyEffect.LimitToOneTextPerFrame = true;
+            }
 
             _originalScale = transform.localScale;
         }
@@ -189,8 +195,35 @@ namespace GamePlay.Items
             DespawnInterval();
         }
 
+        private int _lastDamageFrame = -1;
+        private bool _tookDirectDamageThisFrame = false;
+        private bool _tookAoeDamageThisFrame = false;
+
         protected override void HandleNonWheelCollision(IAttacker source)
         {
+            int currentFrame = Time.frameCount;
+            if (_lastDamageFrame != currentFrame)
+            {
+                _lastDamageFrame = currentFrame;
+                _tookDirectDamageThisFrame = false;
+                _tookAoeDamageThisFrame = false;
+            }
+
+            bool isAoe = source != null && source.GetType().Name == "ExplosionShotAttacker";
+
+            if (isAoe)
+            {
+                if (_tookDirectDamageThisFrame || _tookAoeDamageThisFrame)
+                {
+                    return; // Skip AOE damage if we already took direct or AOE damage this frame
+                }
+                _tookAoeDamageThisFrame = true;
+            }
+            else
+            {
+                _tookDirectDamageThisFrame = true;
+            }
+
             PlayNonWheelHitEffect();
             base.HandleNonWheelCollision(source);
             PlayScalePulse();
@@ -213,10 +246,10 @@ namespace GamePlay.Items
                 _hitFxCountThisFrame = 0;
             }
 
-            if (_hitFxCountThisFrame >= 3) return;
+            if (_hitFxCountThisFrame >= 1) return;
             _hitFxCountThisFrame++;
 
-            Vector3 pos = transform.position + transform.up * 2f;
+            Vector3 pos = transform.position + transform.up * 2f + transform.forward * -1f;
             Pack.Effector?.PlayEffect(nonWheelHitEffectType, pos, Quaternion.identity, transform);
         }
 
@@ -257,26 +290,30 @@ namespace GamePlay.Items
                 if (currency == null) continue;
 
                 var t = currency.transform;
-                t.SetParent(null, true);
-                t.gameObject.SetActive(true);
-
-                // var rb = _moneyRB[i];
-                // if (rb != null)
-                // {
-                //     rb.velocity = Vector3.zero;
-                //     rb.isKinematic = true;
-                // }
-
                 var col = _moneyCol[i];
+
+                // OPTIMIZATION: Disable collider before activating object 
+                // to avoid expensive physics broadphase insertion and removal in the same frame.
                 if (col != null)
                     col.enabled = false;
+
+                // OPTIMIZATION: Manually preserve world transform to avoid SetParent(null, true) overhead
+                Vector3 wPos = t.position;
+                Quaternion wRot = t.rotation;
+                Vector3 wScale = t.lossyScale;
+
+                t.SetParent(null, false);
+                t.SetPositionAndRotation(wPos, wRot);
+                t.localScale = wScale;
+
+                t.gameObject.SetActive(true);
 
                 currency.Initialize();
                 currency.SetAutoClaimOnGround(true);
                 currency.SetClaimType(CurrencyType.Cash);
                 currency.SetGroundY(moneyGroundY);
 
-                Vector3 dir = (t.position - transform.position).normalized;
+                Vector3 dir = (wPos - transform.position).normalized;
                 if (dir == Vector3.zero) dir = Vector3.up;
 
                 currency.Initialize(dir * moneyDropImpulse, currency.Amount > 0 ? currency.Amount : 1f, true);

@@ -43,7 +43,7 @@ namespace WeaponCraft
         [SerializeField] private bool ensureDespawnScaleEffect = true;
         [SerializeField, Min(1f)] private float despawnScaleMultiplier = 1.08f;
         [SerializeField, Min(0.01f)] private float despawnExpandDuration = 0.06f;
-        [SerializeField, Min(0.01f)] private float despawnShrinkDuration = 0.12f;
+        [SerializeField, Min(0.01f)] private float despawnShrinkDuration = 0.2f;
 
         private Vector3 _originalScale;
         private Coroutine _scalePulseRoutine;
@@ -220,12 +220,30 @@ namespace WeaponCraft
         protected override void HandleWheelCollision()
         {
             CashOutGold();
-            DespawnInterval();
+            PlayScalePulse();
             Pack.Effector?.PlayEffect(EffectType.Land);
+            StartCoroutine(CoHandleWheelCollisionAfterPulse());
+        }
+
+        private IEnumerator CoHandleWheelCollisionAfterPulse()
+        {
+            float waitTime = Mathf.Max(0f, scaleUpDuration + scaleDownDuration);
+            if (waitTime > 0f)
+            {
+                yield return new WaitForSeconds(waitTime);
+            }
+
+            DespawnInterval();
         }
 
         protected override void HandleNonWheelCollision(IAttacker source)
         {
+            if (source != null && source.EntityType == GamePlay.Entities.EntityType.Character)
+            {
+                StartCoroutine(CoScaleDownAndDespawn());
+                return;
+            }
+
             ApplyDamageAcrossProgressCycles(source);
             PlayScalePulse();
         }
@@ -241,7 +259,7 @@ namespace WeaponCraft
                 if (canPlayBreakFx)
                 {
                     _lastBreakFxFrame = Time.frameCount;
-                    Pack.Effector?.PlayEffect(EffectType.Break, transform.position + transform.up * 3f + transform.forward * -1f, Quaternion.identity, transform);
+                    Pack.Effector?.PlayEffect(EffectType.Break, transform.position + transform.up * 3f + transform.forward * -1.2f, Quaternion.identity, transform);
                 }
 
                 if (healthComponent != null)
@@ -442,28 +460,6 @@ namespace WeaponCraft
             }
         }
 
-        private void EnsureDespawnScaleEffect()
-        {
-            if (!ensureDespawnScaleEffect) return;
-
-            // if (deathScaleEffect == null)
-            // {
-            //     deathScaleEffect = GetComponent<DeathScaleEffect>();
-            // }
-
-            // if (deathScaleEffect == null)
-            // {
-            //     deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
-            // }
-
-            // if (deathScaleEffect.Transform == null)
-            // {
-            //     deathScaleEffect.Transform = transform;
-            // }
-
-            // deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
-        }
-
         protected override void DespawnInterval()
         {
             StopScalePulse();
@@ -515,6 +511,32 @@ namespace WeaponCraft
                 }
                 remainingDamage -= damageThisCycle;
             }
+        }
+
+        private bool _isArmyDespawning = false;
+        private IEnumerator CoScaleDownAndDespawn()
+        {
+            if (_isArmyDespawning) yield break;
+            _isArmyDespawning = true;
+
+            if (Pack.Hitable != null)
+            {
+                GamePlay.CollisionSystems.CollisionSystem.Unregister(Pack.Hitable);
+            }
+
+            float t = 0;
+            float duration = despawnShrinkDuration;
+            Vector3 startScale = transform.localScale;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t / duration);
+                yield return null;
+            }
+            transform.localScale = Vector3.zero;
+
+            deathScaleEffect = null;
+            DespawnInterval();
         }
     }
 }

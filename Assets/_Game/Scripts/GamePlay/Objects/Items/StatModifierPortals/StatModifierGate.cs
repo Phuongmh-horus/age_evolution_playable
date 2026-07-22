@@ -318,10 +318,51 @@ namespace GamePlay.Items
             }
         }
 
+        private void OnEnable()
+        {
+            transform.localScale = Vector3.one;
+        }
+
         private void OnDisable()
         {
             StopScalePulse();
             KillBendSequence();
+        }
+
+        private bool _isDespawning = false;
+
+        protected override void DespawnInterval()
+        {
+            if (_isDespawning) return;
+            _isDespawning = true;
+
+            StopScalePulse();
+            KillBendSequence();
+            
+            if (Pack.Hitable != null)
+            {
+                CollisionSystem.Unregister(Pack.Hitable);
+            }
+            
+            StartCoroutine(ScaleDownRoutine());
+        }
+
+        private System.Collections.IEnumerator ScaleDownRoutine()
+        {
+            float elapsed = 0f;
+            float duration = 0.25f;
+            Vector3 startScale = transform.localScale;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, elapsed / duration);
+                yield return null;
+            }
+
+            transform.localScale = Vector3.zero;
+            _isDespawning = false;
+            base.DespawnInterval();
         }
 
         private void HandleArmorVisuals()

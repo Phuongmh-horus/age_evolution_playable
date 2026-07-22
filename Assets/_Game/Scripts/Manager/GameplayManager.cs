@@ -89,10 +89,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
     private bool _endGameSfxPlayed;
     private WeaponCraft.WeaponItem _mainWeapon;
 
-    // Tick optimization: frame skipping for heavy effects
-    private int _tickFrameCounter;
-    private const int TIMED_DISABLE_SKIP_FRAMES = 2;  // Update every 2 frames (~30fps instead of 60fps)
-
     // Reflection caches for Luna-compatible render optimization (avoid per-call lookup/alloc).
     private static readonly PropertyInfo SkinnedQualityProperty =
         typeof(SkinnedMeshRenderer).GetProperty("quality", BindingFlags.Instance | BindingFlags.Public);
@@ -170,7 +166,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
     private void Update()
     {
         float dt = Time.deltaTime;
-        _tickFrameCounter++;
 
         // Critical effects: every frame (smooth animations)
         HitTextFlyEffect.TickActiveControllers(dt);
@@ -249,6 +244,8 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
     {
         ClearRuntimeTickCaches();
         DataManager.ResetToDefault();
+        gamePlayVariable?.ResetNewGame();
+        gamePlayVariable?.ResetEvolutionVariable();
         GamePlay.CardSystem.BuffCardSystem.Instance?.Clear();
 
         // 1. Instantly set camera to FollowPlayer and Hide UI
@@ -390,7 +387,6 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
         // Prewarm Army Prefabs & Weapon Projectiles
         if (IsArmyMode && ActiveArmy != null)
         {
-            Debug.Log("Prewarm Army Prefabs");
             yield return StartCoroutine(ActiveArmy.PrewarmArmyPrefabsAsync(Mathf.Max(1, spawnItemsPerFrame)));
         }
 
@@ -398,7 +394,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
         if (IsArmyMode && ActiveArmy != null)
         {
             ActiveArmy.SetIntroRun();
-            float speed = 15f;
+            float speed = 25f;
             while (Vector3.Distance(ActiveArmy.transform.position, targetPos) > 0.05f)
             {
                 ActiveArmy.transform.position = Vector3.MoveTowards(ActiveArmy.transform.position, targetPos, speed * Time.deltaTime);
@@ -416,7 +412,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>, IGameplayFlow
         {
             if (prefab != null)
             {
-                yield return PoolSystem.PrewarmAsync(prefab.transform, 5, Mathf.Max(1, spawnItemsPerFrame));
+                yield return PoolSystem.PrewarmAsync(prefab.transform, 10, Mathf.Max(1, spawnItemsPerFrame));
             }
         }
 

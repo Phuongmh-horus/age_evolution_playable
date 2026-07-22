@@ -72,7 +72,7 @@ namespace GamePlay.CardSystem
             if (cardVisualPrefab == null) return;
 
             int slotCapacity = cardSlots != null && cardSlots.Count > 0 ? cardSlots.Count : 8;
-            int amountToPrewarm = Mathf.Clamp(slotCapacity * 3, 12, 24);
+            int amountToPrewarm = Mathf.Clamp(slotCapacity * 2, 5, 15);
 
             for (int i = 0; i < amountToPrewarm; i++)
             {
@@ -111,38 +111,43 @@ namespace GamePlay.CardSystem
                 ? cardSlots[slotIndex]
                 : null;
 
-            float spacing = 130f;
+            float spacing = 300f;
             float totalWidth = (total - 1) * spacing;
-            float startX = -totalWidth * 0.5f;
-            float offsetX = startX + index * spacing;
+            float offsetX = -totalWidth * 0.5f + index * spacing;
+            float offsetY = 220f;
 
-            Vector3 startScreenPos = GetScreenPos(sourceWorldTransform);
-            Vector3 centerScreenPos = new Vector3(Screen.width * 0.5f + offsetX, Screen.height * 0.5f + 120f, 0f);
-            Vector3 destScreenPos = targetSlot != null
-                ? (Vector3)targetSlot.position
-                : centerScreenPos;
+            Vector3 startLocalPos = GetLocalPos(sourceWorldTransform != null ? sourceWorldTransform.position : Vector3.zero);
+            Vector2 screenCenter = GetScreenCenterLocal();
+            Vector3 centerLocalPos = new Vector3(screenCenter.x + offsetX, screenCenter.y + offsetY, 0f);
+            Vector3 destLocalPos = centerLocalPos;
 
             var visualGo = cardVisualPrefab.gameObject.Spawn();
             var visual = visualGo.GetComponent<CardInfoVisual>();
             visual.transform.SetParent(targetCanvas.transform, false);
 
+
+            float originalScale = 1f;
             var rect = visual.GetComponent<RectTransform>();
             var prefabRect = cardVisualPrefab.GetComponent<RectTransform>();
             if (prefabRect != null && rect != null)
             {
-                rect.anchorMin = prefabRect.anchorMin;
-                rect.anchorMax = prefabRect.anchorMax;
-                rect.pivot = prefabRect.pivot;
+                rect.anchorMin = new Vector2(0.5f, 0.5f);
+                rect.anchorMax = new Vector2(0.5f, 0.5f);
+                rect.pivot = new Vector2(0.5f, 0.5f);
                 rect.sizeDelta = prefabRect.sizeDelta;
+                rect.anchoredPosition = Vector2.zero;
+                rect.localRotation = Quaternion.identity;
+                rect.localScale = prefabRect.localScale;
+                originalScale = prefabRect.localScale.x;
             }
 
-            float scaleAtCenter = total > 1 ? 0.85f : 1f;
+            float scaleAtCenter = originalScale;
 
             visual.Play(
                 data,
-                startScreenPos,
-                centerScreenPos,
-                destScreenPos,
+                startLocalPos,
+                centerLocalPos,
+                destLocalPos,
                 flyToCenterDuration,
                 revealDuration,
                 flyToDestDuration,
@@ -169,16 +174,15 @@ namespace GamePlay.CardSystem
                 ? cardSlots[Mathf.Min(slotIndex, cardSlots.Count - 1)]
                 : null;
 
-            float spacing = 130f;
+            float spacing = 300f;
             float totalWidth = (total - 1) * spacing;
-            float startX = -totalWidth * 0.5f;
-            float offsetX = startX + index * spacing;
+            float offsetX = -totalWidth * 0.5f + index * spacing;
+            float offsetY = 220f;
 
-            Vector3 startScreenPos = GetScreenPos(sourceWorldTransform);
-            Vector3 centerScreenPos = new Vector3(Screen.width * 0.5f + offsetX, Screen.height * 0.5f + 120f, 0f);
-            Vector3 destScreenPos = targetSlot != null
-                ? (Vector3)targetSlot.position
-                : centerScreenPos;
+            Vector3 startLocalPos = GetLocalPos(sourceWorldTransform != null ? sourceWorldTransform.position : Vector3.zero);
+            Vector2 screenCenter = GetScreenCenterLocal();
+            Vector3 centerLocalPos = new Vector3(screenCenter.x + offsetX, screenCenter.y + offsetY, 0f);
+            Vector3 destLocalPos = centerLocalPos;
 
             var visual = customPrefab.gameObject.Spawn();
             visual.transform.SetParent(targetCanvas.transform, false);
@@ -192,51 +196,39 @@ namespace GamePlay.CardSystem
                 return;
             }
 
+            float originalScale = 1f;
             var prefabRect = customPrefab.GetComponent<RectTransform>();
             if (prefabRect != null && rect != null)
             {
-                rect.anchorMin = prefabRect.anchorMin;
-                rect.anchorMax = prefabRect.anchorMax;
-                rect.pivot = prefabRect.pivot;
+                rect.anchorMin = new Vector2(0.5f, 0.5f);
+                rect.anchorMax = new Vector2(0.5f, 0.5f);
+                rect.pivot = new Vector2(0.5f, 0.5f);
                 rect.sizeDelta = prefabRect.sizeDelta;
+                rect.anchoredPosition = Vector2.zero;
+                rect.localRotation = Quaternion.identity;
+                rect.localScale = prefabRect.localScale;
+                originalScale = prefabRect.localScale.x;
             }
 
             Vector2 targetSize = targetSlot != null ? targetSlot.rect.size : Vector2.zero;
-            float scaleAtCenter = total > 1 ? 0.85f : 1f;
+            float scaleAtCenter = originalScale;
 
-            StartCoroutine(CoPlayCustomAnimation(rect, startScreenPos, centerScreenPos, destScreenPos, targetSize, targetSlot, scaleAtCenter));
+            StartCoroutine(CoPlayCustomAnimation(rect, startLocalPos, centerLocalPos, destLocalPos, targetSize, targetSlot, scaleAtCenter));
         }
 
         private System.Collections.IEnumerator CoPlayCustomAnimation(RectTransform rect, Vector3 start, Vector3 center, Vector3 dest, Vector2 targetSize, RectTransform targetSlot, float scaleAtCenter)
         {
-            rect.position = start;
-            rect.localScale = Vector3.one;
+            rect.anchoredPosition = start;
+            rect.localScale = Vector3.one * scaleAtCenter;
 
             // Phase A: Fly to center
-            yield return StartCoroutine(CoFlyTo(rect, start, center, flyToCenterDuration, scaleAtCenter));
+            yield return StartCoroutine(CoFlyTo(rect, start, center, flyToCenterDuration, scaleAtCenter, scaleAtCenter));
 
-            // Phase B: Reveal (Scale up and down slightly)
-            float halfReveal = revealDuration * 0.5f;
-            float elapsed = 0f;
-            while (elapsed < halfReveal)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / halfReveal;
-                rect.localScale = Vector3.Lerp(Vector3.one * scaleAtCenter, Vector3.one * (scaleAtCenter * 1.15f), t);
-                yield return null;
-            }
-
-            elapsed = 0f;
-            while (elapsed < halfReveal)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / halfReveal;
-                rect.localScale = Vector3.Lerp(Vector3.one * (scaleAtCenter * 1.15f), Vector3.one * scaleAtCenter, t);
-                yield return null;
-            }
+            // Phase B: Reveal (No scaling per user request)
+            rect.localScale = Vector3.one * scaleAtCenter;
 
             // Small delay before flying to destination
-            elapsed = 0f;
+            float elapsed = 0f;
             while (elapsed < 0.5f)
             {
                 elapsed += Time.deltaTime;
@@ -282,23 +274,24 @@ namespace GamePlay.CardSystem
                 {
                     elapsed += Time.deltaTime;
                     float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / flyToDestDuration));
-                    rect.position = Vector3.Lerp(center, dest, t);
+                    rect.anchoredPosition = Vector3.Lerp(center, dest, t);
                     rect.localScale = Vector3.one * Mathf.Lerp(scaleAtCenter, targetScale, t);
                     yield return null;
                 }
 
-                rect.position = dest;
+                rect.anchoredPosition = dest;
                 rect.localScale = Vector3.one * targetScale;
             }
         }
 
 
 
-        private System.Collections.IEnumerator CoFlyTo(RectTransform rect, Vector3 from, Vector3 to, float duration, float targetScale = 1f, float startScale = 1f, RectTransform targetSlot = null)
+        private System.Collections.IEnumerator CoFlyTo(RectTransform rect, Vector2 from, Vector2 to, float duration, float startScale, float targetScale, RectTransform targetSlot = null)
         {
             if (duration <= 0f)
             {
-                rect.position = targetSlot != null ? targetSlot.position : to;
+                if (targetSlot != null) rect.position = targetSlot.position;
+                else rect.anchoredPosition = to;
                 rect.localScale = Vector3.one * targetScale;
                 yield break;
             }
@@ -308,24 +301,60 @@ namespace GamePlay.CardSystem
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-                Vector3 currentTo = targetSlot != null ? targetSlot.position : to;
-                rect.position = Vector3.Lerp(from, currentTo, t);
+                if (targetSlot != null) rect.position = Vector3.Lerp(from, targetSlot.position, t);
+                else rect.anchoredPosition = Vector3.Lerp(from, to, t);
                 rect.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, t);
                 yield return null;
             }
-            rect.position = targetSlot != null ? targetSlot.position : to;
+            if (targetSlot != null) rect.position = targetSlot.position;
+            else rect.anchoredPosition = to;
             rect.localScale = Vector3.one * targetScale;
         }
 
-        private Vector3 GetScreenPos(Transform worldTransform)
+        private Vector2 GetScreenCenterLocal()
         {
-            if (worldTransform == null)
-                return new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
+            if (targetCanvas == null) return Vector2.zero;
 
-            if (Camera.main != null)
-                return Camera.main.WorldToScreenPoint(worldTransform.position);
+            Camera mainCam = Camera.main;
+            Camera uiCam = targetCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : targetCanvas.worldCamera;
+            if (uiCam == null && targetCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            {
+                uiCam = mainCam;
+            }
 
-            return worldTransform.position;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                targetCanvas.GetComponent<RectTransform>(),
+                new Vector2(Screen.width * 0.5f, Screen.height * 0.5f),
+                uiCam,
+                out Vector2 localCenter
+            );
+
+            return localCenter;
+        }
+
+        private Vector3 GetLocalPos(Vector3 worldPos)
+        {
+            if (targetCanvas == null) return worldPos;
+
+            // 1. Get screen point using the 3D main camera
+            Camera mainCam = Camera.main;
+            Vector2 screenPoint = mainCam != null ? (Vector2)mainCam.WorldToScreenPoint(worldPos) : RectTransformUtility.WorldToScreenPoint(null, worldPos);
+
+            // 2. Map screen point to UI using the UI camera
+            Camera uiCam = targetCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : targetCanvas.worldCamera;
+            if (uiCam == null && targetCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            {
+                uiCam = mainCam;
+            }
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                targetCanvas.GetComponent<RectTransform>(),
+                screenPoint,
+                uiCam,
+                out Vector2 localPoint
+            );
+
+            return localPoint;
         }
     }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   mergeCount: 3
   maxTier: 5
   slotStartLocalPosition: {x: 0, y: 0, z: 0}
-  slotSpacing: 0.9
+  slotSpacing: 1
   addMoveDuration: 0.2
   mergeMoveDuration: 0.05
   layoutReflowDuration: 0.15

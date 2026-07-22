@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GamePlay.CardSystem;
 using GamePlay.Characters;
 using GamePlay.ComponentSystems;
+using GamePlay.CollisionSystems;
 using GamePlay.Effects;
 using DG.Tweening;
 using UnityEngine;
@@ -29,8 +30,6 @@ namespace GamePlay.Items
         [SerializeField] private float phase3Duration = 0.75f;
         [SerializeField, Range(0.1f, 1f)] private float goldDrainTimeScale = 0.75f;
 
-        [Header("Buff Applied Effect")]
-        [SerializeField] private EffectType buffAppliedEffectType = EffectType.Land;
 
         private readonly Dictionary<int, List<CharacterUnit>> _beltUnits = new Dictionary<int, List<CharacterUnit>>();
         private int _beltUnitCount;
@@ -39,6 +38,7 @@ namespace GamePlay.Items
         private readonly HashSet<IncreaseElement> _exhaustedElementsBuffer = new HashSet<IncreaseElement>();
         private readonly List<UpgradeResolution> _upgradeResolutionBuffer = new List<UpgradeResolution>(8);
         private static bool _hasConsumedForcedExplosionGate;
+        private EffectComponent _gateEffectComponent;
         private struct UpgradeResolution
         {
             public IncreaseElement Element;
@@ -68,6 +68,7 @@ namespace GamePlay.Items
 
         public override void Initialize()
         {
+            _gateEffectComponent = GetComponent<EffectComponent>();
             _hasCollided = false; // Reset lock on init
             EnsureGateSetup();
 
@@ -333,11 +334,6 @@ namespace GamePlay.Items
                             _upgradeResolutionBuffer.Count);
                     }
 
-                    Pack.Effector?.PlayEffect(
-                        buffAppliedEffectType,
-                        result.Element.transform.position,
-                        Quaternion.identity,
-                        result.Element.transform);
                 }
             }
 
@@ -347,11 +343,20 @@ namespace GamePlay.Items
 
             void EndOfPhase()
             {
-                Pack.Effector?.StopEffect(EffectType.Land);
+                if (_gateEffectComponent != null)
+                    _gateEffectComponent.StopEffect(EffectType.Land);
+                else
+                    Pack.Effector?.StopEffect(EffectType.Land);
 
                 ClearBelts();
-                // DespawnInterval();
+                DespawnInterval();
             }
+        }
+
+        private void OnEnable()
+        {
+            transform.localScale = Vector3.one;
+            _hasCollided = false;
         }
 
         private IEnumerator Phase2(IncreaseElement selectedElement, float distanceOffset)
@@ -370,7 +375,7 @@ namespace GamePlay.Items
             IncreaseElement activeElement = selectedElement;
             int currentUpgradeSpent = 0;
             int nextUpgradeCost = 0;
-            float goldDrainFxTimer = 0f;
+            float goldDrainFxTimer = goldDrainEffectInterval;
 
             if (!TryActivateElement(activeElement, _exhaustedElementsBuffer, currentUpgradeSpent, out nextUpgradeCost))
             {
@@ -411,7 +416,9 @@ namespace GamePlay.Items
                 {
                     goldDrainFxTimer = 0f;
                     activeElement.ShowGoldDrainFeedback();
-                    Pack.Effector?.PlayEffect(
+
+                    var effector = _gateEffectComponent != null ? _gateEffectComponent : Pack.Effector;
+                    effector?.PlayEffect(
                         EffectType.Land,
                         activeElement.transform.position,
                         Quaternion.identity,
@@ -603,13 +610,45 @@ namespace GamePlay.Items
 
         protected override void HandleNonWheelCollision(IAttacker source) { }
 
+        private bool _isDespawning = false;
+
         protected override void DespawnInterval()
         {
-            Pack.Effector?.StopEffect(EffectType.Land);
+            if (_isDespawning) return;
+            _isDespawning = true;
+
+            if (_gateEffectComponent != null)
+                _gateEffectComponent.StopEffect(EffectType.Land);
+            else
+                Pack.Effector?.StopEffect(EffectType.Land);
+
             ClearBelts();
-            base.DespawnInterval();
+
+            if (Pack.Hitable != null)
+            {
+                CollisionSystem.Unregister(Pack.Hitable);
+            }
+
+            //StartCoroutine(ScaleDownRoutine());
         }
 
+        private System.Collections.IEnumerator ScaleDownRoutine()
+        {
+            float elapsed = 0f;
+            float duration = 0.25f;
+            Vector3 startScale = transform.localScale;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(startScale, Vector3.zero, elapsed / duration);
+                yield return null;
+            }
+
+            transform.localScale = Vector3.zero;
+            _isDespawning = false;
+            base.DespawnInterval();
+        }
         public Transform AddCharacter(CharacterUnit belt)
         {
             // 0) Safety checks

@@ -17,7 +17,7 @@ namespace Pools
             public Transform Root;
         }
 
-        private static readonly Dictionary<string, Pool> Pools = new Dictionary<string, Pool>();
+        private static readonly Dictionary<int, Pool> Pools = new Dictionary<int, Pool>();
         private static readonly Dictionary<IPoolable, Pool> PoolByInstance = new Dictionary<IPoolable, Pool>();
 
         public static void ClearAllPools()
@@ -152,7 +152,7 @@ namespace Pools
 
         private static Pool GetOrCreatePool(Component prefab)
         {
-            string key = prefab.name + "_" + prefab.GetType().Name;
+            int key = prefab.gameObject.GetInstanceID();
             if (Pools.TryGetValue(key, out var pool))
                 return pool;
 

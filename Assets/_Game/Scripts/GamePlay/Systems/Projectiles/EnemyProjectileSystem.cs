@@ -702,10 +702,11 @@ namespace GamePlay.CombatSystems
             int splashDamage = Mathf.Max(1, Mathf.CeilToInt(projectile.Attacker.Damage * (percent / 100f)));
             var splashAttacker = GetExplosionShotAttacker();
             splashAttacker.Setup(splashDamage, projectile.Attacker.TargetMask, projectile.Attacker.EntityType, hitPosition);
-            if (ShouldSpawnExplosionShotVfx(primaryTarget, hitPosition))
-            {
-                SpawnExplosionShotVfx(hitPosition);
-            }
+            // Bỏ vfx explosion shot theo yêu cầu tối ưu playable ad
+            // if (ShouldSpawnExplosionShotVfx(primaryTarget, hitPosition))
+            // {
+            //     SpawnExplosionShotVfx(hitPosition);
+            // }
 
             _aoeAppliedTargets.Clear();
             _aoeAppliedTargets.Add(primaryTarget);
@@ -827,7 +828,16 @@ namespace GamePlay.CombatSystems
             if (vfx == null) return;
             int id = vfx.GetInstanceID();
 
+            StartCoroutine(CoDespawnVfx(vfx, explosionShotVfxLifetime));
+        }
 
+        private System.Collections.IEnumerator CoDespawnVfx(GameObject vfx, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (vfx != null)
+            {
+                vfx.Despawn();
+            }
         }
 
         // ExplosionShot / splash AOE feature removed for this playable branch.

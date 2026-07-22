@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3666044992783841937}
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 608812351259443030}
-  m_Mesh: {fileID: 1745218436295231436, guid: 6750f08c42eb8fa4fb188497223a6e31, type: 3}
+  m_Mesh: {fileID: -7196525986549094296, guid: 6750f08c42eb8fa4fb188497223a6e31, type: 3}
 --- !u!23 &3743412632424778522
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -267,7 +267,6 @@ GameObject:
   - component: {fileID: 4852332088695781464}
   - component: {fileID: 7105555401399310678}
   - component: {fileID: 8145146069618088512}
-  - component: {fileID: 7229887573008007063}
   - component: {fileID: 4263060515600946823}
   - component: {fileID: -7239696538845763034}
   - component: {fileID: 4692578061521761579}
@@ -347,7 +346,7 @@ MonoBehaviour:
   healthComponent: {fileID: 8145146069618088512}
   currentHpText: {fileID: 3145998568603782289}
   maxHpText: {fileID: 0}
-  blockDebrisController: {fileID: 7229887573008007063}
+  blockDebrisController: {fileID: 0}
   hitTextFlyEffect: {fileID: 4263060515600946823}
   destroySfx: 17
   hitByWheelSfx: 12
@@ -373,28 +372,6 @@ MonoBehaviour:
   maxHealth: 10
   currentHealth: 10
   isImmortal: 0
---- !u!114 &7229887573008007063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725728750486215032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28d9bfee05f88d34fa45631e07a1dff1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitComponent: {fileID: 4852332088695781464}
-  debrisPrefab: {fileID: -7361016770618091757, guid: 16f12356266c72349931df68844d688e, type: 3}
-  minBlocks: 5
-  maxBlocks: 10
-  explosionForce: 5
-  upwardForce: 3
-  lifetime: 2
-  blockScaleRange: {x: 0.66, y: 0.88}
-  BaseColor: {r: 0.23529412, g: 0.8, b: 0.15686275, a: 1}
-  prewarmPoolCount: 30
 --- !u!114 &4263060515600946823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,6 +481,10 @@ PrefabInstance:
     - target: {fileID: 4534439711159034648, guid: 35bf57ff68288e345bac122013e6377a, type: 3}
       propertyPath: m_Name
       value: CashDropItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534439711159034648, guid: 35bf57ff68288e345bac122013e6377a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5291765111413347149, guid: 35bf57ff68288e345bac122013e6377a, type: 3}
       propertyPath: Amount

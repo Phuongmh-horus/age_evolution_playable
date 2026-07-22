@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transform: {fileID: 0}
-  _entityType: 0
+  _entityType: 19
   ActiveFlags: 0
   damage: 0
   targetMask:

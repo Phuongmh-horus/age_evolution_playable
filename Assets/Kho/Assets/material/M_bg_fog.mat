@@ -1,0 +1,232 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_bg_fog
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - DIFFUSE
+  - FOG
+  - _FADEX_ON
+  - _FADEY_ON
+  - _LIGHTMAPUV_UV1
+  - _USECOLOR_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LightmapTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 10906, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SubDissolveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TransparencyMaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VOTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - PixelSnap: 0
+    - _AmbientBrightness: 1
+    - _BlendOp: 0
+    - _Brightness: 1
+    - _BumpScale: 1
+    - _ColorIntensity: 1
+    - _ColorMask: 15
+    - _Contrast: 1
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _Cutout: 0
+    - _CutoutCutoff: 0.5
+    - _DepthFade_Distance: 1
+    - _DestBlend: 0
+    - _DetailNormalMapScale: 1
+    - _Diffuse: 1
+    - _DiffuseBrightness: 1
+    - _DiffuseContrast: 1
+    - _DiffuseWrap: 0
+    - _DissTex_UV_invert: 0
+    - _Distort_intensity: 0
+    - _DroopCurve: 2
+    - _DroopStrength: 0.5
+    - _DstBlend: 0
+    - _EdgeFlutterSpeed: 5.5
+    - _EdgeFlutterStrength: 1.2
+    - _EnableExternalAlpha: 0
+    - _FadeX: 1
+    - _FadeY: 1
+    - _FillAmount: 1
+    - _Fog: 1
+    - _Fresnel_pow: 5
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _IgnoreMainTexAlpha: 0
+    - _InvFade: 1
+    - _InvertFresnel: 0
+    - _LightmapBrightness: 1
+    - _LightmapUV: 0
+    - _MainTex_UV_invert: 0
+    - _MaskMult: 1
+    - _MaskTex_UV_invert: 0
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Preset: 0
+    - _Saturation: 1
+    - _SecondaryWaveAmplitude: 0.1
+    - _SecondaryWaveFrequency: 9.5
+    - _SecondaryWaveSpeed: 4.2
+    - _ShadowStrength: 1
+    - _SmoothnessTextureChannel: 0
+    - _SourceBlend: 1
+    - _SpecularHighlights: 1
+    - _SquashAmount: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _SubDissolveTex_add: 0
+    - _SubDissolveTex_multi: 1
+    - _TranslucencyViewDependency: 0.7
+    - _TransparencyMaskAmount: 1
+    - _TransparencyMaskContrast: 1
+    - _UVSec: 0
+    - _UseColor: 1
+    - _UseDepthFade: 0
+    - _UseDissolveColor: 0
+    - _UseFresnel: 0
+    - _UsePosXScroll: 0
+    - _UseSubDissTex: 0
+    - _UseUIAlphaClip: 0
+    - _VOintensity: 0
+    - _VertexColors: 0
+    - _VertexColorsAmount: 1
+    - _VertexColorsContrast: 1
+    - _WaveAmplitude: 0.18
+    - _WaveFrequency: 6
+    - _WaveShadowSoftness: 0.5
+    - _WaveShadowStrength: 0.4
+    - _WaveShadowWidth: 1
+    - _WaveSpeed: 2.5
+    - _WindStrength: 0.6
+    - _WindTurbulence: 0.4
+    - _ZOffset: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _DissolveColor_step: {r: 0, g: 1, b: 0, a: 0}
+    - _DissolveTex_speed: {r: 0, g: 0, b: 0, a: 0}
+    - _DissolveTex_uv: {r: 0, g: 0, b: 1, a: 1}
+    - _DistTex_uv_speed: {r: 1, g: 1, b: 0, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Emissive: {r: 0, g: 0, b: 0, a: 0}
+    - _Fade: {r: 2, g: 0, b: 0.1, a: 0.3}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _LightmapColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainTex_speed: {r: 0, g: 0, b: 0, a: 0}
+    - _MainTex_uv: {r: 0, g: 0, b: 1, a: 1}
+    - _MaskTex_tile: {r: 1, g: 1, b: 0, a: 0}
+    - _Mask_udrl: {r: 0, g: 0, b: 0, a: 0}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Smoothstep: {r: 0, g: 1, b: 0, a: 0}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _TranslucencyColor: {r: 0.73, g: 0.85, b: 0.40999997, a: 1}
+    - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
+    - _VOTex_speed: {r: 0, g: 0, b: 0, a: 0}
+    - _VOTex_uv: {r: 0, g: 0, b: 1, a: 1}
+    - _WaveDirection: {r: 1, g: 0.3, b: 0, a: 0}
+    - _WindDirection: {r: 1, g: 0.1, b: 0.4, a: 0}
+    - _color1: {r: 1, g: 1, b: 1, a: 1}
+    - _color2: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []

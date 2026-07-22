@@ -13,7 +13,7 @@ namespace CardSystem.Data
         public int ShotThreshold = 5;
 
         [Tooltip("Tốc độ bay của kiếm (units/s)")]
-        public float ProjectileSpeed = 20f;
+        public float ProjectileSpeed = 60f;
 
         [Tooltip("Chiều rộng vùng quét — chỉ dùng cho SamuraiMythicSlash (0 = không áp dụng)")]
         public float SlashWidth = 0f;

@@ -76,8 +76,8 @@ namespace GamePlay.CardSystem
         {
             // Khoi too: hien dau "?" (Unknown sprite), an icon
             SetupUnknown(data);
-            _rectTransform.position = startScreen;
-            _rectTransform.localScale = Vector3.one;
+            _rectTransform.anchoredPosition = startScreen;
+            _rectTransform.localScale = Vector3.one * scaleAtCenter;
 
             // Phase A: bay ra trung tâm màn hình
             yield return StartCoroutine(FlyTo(startScreen, centerScreen, dur1, scaleAtCenter));
@@ -123,12 +123,12 @@ namespace GamePlay.CardSystem
                 {
                     elapsed += Time.deltaTime;
                     float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / dur3));
-                    _rectTransform.position = Vector3.Lerp(centerScreen, destScreen, t);
+                    _rectTransform.anchoredPosition = Vector3.Lerp(centerScreen, destScreen, t);
                     _rectTransform.localScale = Vector3.one * Mathf.Lerp(scaleAtCenter, targetScale, t);
                     yield return null;
                 }
                 
-                _rectTransform.position = destScreen;
+                _rectTransform.anchoredPosition = destScreen;
                 _rectTransform.localScale = Vector3.one * targetScale;
             }
 
@@ -172,30 +172,8 @@ namespace GamePlay.CardSystem
         {
             UpdateVisual(data);
 
-            float half = duration * 0.5f;
-
-            // Scale up
             float elapsed = 0f;
-            while (elapsed < half)
-            {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / half);
-                _rectTransform.localScale = Vector3.one * Mathf.Lerp(1f, 1.3f, t) * scaleAtCenter;
-                yield return null;
-            }
-
-            // Scale down
-            elapsed = 0f;
-            while (elapsed < half)
-            {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / half);
-                _rectTransform.localScale = Vector3.one * Mathf.Lerp(1.3f, 1f, t) * scaleAtCenter;
-                yield return null;
-            }
-
-            elapsed = 0f;
-            while (elapsed < 0.5f)
+            while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -211,12 +189,11 @@ namespace GamePlay.CardSystem
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-                Vector3 currentEnd = targetSlot != null ? targetSlot.position : end;
-                _rectTransform.position = Vector3.Lerp(start, currentEnd, t);
+                _rectTransform.anchoredPosition = Vector3.Lerp(start, end, t);
                 _rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, t);
                 yield return null;
             }
-            _rectTransform.position = targetSlot != null ? targetSlot.position : end;
+            _rectTransform.anchoredPosition = end;
             _rectTransform.localScale = Vector3.one * targetScale;
         }
     }

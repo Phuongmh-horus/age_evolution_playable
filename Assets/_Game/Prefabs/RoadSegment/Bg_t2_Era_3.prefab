@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4423745022104927199}
   - component: {fileID: 1805465683144861269}
   - component: {fileID: 369269543083098702}
-  - component: {fileID: 7398777063112294395}
   m_Layer: 0
   m_Name: assets_t2_era3_17
   m_TagString: Untagged
@@ -85,21 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7398777063112294395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687192973345680553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &765691073301468409
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,7 +178,6 @@ GameObject:
   - component: {fileID: 5544632966062948350}
   - component: {fileID: 209472574057037561}
   - component: {fileID: 7026802216423919971}
-  - component: {fileID: 6308155573667375781}
   m_Layer: 0
   m_Name: assets_t2_era3_27
   m_TagString: Untagged
@@ -268,21 +251,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6308155573667375781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 980631780452445077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &1016634340517949101
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,7 +262,6 @@ GameObject:
   - component: {fileID: 5434086274442382813}
   - component: {fileID: 2468293239647051068}
   - component: {fileID: 3693171482811989109}
-  - component: {fileID: 7905262212708318459}
   m_Layer: 0
   m_Name: assets_t2_era3_7
   m_TagString: Untagged
@@ -368,21 +335,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7905262212708318459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016634340517949101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &1069655523864761032
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,7 +678,6 @@ GameObject:
   - component: {fileID: 7450982017942634765}
   - component: {fileID: 8350003558298572619}
   - component: {fileID: 2575749166952122475}
-  - component: {fileID: 2786759852187440304}
   m_Layer: 0
   m_Name: assets_t2_era3_23
   m_TagString: Untagged
@@ -800,21 +751,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2786759852187440304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1909462730691190758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &1939280194395533554
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +762,6 @@ GameObject:
   - component: {fileID: 2916948865390532712}
   - component: {fileID: 144764006432361546}
   - component: {fileID: 4291472959071754090}
-  - component: {fileID: 1595235028277209134}
   m_Layer: 0
   m_Name: assets_t2_era3_16
   m_TagString: Untagged
@@ -900,21 +835,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1595235028277209134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1939280194395533554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &2583613659377899675
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +929,6 @@ GameObject:
   - component: {fileID: 7638607526343558543}
   - component: {fileID: 9195488146650288564}
   - component: {fileID: 93130094379502024}
-  - component: {fileID: 8355459264946092860}
   m_Layer: 0
   m_Name: assets_t2_era3_12
   m_TagString: Untagged
@@ -1083,21 +1002,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8355459264946092860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2793464334840234040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &3417251393242187705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,7 +1096,6 @@ GameObject:
   - component: {fileID: 4786376968271920706}
   - component: {fileID: 4003232907446291793}
   - component: {fileID: 3329747064842346426}
-  - component: {fileID: 6268395298228632294}
   m_Layer: 0
   m_Name: assets_t2_era3_5
   m_TagString: Untagged
@@ -1266,21 +1169,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6268395298228632294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4987461866591938863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &5185849366591321481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,7 +1346,6 @@ GameObject:
   - component: {fileID: 3784338496104137880}
   - component: {fileID: 4415225368784012687}
   - component: {fileID: 7809526691830460790}
-  - component: {fileID: 3592540357197578420}
   m_Layer: 0
   m_Name: assets_t2_era3_13
   m_TagString: Untagged
@@ -1532,21 +1419,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3592540357197578420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5473449586055716357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &5966650761391855524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,7 +1430,6 @@ GameObject:
   - component: {fileID: 6407842150458499990}
   - component: {fileID: 7944854735537741650}
   - component: {fileID: 9133689329296648272}
-  - component: {fileID: 6495880678399247183}
   m_Layer: 0
   m_Name: assets_t2_era3_24
   m_TagString: Untagged
@@ -1632,21 +1503,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6495880678399247183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5966650761391855524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &6397472027263254054
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,7 +1680,6 @@ GameObject:
   - component: {fileID: 8509350682071407842}
   - component: {fileID: 9193151610195007322}
   - component: {fileID: 6298900702856464851}
-  - component: {fileID: 7746294101547522406}
   m_Layer: 0
   m_Name: assets_t2_era3_8
   m_TagString: Untagged
@@ -1898,21 +1753,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7746294101547522406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6883825890028177911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &7033906415749535190
 GameObject:
   m_ObjectHideFlags: 0
@@ -2052,7 +1892,6 @@ GameObject:
   - component: {fileID: 8275877549994596454}
   - component: {fileID: 4271500386972714783}
   - component: {fileID: 5440371076582287445}
-  - component: {fileID: 6634019520650805510}
   m_Layer: 0
   m_Name: assets_t2_era3_10
   m_TagString: Untagged
@@ -2126,21 +1965,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6634019520650805510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7715374812996971213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &8382995422016115482
 GameObject:
   m_ObjectHideFlags: 0
@@ -2235,7 +2059,6 @@ GameObject:
   - component: {fileID: 6878626180544851804}
   - component: {fileID: 2089229762941136979}
   - component: {fileID: 257788507193847657}
-  - component: {fileID: 9072458911095931759}
   m_Layer: 0
   m_Name: assets_t2_era3_6
   m_TagString: Untagged
@@ -2309,21 +2132,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &9072458911095931759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8588128754189865777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []
 --- !u!1 &8750385465129825845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2418,7 +2226,6 @@ GameObject:
   - component: {fileID: 7669821413281825320}
   - component: {fileID: 4688084457883089784}
   - component: {fileID: 4239737734656925233}
-  - component: {fileID: 7558376695473549661}
   m_Layer: 0
   m_Name: assets_t2_era3_11
   m_TagString: Untagged
@@ -2492,18 +2299,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7558376695473549661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9010639431989157205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4338e7afe378744c880d0f09cb4669e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDynamic: 0
-  customCullDistance: -1
-  targetRenderers: []

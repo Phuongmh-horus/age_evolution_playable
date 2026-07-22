@@ -147,94 +147,79 @@ namespace WeaponCraft
 
         private IEnumerator ProcessLoop()
         {
+            int slotCount = visualSystem != null ? visualSystem.SlotCount : 6;
+            
             while (_pending.Count > 0)
             {
-                // 1. Drain all pending into _items, build Add ops.
-                var addOps = DrainPendingIntoItems();
+                var batch = new List<PendingItem>(_pending.Count);
+                while (_pending.Count > 0) batch.Add(_pending.Dequeue());
 
-                // 2. Resolve all possible merges, build Merge ops.
-                var mergeOps = ResolveMerges();
+                var milestones = new List<List<int>>();
+                int currentTopTier = _items.Count > 0 ? _items[0].Tier : 0;
 
-                // 3. Animate.
+                // 1. Drain all pending into _items.
+                for (int i = 0; i < batch.Count; i++) _items.Add(batch[i].Item);
+                _items.Sort(_comparer);
+
+                // Always add the initial milestone (Add phase).
+                milestones.Add(GetSlotTiers(slotCount));
+
+                // 2. Resolve merges tier by tier.
+                int mergeCount = GetMergeCount();
+                int maxTier = GetMaxTier();
+                while (true)
+                {
+                    int tier = FindLowestMergeable(mergeCount, maxTier);
+                    if (tier < 0) break;
+
+                    // Collect sources
+                    var sources = new List<WeaponItem>(mergeCount);
+                    for (int i = _items.Count - 1; i >= 0 && sources.Count < mergeCount; i--)
+                        if (_items[i].Tier == tier) sources.Add(_items[i]);
+
+                    // Remove sources
+                    for (int i = 0; i < sources.Count; i++)
+                    {
+                        _items.Remove(sources[i]);
+                        _seqMap.Remove(sources[i]);
+                    }
+
+                    // Create result
+                    var result = new WeaponItem(tier + 1);
+                    AddSequence(result);
+                    _items.Add(result);
+                    _items.Sort(_comparer);
+
+                    // If top tier changed, record a milestone!
+                    if (_items[0].Tier > currentTopTier)
+                    {
+                        currentTopTier = _items[0].Tier;
+                        milestones.Add(GetSlotTiers(slotCount));
+                    }
+                }
+
                 EnsureVisualSystem();
                 if (visualSystem != null)
-                    yield return visualSystem.PlayOps(addOps, mergeOps);
+                    yield return visualSystem.PlayMilestones(batch[0].FlyFrom, milestones);
 
-                // 4. Safety sync: visual state must match data state.
                 visualSystem?.SyncVisuals(_items);
-
                 NotifyTopChanged();
             }
             _processRoutine = null;
         }
 
-        private List<CraftOp> DrainPendingIntoItems()
+        private List<int> GetSlotTiers(int slotCount)
         {
-            // Snapshot pending list.
-            var batch = new List<PendingItem>(_pending.Count);
-            while (_pending.Count > 0) batch.Add(_pending.Dequeue());
-
-            // Add all to _items.
-            for (int i = 0; i < batch.Count; i++) _items.Add(batch[i].Item);
-            _items.Sort(_comparer);
-
-            // Build add ops (slot index = position in sorted _items, clamped to slot count).
-            int slotCount = visualSystem != null ? visualSystem.SlotCount : 6;
-            var ops = new List<CraftOp>(batch.Count);
-            for (int i = 0; i < batch.Count; i++)
+            var tiers = new List<int>(slotCount);
+            for (int i = 0; i < slotCount; i++)
             {
-                int idx = Mathf.Clamp(_items.IndexOf(batch[i].Item), 0, slotCount - 1);
-                ops.Add(new CraftOp(CraftOpType.Add, batch[i].Item, null, idx, batch[i].FlyFrom));
+                tiers.Add(i < _items.Count ? _items[i].Tier : 0);
             }
-            return ops;
-        }
-
-        private List<CraftOp> ResolveMerges()
-        {
-            var ops = new List<CraftOp>(4);
-            int mergeCount = GetMergeCount();
-            int maxTier = GetMaxTier();
-            int slotCount = visualSystem != null ? visualSystem.SlotCount : 6;
-
-            while (true)
-            {
-                int tier = FindLowestMergeable(mergeCount, maxTier);
-                if (tier < 0) break;
-
-                int nextTier = tier + 1;
-                if (nextTier > maxTier) break;
-
-                // Collect sources (oldest first).
-                var sources = new List<WeaponItem>(mergeCount);
-                for (int i = _items.Count - 1; i >= 0 && sources.Count < mergeCount; i--)
-                    if (_items[i].Tier == tier) sources.Add(_items[i]);
-
-                if (sources.Count < mergeCount) break;
-
-                // Remove from live list + sequence map.
-                for (int i = 0; i < sources.Count; i++)
-                {
-                    _items.Remove(sources[i]);
-                    _seqMap.Remove(sources[i]);
-                }
-
-                // Create result.
-                var result = new WeaponItem(nextTier);
-                AddSequence(result);
-                _items.Add(result);
-                _items.Sort(_comparer);
-
-                int resultSlot = Mathf.Clamp(_items.IndexOf(result), 0, slotCount - 1);
-                ops.Add(new CraftOp(CraftOpType.Merge, result, sources, resultSlot, Vector3.zero));
-
-                Debug.Log($"[WeaponCraftSystem] Merge {sources.Count}x T{tier} → T{nextTier} → slot {resultSlot}");
-            }
-            return ops;
+            return tiers;
         }
 
         private int FindLowestMergeable(int mergeCount, int maxTier)
         {
-            // Count items per tier.
             var counts = new Dictionary<int, int>(8);
             for (int i = 0; i < _items.Count; i++)
             {
@@ -385,21 +370,5 @@ namespace WeaponCraft
             return cam.ScreenToWorldPoint(new Vector3(Screen.width * .5f, Screen.height * .5f, d));
         }
 #endif
-    }
-
-    // ── Shared op types ───────────────────────────────────────────────────────────
-
-    public enum CraftOpType { Add, Merge }
-
-    public sealed class CraftOp
-    {
-        public readonly CraftOpType Type;
-        public readonly WeaponItem Result;
-        public readonly List<WeaponItem> Sources;   // null for Add ops
-        public readonly int TargetSlot; // clamped to valid slot range
-        public readonly Vector3 FlyFrom;   // world pos, Add only
-
-        public CraftOp(CraftOpType t, WeaponItem r, List<WeaponItem> s, int slot, Vector3 fly)
-        { Type = t; Result = r; Sources = s; TargetSlot = slot; FlyFrom = fly; }
     }
 }

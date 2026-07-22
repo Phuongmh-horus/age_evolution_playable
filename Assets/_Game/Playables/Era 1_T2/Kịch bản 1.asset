@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: 
   SpawnableObjects:
   - Prefab: {fileID: 2151603510769025371, guid: bcac58a34dc112a4bb3d58c344cac776, type: 3}
-    PositionOnMap: 45
+    PositionOnMap: 40
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -25,7 +25,7 @@ MonoBehaviour:
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 2151603510769025371, guid: bcac58a34dc112a4bb3d58c344cac776, type: 3}
-    PositionOnMap: 75
+    PositionOnMap: 80
     PositionOffset: {x: -3.3, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -33,7 +33,7 @@ MonoBehaviour:
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
-    PositionOnMap: 115
+    PositionOnMap: 120
     PositionOffset: {x: 3.3, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -41,7 +41,7 @@ MonoBehaviour:
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
-    PositionOnMap: 155
+    PositionOnMap: 160
     PositionOffset: {x: -3.3, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -49,7 +49,7 @@ MonoBehaviour:
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 4524268157165728757, guid: b0838959935472d45baa5feba5178c93, type: 3}
-    PositionOnMap: 160
+    PositionOnMap: 170
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -57,7 +57,7 @@ MonoBehaviour:
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 3153615525941649065, guid: fb2213d0d7344574c8c32142f2e3f24f, type: 3}
-    PositionOnMap: 210
+    PositionOnMap: 215
     PositionOffset: {x: -3.3, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -65,7 +65,7 @@ MonoBehaviour:
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 9201111111111111111, guid: 57dd6fff5df9941469f418d309a0cff4, type: 3}
-    PositionOnMap: 250
+    PositionOnMap: 260
     PositionOffset: {x: 3.3, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
@@ -73,14 +73,14 @@ MonoBehaviour:
     overrideMaxHp: 0
     maxHp: 10
   - Prefab: {fileID: 4524268157165728757, guid: f89e3f2b84d91b54a86da47ade9f8d3e, type: 3}
-    PositionOnMap: 255
+    PositionOnMap: 270
     PositionOffset: {x: 0, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
     propertyOverrides: []
     overrideMaxHp: 0
     maxHp: 10
-  - Prefab: {fileID: 1145068897005646162, guid: 8d23b19a6e20f6443841519cf68b4b69, type: 3}
+  - Prefab: {fileID: 0}
     PositionOnMap: 300
     PositionOffset: {x: 3.3, y: 0, z: 0}
     Rotation: {x: -0, y: 0, z: 0}

@@ -219,6 +219,12 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 
     protected override void HandleNonWheelCollision(IAttacker source)
     {
+        if (source != null && source.EntityType == GamePlay.Entities.EntityType.Character)
+        {
+            StartCoroutine(CoScaleDownAndDespawn());
+            return;
+        }
+
         int shownDamage = source != null ? Mathf.Max(1, source.Damage) : 1;
 
         PlayNonWheelHitEffect();
@@ -232,8 +238,22 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         PlayScalePulse();
     }
 
+
+
     protected override void HandleWheelCollision()
     {
+        PlayScalePulse();
+        StartCoroutine(CoHandleWheelCollisionAfterPulse());
+    }
+
+    private IEnumerator CoHandleWheelCollisionAfterPulse()
+    {
+        float waitTime = Mathf.Max(0f, scaleUpDuration + scaleDownDuration);
+        if (waitTime > 0f)
+        {
+            yield return new WaitForSeconds(waitTime);
+        }
+
         base.HandleWheelCollision();
     }
 
@@ -432,6 +452,17 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         _ignoreBrickCallbacks = false;
         FlushQueuedCapacityGain();
         FlushDeliveredEvent();
+
+        if (preplacedLayers != null)
+        {
+            for (int i = 0; i < preplacedLayers.Count; i++)
+            {
+                if (preplacedLayers[i] != null)
+                {
+                    preplacedLayers[i].ResetLayer(forceResetFlying: true);
+                }
+            }
+        }
     }
 
     private void OnBrickReachedCapacity(int gained)
@@ -563,28 +594,6 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
 #endif
     }
 
-    private void EnsureDespawnScaleEffect()
-    {
-        if (!ensureDespawnScaleEffect) return;
-
-        // if (deathScaleEffect == null)
-        // {
-        //     deathScaleEffect = GetComponent<DeathScaleEffect>();
-        // }
-
-        // if (deathScaleEffect == null)
-        // {
-        //     deathScaleEffect = gameObject.AddComponent<DeathScaleEffect>();
-        // }
-
-        // if (deathScaleEffect.Transform == null)
-        // {
-        //     deathScaleEffect.Transform = transform;
-        // }
-
-        // deathScaleEffect.Configure(despawnScaleMultiplier, despawnExpandDuration, despawnShrinkDuration);
-    }
-
     protected override void DespawnInterval()
     {
         StopScalePulse();
@@ -600,5 +609,31 @@ public class CapacityIncreasePillar : StatModifierItem<StatModifierCapacityData>
         Gizmos.DrawWireSphere(bricksRoot.position, 0.25f);
     }
 #endif
+
+    private bool _isArmyDespawning = false;
+    private IEnumerator CoScaleDownAndDespawn()
+    {
+        if (_isArmyDespawning) yield break;
+        _isArmyDespawning = true;
+
+        if (Pack.Hitable != null)
+        {
+            GamePlay.CollisionSystems.CollisionSystem.Unregister(Pack.Hitable);
+        }
+
+        float t = 0;
+        float duration = despawnShrinkDuration;
+        Vector3 startScale = transform.localScale;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t / duration);
+            yield return null;
+        }
+        transform.localScale = Vector3.zero;
+
+        deathScaleEffect = null;
+        DespawnInterval();
+    }
 }
 

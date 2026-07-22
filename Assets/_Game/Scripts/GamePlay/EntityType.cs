@@ -18,9 +18,10 @@ namespace GamePlay.Entities
         Obstacle = 14,
         FinishTrigger = 16,
         FinishTower = 18,
+        TowerZone = 19,
         GateNewEra = 20,
 
-        
+
         All = 255
     }
 }
